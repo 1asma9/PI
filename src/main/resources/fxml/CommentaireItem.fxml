@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox spacing="15.0"
+      style="-fx-background-color: #f9f9f9; -fx-background-radius: 10; -fx-padding: 12;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.BlogListController">
+    <children>
+
+        <!-- Photo Profil -->
+        <ImageView fx:id="userImage"
+                   fitHeight="45"
+                   fitWidth="45"
+                   preserveRatio="true"
+                   style="-fx-background-radius: 50;">
+        </ImageView>
+
+        <!-- Partie droite -->
+        <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+
+            <!-- Nom + Date -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="nomUserLabel"
+                       style="-fx-font-weight: bold; -fx-text-fill: #32594a;"/>
+
+                <Label fx:id="dateLabel"
+                       style="-fx-font-size: 11px; -fx-text-fill: gray;"/>
+            </HBox>
+
+            <!-- Contenu -->
+            <Label fx:id="contenuLabel"
+                   wrapText="true"
+                   style="-fx-text-fill: #444;"
+                   maxWidth="500"/>
+
+            <!-- Like Section -->
+            <HBox spacing="8" alignment="CENTER_LEFT">
+
+                <Button fx:id="likeBtn"
+                        text="♡"
+                        style="-fx-background-color: transparent; -fx-font-size: 16;"
+                        onAction="#handleLike"/>
+
+                <Label fx:id="likesCountLabel"
+                       text="0"
+                       style="-fx-text-fill: #666;"/>
+
+            </HBox>
+
+        </VBox>
+
+    </children>
+</HBox>

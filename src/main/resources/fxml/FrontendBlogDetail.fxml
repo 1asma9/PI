@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="750.0" prefWidth="1366.0" style="-fx-background-color: #f5f5f5;"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.FrontendBlogDetailController">
+
+    <!-- Header/Navbar -->
+    <HBox alignment="CENTER_LEFT" prefHeight="80.0" prefWidth="1366.0"
+          style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);">
+        <padding>
+            <Insets left="50.0" right="50.0"/>
+        </padding>
+        <children>
+            <!-- Back Button -->
+            <Button fx:id="backBtn" onAction="#goBack"
+                    style="-fx-background-color: transparent; -fx-text-fill: #667eea; -fx-cursor: hand;"
+                    text="← Retour">
+                <font>
+                    <Font name="Montserrat SemiBold" size="14.0"/>
+                </font>
+            </Button>
+
+            <!-- Spacer -->
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Logo -->
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="📝 My Travel Blog">
+                <font>
+                    <Font name="Montserrat Bold" size="24.0"/>
+                </font>
+            </Text>
+
+            <!-- Spacer -->
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Empty space for symmetry -->
+            <Label text="" prefWidth="100.0"/>
+        </children>
+    </HBox>
+
+    <!-- Main Content -->
+    <ScrollPane fitToWidth="true" prefHeight="670.0" prefWidth="1366.0"
+                style="-fx-background-color: transparent; -fx-border-color: transparent;">
+        <content>
+            <VBox alignment="TOP_CENTER" prefWidth="1366.0" spacing="30.0">
+                <padding>
+                    <Insets bottom="50.0" top="40.0"/>
+                </padding>
+                <children>
+                    <!-- Blog Content Container -->
+                    <VBox alignment="TOP_CENTER" maxWidth="900.0" spacing="25.0"
+                          style="-fx-background-color: white; -fx-background-radius: 15px; -fx-padding: 50px;">
+                        <children>
+                            <!-- Blog Title -->
+                            <Text fx:id="blogTitle" strokeType="OUTSIDE" strokeWidth="0.0"
+                                  text="Titre du Blog" textAlignment="CENTER" wrappingWidth="800.0">
+                                <font>
+                                    <Font name="Montserrat Bold" size="36.0"/>
+                                </font>
+                            </Text>
+
+                            <!-- Blog Meta -->
+                            <HBox alignment="CENTER" spacing="20.0">
+                                <children>
+                                    <Label fx:id="blogAuthor" text="Par Admin" textFill="#666666">
+                                        <font>
+                                            <Font name="Montserrat Regular" size="14.0"/>
+                                        </font>
+                                    </Label>
+                                    <Text text="•" fill="#999999">
+                                        <font>
+                                            <Font size="14.0"/>
+                                        </font>
+                                    </Text>
+                                    <Label fx:id="blogDate" text="27 Dec 2025" textFill="#666666">
+                                        <font>
+                                            <Font name="Montserrat Regular" size="14.0"/>
+                                        </font>
+                                    </Label>
+                                </children>
+                            </HBox>
+
+                            <!-- Cover Image -->
+                            <ImageView fx:id="blogCoverImage" fitHeight="500.0" fitWidth="800.0"
+                                       pickOnBounds="true" preserveRatio="true"
+                                       style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                                <VBox.margin>
+                                    <Insets top="10.0"/>
+                                </VBox.margin>
+                            </ImageView>
+
+                            <!-- Excerpt -->
+                            <Text fx:id="blogExcerpt" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0"
+                                  wrappingWidth="800.0" textAlignment="LEFT">
+                                <font>
+                                    <Font name="Montserrat Italic" size="18.0"/>
+                                </font>
+                                <VBox.margin>
+                                    <Insets top="10.0"/>
+                                </VBox.margin>
+                            </Text>
+
+                            <!-- Divider -->
+                            <Separator prefWidth="800.0"/>
+
+                            <!-- Content -->
+                            <Text fx:id="blogContent" strokeType="OUTSIDE" strokeWidth="0.0"
+                                  wrappingWidth="800.0" textAlignment="JUSTIFY">
+                                <font>
+                                    <Font name="Montserrat Regular" size="16.0"/>
+                                </font>
+                            </Text>
+                        </children>
+                    </VBox>
+
+                    <!-- Comments Section -->
+                    <VBox alignment="TOP_CENTER" maxWidth="900.0" spacing="25.0"
+                          style="-fx-background-color: white; -fx-background-radius: 15px; -fx-padding: 40px;">
+                        <children>
+                            <!-- Comments Header -->
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="💬 Commentaires">
+                                        <font>
+                                            <Font name="Montserrat Bold" size="24.0"/>
+                                        </font>
+                                    </Text>
+                                    <Label fx:id="commentCountLabel" text="(0)" textFill="#999999">
+                                        <font>
+                                            <Font name="Montserrat Regular" size="18.0"/>
+                                        </font>
+                                    </Label>
+                                </children>
+                            </HBox>
+
+                            <Separator prefWidth="800.0"/>
+
+                            <!-- Add Comment Form -->
+                            <VBox spacing="15.0" prefWidth="800.0">
+                                <children>
+                                    <Label text="Laissez un commentaire">
+                                        <font>
+                                            <Font name="Montserrat SemiBold" size="16.0"/>
+                                        </font>
+                                    </Label>
+
+                                    <HBox spacing="15.0">
+                                        <children>
+                                            <TextField fx:id="commentUserInput" promptText="Votre nom"
+                                                       prefWidth="250.0"
+                                                       style="-fx-background-color: #f9f9f9; -fx-background-radius: 8px; -fx-padding: 12px;">
+                                                <font>
+                                                    <Font name="Montserrat Regular" size="13.0"/>
+                                                </font>
+                                            </TextField>
+                                            <TextField fx:id="commentImageInput" promptText="URL photo (optionnel)"
+                                                       prefWidth="535.0"
+                                                       style="-fx-background-color: #f9f9f9; -fx-background-radius: 8px; -fx-padding: 12px;">
+                                                <font>
+                                                    <Font name="Montserrat Regular" size="13.0"/>
+                                                </font>
+                                            </TextField>
+                                        </children>
+                                    </HBox>
+
+                                    <TextArea fx:id="commentContentInput" prefHeight="120.0"
+                                              promptText="Écrivez votre commentaire..." wrapText="true"
+                                              style="-fx-background-color: #f9f9f9; -fx-background-radius: 8px; -fx-padding: 12px;">
+                                        <font>
+                                            <Font name="Montserrat Regular" size="13.0"/>
+                                        </font>
+                                    </TextArea>
+
+                                    <HBox alignment="CENTER_RIGHT">
+                                        <children>
+                                            <Button fx:id="submitCommentBtn" onAction="#submitComment"
+                                                    prefWidth="150.0"
+                                                    style="-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-text-fill: white; -fx-background-radius: 8px; -fx-padding: 12px 24px; -fx-cursor: hand;"
+                                                    text="Publier">
+                                                <font>
+                                                    <Font name="Montserrat SemiBold" size="14.0"/>
+                                                </font>
+                                            </Button>
+                                        </children>
+                                    </HBox>
+                                </children>
+                            </VBox>
+
+                            <Separator prefWidth="800.0"/>
+
+                            <!-- Comments List -->
+                            <VBox fx:id="commentsContainer" spacing="20.0" prefWidth="800.0">
+                                <!-- Les commentaires seront ajoutés ici -->
+                            </VBox>
+
+                            <!-- Empty State -->
+                            <VBox fx:id="emptyCommentsState" alignment="CENTER" spacing="10.0"
+                                  visible="false" prefWidth="800.0">
+                                <padding>
+                                    <Insets bottom="20.0" top="20.0"/>
+                                </padding>
+                                <children>
+                                    <Text fill="#999999" strokeType="OUTSIDE" strokeWidth="0.0"
+                                          text="Aucun commentaire pour le moment">
+                                        <font>
+                                            <Font name="Montserrat Regular" size="15.0"/>
+                                        </font>
+                                    </Text>
+                                    <Text fill="#999999" strokeType="OUTSIDE" strokeWidth="0.0"
+                                          text="Soyez le premier à commenter !">
+                                        <font>
+                                            <Font name="Montserrat Light" size="14.0"/>
+                                        </font>
+                                    </Text>
+                                </children>
+                            </VBox>
+                        </children>
+                    </VBox>
+                </children>
+            </VBox>
+        </content>
+    </ScrollPane>
+</VBox>

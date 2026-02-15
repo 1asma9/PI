@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="content_area" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="629.0" prefWidth="1084.0" styleClass="dash__container-card"
+      stylesheets="@../css/BlogStyle.css" xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.BlogListController">
+    <children>
+        <!-- Header Section -->
+        <HBox alignment="CENTER_LEFT" layoutX="27.0" layoutY="15.0" prefHeight="80.0" prefWidth="1035.0">
+            <children>
+                <!-- Title -->
+                <Text fill="#32594a" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="blog-title"
+                      text="📝 Liste des Blogs 📝">
+                    <font>
+                        <Font name="Montserrat Bold" size="24.0"/>
+                    </font>
+                </Text>
+
+                <!-- Search Input -->
+                <TextField fx:id="blogSearchInput" maxHeight="-Infinity" maxWidth="-Infinity"
+                           minHeight="-Infinity" minWidth="-Infinity" prefWidth="280.0"
+                           promptText="Rechercher un blog..."
+                           styleClass="blog__list-searchInput">
+                    <HBox.margin>
+                        <Insets left="30.0"/>
+                    </HBox.margin>
+                    <padding>
+                        <Insets left="40.0"/>
+                    </padding>
+                </TextField>
+
+                <!-- Search Icon -->
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true"
+                           translateX="-260.0">
+                    <image>
+                        <Image url="@../img/magnifier.png"/>
+                    </image>
+                </ImageView>
+
+                <!-- Sort Section -->
+                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity"
+                      minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0"
+                      prefWidth="100.0" styleClass="sort-text">
+                    <children>
+                        <Text fill="#97d158" strokeType="OUTSIDE" strokeWidth="0.0"
+                              styleClass="sort-text" text="Trier par:">
+                            <font>
+                                <Font name="Montserrat Regular" size="13.0"/>
+                            </font>
+                        </Text>
+                    </children>
+                    <padding>
+                        <Insets left="10.0"/>
+                    </padding>
+                </HBox>
+
+                <!-- Sort ComboBox -->
+                <ComboBox fx:id="sortComboBox" prefWidth="150.0" promptText="Date"
+                          styleClass="blog__sort-combobox">
+                    <HBox.margin>
+                        <Insets left="10.0"/>
+                    </HBox.margin>
+                </ComboBox>
+
+                <!-- Add Blog Button -->
+                <Button fx:id="addBlogBtn" onMouseClicked="#openAddBlogForm"
+                        styleClass="add-blog-btn" text="+ Ajouter Blog">
+                    <HBox.margin>
+                        <Insets left="20.0"/>
+                    </HBox.margin>
+                    <font>
+                        <Font name="Montserrat SemiBold" size="13.0"/>
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+
+        <!-- Blogs Grid Section -->
+        <ScrollPane layoutX="27.0" layoutY="115.0" prefHeight="493.0" prefWidth="1035.0"
+                    styleClass="blog-card-scrollPane">
+            <content>
+                <GridPane fx:id="BlogListContainer" alignment="TOP_LEFT" hgap="20.0" vgap="20.0">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                    </padding>
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="10.0" prefWidth="300.0"/>
+                        <ColumnConstraints minWidth="10.0" prefWidth="300.0"/>
+                        <ColumnConstraints minWidth="10.0" prefWidth="300.0"/>
+                    </columnConstraints>
+                </GridPane>
+            </content>
+        </ScrollPane>
+
+        <!-- Add/Edit Blog Modal -->
+        <HBox fx:id="blogFormModal" alignment="CENTER" layoutX="-266.0" layoutY="-78.0"
+              maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0"
+              styleClass="blog-modal" visible="false">
+            <children>
+                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0"
+                      style="-fx-background-color: #fff; -fx-background-radius: 15px;"
+                      styleClass="blog-modal-card">
+                    <children>
+                        <!-- Modal Header -->
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="600.0"
+                              style="-fx-background-color: #667eea; -fx-background-radius: 15px 15px 0 0;">
+                            <padding>
+                                <Insets left="30.0" right="30.0"/>
+                            </padding>
+                            <children>
+                                <Text fx:id="modalTitle" fill="WHITE" strokeType="OUTSIDE"
+                                      strokeWidth="0.0" text="Ajouter un Blog">
+                                    <font>
+                                        <Font name="Montserrat Bold" size="20.0"/>
+                                    </font>
+                                </Text>
+
+                                <HBox alignment="TOP_RIGHT" prefHeight="60.0" prefWidth="450.0">
+                                    <children>
+                                        <Text fill="WHITE" onMouseClicked="#closeBlogFormModal"
+                                              strokeType="OUTSIDE" strokeWidth="0.0"
+                                              styleClass="close-modal-btn" text="✕">
+                                            <font>
+                                                <Font name="Montserrat Bold" size="24.0"/>
+                                            </font>
+                                        </Text>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </HBox>
+
+                        <Line endX="570.0" layoutX="15.0" layoutY="60.0" startX="0.0"
+                              stroke="#e0e0e0" strokeWidth="1.0"/>
+
+                        <!-- Form Content -->
+                        <ScrollPane layoutY="61.0" prefHeight="430.0" prefWidth="600.0"
+                                    style="-fx-background-color: transparent;">
+                            <content>
+                                <VBox prefHeight="410.0" prefWidth="560.0" spacing="15.0">
+                                    <padding>
+                                        <Insets bottom="20.0" left="30.0" right="30.0" top="20.0"/>
+                                    </padding>
+                                    <children>
+                                        <!-- Titre Field -->
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label text="Titre *" styleClass="form-label">
+                                                    <font>
+                                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                                    </font>
+                                                </Label>
+                                                <TextField fx:id="titreInput" promptText="Entrez le titre du blog"
+                                                           styleClass="form-input"/>
+                                                <Label fx:id="titreError" styleClass="error-label"
+                                                       text="" textFill="RED" visible="false">
+                                                    <font>
+                                                        <Font name="Montserrat Regular" size="11.0"/>
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Slug Field -->
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label text="Slug *" styleClass="form-label">
+                                                    <font>
+                                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                                    </font>
+                                                </Label>
+                                                <TextField fx:id="slugInput" promptText="slug-du-blog"
+                                                           styleClass="form-input"/>
+                                                <Label fx:id="slugError" styleClass="error-label"
+                                                       text="" textFill="RED" visible="false">
+                                                    <font>
+                                                        <Font name="Montserrat Regular" size="11.0"/>
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Extrait Field -->
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label text="Extrait *" styleClass="form-label">
+                                                    <font>
+                                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                                    </font>
+                                                </Label>
+                                                <TextArea fx:id="extraitInput" prefHeight="80.0"
+                                                          promptText="Résumé du blog (150 caractères max)"
+                                                          styleClass="form-textarea" wrapText="true"/>
+                                                <Label fx:id="extraitError" styleClass="error-label"
+                                                       text="" textFill="RED" visible="false">
+                                                    <font>
+                                                        <Font name="Montserrat Regular" size="11.0"/>
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Contenu Field -->
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label text="Contenu *" styleClass="form-label">
+                                                    <font>
+                                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                                    </font>
+                                                </Label>
+                                                <TextArea fx:id="contenuInput" prefHeight="150.0"
+                                                          promptText="Contenu complet du blog"
+                                                          styleClass="form-textarea" wrapText="true"/>
+                                                <Label fx:id="contenuError" styleClass="error-label"
+                                                       text="" textFill="RED" visible="false">
+                                                    <font>
+                                                        <Font name="Montserrat Regular" size="11.0"/>
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Image Couverture Field -->
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label text="Image de Couverture" styleClass="form-label">
+                                                    <font>
+                                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                                    </font>
+                                                </Label>
+                                                <HBox spacing="10.0">
+                                                    <children>
+                                                        <TextField fx:id="imageCouvertureInput"
+                                                                   prefWidth="400.0"
+                                                                   promptText="URL de l'image"
+                                                                   styleClass="form-input"/>
+                                                        <Button text="Parcourir" styleClass="browse-btn"
+                                                                onAction="#browseImage">
+                                                            <font>
+                                                                <Font name="Montserrat Regular" size="12.0"/>
+                                                            </font>
+                                                        </Button>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Status Field -->
+                                        <VBox spacing="8.0">
+                                            <children>
+                                                <Label text="Statut" styleClass="form-label">
+                                                    <font>
+                                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                                    </font>
+                                                </Label>
+                                                <CheckBox fx:id="statusCheckbox" text="Publié"
+                                                          styleClass="form-checkbox">
+                                                    <font>
+                                                        <Font name="Montserrat Regular" size="12.0"/>
+                                                    </font>
+                                                </CheckBox>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                            </content>
+                        </ScrollPane>
+
+                        <!-- Form Buttons -->
+                        <HBox alignment="CENTER" layoutY="500.0" prefHeight="50.0"
+                              prefWidth="600.0" spacing="20.0">
+                            <children>
+                                <Button fx:id="cancelBtn" onMouseClicked="#closeBlogFormModal"
+                                        prefWidth="120.0" styleClass="cancel-btn" text="Annuler">
+                                    <font>
+                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                    </font>
+                                </Button>
+                                <Button fx:id="saveBlogBtn" onMouseClicked="#saveBlog"
+                                        prefWidth="120.0" styleClass="save-btn" text="Enregistrer">
+                                    <font>
+                                        <Font name="Montserrat SemiBold" size="13.0"/>
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
+                    </children>
+                </Pane>
+            </children>
+        </HBox>
+
+        <!-- Delete Confirmation Modal -->
+        <HBox fx:id="deleteConfirmModal" alignment="CENTER" layoutX="-266.0" layoutY="-78.0"
+              maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+              minWidth="-Infinity" prefHeight="700.0" prefWidth="1366.0"
+              styleClass="blog-modal" visible="false">
+            <children>
+                <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="200.0" prefWidth="400.0"
+                      style="-fx-background-color: #fff; -fx-background-radius: 15px;"
+                      styleClass="blog-modal-card">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="400.0" spacing="20.0">
+                            <padding>
+                                <Insets bottom="20.0" left="30.0" right="30.0" top="30.0"/>
+                            </padding>
+                            <children>
+                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
+                                           preserveRatio="true">
+                                    <image>
+                                        <Image url="@../img/warning.png"/>
+                                    </image>
+                                </ImageView>
+                                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                                      text="Voulez-vous vraiment supprimer ce blog ?"
+                                      textAlignment="CENTER" wrappingWidth="340.0">
+                                    <font>
+                                        <Font name="Montserrat SemiBold" size="15.0"/>
+                                    </font>
+                                </Text>
+                                <HBox alignment="CENTER" spacing="20.0">
+                                    <children>
+                                        <Button onMouseClicked="#closeDeleteConfirmModal"
+                                                prefWidth="120.0" styleClass="cancel-btn" text="Annuler">
+                                            <font>
+                                                <Font name="Montserrat SemiBold" size="13.0"/>
+                                            </font>
+                                        </Button>
+                                        <Button onMouseClicked="#confirmDelete"
+                                                prefWidth="120.0" styleClass="delete-btn" text="Supprimer">
+                                            <font>
+                                                <Font name="Montserrat SemiBold" size="13.0"/>
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </Pane>
+            </children>
+        </HBox>
+    </children>
+</Pane>

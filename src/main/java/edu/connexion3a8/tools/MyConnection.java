@@ -6,20 +6,26 @@ import java.sql.SQLException;
 
 public class MyConnection {
 
-    private String url="jdbc:mysql://localhost:3306/3a8";
-    private String login="root";
-    private String pwd="";
+    private final String URL = "jdbc:mysql://localhost:3306/pi";
+    private final String LOGIN = "root";
+    private final String PWD = "";
 
     private Connection cnx;
+    private static MyConnection instance;
 
-    public MyConnection(){
-
+    public MyConnection() {
         try {
-          cnx = DriverManager.getConnection(url,login,pwd);
+            cnx = DriverManager.getConnection(URL, LOGIN, PWD);
             System.out.println("Connexion établie!");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
+    }
+
+    public static MyConnection getInstance() {
+        if (instance == null)
+            instance = new MyConnection();
+        return instance;
     }
 
     public Connection getCnx() {

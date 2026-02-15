@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox alignment="TOP_LEFT" prefWidth="990.0" spacing="15.0"
+      style="-fx-background-color: #f9f9f9; -fx-background-radius: 10px; -fx-padding: 15px;"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.CommentCardController">
+    <children>
+        <!-- User Avatar -->
+        <ImageView fx:id="userAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true"
+                   preserveRatio="true" style="-fx-background-radius: 50%;">
+            <image>
+                <Image url="@../img/default-avatar.png"/>
+            </image>
+        </ImageView>
+
+        <!-- Comment Content -->
+        <VBox prefWidth="900.0" spacing="8.0">
+            <children>
+                <!-- User Name and Date -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom Utilisateur">
+                            <font>
+                                <Font name="Montserrat SemiBold" size="14.0"/>
+                            </font>
+                        </Text>
+                        <Text fx:id="commentDate" fill="#999999" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Il y a 2h">
+                            <font>
+                                <Font name="Montserrat Regular" size="12.0"/>
+                            </font>
+                        </Text>
+                    </children>
+                </HBox>
+
+                <!-- Comment Text -->
+                <Text fx:id="commentText" strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Contenu du commentaire..." wrappingWidth="880.0">
+                    <font>
+                        <Font name="Montserrat Regular" size="13.0"/>
+                    </font>
+                </Text>
+
+                <!-- Actions (Like & Delete) -->
+                <HBox alignment="CENTER_LEFT" spacing="20.0">
+                    <VBox.margin>
+                        <Insets top="5.0"/>
+                    </VBox.margin>
+                    <children>
+                        <!-- Like Button -->
+                        <HBox alignment="CENTER_LEFT" onMouseClicked="#toggleLike" spacing="5.0"
+                              style="-fx-cursor: hand;">
+                            <children>
+                                <Text fx:id="likeIcon" fill="#999999" strokeType="OUTSIDE"
+                                      strokeWidth="0.0" text="♥">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Text>
+                                <Label fx:id="likesLabel" text="0" textFill="#999999">
+                                    <font>
+                                        <Font name="Montserrat Regular" size="12.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+
+                        <!-- Delete Button -->
+                        <Button fx:id="deleteBtn" onAction="#deleteComment"
+                                style="-fx-background-color: transparent; -fx-text-fill: #dc284c; -fx-cursor: hand;"
+                                text="Supprimer">
+                            <font>
+                                <Font name="Montserrat Regular" size="12.0"/>
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</HBox>
