@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface ICommentaire<T> {
 
-    void ajouter(T t) throws SQLException;
+    void ajouter(T t, int blogId) throws SQLException;  // ← 2 paramètres !
 
     void modifier(T t) throws SQLException;
 
@@ -15,7 +15,8 @@ public interface ICommentaire<T> {
 
     T afficher1(int id) throws SQLException;
 
-    // 🔥 Méthodes supplémentaires pour les likes
+    List<T> afficherParBlog(int blogId) throws SQLException;  // ← Nouvelle méthode
+
     void ajouterLike(int id) throws SQLException;
 
     void retirerLike(int id) throws SQLException;

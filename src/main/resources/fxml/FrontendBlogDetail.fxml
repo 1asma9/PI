@@ -30,7 +30,7 @@
             <Region HBox.hgrow="ALWAYS"/>
 
             <!-- Logo -->
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="📝 My Travel Blog">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="🌎 ViaNova">
                 <font>
                     <Font name="Montserrat Bold" size="24.0"/>
                 </font>

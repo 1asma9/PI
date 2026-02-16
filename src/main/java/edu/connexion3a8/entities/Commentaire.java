@@ -7,17 +7,17 @@ public class Commentaire {
     private String date;
     private String nomuser;
     private String img;
+    private int likesCount;
+    private boolean liked;
+    private int blogId;  // ← Assurez-vous que cet attribut existe
 
-    private int likesCount;   // nombre total de likes
-    private boolean liked;    // true si liké
-
-    // 🔹 Constructeur vide
+    // 🔹 Constructeur vide (TRÈS IMPORTANT)
     public Commentaire() {
     }
 
     // 🔹 Constructeur complet
     public Commentaire(int id, String contenu, String date, String nomuser,
-                       String img, int likesCount, boolean liked) {
+                       String img, int likesCount, boolean liked, int blogId) {
         this.id = id;
         this.contenu = contenu;
         this.date = date;
@@ -25,6 +25,7 @@ public class Commentaire {
         this.img = img;
         this.likesCount = likesCount;
         this.liked = liked;
+        this.blogId = blogId;
     }
 
     // 🔹 Getters
@@ -56,6 +57,10 @@ public class Commentaire {
         return liked;
     }
 
+    public int getBlogId() {
+        return blogId;
+    }
+
     // 🔹 Setters
     public void setId(int id) {
         this.id = id;
@@ -85,7 +90,11 @@ public class Commentaire {
         this.liked = liked;
     }
 
-    // 🔹 Méthode toString (optionnelle mais utile)
+    public void setBlogId(int blogId) {
+        this.blogId = blogId;
+    }
+
+    // 🔹 Méthode toString
     @Override
     public String toString() {
         return "Commentaire{" +
@@ -96,6 +105,7 @@ public class Commentaire {
                 ", img='" + img + '\'' +
                 ", likesCount=" + likesCount +
                 ", liked=" + liked +
+                ", blogId=" + blogId +
                 '}';
     }
 }

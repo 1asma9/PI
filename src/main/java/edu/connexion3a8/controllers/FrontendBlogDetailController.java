@@ -97,10 +97,9 @@ public class FrontendBlogDetailController implements Initializable {
         commentsContainer.getChildren().clear();
 
         try {
-            // Récupérer tous les commentaires
-            List<Commentaire> comments = commentaireService.afficher();
+            // CHANGÉ : Utiliser afficherParBlog
+            List<Commentaire> comments = commentaireService.afficherParBlog(currentBlog.getId());
 
-            // Update comment count
             commentCountLabel.setText("(" + comments.size() + ")");
 
             if (comments.isEmpty()) {
@@ -164,8 +163,8 @@ public class FrontendBlogDetailController implements Initializable {
             newComment.setLikesCount(0);
             newComment.setLiked(false);
 
-            // Ajouter le commentaire
-            commentaireService.ajouter(newComment);
+            // CHANGÉ : Ajouter avec blog_id
+            commentaireService.ajouter(newComment, currentBlog.getId());
 
             // Clear form
             commentUserInput.clear();

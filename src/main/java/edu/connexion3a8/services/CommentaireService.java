@@ -16,10 +16,9 @@ public class CommentaireService implements ICommentaire<Commentaire> {
         cnx = new MyConnection().getCnx();
     }
 
-    // ✅ Ajouter
     @Override
-    public void ajouter(Commentaire c) throws SQLException {
-        String sql = "INSERT INTO commentaire (contenu, nomuser, img, likes_count, liked) VALUES (?, ?, ?, ?, ?)";
+    public void ajouter(Commentaire c, int blogId) throws SQLException {
+        String sql = "INSERT INTO commentaire (contenu, nomuser, img, likes_count, liked, blog_id) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cnx.prepareStatement(sql);
 
         ps.setString(1, c.getContenu());
@@ -27,9 +26,11 @@ public class CommentaireService implements ICommentaire<Commentaire> {
         ps.setString(3, c.getImg());
         ps.setInt(4, c.getLikesCount());
         ps.setBoolean(5, c.isLiked());
+        ps.setInt(6, blogId);  // ← Important : le 2ème paramètre
 
         ps.executeUpdate();
     }
+
 
     // ✅ Modifier
     @Override
@@ -105,6 +106,33 @@ public class CommentaireService implements ICommentaire<Commentaire> {
         }
 
         return null;
+    }
+
+    @Override
+    public List<Commentaire> afficherParBlog(int blogId) throws SQLException {
+        List<Commentaire> list = new ArrayList<>();
+        String sql = "SELECT * FROM commentaire WHERE blog_id = ? ORDER BY date_creation DESC";
+
+        PreparedStatement ps = cnx.prepareStatement(sql);
+        ps.setInt(1, blogId);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Commentaire c = new Commentaire();
+
+            c.setId(rs.getInt("id"));
+            c.setContenu(rs.getString("contenu"));
+            c.setDate(rs.getString("date_creation"));
+            c.setNomuser(rs.getString("nomuser"));
+            c.setImg(rs.getString("img"));
+            c.setLikesCount(rs.getInt("likes_count"));
+            c.setLiked(rs.getBoolean("liked"));
+            c.setBlogId(rs.getInt("blog_id"));
+
+            list.add(c);
+        }
+
+        return list;
     }
 
     // ✅ Ajouter Like

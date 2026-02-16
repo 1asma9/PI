@@ -106,10 +106,9 @@ public class BlogDetailController implements Initializable {
         commentsContainer.getChildren().clear();
 
         try {
-            // Récupérer tous les commentaires
-            List<Commentaire> comments = commentaireService.afficher();
+            // CHANGÉ : Utiliser afficherParBlog au lieu de afficher
+            List<Commentaire> comments = commentaireService.afficherParBlog(currentBlog.getId());
 
-            // Update comment count
             commentCountLabel.setText("(" + comments.size() + ")");
 
             if (comments.isEmpty()) {
@@ -166,15 +165,15 @@ public class BlogDetailController implements Initializable {
             newComment.setNomuser(userName);
             newComment.setImg(imageUrl.isEmpty() ? null : imageUrl);
 
-            // Date actuelle (sera gérée par la base de données avec CURRENT_TIMESTAMP)
+            // Date actuelle
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             newComment.setDate(LocalDateTime.now().format(formatter));
 
             newComment.setLikesCount(0);
             newComment.setLiked(false);
 
-            // Ajouter le commentaire
-            commentaireService.ajouter(newComment);
+            // CHANGÉ : Ajouter le commentaire avec l'ID du blog
+            commentaireService.ajouter(newComment, currentBlog.getId());
 
             // Clear form
             commentUserInput.clear();
