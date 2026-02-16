@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.pidev.controllers.ActiviteController"
+            prefHeight="750.0" prefWidth="1000.0"
+            stylesheets="@form_activite.css"
+            styleClass="formPage">
+
+    <StackPane AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0"
+               AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+        <ScrollPane fitToWidth="true"
+                    vbarPolicy="AS_NEEDED"
+                    hbarPolicy="NEVER"
+                    styleClass="formScroll">
+
+            <content>
+                <VBox alignment="CENTER" styleClass="formOuter">
+
+                    <!-- CARD -->
+                    <VBox maxWidth="850" styleClass="formCard">
+
+                        <!-- HERO / HEADER -->
+                        <StackPane prefHeight="220" styleClass="headerWrap">
+
+                            <!-- ✅ image from resources -->
+                            <ImageView fx:id="headerImage"
+                                       fitHeight="220"
+                                       fitWidth="850"
+                                       preserveRatio="false"
+                                       smooth="true"
+                                       styleClass="headerImage">
+                                <image>
+                                    <!-- MUST exist: src/main/resources/images/activity_banner.jpg -->
+                                    <Image url="@images/activity_banner.jpg"/>
+                                </image>
+                            </ImageView>
+
+                            <!-- overlay (never blocks clicks) -->
+                            <Region styleClass="headerOverlay" mouseTransparent="true"/>
+
+                            <!-- ✅ NEW TEXT (like affichage) -->
+                            <VBox spacing="10" styleClass="headerText" mouseTransparent="true">
+                                <Label text="CRÉEZ VOTRE PROCHAINE AVENTURE"
+                                       styleClass="headerTitle"/>
+                                <Label text="Ajoutez une nouvelle activité à votre catalogue en quelques secondes."
+                                       styleClass="headerSub"
+                                       wrapText="true"/>
+                            </VBox>
+
+                        </StackPane>
+
+                        <!-- CONTENT -->
+                        <VBox spacing="22" styleClass="formInner">
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Region styleClass="sectionBar"/>
+                                <Label text="DÉTAILS DE L'ACTIVITÉ" styleClass="sectionTitle"/>
+                            </HBox>
+
+                            <GridPane hgap="22" vgap="18">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="28" halignment="RIGHT"/>
+                                    <ColumnConstraints percentWidth="72"/>
+                                </columnConstraints>
+
+                                <Label text="Nom de l'activité" styleClass="fieldLabel"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <TextField fx:id="tfNom"
+                                           promptText="Ex: Safari désert · Randonnée montagne · Plongée sous-marine"
+                                           styleClass="input"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                <Label text="Type d'activité" styleClass="fieldLabel"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <TextField fx:id="tfType"
+                                           promptText="Ex: Aventure · Sport · Culture · Relaxation"
+                                           styleClass="input"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                <Label text="Lieu" styleClass="fieldLabel"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                <TextField fx:id="tfLieu"
+                                           promptText="Ex: Douz · Tunis · Sousse · Djerba"
+                                           styleClass="input"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                <Label text="Prix (DT)" styleClass="fieldLabel"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+
+                                <HBox spacing="14" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <TextField fx:id="tfPrix" promptText="150" styleClass="inputSmall"/>
+                                    <Label text="Durée (min)" styleClass="fieldLabelInline"/>
+                                    <TextField fx:id="tfDuree" promptText="300" styleClass="inputSmall"/>
+                                </HBox>
+
+                                <Label text="Description" styleClass="fieldLabel"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                <TextArea fx:id="taDescription"
+                                          promptText="Décrivez l'activité : expérience, inclus, horaires, etc."
+                                          prefRowCount="4"
+                                          wrapText="true"
+                                          styleClass="inputArea"
+                                          GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                            </GridPane>
+
+                            <Separator styleClass="formSep"/>
+
+                            <Label fx:id="lblMessage" text="" styleClass="msgLabel" maxWidth="Infinity"/>
+
+                            <HBox spacing="16" alignment="CENTER" styleClass="formActions">
+                                <Button text="✓ Ajouter l'activité"
+                                        onAction="#ajouterActivite"
+                                        styleClass="btnGold"/>
+                                <Button text="⟲ Vider"
+                                        onAction="#viderChamps"
+                                        styleClass="btnOutline"/>
+                                <Button text="← Retour à la liste"
+                                        onAction="#retourListe"
+                                        styleClass="btnGreen"/>
+                            </HBox>
+
+                            <!-- ✅ OPTIONAL: if you also want to remove this line, tell me -->
+                            <HBox alignment="CENTER" spacing="6">
+                                <Label text="*" styleClass="reqStar"/>
+                                <Label text="Champs obligatoires" styleClass="reqText"/>
+                            </HBox>
+
+                        </VBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </StackPane>
+</AnchorPane>

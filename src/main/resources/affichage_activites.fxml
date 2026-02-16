@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.pidev.controllers.AffichageActivitesController"
+      styleClass="page">
+
+    <ScrollPane fx:id="scroll"
+                fitToWidth="true"
+                pannable="true"
+                vbarPolicy="NEVER"
+                hbarPolicy="NEVER"
+                styleClass="scroll">
+
+        <content>
+            <VBox fx:id="pageContent" spacing="20" styleClass="pageContent">
+
+                <!-- HERO BANNER -->
+                <StackPane fx:id="hero" styleClass="hero">
+
+                    <!-- Banner image fills hero -->
+                    <ImageView fx:id="bannerImage"
+                               preserveRatio="false"
+                               smooth="true"
+                               pickOnBounds="true"
+                               fitWidth="${hero.width}"
+                               fitHeight="${hero.height}"
+                               styleClass="heroImage" />
+
+                    <!-- Dark overlay (do not block clicks) -->
+                    <VBox styleClass="heroOverlay" mouseTransparent="true"/>
+
+                    <!-- Text on top (do not block clicks) -->
+                    <VBox spacing="10" styleClass="heroText" mouseTransparent="true">
+                        <Label text="TROUVEZ VOTRE PROCHAINE AVENTURE"
+                               styleClass="heroTitle"/>
+
+                        <Label text="Des itinéraires soigneusement conçus avec des guides locaux experts. Dates flexibles, tarifs transparents."
+                               wrapText="true"
+                               styleClass="heroSubtitle"/>
+                    </VBox>
+
+                </StackPane>
+
+                <!-- CARDS -->
+                <FlowPane fx:id="cardsContainer"
+                          hgap="24" vgap="24"
+                          styleClass="cardsWrap"
+                          prefWrapLength="1100"/>
+
+            </VBox>
+        </content>
+
+    </ScrollPane>
+</VBox>

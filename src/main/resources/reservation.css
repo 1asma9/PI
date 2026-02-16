@@ -1,0 +1,236 @@
+/* Main page background */
+.page {
+    -fx-background-color: linear-gradient(to bottom right, #f6f1e7, #e9dfd2);
+    -fx-padding: 30;
+}
+
+/* Page title */
+.pageTitle {
+    -fx-font-size: 32px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+
+/* Activity subtitle */
+.pageSubtitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #c9a24a;
+    -fx-background-color: rgba(201, 162, 74, 0.1);
+    -fx-padding: 12 18;
+    -fx-background-radius: 40;
+    -fx-border-color: rgba(201, 162, 74, 0.3);
+    -fx-border-radius: 40;
+}
+
+/* Section title */
+.sectionTitle {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f2a2a;
+    -fx-padding: 0 0 10 0;
+}
+
+/* Form card styling */
+.cardForm {
+    -fx-background-color: white;
+    -fx-background-radius: 24;
+    -fx-padding: 28;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5);
+    -fx-border-color: rgba(201, 162, 74, 0.3);
+    -fx-border-radius: 24;
+}
+
+/* Form labels */
+.fieldLabel {
+    -fx-font-weight: 700;
+    -fx-text-fill: #0f2a2a;
+    -fx-font-size: 14px;
+    -fx-padding: 5 0 0 0;
+}
+
+/* Input fields */
+.date-picker, .text-field, .combo-box {
+    -fx-background-color: #fbf7f1;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d9cdbf;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+}
+
+.date-picker:focused, .text-field:focused, .combo-box:focused {
+    -fx-border-color: #c9a24a;
+    -fx-effect: dropshadow(gaussian, rgba(201,162,74,0.3), 5, 0, 0, 0);
+}
+
+/* ComboBox specific */
+.combo-box .list-cell {
+    -fx-background-color: #fbf7f1;
+    -fx-text-fill: #0f2a2a;
+    -fx-padding: 5 10;
+}
+
+/* Primary button */
+.btnPrimary {
+    -fx-background-color: #c9a24a;
+    -fx-text-fill: white;
+    -fx-font-weight: 900;
+    -fx-font-size: 14px;
+    -fx-background-radius: 30;
+    -fx-padding: 12 25;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(201,162,74,0.3), 10, 0, 0, 3);
+}
+
+.btnPrimary:hover {
+    -fx-background-color: #b8933f;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Secondary button */
+.btnSecondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0f2a2a;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-border-color: rgba(15,42,42,0.25);
+    -fx-border-width: 2px;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-padding: 10 22;
+    -fx-cursor: hand;
+}
+
+.btnSecondary:hover {
+    -fx-background-color: rgba(15,42,42,0.06);
+    -fx-border-color: #0f2a2a;
+}
+
+/* Error label */
+.errorLabel {
+    -fx-text-fill: #c0392b;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+    -fx-padding: 8;
+    -fx-background-color: #fce8e6;
+    -fx-background-radius: 8;
+}
+
+/* Reservation cards container */
+.cardsWrap {
+    -fx-padding: 5;
+    -fx-hgap: 18;
+    -fx-vgap: 18;
+}
+
+/* Individual reservation card */
+.resCard {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 3);
+    -fx-border-color: #eadfc7;
+    -fx-border-radius: 20;
+    -fx-min-width: 280;
+    -fx-max-width: 280;
+    -fx-transition: all 0.3s;
+}
+
+.resCard:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 18, 0, 0, 5);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Reservation title */
+.resTitle {
+    -fx-font-size: 16px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
+}
+
+/* Reservation meta info */
+.resMeta {
+    -fx-font-size: 13px;
+    -fx-text-fill: #5d6e66;
+    -fx-padding: 5 0;
+    -fx-background-color: #f8f4ec;
+    -fx-background-radius: 20;
+    -fx-padding: 8 12;
+}
+
+/* Status badge styling */
+.statusBadge {
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
+    -fx-padding: 4 12;
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+}
+
+.status-EN_ATTENTE {
+    -fx-background-color: #f39c12;
+}
+
+.status-CONFIRMEE {
+    -fx-background-color: #27ae60;
+}
+
+.status-ANNULEE {
+    -fx-background-color: #e74c3c;
+}
+
+/* Icon buttons */
+.iconBtn {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+    -fx-padding: 8 12;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-min-width: 40;
+}
+
+.iconBtn:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btnEdit {
+    -fx-border-color: #c9a24a;
+    -fx-border-radius: 12;
+    -fx-border-width: 2px;
+}
+
+.btnEdit:hover {
+    -fx-background-color: rgba(201, 162, 74, 0.1);
+}
+
+.btnDelete {
+    -fx-border-color: #c0392b;
+    -fx-border-radius: 12;
+    -fx-border-width: 2px;
+}
+
+.btnDelete:hover {
+    -fx-background-color: rgba(192, 57, 43, 0.1);
+}
+
+/* Separator */
+.separator {
+    -fx-background-color: #e0d6cc;
+    -fx-pref-height: 1;
+    -fx-opacity: 0.5;
+}
+
+/* ScrollPane styling */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}

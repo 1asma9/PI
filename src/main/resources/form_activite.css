@@ -1,0 +1,208 @@
+/* PAGE */
+.formPage {
+    -fx-background-color: linear-gradient(to bottom right, #f6f1e7, #e9dfd2);
+}
+
+.formScroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.formScroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.formOuter {
+    -fx-padding: 40 20 60 20;
+}
+
+/* CARD */
+.formCard {
+    -fx-background-color: white;
+    -fx-background-radius: 24;
+    -fx-border-radius: 24;
+    -fx-border-color: rgba(201, 162, 74, 0.35);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.22), 26, 0, 0, 10);
+}
+
+/* HEADER */
+.headerWrap {
+    -fx-background-radius: 24 24 0 0;
+    -fx-border-radius: 24 24 0 0;
+    -fx-overflow: hidden;
+}
+
+.headerImage {
+    -fx-background-radius: 24 24 0 0;
+    -fx-border-radius: 24 24 0 0;
+}
+
+.headerOverlay {
+    -fx-background-color: linear-gradient(to right, rgba(15,42,42,0.88), rgba(201,162,74,0.45));
+    -fx-background-radius: 24 24 0 0;
+}
+
+.headerText {
+    -fx-padding: 0 0 0 36;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.headerKicker {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 13px;
+    -fx-font-weight: 800;
+    -fx-letter-spacing: 1px;
+}
+
+.headerTitle {
+    -fx-text-fill: white;
+    -fx-font-size: 34px;
+    -fx-font-weight: 900;
+}
+
+.headerSub {
+    -fx-text-fill: rgba(255,255,255,0.92);
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+}
+
+/* INNER */
+.formInner {
+    -fx-padding: 32 44 36 44;
+}
+
+.sectionBar {
+    -fx-background-color: #c9a24a;
+    -fx-pref-width: 54;
+    -fx-pref-height: 4;
+    -fx-background-radius: 2;
+}
+
+.sectionTitle {
+    -fx-text-fill: #8b7a66;
+    -fx-font-size: 13px;
+    -fx-font-weight: 800;
+    -fx-letter-spacing: 0.5px;
+}
+
+/* FIELDS */
+.fieldLabel {
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f2a2a;
+}
+
+.fieldLabelInline {
+    -fx-font-size: 14px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #0f2a2a;
+    -fx-padding: 10 0 0 10;
+}
+
+.input, .inputSmall, .inputArea {
+    -fx-background-color: #fbf7f1;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d9cdbf;
+    -fx-padding: 12 14;
+    -fx-font-size: 14px;
+}
+
+.inputSmall {
+    -fx-pref-width: 160px;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #c9a24a;
+    -fx-effect: dropshadow(gaussian, rgba(201,162,74,0.28), 10, 0, 0, 0);
+}
+
+.inputArea .content {
+    -fx-background-color: #fbf7f1;
+    -fx-background-radius: 12;
+}
+
+/* SEP + MSG */
+.formSep {
+    -fx-opacity: 0.6;
+}
+
+.msgLabel {
+    -fx-font-weight: 800;
+    -fx-text-fill: #137333;
+    -fx-padding: 6 0 0 0;
+}
+
+/* BUTTONS */
+.formActions {
+    -fx-padding: 10 0 0 0;
+}
+
+.btnGold {
+    -fx-background-color: #c9a24a;
+    -fx-text-fill: white;
+    -fx-font-weight: 900;
+    -fx-font-size: 14px;
+    -fx-background-radius: 30;
+    -fx-padding: 14 34;
+    -fx-cursor: hand;
+}
+
+.btnGold:hover {
+    -fx-background-color: #b8933f;
+}
+
+.btnOutline {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0f2a2a;
+    -fx-font-weight: 900;
+    -fx-font-size: 14px;
+    -fx-border-color: rgba(15,42,42,0.28);
+    -fx-border-width: 2;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-padding: 12 30;
+    -fx-cursor: hand;
+}
+
+.btnOutline:hover {
+    -fx-background-color: rgba(15,42,42,0.06);
+    -fx-border-color: #0f2a2a;
+}
+
+.btnGreen {
+    -fx-background-color: #0f2a2a;
+    -fx-text-fill: white;
+    -fx-font-weight: 900;
+    -fx-font-size: 14px;
+    -fx-background-radius: 30;
+    -fx-padding: 12 30;
+    -fx-cursor: hand;
+}
+
+.btnGreen:hover {
+    -fx-background-color: #163a3a;
+}
+
+/* REQUIRED */
+.reqStar {
+    -fx-text-fill: #c0392b;
+    -fx-font-size: 16px;
+    -fx-font-weight: 900;
+}
+
+.reqText {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+
+/* TOOLTIP */
+.tooltip {
+    -fx-background-color: #0f2a2a;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+}

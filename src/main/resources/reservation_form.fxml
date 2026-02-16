@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.pidev.controllers.ReservationFormController"
+            fitToWidth="true" pannable="true"
+            stylesheets="@reservation.css"
+            vbarPolicy="NEVER" hbarPolicy="NEVER">
+
+    <content>
+        <VBox fx:id="pageContent" spacing="18" styleClass="page">
+            <padding>
+                <Insets top="28" right="28" bottom="28" left="28"/>
+            </padding>
+
+            <Label text="Réservation d’activité" styleClass="pageTitle"/>
+
+            <!-- ✅ CONTEXTE ACTIVITE -->
+            <Label fx:id="lblActivite" text="Activité : -" styleClass="pageSubtitle"/>
+
+            <!-- ✅ 2 COLONNES : FORM + LISTE -->
+            <HBox spacing="18">
+
+                <!-- FORM -->
+                <VBox spacing="12" styleClass="cardForm" prefWidth="380">
+                    <Label fx:id="lblMode" text="Ajouter une réservation" styleClass="sectionTitle"/>
+
+                    <Label text="Date de réservation" styleClass="fieldLabel"/>
+                    <DatePicker fx:id="dpDate"/>
+
+                    <Label text="Nombre de personnes" styleClass="fieldLabel"/>
+                    <TextField fx:id="tfNombre" promptText="Ex: 2"/>
+
+                    <Label text="Statut" styleClass="fieldLabel"/>
+                    <ComboBox fx:id="cbStatut"/>
+
+                    <Label fx:id="lblError" text="" styleClass="errorLabel" visible="false"/>
+
+                    <HBox spacing="10">
+                        <Button fx:id="btnSave" text="Ajouter" onAction="#onSave" styleClass="btnPrimary"/>
+                        <Button text="Vider" onAction="#onClear" styleClass="btnSecondary"/>
+                    </HBox>
+
+                    <Separator/>
+
+                    <Button text="⬅ Retour activités" onAction="#onBack" styleClass="btnSecondary"/>
+                </VBox>
+
+                <!-- LISTE -->
+                <VBox spacing="12" HBox.hgrow="ALWAYS">
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Liste des réservations" styleClass="sectionTitle"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <FlowPane fx:id="reservationsContainer"
+                              hgap="16" vgap="16"
+                              prefWrapLength="900"
+                              styleClass="cardsWrap"/>
+                </VBox>
+
+            </HBox>
+        </VBox>
+    </content>
+</ScrollPane>
