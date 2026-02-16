@@ -1,5 +1,7 @@
 package edu.connexion3a8.interfaces;
 
+import edu.connexion3a8.entities.Commentaire;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,4 +22,6 @@ public interface ICommentaire<T> {
     void ajouterLike(int id) throws SQLException;
 
     void retirerLike(int id) throws SQLException;
+
+    Commentaire getById(Integer commentaireId) throws SQLException;
 }

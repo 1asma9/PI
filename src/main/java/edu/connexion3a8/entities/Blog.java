@@ -9,27 +9,34 @@ public class Blog {
     private String contenu;
     private String image_couverture;
     private String author_id;
+    private String author_nom;
     private boolean status;
     private LocalDateTime date_creation;
     private LocalDateTime date_publication;
     private String extrait;
     private String slug;
 
-    public Blog() {
+    public Blog(String authorNom) {
+        author_nom = authorNom;
     }
 
-    public Blog(int id , String titre ,String contenu, String image_couverture ,String author_id , boolean status , LocalDateTime date_creation ,
+    public Blog(int id , String titre , String contenu, String image_couverture , String author_id, String authorNom, boolean status , LocalDateTime date_creation ,
                 LocalDateTime date_publication, String extrait, String slug) {
         this.id = id;
         this.titre = titre;
         this.contenu = contenu;
         this.image_couverture = image_couverture;
         this.author_id = author_id;
+        this.author_nom = authorNom;
         this.status = status;
         this.date_creation = date_creation;
         this.date_publication = date_publication;
         this.extrait = extrait;
         this.slug = slug;
+    }
+
+    public Blog() {
+
     }
 
     // -------Getters et setters ------
@@ -75,6 +82,8 @@ public class Blog {
         return slug;
     }
 
+    public String getAuthor_nom() {return author_nom;}
+
     public void setId(int id) {
         this.id = id;
     }
@@ -114,6 +123,8 @@ public class Blog {
     public void setSlug(String slug) {
         this.slug = slug;
     }
+
+    public void setAuthor_nom(String author_nom) {this.author_nom = author_nom;}
 
     //--------Equals + HashCode + toString -------
 

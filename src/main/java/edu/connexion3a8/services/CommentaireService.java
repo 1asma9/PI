@@ -152,4 +152,29 @@ public class CommentaireService implements ICommentaire<Commentaire> {
         ps.setInt(1, id);
         ps.executeUpdate();
     }
+
+
+    @Override
+    public Commentaire getById(Integer commentaireId) throws SQLException {
+
+        String sql = "SELECT * FROM commentaire WHERE id = ?";
+
+        PreparedStatement ps = cnx.prepareStatement(sql);
+        ps.setInt(1, commentaireId);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Commentaire c = new Commentaire();
+
+            c.setId(rs.getInt("id"));
+            c.setContenu(rs.getString("contenu"));
+            c.setNomuser(rs.getString("auteur"));
+            c.setBlogId(rs.getInt("blog_id"));  // adapte si ton champ s'appelle autrement
+
+            return c;
+        }
+
+        return null; // si aucun commentaire trouvé
+    }
 }

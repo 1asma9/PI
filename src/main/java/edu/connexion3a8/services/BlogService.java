@@ -142,4 +142,23 @@ public class BlogService implements IBlog<Blog>{
 
         return blog;
     }
+
+    public Blog getById(int id) throws SQLException {
+        String sql = "SELECT * FROM blog WHERE id = ?";
+        PreparedStatement ps = cnx.prepareStatement(sql);
+        ps.setInt(1, id);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Blog blog = new Blog();
+            blog.setId(rs.getInt("id"));
+            blog.setTitre(rs.getString("titre"));
+            blog.setContenu(rs.getString("contenu"));
+            blog.setAuthor_nom(rs.getString("author_nom"));
+            return blog;
+        }
+
+        return null;
+    }
 }

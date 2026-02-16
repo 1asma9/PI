@@ -1,65 +1,97 @@
-/* Background */
+/* ================= ROOT ================= */
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #0f172a;
+}
+
+/* ================= BACKGROUND ================= */
 .bg {
-    -fx-background-color: #f5f5f5;
+    -fx-background-color: #0f172a;
 }
 
-/* Sidebar */
+/* ================= SIDEBAR ================= */
 .dash__side-bar {
-    -fx-background-color: linear-gradient(to bottom, #667eea 0%, #764ba2 100%);
+    -fx-background-color: #111827;
+    -fx-padding: 18;
 }
 
-/* Navigation Links */
+/* ================= NAVIGATION LINKS ================= */
 .nav-links {
     -fx-cursor: hand;
     -fx-background-color: transparent;
     -fx-background-radius: 10px;
-    -fx-padding: 10px;
+    -fx-padding: 10 12;
+    -fx-text-fill: #cbd5e1;
 }
 
 .nav-links:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-color: rgba(255, 255, 255, 0.08);
 }
 
-/* Active Link */
+/* ================= ACTIVE LINK ================= */
 .activeLink {
-    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-color: rgba(56,189,248,0.15);
 }
 
-/* Text */
 .text {
-    -fx-text-fill: white;
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 14px;
 }
 
 .activeText {
+    -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-/* Navigation Icons */
+/* ================= ICONS ================= */
 .nav-icon {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
-    -fx-background-radius: 50%;
+    -fx-background-color: transparent;
     -fx-cursor: hand;
 }
 
 .nav-icon:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.2);
-}
-
-/* Notification Badge */
-.nav-notif-bg {
-    -fx-background-color: #ff4757;
+    -fx-background-color: rgba(255, 255, 255, 0.08);
     -fx-background-radius: 50%;
 }
 
-/* User Fullname */
+/* ================= NOTIFICATION BADGE ================= */
+.nav-notif-bg {
+    -fx-background-color: #ef4444;
+    -fx-background-radius: 50%;
+}
+
+/* ================= USER FULLNAME ================= */
 .nav-user-fullname {
-    -fx-fill: #2c3e50;
+    -fx-fill: white;
     -fx-font-weight: bold;
 }
 
-/* Content Container */
+/* ================= HEADER ================= */
+.header {
+    -fx-background-color: #0b1220;
+    -fx-padding: 14 18;
+    -fx-border-color: rgba(255,255,255,0.08);
+    -fx-border-width: 0 0 1 0;
+}
+
+.title {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+}
+
+/* ================= CONTENT CARD ================= */
 .dash__container-card {
-    -fx-background-color: white;
-    -fx-background-radius: 10px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12px;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 20, 0.2, 0, 5);
+}
+
+/* ================= PILL STYLE ================= */
+.pill {
+    -fx-background-color: rgba(56,189,248,0.15);
+    -fx-text-fill: #38bdf8;
+    -fx-background-radius: 20;
+    -fx-padding: 5 12;
 }
