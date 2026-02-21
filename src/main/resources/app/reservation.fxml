@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="hebergement.controllers.ReservationController"
+      spacing="14">
+
+    <Label text="Réserver un Hébergement" styleClass="h1"/>
+
+    <HBox spacing="14">
+
+        <!-- Card Form Reservation -->
+        <VBox styleClass="card" spacing="10" prefWidth="520">
+            <Label text="Informations Réservation" styleClass="title"/>
+
+            <ComboBox fx:id="cbHebergement" promptText="Choisir Hébergement"/>
+            <TextField fx:id="tfNom" promptText="Nom du client" styleClass="field"/>
+            <TextField fx:id="tfTel" promptText="Téléphone" styleClass="field"/>
+            <TextField fx:id="tfEmail" promptText="Email" styleClass="field"/>
+
+            <DatePicker fx:id="dpDebut"/>
+            <DatePicker fx:id="dpFin"/>
+
+            <Label fx:id="lblTotal" text="Total: 0.0 DT" styleClass="pill"/>
+
+            <Button text="✅ Confirmer Réservation" onAction="#addReservation" styleClass="primary"/>
+            <Label fx:id="lblMsg" styleClass="muted"/>
+        </VBox>
+
+        <!-- Card Infos -->
+        <VBox styleClass="card" spacing="10" prefWidth="520">
+            <Label text="Règles" styleClass="title"/>
+
+            <Label text="• La réservation doit être dans une période disponible."
+                   styleClass="muted"/>
+            <Label text="• Impossible si conflit avec une autre réservation."
+                   styleClass="muted"/>
+            <Label text="• Total = nb nuits × prix par nuit."
+                   styleClass="muted"/>
+
+            <Separator/>
+
+            <Label text="Astuce" styleClass="h1"/>
+            <Label text="Choisis d’abord l’hébergement, puis les dates pour calculer le total."
+                   styleClass="muted"/>
+        </VBox>
+
+    </HBox>
+</VBox>

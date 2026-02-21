@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="hebergement.controllers.DashboardController"
+      spacing="14">
+
+    <Label text="Dashboard" styleClass="h1"/>
+
+    <HBox spacing="14">
+        <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
+            <Label text="Hébergements" styleClass="muted"/>
+            <Label fx:id="lblHeb" text="0" styleClass="bigNumber"/>
+        </VBox>
+
+        <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
+            <Label text="Types" styleClass="muted"/>
+            <Label fx:id="lblTypes" text="0" styleClass="bigNumber"/>
+        </VBox>
+
+        <VBox styleClass="card" spacing="6" HBox.hgrow="ALWAYS">
+            <Label text="Disponibilités" styleClass="muted"/>
+            <Label fx:id="lblDispo" text="0" styleClass="bigNumber"/>
+        </VBox>
+    </HBox>
+
+    <VBox styleClass="card" spacing="8">
+        <Label text="Conseil Voyage" styleClass="h1"/>
+        <Label text="Gère tes hébergements et leurs disponibilités depuis les pages Ajouter et Gérer."
+               styleClass="muted"/>
+        <Button text="Rafraîchir" onAction="#refresh" styleClass="primary"/>
+    </VBox>
+</VBox>

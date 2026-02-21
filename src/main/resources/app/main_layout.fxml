@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.MainLayoutController"
+            styleClass="root">
+
+    <!-- Sidebar -->
+    <left>
+        <VBox spacing="12" styleClass="sidebar">
+            <Label text="VOYAGE" styleClass="brand"/>
+            <Button text="🏠 Dashboard" onAction="#goDashboard" styleClass="nav-btn"/>
+            <Button text="➕ Ajouter" onAction="#goAdd" styleClass="nav-btn"/>
+            <Button text="📋 Gérer" onAction="#goList" styleClass="nav-btn"/>
+            <Button text="📅 Réserver" onAction="#goReservation" styleClass="nav-btn"/>
+            <Button text="🛠 Réservations" onAction="#goReservationsAdmin" styleClass="nav-btn"/>
+
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label text="© 2026" styleClass="muted"/>
+        </VBox>
+    </left>
+
+    <!-- Header -->
+    <top>
+        <HBox styleClass="header" spacing="10">
+            <Label fx:id="pageTitle" text="Dashboard" styleClass="title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Connecté" styleClass="pill"/>
+        </HBox>
+    </top>
+
+    <!-- Content -->
+    <center>
+        <StackPane fx:id="contentPane" styleClass="content"/>
+    </center>
+
+</BorderPane>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="hebergement.controllers.AddHebergementController"
+      spacing="14">
+
+    <Label text="Ajouter un Hébergement" styleClass="h1"/>
+
+    <HBox spacing="14">
+
+        <!-- Form Hébergement -->
+        <VBox styleClass="card" spacing="10" prefWidth="520">
+            <Label text="Informations" styleClass="title"/>
+
+            <TextField fx:id="tfDesc" promptText="Description" styleClass="field"/>
+            <TextField fx:id="tfAdresse" promptText="Adresse" styleClass="field"/>
+            <TextField fx:id="tfPrix" promptText="Prix (ex: 250.0)" styleClass="field"/>
+
+            <ComboBox fx:id="cbType" promptText="Type"/>
+
+            <!-- ✅ Image -->
+            <Button text="📷 Choisir Image" onAction="#chooseImage" styleClass="nav-btn"/>
+            <Label fx:id="lblImage" text="Aucune image choisie" styleClass="muted"/>
+
+            <Button text="Enregistrer Hébergement" onAction="#addHebergement" styleClass="primary"/>
+            <Label fx:id="lblHebMsg" styleClass="muted"/>
+        </VBox>
+
+        <!-- Form Disponibilité -->
+        <VBox styleClass="card" spacing="10" prefWidth="520">
+            <Label text="Ajouter une Disponibilité" styleClass="title"/>
+            <Label text="Sélectionne un hébergement après l’avoir ajouté." styleClass="muted"/>
+
+            <ComboBox fx:id="cbHebergement" promptText="Choisir Hébergement"/>
+            <DatePicker fx:id="dpDebut"/>
+            <DatePicker fx:id="dpFin"/>
+            <CheckBox fx:id="chkDisponible" text="Disponible" selected="true"/>
+
+            <Button text="Ajouter Disponibilité" onAction="#addDisponibilite" styleClass="primary"/>
+            <Label fx:id="lblDispoMsg" styleClass="muted"/>
+        </VBox>
+
+    </HBox>
+</VBox>

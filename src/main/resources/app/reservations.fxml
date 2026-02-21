@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="14"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="hebergement.controllers.ReservationsAdminController">
+
+    <Label text="Gérer les Réservations (Admin)" styleClass="h1"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <ComboBox fx:id="cbHebergementFilter" promptText="Filtrer par hébergement" prefWidth="340"/>
+        <Button text="Filtrer" onAction="#filter" styleClass="primary"/>
+        <Button text="Tout afficher" onAction="#loadAll" styleClass="nav-btn"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblInfo" text="Total: 0" styleClass="muted"/>
+    </HBox>
+
+    <VBox styleClass="card" spacing="10">
+        <TableView fx:id="tableRes" prefHeight="520">
+            <columns>
+                <TableColumn fx:id="idCol" text="ID" prefWidth="70"/>
+                <TableColumn fx:id="hebCol" text="Hébergement" prefWidth="140"/>
+                <TableColumn fx:id="clientCol" text="Client" prefWidth="170"/>
+                <TableColumn fx:id="datesCol" text="Dates" prefWidth="210"/>
+                <TableColumn fx:id="totalCol" text="Total" prefWidth="100"/>
+                <TableColumn fx:id="statutCol" text="Statut" prefWidth="120"/>
+                <TableColumn fx:id="actionsCol" text="Actions" prefWidth="230"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+</VBox>

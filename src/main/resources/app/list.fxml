@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="14"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="hebergement.controllers.ShowHebergementController">
+
+    <Label text="Gérer (Hébergement + Disponibilités)" styleClass="h1"/>
+
+    <SplitPane dividerPositions="0.60" prefHeight="600">
+
+        <!-- Hébergements -->
+        <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
+            <Label text="Hébergements" styleClass="title"/>
+
+            <TableView fx:id="tableHeb" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="imgCol" text="Image" prefWidth="90"/>
+                    <TableColumn fx:id="descCol" text="Description" prefWidth="240"/>
+                    <TableColumn fx:id="adrCol" text="Adresse" prefWidth="190"/>
+                    <TableColumn fx:id="prixCol" text="Prix" prefWidth="110"/>
+                    <TableColumn fx:id="actionsCol" text="Actions" prefWidth="180"/>
+                </columns>
+            </TableView>
+
+            <Label fx:id="lblHebInfo" styleClass="muted"/>
+        </VBox>
+
+        <!-- Disponibilités -->
+        <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
+            <Label text="Disponibilités (hébergement sélectionné)" styleClass="title"/>
+
+            <TableView fx:id="tableDispo" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="dispoIdCol" text="ID" prefWidth="70"/>
+                    <TableColumn fx:id="debutCol" text="Début" prefWidth="120"/>
+                    <TableColumn fx:id="finCol" text="Fin" prefWidth="120"/>
+                    <TableColumn fx:id="disponibleCol" text="Disponible" prefWidth="110"/>
+                    <TableColumn fx:id="dispoActionsCol" text="Actions" prefWidth="180"/>
+                </columns>
+            </TableView>
+
+            <Label fx:id="lblDispoInfo" styleClass="muted"/>
+        </VBox>
+
+    </SplitPane>
+
+</VBox>
