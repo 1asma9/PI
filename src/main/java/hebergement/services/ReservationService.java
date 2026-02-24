@@ -223,4 +223,32 @@ public class ReservationService implements Iservice<Reservation> {
         r.setStatut(rs.getString("statut"));
         return r;
     }
+    public int addEntityReturnId(Reservation r) throws SQLException {
+
+        String sql = """
+        INSERT INTO reservation(hebergement_id, client_nom, client_tel, client_email,
+                                date_debut, date_fin, nb_nuits, total, statut)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+        try (PreparedStatement pst = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pst.setInt(1, r.getHebergementId());
+            pst.setString(2, r.getClientNom());
+            pst.setString(3, r.getClientTel());
+            pst.setString(4, r.getClientEmail());
+            pst.setDate(5, Date.valueOf(r.getDateDebut()));
+            pst.setDate(6, Date.valueOf(r.getDateFin()));
+            pst.setInt(7, r.getNbNuits());
+            pst.setDouble(8, r.getTotal());
+            pst.setString(9, r.getStatut() == null ? "EN_ATTENTE" : r.getStatut());
+
+            pst.executeUpdate();
+
+            try (ResultSet rs = pst.getGeneratedKeys()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+        return -1;
+    }
+
 }

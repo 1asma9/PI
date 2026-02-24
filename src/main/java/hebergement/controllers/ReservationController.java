@@ -4,10 +4,15 @@ import hebergement.entities.Hebergement;
 import hebergement.entities.Reservation;
 import hebergement.services.HebergementService;
 import hebergement.services.ReservationService;
+import hebergement.services.PaymentService;
+import hebergement.tools.LocalPaymentCallbackServer;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.awt.Desktop;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -17,15 +22,15 @@ public class ReservationController {
     private final HebergementService hs = new HebergementService();
     private final ReservationService rs = new ReservationService();
 
-    @FXML private ComboBox<Hebergement> cbHebergement;
+    private final PaymentService payService = new PaymentService();
+    private final LocalPaymentCallbackServer callbackServer = new LocalPaymentCallbackServer();
 
+    @FXML private ComboBox<Hebergement> cbHebergement;
     @FXML private TextField tfNom;
     @FXML private TextField tfTel;
     @FXML private TextField tfEmail;
-
     @FXML private DatePicker dpDebut;
     @FXML private DatePicker dpFin;
-
     @FXML private Label lblTotal;
     @FXML private Label lblMsg;
 
@@ -34,7 +39,6 @@ public class ReservationController {
         lblMsg.setText("");
         loadHebergements();
 
-        // recalculer total dès que l’utilisateur change date ou hébergement
         cbHebergement.valueProperty().addListener((obs, o, n) -> computeTotal());
         dpDebut.valueProperty().addListener((obs, o, n) -> computeTotal());
         dpFin.valueProperty().addListener((obs, o, n) -> computeTotal());
@@ -71,11 +75,7 @@ public class ReservationController {
         LocalDate debut = dpDebut.getValue();
         LocalDate fin = dpFin.getValue();
 
-        if (h == null || debut == null || fin == null) {
-            lblTotal.setText("Total: 0.0 DT");
-            return;
-        }
-        if (!fin.isAfter(debut)) {
+        if (h == null || debut == null || fin == null || !fin.isAfter(debut)) {
             lblTotal.setText("Total: 0.0 DT");
             return;
         }
@@ -96,39 +96,12 @@ public class ReservationController {
         LocalDate debut = dpDebut.getValue();
         LocalDate fin = dpFin.getValue();
 
-
-        if (h == null) {
-            showInfo("Validation", "Choisir un hébergement.");
-            return;
-        }
-
-        if (nom.isEmpty()) {
-            showInfo("Validation", "Nom du client obligatoire.");
-            return;
-        }
-
-
-        if (tel == null || !tel.matches("\\d{8}")) {
-            showInfo("Validation", "Le téléphone doit contenir exactement 8 chiffres.");
-            return;
-        }
-
-
-        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            showInfo("Validation", "Email invalide.");
-            return;
-        }
-
-        if (debut == null || fin == null) {
-            showInfo("Validation", "Choisir date début et date fin.");
-            return;
-        }
-
-        if (!fin.isAfter(debut)) {
-            showInfo("Validation", "Date fin doit être > date début.");
-            return;
-        }
-
+        if (h == null) { showInfo("Validation", "Choisir un hébergement."); return; }
+        if (nom.isEmpty()) { showInfo("Validation", "Nom du client obligatoire."); return; }
+        if (tel == null || !tel.matches("\\d{8}")) { showInfo("Validation", "Le téléphone doit contenir exactement 8 chiffres."); return; }
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) { showInfo("Validation", "Email invalide."); return; }
+        if (debut == null || fin == null) { showInfo("Validation", "Choisir date début et date fin."); return; }
+        if (!fin.isAfter(debut)) { showInfo("Validation", "Date fin doit être > date début."); return; }
 
         try {
             if (!rs.isInsideDisponibilite(h.getId(), debut, fin)) {
@@ -147,8 +120,8 @@ public class ReservationController {
             Reservation r = new Reservation(
                     h.getId(),
                     nom,
-                    tel.isEmpty() ? null : tel,
-                    email.isEmpty() ? null : email,
+                    tel,
+                    email,
                     debut,
                     fin,
                     nuits,
@@ -156,13 +129,27 @@ public class ReservationController {
                     "EN_ATTENTE"
             );
 
-            rs.addEntity(r);
+            // ✅ 1) créer réservation et récupérer ID
+            int reservationId = rs.addEntityReturnId(r);
+            if (reservationId == -1) {
+                showError("Erreur", "Impossible de créer la réservation.");
+                return;
+            }
 
-            lblMsg.setText("✅ Réservation ajoutée (EN_ATTENTE).");
+            // ✅ 2) démarrer serveur callback
+            callbackServer.start(rs, payService);
+            int port = callbackServer.getPort();
+
+            // ✅ 3) créer session Stripe + ouvrir navigateur
+            var session = payService.createCheckoutSession(reservationId, total, email, port);
+            Desktop.getDesktop().browse(new URI(session.getUrl()));
+
+            lblMsg.setText("💳 Paiement en cours... Terminez le paiement dans le navigateur.");
             clearForm();
 
         } catch (Exception e) {
-            showError("Erreur réservation", e.getMessage());
+            showError("Erreur réservation/paiement", e.getMessage());
+            e.printStackTrace();
         }
     }
 
