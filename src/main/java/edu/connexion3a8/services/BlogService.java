@@ -16,6 +16,9 @@ public class BlogService implements IBlog<Blog>{
         cnx= MyConnection.getInstance().getCnx();
     }
 
+    public static void updateSentiment(int id, int globalScore, String emoji) {
+    }
+
     @Override
     public void ajouter(Blog blog) throws SQLException {
         String query = "INSERT INTO blog (titre, contenu, image_couverture, author_id, status, date_creation, date_publication, extrait, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";

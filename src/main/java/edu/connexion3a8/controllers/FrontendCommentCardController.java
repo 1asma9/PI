@@ -7,12 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 
 public class FrontendCommentCardController {
 
@@ -27,102 +23,64 @@ public class FrontendCommentCardController {
     private Commentaire commentaire;
     private FrontendBlogDetailController parentController;
 
-    public void setData(Commentaire commentaire, FrontendBlogDetailController parentController) {
+    public void setData(Commentaire commentaire, FrontendBlogDetailController parent) {
         this.commentaire = commentaire;
-        this.parentController = parentController;
+        this.parentController = parent;
 
-        // Set user name
+        // Nom
         userName.setText(commentaire.getNomuser());
 
-        // Set comment text
+        // Contenu
         commentText.setText(commentaire.getContenu());
 
-        // Set date (format relatif)
-        commentDate.setText(formatRelativeDate(commentaire.getDate()));
+        // Date
+        commentDate.setText(formatDate(commentaire.getDate()));
 
-        // Set likes count
+        // Likes
         likesLabel.setText(String.valueOf(commentaire.getLikesCount()));
 
-        // Set like icon color
+        // Icône like
         if (commentaire.isLiked()) {
-            likeIcon.setFill(javafx.scene.paint.Color.web("#dc284c"));
+            likeIcon.setFill(Color.web("#FF6B6B"));
         } else {
-            likeIcon.setFill(javafx.scene.paint.Color.web("#999999"));
+            likeIcon.setFill(Color.web("#999999"));
         }
 
-        // Set user avatar
+        // Avatar
         if (commentaire.getImg() != null && !commentaire.getImg().isEmpty()) {
             try {
-                File imageFile = new File(commentaire.getImg());
-                if (imageFile.exists()) {
-                    Image image = new Image(imageFile.toURI().toString());
-                    userAvatar.setImage(image);
-                } else {
-                    Image image = new Image(commentaire.getImg());
-                    userAvatar.setImage(image);
-                }
+                userAvatar.setImage(new Image(commentaire.getImg()));
             } catch (Exception e) {
-                // Keep default avatar
-                System.out.println("Impossible de charger l'avatar: " + e.getMessage());
+                // Utiliser l'avatar par défaut
             }
         }
     }
 
+    private String formatDate(String dateStr) {
+        // Simple format: "2 hours ago", "1 day ago", etc.
+        return dateStr;
+    }
+
     @FXML
     public void toggleLike(MouseEvent event) {
-        // Toggle liked state
         boolean newLikedState = !commentaire.isLiked();
 
         if (newLikedState) {
-            // Like
             commentaire.setLikesCount(commentaire.getLikesCount() + 1);
-            likeIcon.setFill(javafx.scene.paint.Color.web("#dc284c"));
+            likeIcon.setFill(Color.web("#FF6B6B"));
         } else {
-            // Unlike
             commentaire.setLikesCount(commentaire.getLikesCount() - 1);
-            likeIcon.setFill(javafx.scene.paint.Color.web("#999999"));
+            likeIcon.setFill(Color.web("#999999"));
         }
 
         commentaire.setLiked(newLikedState);
         likesLabel.setText(String.valueOf(commentaire.getLikesCount()));
 
-        // Update in database
-        if (parentController != null) {
-            parentController.updateCommentLike(commentaire.getId(), newLikedState);
-        }
+        parentController.updateCommentLike(commentaire.getId(), newLikedState);
     }
 
     @FXML
     public void deleteComment() {
-        if (parentController != null) {
-            parentController.deleteCommentById(commentaire.getId());
-        }
-    }
-
-    private String formatRelativeDate(String dateStr) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            LocalDateTime commentDateTime = LocalDateTime.parse(dateStr, formatter);
-            LocalDateTime now = LocalDateTime.now();
-
-            long minutes = ChronoUnit.MINUTES.between(commentDateTime, now);
-            long hours = ChronoUnit.HOURS.between(commentDateTime, now);
-            long days = ChronoUnit.DAYS.between(commentDateTime, now);
-
-            if (minutes < 1) {
-                return "À l'instant";
-            } else if (minutes < 60) {
-                return "Il y a " + minutes + " min";
-            } else if (hours < 24) {
-                return "Il y a " + hours + "h";
-            } else if (days < 7) {
-                return "Il y a " + days + " jour" + (days > 1 ? "s" : "");
-            } else {
-                DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy");
-                return commentDateTime.format(displayFormatter);
-            }
-        } catch (Exception e) {
-            return dateStr;
-        }
+        parentController.deleteCommentById(commentaire.getId());
     }
 }

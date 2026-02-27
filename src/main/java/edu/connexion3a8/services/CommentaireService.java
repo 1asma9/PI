@@ -18,6 +18,22 @@ public class CommentaireService implements ICommentaire<Commentaire> {
 
     @Override
     public void ajouter(Commentaire c, int blogId) throws SQLException {
+        // 🔥 NOUVEAU : Filtrer les bad words avant d'ajouter
+        ModerationService moderationService = new ModerationService();
+
+        // Filtrer le contenu
+        String filteredContent = moderationService.filterBadWords(c.getContenu());
+
+        // Vérifier si le commentaire contient trop de bad words
+        int badWordsCount = moderationService.countBadWords(c.getContenu());
+
+        if (badWordsCount > 3) {
+            throw new SQLException("Commentaire refusé : trop de contenu inapproprié");
+        }
+
+        // Remplacer le contenu par la version filtrée
+        c.setContenu(filteredContent);
+
         String sql = "INSERT INTO commentaire (contenu, nomuser, img, likes_count, liked, blog_id) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cnx.prepareStatement(sql);
 
@@ -26,7 +42,7 @@ public class CommentaireService implements ICommentaire<Commentaire> {
         ps.setString(3, c.getImg());
         ps.setInt(4, c.getLikesCount());
         ps.setBoolean(5, c.isLiked());
-        ps.setInt(6, blogId);  // ← Important : le 2ème paramètre
+        ps.setInt(6, blogId);
 
         ps.executeUpdate();
     }

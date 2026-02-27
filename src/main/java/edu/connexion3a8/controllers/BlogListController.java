@@ -286,42 +286,60 @@ public class BlogListController implements Initializable {
     private boolean validateForm() {
         boolean isValid = true;
 
-        // Reset errors
-        titreError.setVisible(false);
-        slugError.setVisible(false);
-        extraitError.setVisible(false);
-        contenuError.setVisible(false);
-
-        // Validate Titre
+        // Validation titre
         if (titreInput.getText().trim().isEmpty()) {
-            titreError.setText("Le titre est obligatoire");
-            titreError.setVisible(true);
+            if (titreError != null) {
+                titreError.setText("Le titre est obligatoire");
+                titreError.setVisible(true);
+            }
             isValid = false;
+        } else {
+            if (titreError != null) titreError.setVisible(false);
         }
 
-        // Validate Slug
+        // Validation slug
         if (slugInput.getText().trim().isEmpty()) {
-            slugError.setText("Le slug est obligatoire");
-            slugError.setVisible(true);
+            if (slugError != null) {
+                slugError.setText("Le slug est obligatoire");
+                slugError.setVisible(true);
+            }
             isValid = false;
+        } else {
+            if (slugError != null) slugError.setVisible(false);
         }
 
-        // Validate Extrait
-        if (extraitInput.getText().trim().isEmpty()) {
-            extraitError.setText("L'extrait est obligatoire");
-            extraitError.setVisible(true);
+        // Validation extrait
+        String extrait = extraitInput.getText().trim();
+        if (extrait.isEmpty()) {
+            if (extraitError != null) {
+                extraitError.setText("L'extrait est obligatoire");
+                extraitError.setVisible(true);
+            }
             isValid = false;
-        } else if (extraitInput.getText().length() > 150) {
-            extraitError.setText("L'extrait ne doit pas dépasser 150 caractères");
-            extraitError.setVisible(true);
+        } else if (extrait.length() > 150) {
+            if (extraitError != null) {
+                extraitError.setText("L'extrait doit faire maximum 150 caractères");
+                extraitError.setVisible(true);
+            }
             isValid = false;
+        } else {
+            if (extraitError != null) extraitError.setVisible(false);
         }
 
-        // Validate Contenu
+        // Validation contenu
         if (contenuInput.getText().trim().isEmpty()) {
-            contenuError.setText("Le contenu est obligatoire");
-            contenuError.setVisible(true);
+            if (contenuError != null) {
+                contenuError.setText("Le contenu est obligatoire");
+                contenuError.setVisible(true);
+            }
             isValid = false;
+        } else {
+            if (contenuError != null) contenuError.setVisible(false);
+        }
+
+        if (!isValid && titreError == null) {
+            // Si les labels n'existent pas, utiliser une alerte
+            showAlert("Validation", "Veuillez remplir tous les champs obligatoires", Alert.AlertType.WARNING);
         }
 
         return isValid;
@@ -359,17 +377,24 @@ public class BlogListController implements Initializable {
     }
 
     private void clearForm() {
-        titreInput.clear();
-        slugInput.clear();
-        extraitInput.clear();
-        contenuInput.clear();
-        imageCouvertureInput.clear();
-        statusCheckbox.setSelected(false);
+        // Vider les champs de formulaire
+        if (titreInput != null) titreInput.clear();
+        if (slugInput != null) slugInput.clear();
+        if (extraitInput != null) extraitInput.clear();
+        if (contenuInput != null) contenuInput.clear();
+        if (imageCouvertureInput != null) imageCouvertureInput.clear();
+        if (statusCheckbox != null) statusCheckbox.setSelected(false);
 
-        titreError.setVisible(false);
-        slugError.setVisible(false);
-        extraitError.setVisible(false);
-        contenuError.setVisible(false);
+        // Masquer les messages d'erreur (seulement s'ils existent)
+        if (titreError != null) titreError.setVisible(false);
+        if (slugError != null) slugError.setVisible(false);
+        if (extraitError != null) extraitError.setVisible(false);
+        if (contenuError != null) contenuError.setVisible(false);
+
+        // Réinitialiser le compteur (seulement s'il existe)
+        //if (extraitCounter != null) {
+           // extraitCounter.setText("0/150");
+       // }
     }
 
     private void showAlert(String title, String content, Alert.AlertType type) {

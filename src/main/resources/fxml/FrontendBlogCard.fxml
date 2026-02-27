@@ -6,68 +6,110 @@
 <?import javafx.scene.text.*?>
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0"
-      style="-fx-background-color: white; -fx-background-radius: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 5); -fx-cursor: hand;"
+      minWidth="-Infinity" prefHeight="480.0" prefWidth="350.0"
+      style="-fx-background-color: white; -fx-background-radius: 8px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5); -fx-cursor: hand;"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="edu.connexion3a8.controllers.FrontendBlogCardController"
-      onMouseClicked="#openBlogDetail">
+      onMouseClicked="#openBlogDetail"
+      onMouseEntered="#onMouseEntered"
+      onMouseExited="#onMouseExited">
     <children>
         <!-- Blog Image -->
-        <StackPane prefHeight="200.0" prefWidth="300.0"
-                   style="-fx-background-radius: 15px 15px 0 0; -fx-background-color: #f0f0f0;">
+        <StackPane prefHeight="230.0" prefWidth="350.0"
+                   style="-fx-background-radius: 8px 8px 0 0; -fx-background-color: #f0f0f0;">
             <children>
-                <ImageView fx:id="blogImage" fitHeight="200.0" fitWidth="300.0"
+                <ImageView fx:id="blogImage" fitHeight="230.0" fitWidth="350.0"
                            pickOnBounds="true" preserveRatio="false"
-                           style="-fx-background-radius: 15px 15px 0 0;">
+                           style="-fx-effect: null;">
                     <image>
                         <Image url="@../img/default-blog.png"/>
                     </image>
                 </ImageView>
+
+                <!-- Overlay gradient on hover -->
+                <Pane fx:id="imageOverlay" prefHeight="230.0" prefWidth="350.0"
+                      style="-fx-background-color: transparent;"
+                      mouseTransparent="true"/>
             </children>
         </StackPane>
 
         <!-- Blog Content -->
-        <VBox prefHeight="200.0" prefWidth="300.0" spacing="12.0">
+        <VBox prefHeight="250.0" prefWidth="350.0" spacing="12.0"
+              style="-fx-background-color: white; -fx-background-radius: 0 0 8px 8px;">
             <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0"/>
             </padding>
             <children>
+                <!-- Category Tags -->
+                <HBox spacing="8.0">
+                    <children>
+                        <Label text="Bucket List" textFill="#FF6B6B"
+                               style="-fx-background-color: #FFE5E5; -fx-background-radius: 3px; -fx-padding: 4px 10px;">
+                            <font>
+                                <Font name="Montserrat SemiBold" size="10.0"/>
+                            </font>
+                        </Label>
+                        <Label text="Hawaii" textFill="#4ECDC4"
+                               style="-fx-background-color: #E0F7F6; -fx-background-radius: 3px; -fx-padding: 4px 10px;">
+                            <font>
+                                <Font name="Montserrat SemiBold" size="10.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
                 <!-- Title -->
                 <Text fx:id="blogTitle" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Titre du Blog" wrappingWidth="260.0"
-                      style="-fx-fill: #2c3e50;">
+                      text="Titre du Blog" wrappingWidth="300.0"
+                      style="-fx-fill: #1a1a1a;">
                     <font>
-                        <Font name="Montserrat Bold" size="18.0"/>
+                        <Font name="Montserrat Bold" size="19.0"/>
                     </font>
                 </Text>
 
                 <!-- Excerpt -->
                 <Text fx:id="blogExcerpt" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Extrait du blog..." wrappingWidth="260.0">
+                      text="Extrait du blog qui donne un aperçu du contenu de l'article..."
+                      wrappingWidth="300.0">
                     <font>
                         <Font name="Montserrat Regular" size="13.0"/>
                     </font>
                 </Text>
 
-                <!-- Footer -->
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <VBox.margin>
-                        <Insets top="5.0"/>
-                    </VBox.margin>
+                <!-- Spacer -->
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <!-- Footer with Read More Button -->
+                <HBox alignment="CENTER" spacing="0.0" prefHeight="40.0"
+                      style="-fx-background-color: #FF6B6B; -fx-background-radius: 5px; -fx-cursor: hand;">
                     <children>
-                        <Label fx:id="blogDate" text="27 Dec 2025" textFill="#999999">
+                        <Label text="READ MORE" textFill="white"
+                               style="-fx-font-weight: bold;">
                             <font>
-                                <Font name="Montserrat Regular" size="11.0"/>
+                                <Font name="Montserrat Bold" size="11.0"/>
                             </font>
                         </Label>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="Lire plus →" textFill="#667eea">
+                        <Label text=" →" textFill="white">
                             <font>
-                                <Font name="Montserrat SemiBold" size="12.0"/>
+                                <Font name="Montserrat Bold" size="14.0"/>
                             </font>
                         </Label>
                     </children>
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0"/>
+                    </padding>
                 </HBox>
+
+                <!-- Date -->
+                <Label fx:id="blogDate" text="February 26, 2026" textFill="#999999"
+                       alignment="CENTER">
+                    <font>
+                        <Font name="Montserrat Regular" size="11.0"/>
+                    </font>
+                    <VBox.margin>
+                        <Insets top="8.0"/>
+                    </VBox.margin>
+                </Label>
             </children>
         </VBox>
     </children>

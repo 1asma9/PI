@@ -5,89 +5,112 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="380.0" prefWidth="300.0"
-      style="-fx-background-color: #ffffff; -fx-background-radius: 15px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
-      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+<VBox alignment="TOP_CENTER"
+      prefHeight="380.0"
+      prefWidth="300.0"
+      style="-fx-background-color: #fffaf3;
+             -fx-background-radius: 20;
+             -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 20, 0, 0, 6);"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="edu.connexion3a8.controllers.BlogCardController">
+
     <children>
-        <!-- Image -->
-        <ImageView fx:id="blogImage" fitHeight="180.0" fitWidth="300.0" pickOnBounds="true"
-                   preserveRatio="false" style="-fx-background-color: #f0f0f0;">
+
+        <!-- ================= IMAGE ================= -->
+        <ImageView fx:id="blogImage"
+                   fitHeight="180.0"
+                   fitWidth="300.0"
+                   preserveRatio="false"
+                   style="-fx-background-color: #e6d5c3;
+                          -fx-background-radius: 20 20 0 0;">
+
             <image>
                 <Image url="@../img/default-blog.png"/>
             </image>
         </ImageView>
 
-        <!-- Content -->
-        <VBox prefHeight="200.0" prefWidth="300.0" spacing="10.0">
+        <!-- ================= CONTENT ================= -->
+        <VBox prefHeight="200.0"
+              prefWidth="300.0"
+              spacing="12">
+
             <padding>
-                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
+                <Insets top="18" left="18" right="18" bottom="18"/>
             </padding>
+
             <children>
+
                 <!-- Title -->
-                <Text fx:id="blogTitre" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Titre du Blog" wrappingWidth="270.0"
-                      style="-fx-fill: #2c3e50;">
-                    <font>
-                        <Font name="Montserrat Bold" size="16.0"/>
-                    </font>
-                </Text>
+                <Text fx:id="blogTitre"
+                      text="Titre du Blog"
+                      wrappingWidth="260"
+                      fill="#4e3b2a"
+                      style="-fx-font-size: 16px; -fx-font-weight: bold;" />
 
                 <!-- Extrait -->
-                <Text fx:id="blogExtrait" fill="#666666" strokeType="OUTSIDE" strokeWidth="0.0"
-                      text="Extrait du blog..." wrappingWidth="270.0">
-                    <font>
-                        <Font name="Montserrat Regular" size="12.0"/>
-                    </font>
-                </Text>
+                <Text fx:id="blogExtrait"
+                      text="Extrait du blog..."
+                      wrappingWidth="260"
+                      fill="#7a6a5a"
+                      style="-fx-font-size: 12px;" />
 
-                <!-- Date and Status -->
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <children>
-                        <Label fx:id="blogDate" text="27 Dec 2025" textFill="#999999">
-                            <font>
-                                <Font name="Montserrat Regular" size="11.0"/>
-                            </font>
-                        </Label>
-                        <Label fx:id="blogStatus" text="● Publié" textFill="#4CAF50">
-                            <font>
-                                <Font name="Montserrat SemiBold" size="11.0"/>
-                            </font>
-                        </Label>
-                    </children>
+                <!-- Date & Status -->
+                <HBox spacing="10">
+
+                    <Label fx:id="blogDate"
+                           text="27 Dec 2025"
+                           textFill="#a1887f"
+                           style="-fx-font-size: 11px;" />
+
+                    <Label fx:id="blogStatus"
+                           text="● Publié"
+                           textFill="#4CAF50"
+                           style="-fx-font-size: 11px; -fx-font-weight: bold;" />
                 </HBox>
 
                 <!-- Action Buttons -->
-                <HBox alignment="CENTER" spacing="10.0">
+                <HBox alignment="CENTER"
+                      spacing="10">
+
                     <VBox.margin>
-                        <Insets top="5.0"/>
+                        <Insets top="8"/>
                     </VBox.margin>
-                    <children>
-                        <Button fx:id="viewBtn" onAction="#viewBlog" prefWidth="80.0"
-                                style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-background-radius: 5px; -fx-cursor: hand;"
-                                text="Voir">
-                            <font>
-                                <Font name="Montserrat SemiBold" size="11.0"/>
-                            </font>
-                        </Button>
-                        <Button fx:id="editBtn" onAction="#editBlog" prefWidth="80.0"
-                                style="-fx-background-color: #f0f0f0; -fx-text-fill: #333; -fx-background-radius: 5px; -fx-cursor: hand;"
-                                text="Modifier">
-                            <font>
-                                <Font name="Montserrat SemiBold" size="11.0"/>
-                            </font>
-                        </Button>
-                        <Button fx:id="deleteBtn" onAction="#deleteBlog" prefWidth="80.0"
-                                style="-fx-background-color: #dc284c; -fx-text-fill: white; -fx-background-radius: 5px; -fx-cursor: hand;"
-                                text="Supprimer">
-                            <font>
-                                <Font name="Montserrat SemiBold" size="11.0"/>
-                            </font>
-                        </Button>
-                    </children>
+
+                    <!-- Voir -->
+                    <Button fx:id="viewBtn"
+                            text="Voir"
+                            prefWidth="80"
+                            onAction="#viewBlog"
+                            style="-fx-background-color: #c8a27c;
+                                   -fx-text-fill: white;
+                                   -fx-background-radius: 20;
+                                   -fx-cursor: hand;" />
+
+                    <!-- Modifier -->
+                    <Button fx:id="editBtn"
+                            text="Modifier"
+                            prefWidth="80"
+                            onAction="#editBlog"
+                            style="-fx-background-color: transparent;
+                                   -fx-border-color: #c8a27c;
+                                   -fx-border-radius: 20;
+                                   -fx-text-fill: #6b4f3b;
+                                   -fx-cursor: hand;" />
+
+                    <!-- Supprimer -->
+                    <Button fx:id="deleteBtn"
+                            text="Supprimer"
+                            prefWidth="80"
+                            onAction="#deleteBlog"
+                            style="-fx-background-color: #a47148;
+                                   -fx-text-fill: white;
+                                   -fx-background-radius: 20;
+                                   -fx-cursor: hand;" />
                 </HBox>
+
             </children>
         </VBox>
+
     </children>
 </VBox>

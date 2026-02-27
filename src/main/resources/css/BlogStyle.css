@@ -203,3 +203,39 @@
 .delete-btn:hover {
     -fx-background-color: #c92a3c;
 }
+.h1 {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-padding: 15;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 4);
+}
+
+.field {
+    -fx-background-radius: 8;
+    -fx-padding: 8 12;
+}
+
+.btnGold {
+    -fx-background-color: #d4af37;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.btnOutline {
+    -fx-background-color: transparent;
+    -fx-border-color: #d4af37;
+    -fx-border-radius: 8;
+}
+.muted {
+    -fx-text-fill: #888;
+}

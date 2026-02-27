@@ -5,8 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
+
 
 import java.io.File;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +19,7 @@ public class FrontendBlogCardController {
     @FXML private Text blogTitle;
     @FXML private Text blogExcerpt;
     @FXML private Label blogDate;
+    @FXML private Pane imageOverlay;
 
     private Blog blog;
     private FrontendBlogController parentController;
@@ -31,7 +34,7 @@ public class FrontendBlogCardController {
         // Set excerpt (limité à 120 caractères)
         String extrait = blog.getExtrait();
         if (extrait != null && extrait.length() > 120) {
-            extrait = extrait.substring(0, 117) + "...";
+            extrait = extrait.substring(0, 120) + "...";
         }
         blogExcerpt.setText(extrait != null ? extrait : "");
 
@@ -64,6 +67,45 @@ public class FrontendBlogCardController {
         }
     }
 
+    private void loadImage(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return;
+        }
+
+        try {
+            Image image;
+            if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+                image = new Image(imagePath, true);
+            } else if (imagePath.startsWith("/")) {
+                image = new Image("file:" + imagePath, true);
+            } else {
+                image = new Image(getClass().getResourceAsStream(imagePath).toString(), true);
+            }
+            blogImage.setImage(image);
+        } catch (Exception e) {
+            System.err.println("Erreur chargement image: " + e.getMessage());
+        }
+    }
+
+    private String formatDate(String dateStr) {
+        try {
+            // Format: "February 26, 2026"
+            String[] months = {"January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"};
+            String[] parts = dateStr.split("-");
+            if (parts.length >= 3) {
+                int month = Integer.parseInt(parts[1]);
+                int day = Integer.parseInt(parts[2].substring(0, 2));
+                int year = Integer.parseInt(parts[0]);
+                return months[month - 1] + " " + day + ", " + year;
+            }
+        } catch (Exception e) {
+            // Fallback
+        }
+        return dateStr;
+    }
+
+
     @FXML
     public void openBlogDetail(MouseEvent event) {
         System.out.println("Card clicked! Opening blog: " + blog.getTitre()); // Debug
@@ -73,6 +115,20 @@ public class FrontendBlogCardController {
             parentController.openBlogDetailView(blog);
         } else {
             System.err.println("ERROR: Parent controller is null!"); // Debug
+        }
+    }
+
+    @FXML
+    public void onMouseEntered(MouseEvent event) {
+        if (imageOverlay != null) {
+            imageOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2);");
+        }
+    }
+
+    @FXML
+    public void onMouseExited(MouseEvent event) {
+        if (imageOverlay != null) {
+            imageOverlay.setStyle("-fx-background-color: transparent;");
         }
     }
 }

@@ -1,8 +1,12 @@
 package edu.connexion3a8.controllers;
 
+import edu.connexion3a8.services.BlogTranslation;
+import edu.connexion3a8.services.TranslationService;
+
 import edu.connexion3a8.entities.Blog;
 import edu.connexion3a8.entities.Commentaire;
-import edu.connexion3a8.services.CommentaireService;
+import edu.connexion3a8.services.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -25,36 +29,60 @@ import java.util.ResourceBundle;
 
 public class BlogDetailController implements Initializable {
 
-    @FXML private Text blogTitle;
-    @FXML private Text blogExcerpt;
-    @FXML private Text blogContent;
-    @FXML private Label blogAuthor;
-    @FXML private Label blogDate;
-    @FXML private Label blogStatus;
-    @FXML private ImageView blogCoverImage;
+    @FXML
+    private Text blogTitle;
+    @FXML
+    private Text blogExcerpt;
+    @FXML
+    private Text blogContent;
+    @FXML
+    private Label blogAuthor;
+    @FXML
+    private Label blogDate;
+    @FXML
+    private Label blogStatus;
+    @FXML
+    private ImageView blogCoverImage;
 
     // Comments Section
-    @FXML private VBox commentsContainer;
-    @FXML private VBox emptyCommentsState;
-    @FXML private Label commentCountLabel;
-    @FXML private TextField commentUserInput;
-    @FXML private TextField commentImageInput;
-    @FXML private TextArea commentContentInput;
-    @FXML private Button submitCommentBtn;
-    @FXML private Button backBtn;
+    @FXML
+    private VBox commentsContainer;
+    @FXML
+    private VBox emptyCommentsState;
+    @FXML
+    private Label commentCountLabel;
+    @FXML
+    private TextField commentUserInput;
+    @FXML
+    private TextField commentImageInput;
+    @FXML
+    private TextArea commentContentInput;
+    @FXML
+    private Button submitCommentBtn;
+    @FXML
+    private Button backBtn;
+
+    @FXML private ComboBox<String> languageComboBox;
+    @FXML private Button translateBtn;
+    @FXML private Button resetBtn;
+
 
     private Blog currentBlog;
     private CommentaireService commentaireService;
     private BlogListController parentController;
+    private Blog originalBlog;  // Pour sauvegarder l'original
+    private TranslationService translationService;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    //@Override
+    /*public void initialize(URL url, ResourceBundle resourceBundle) {
         commentaireService = new CommentaireService();
-    }
+    }*/
+
 
     public void setData(Blog blog, BlogListController parentController) {
         this.currentBlog = blog;
         this.parentController = parentController;
+        this.originalBlog = blog;  // Sauvegarder pour reset
 
         // Set blog data
         blogTitle.setText(blog.getTitre());
@@ -237,5 +265,96 @@ public class BlogDetailController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        translationService = new TranslationService();
+        commentaireService = new CommentaireService();
+    }
+
+    @FXML
+    public void handleTranslate() {
+        String selectedLanguage = languageComboBox.getValue();
+
+        if (selectedLanguage == null || selectedLanguage.isEmpty()) {
+            showAlert("Erreur", "Veuillez choisir une langue", Alert.AlertType.WARNING);
+            return;
+        }
+
+        // Extraire le code de langue entre parenthèses
+        // Ex: "English (EN)" -> "en"
+        String languageCode;
+        try {
+            int startIndex = selectedLanguage.indexOf("(") + 1;
+            int endIndex = selectedLanguage.indexOf(")");
+            languageCode = selectedLanguage.substring(startIndex, endIndex).toLowerCase();
+        } catch (Exception e) {
+            showAlert("Erreur", "Format de langue invalide", Alert.AlertType.ERROR);
+            return;
+        }
+
+        try {
+            // Afficher un loader
+            translateBtn.setDisable(true);
+            translateBtn.setText("Traduction...");
+
+            // Traduire le blog
+            BlogTranslation translation = translationService.translateBlog(currentBlog, languageCode);
+
+            // Afficher la traduction
+            blogTitle.setText(translation.getTitre());
+            blogExcerpt.setText(translation.getExtrait());
+            blogContent.setText(translation.getContenu());
+
+            // Réactiver le bouton
+            translateBtn.setDisable(false);
+            translateBtn.setText("Traduire");
+
+            // Message de succès (optionnel)
+            showAlert("Succès", "Blog traduit avec succès en " + selectedLanguage, Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            translateBtn.setDisable(false);
+            translateBtn.setText("Traduire");
+            showAlert("Erreur", "Impossible de traduire le blog: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    public void resetTranslation() {
+        if (originalBlog != null) {
+            // Restaurer la version originale
+            blogTitle.setText(originalBlog.getTitre());
+            blogExcerpt.setText(originalBlog.getExtrait());
+            blogContent.setText(originalBlog.getContenu());
+
+            showAlert("Info", "Version originale restaurée", Alert.AlertType.INFORMATION);
+        }
+    }
+
+    @FXML
+    private Label sentimentLabel;
+
+    private void loadSentimentScore() {
+        try {
+            List<Commentaire> comments = commentaireService.afficherParBlog(currentBlog.getId());
+
+            if (comments.size() > 0) {
+                SentimentAnalysisService sentimentService = new SentimentAnalysisService();
+                BlogSentimentScore score = sentimentService.analyzeBlogComments(comments);
+
+                // Afficher le score
+                sentimentLabel.setText(score.getEmoji() + " Score : " + score.getGlobalScore() + "/100");
+
+                // Mettre à jour en BD
+                BlogService.updateSentiment(currentBlog.getId(), score.getGlobalScore(), score.getEmoji());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

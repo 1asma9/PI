@@ -6,16 +6,15 @@ import edu.connexion3a8.services.CommentaireService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -26,104 +25,138 @@ import java.util.ResourceBundle;
 
 public class FrontendBlogDetailController implements Initializable {
 
-    @FXML private Text blogTitle;
+    @FXML private ImageView blogImage;
+    @FXML private Text blogTitle;  // ⚠️ IMPORTANT: Text, pas Label
+    @FXML private Text blogDate;
     @FXML private Text blogExcerpt;
     @FXML private Text blogContent;
-    @FXML private Label blogAuthor;
-    @FXML private Label blogDate;
-    @FXML private ImageView blogCoverImage;
-    @FXML private Button backBtn;
+    @FXML private Text commentCount;
+    @FXML private Label blogCategory;
 
-    // Comments Section
-    @FXML private VBox commentsContainer;
-    @FXML private VBox emptyCommentsState;
-    @FXML private Label commentCountLabel;
     @FXML private TextField commentUserInput;
     @FXML private TextField commentImageInput;
     @FXML private TextArea commentContentInput;
-    @FXML private Button submitCommentBtn;
+    @FXML private VBox commentsContainer;
 
     private Blog currentBlog;
     private CommentaireService commentaireService;
-    private FrontendBlogController parentController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         commentaireService = new CommentaireService();
     }
 
-    public void setData(Blog blog, FrontendBlogController parentController) {
+    public void setData(Blog blog, FrontendBlogController frontendBlogController) {
         this.currentBlog = blog;
-        this.parentController = parentController;
 
-        // Set blog data
+        System.out.println("Setting blog data: " + blog.getTitre());
+
+        // Titre
         blogTitle.setText(blog.getTitre());
-        blogExcerpt.setText(blog.getExtrait());
-        blogContent.setText(blog.getContenu());
 
-        // Set author
-        blogAuthor.setText("Par " + (blog.getAuthor_id() != null ? "Admin" : "Anonyme"));
-
-        // Set date
-        if (blog.getDate_publication() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
-            blogDate.setText(blog.getDate_publication().format(formatter));
-        } else if (blog.getDate_creation() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
-            blogDate.setText(blog.getDate_creation().format(formatter));
+        // Extrait
+        if (blog.getExtrait() != null && !blog.getExtrait().isEmpty()) {
+            blogExcerpt.setText(blog.getExtrait());
         }
 
-        // Set cover image
-        if (blog.getImage_couverture() != null && !blog.getImage_couverture().isEmpty()) {
-            try {
-                File imageFile = new File(blog.getImage_couverture());
-                if (imageFile.exists()) {
-                    Image image = new Image(imageFile.toURI().toString());
-                    blogCoverImage.setImage(image);
-                } else {
-                    Image image = new Image(blog.getImage_couverture());
-                    blogCoverImage.setImage(image);
-                }
-            } catch (Exception e) {
-                System.out.println("Impossible de charger l'image: " + e.getMessage());
-            }
+        // Contenu
+        if (blog.getContenu() != null && !blog.getContenu().isEmpty()) {
+            blogContent.setText(blog.getContenu());
         }
 
-        // Load comments
+        // Date - CORRECTION ICI
+        if (blogDate != null && blog.getDate_creation() != null) {
+            // Convertir LocalDateTime en String
+            String dateStr = blog.getDate_creation().toString();
+            blogDate.setText(formatDate(dateStr));
+        }
+
+        // Image
+        loadImage(blog.getImage_couverture());
+
+        // Charger les commentaires
         loadComments();
     }
 
-    private void loadComments() {
-        commentsContainer.getChildren().clear();
+    private void loadImage(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return;
+        }
 
         try {
-            // CHANGÉ : Utiliser afficherParBlog
+            Image image;
+            if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+                image = new Image(imagePath, true);
+            } else if (imagePath.startsWith("/")) {
+                image = new Image("file:" + imagePath, true);
+            } else {
+                image = new Image(getClass().getResourceAsStream(imagePath));
+            }
+            blogImage.setImage(image);
+        } catch (Exception e) {
+            System.err.println("Erreur chargement image: " + e.getMessage());
+        }
+    }
+
+    private String formatDate(String dateStr) {
+        try {
+            String[] months = {"January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"};
+            String[] parts = dateStr.split("-");
+            if (parts.length >= 3) {
+                int month = Integer.parseInt(parts[1]);
+                int day = Integer.parseInt(parts[2].substring(0, 2));
+                int year = Integer.parseInt(parts[0]);
+                return months[month - 1] + " " + day + ", " + year;
+            }
+        } catch (Exception e) {
+            // Fallback
+        }
+        return dateStr;
+    }
+
+    private void loadComments() {
+        if (currentBlog == null) {
+            return;
+        }
+
+        try {
             List<Commentaire> comments = commentaireService.afficherParBlog(currentBlog.getId());
 
-            commentCountLabel.setText("(" + comments.size() + ")");
+            commentsContainer.getChildren().clear();
 
-            if (comments.isEmpty()) {
-                emptyCommentsState.setVisible(true);
-            } else {
-                emptyCommentsState.setVisible(false);
+            // Mettre à jour le compteur
+            if (commentCount != null) {
+                commentCount.setText("(" + comments.size() + ")");
+            }
 
-                for (Commentaire comment : comments) {
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FrontendCommentCard.fxml"));
-                        HBox commentCard = loader.load();
+            // Afficher chaque commentaire
+            for (Commentaire comment : comments) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(
+                            getClass().getResource("/fxml/FrontendCommentCard.fxml")
+                    );
+                    VBox commentCard = loader.load();
 
-                        FrontendCommentCardController cardController = loader.getController();
-                        cardController.setData(comment, this);
+                    FrontendCommentCardController controller = loader.getController();
+                    controller.setData(comment, this);
 
-                        commentsContainer.getChildren().add(commentCard);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    commentsContainer.getChildren().add(commentCard);
+
+                } catch (IOException e) {
+                    System.err.println("Erreur chargement commentaire: " + e.getMessage());
                 }
             }
+
+            if (comments.isEmpty()) {
+                Label noComments = new Label("No comments yet. Be the first to comment!");
+                noComments.setStyle("-fx-text-fill: #999; -fx-font-size: 14px; -fx-padding: 20px;");
+                commentsContainer.getChildren().add(noComments);
+            }
+
         } catch (SQLException e) {
+            System.err.println("Erreur chargement commentaires: " + e.getMessage());
             e.printStackTrace();
-            showAlert("Erreur", "Impossible de charger les commentaires", Alert.AlertType.ERROR);
         }
     }
 
@@ -135,35 +168,33 @@ public class FrontendBlogDetailController implements Initializable {
 
         // Validation
         if (userName.isEmpty()) {
-            showAlert("Erreur", "Veuillez entrer votre nom", Alert.AlertType.WARNING);
+            showAlert("Error", "Please enter your name", Alert.AlertType.WARNING);
             return;
         }
 
         if (content.isEmpty()) {
-            showAlert("Erreur", "Veuillez entrer un commentaire", Alert.AlertType.WARNING);
+            showAlert("Error", "Please enter a comment", Alert.AlertType.WARNING);
             return;
         }
 
         if (content.length() < 3) {
-            showAlert("Erreur", "Le commentaire doit contenir au moins 3 caractères", Alert.AlertType.WARNING);
+            showAlert("Error", "Comment must be at least 3 characters", Alert.AlertType.WARNING);
             return;
         }
 
         try {
-            // Créer le nouveau commentaire
             Commentaire newComment = new Commentaire();
             newComment.setContenu(content);
             newComment.setNomuser(userName);
             newComment.setImg(imageUrl.isEmpty() ? null : imageUrl);
 
-            // Date actuelle
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             newComment.setDate(LocalDateTime.now().format(formatter));
 
             newComment.setLikesCount(0);
             newComment.setLiked(false);
 
-            // CHANGÉ : Ajouter avec blog_id
+            // Ajouter le commentaire
             commentaireService.ajouter(newComment, currentBlog.getId());
 
             // Clear form
@@ -174,11 +205,18 @@ public class FrontendBlogDetailController implements Initializable {
             // Reload comments
             loadComments();
 
-            showAlert("Succès", "Commentaire publié avec succès!", Alert.AlertType.INFORMATION);
+            showAlert("Success", "Comment posted successfully!", Alert.AlertType.INFORMATION);
 
         } catch (SQLException e) {
+            if (e.getMessage() != null && e.getMessage().contains("trop de contenu inapproprié")) {
+                showAlert("Moderation",
+                        "Your comment contains inappropriate content and was rejected.\n" +
+                                "Please rephrase your message respectfully.",
+                        Alert.AlertType.WARNING);
+            } else {
+                showAlert("Error", "Error posting comment", Alert.AlertType.ERROR);
+            }
             e.printStackTrace();
-            showAlert("Erreur", "Erreur lors de la publication du commentaire", Alert.AlertType.ERROR);
         }
     }
 
@@ -186,10 +224,10 @@ public class FrontendBlogDetailController implements Initializable {
         try {
             commentaireService.supprimer(commentId);
             loadComments();
-            showAlert("Succès", "Commentaire supprimé avec succès!", Alert.AlertType.INFORMATION);
+            showAlert("Success", "Comment deleted", Alert.AlertType.INFORMATION);
         } catch (SQLException e) {
+            showAlert("Error", "Could not delete comment", Alert.AlertType.ERROR);
             e.printStackTrace();
-            showAlert("Erreur", "Erreur lors de la suppression du commentaire", Alert.AlertType.ERROR);
         }
     }
 
@@ -201,21 +239,6 @@ public class FrontendBlogDetailController implements Initializable {
                 commentaireService.retirerLike(commentId);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void goBack() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FrontendBlogList.fxml"));
-            VBox blogListView = loader.load();
-
-            Scene listScene = new Scene(blogListView, 1366, 750);
-            Stage stage = (Stage) backBtn.getScene().getWindow();
-            stage.setScene(listScene);
-
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }

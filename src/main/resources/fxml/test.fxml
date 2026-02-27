@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.connexion3a8.controllers.AdminDashboardController"
+            stylesheets="@../css/sidenavbar.css">
+
+    <!-- LEFT SIDEBAR -->
+    <left>
+        <VBox prefWidth="230" spacing="20" styleClass="card">
+
+            <Label text="ADMIN PANEL" styleClass="title"/>
+
+            <Button fx:id="dashboardBtn"
+                    text="Tableau de bord"
+                    onAction="#open_Dashboard"
+                    styleClass="btnOutline"
+                    maxWidth="Infinity"/>
+
+            <Button fx:id="blogBtn"
+                    text="Blogs"
+                    onAction="#open_BlogList"
+                    styleClass="btnOutline"
+                    maxWidth="Infinity"/>
+
+        </VBox>
+    </left>
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="card">
+
+            <Label text="Admin Dashboard" styleClass="title"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="navFullname" text="Admin" styleClass="muted"/>
+
+            <Button text="Déconnexion"
+                    onAction="#handleLogout"
+                    styleClass="btnOutline"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <StackPane fx:id="content_area" styleClass="card"/>
+    </center>
+
+</BorderPane>
