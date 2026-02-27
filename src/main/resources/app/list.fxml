@@ -15,6 +15,26 @@
         <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
             <Label text="Hébergements" styleClass="title"/>
 
+            <!-- ✅ Filters + Export -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="tfSearch"
+                           promptText="Rechercher (description, adresse)..."
+                           styleClass="field"
+                           HBox.hgrow="ALWAYS"/>
+
+                <ComboBox fx:id="cbTypeFilter" promptText="Type" prefWidth="180"/>
+
+                <TextField fx:id="tfMinPrix" promptText="Prix min" styleClass="field" prefWidth="110"/>
+                <TextField fx:id="tfMaxPrix" promptText="Prix max" styleClass="field" prefWidth="110"/>
+
+                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="btnOutline"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Export Excel" onAction="#exportHebExcel" styleClass="btnGold"/>
+                <Button text="Export PDF" onAction="#exportHebPdf" styleClass="btnOutline"/>
+            </HBox>
+
             <TableView fx:id="tableHeb" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="imgCol" text="Image" prefWidth="90"/>

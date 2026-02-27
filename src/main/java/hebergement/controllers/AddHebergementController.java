@@ -99,6 +99,7 @@ public class AddHebergementController {
     // ====================== CHOOSE IMAGE ======================
     @FXML
     void chooseImage() {
+
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Choisir une image");
         chooser.getExtensionFilters().add(
@@ -111,11 +112,20 @@ public class AddHebergementController {
         try {
             String newName = UUID.randomUUID() + "_" + file.getName();
 
-            File dest = new File("uploads/" + newName);
+            // ✅ 1. Créer le dossier uploads si inexistant
+            File folder = new File("uploads");
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            // ✅ 2. Destination
+            File dest = new File(folder, newName);
 
             Files.copy(file.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-            selectedImagePath = "uploads/" + newName;
+            // ✅ 3. Stocker chemin ABSOLU (plus jamais de problème)
+            selectedImagePath = dest.getAbsolutePath();
+
             lblImage.setText("✅ " + file.getName());
 
         } catch (Exception e) {
@@ -123,7 +133,6 @@ public class AddHebergementController {
             showError("Erreur image", "Impossible de copier l'image : " + e.getMessage());
         }
     }
-
     // ====================== ADD HEBERGEMENT ======================
     @FXML
     void addHebergement() {

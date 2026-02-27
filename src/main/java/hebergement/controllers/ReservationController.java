@@ -16,7 +16,10 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.BorderPane;
 public class ReservationController {
 
     private final HebergementService hs = new HebergementService();
@@ -43,6 +46,22 @@ public class ReservationController {
         dpDebut.valueProperty().addListener((obs, o, n) -> computeTotal());
         dpFin.valueProperty().addListener((obs, o, n) -> computeTotal());
     }
+    @FXML
+    private void onBack(ActionEvent event) {
+        try {
+            // ✅ si tu utilises MainLayout avec un centre (BorderPane)
+            Parent root = FXMLLoader.load(getClass().getResource("/app/dashboard.fxml"));
+            // ⬆️ change dashboard.fxml par la page que tu veux revenir
+
+            // Alternative: si tu as un main_layout avec BorderPane
+            // BorderPane main = (BorderPane) ((Node) event.getSource()).getScene().lookup("#mainRoot");
+            // main.setCenter(root);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void loadHebergements() {
         try {
@@ -153,6 +172,7 @@ public class ReservationController {
         }
     }
 
+
     private void clearForm() {
         cbHebergement.getSelectionModel().clearSelection();
         tfNom.clear();
@@ -178,4 +198,15 @@ public class ReservationController {
         a.setContentText(msg);
         a.showAndWait();
     }
+    public void setSelectedHebergement(Hebergement h) {
+        if (h == null) return;
+
+        // ✅ si tu as encore ComboBox
+        if (cbHebergement.getItems() == null || cbHebergement.getItems().isEmpty()) {
+            loadHebergements();
+        }
+        cbHebergement.getSelectionModel().select(h);
+        computeTotal();
+    }
+
 }

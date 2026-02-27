@@ -27,7 +27,7 @@
     <!-- Header -->
     <top>
         <HBox styleClass="header" spacing="10">
-            <Label fx:id="pageTitle" text="Dashboard" styleClass="title"/>
+            <Label fx:id="pageTitle" id="pageTitle" text="Dashboard" styleClass="title"/>
             <Region HBox.hgrow="ALWAYS"/>
             <Label text="Connecté" styleClass="pill"/>
         </HBox>
@@ -35,7 +35,7 @@
 
     <!-- Content -->
     <center>
-        <StackPane fx:id="contentPane" styleClass="content"/>
+        <StackPane fx:id="contentPane" id="contentPane" styleClass="content"/>
     </center>
 
 </BorderPane>

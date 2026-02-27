@@ -33,7 +33,7 @@ public class MainLayoutController {
     }
     @FXML
     void goReservation() {
-        loadPage("/app/reservation.fxml", "Réserver");
+        loadPage("/app/reservation_gallery.fxml", "Réserver");
     }
     @FXML
     void goReservationsAdmin() {
