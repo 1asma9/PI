@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="edu.destination.controllers.AdminImageFormController"
+           stylesheets="@app.css"
+           styleClass="root-dark">
+
+    <VBox spacing="12" alignment="CENTER" maxWidth="520" styleClass="glass-card-large">
+
+        <Label text="Nouvelle Image" styleClass="title-white"/>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <TextField fx:id="txtUrlImage" promptText="Chemin de l'image" styleClass="form-field" HBox.hgrow="ALWAYS"/>
+            <Button text="Parcourir" onAction="#browseImage" styleClass="btn-secondary"/>
+        </HBox>
+        <Label fx:id="errUrl" styleClass="error-label"/>
+
+        <ComboBox fx:id="comboDestination" promptText="Choisir Destination" styleClass="form-field"/>
+        <Label fx:id="errDestination" styleClass="error-label"/>
+
+        <HBox spacing="14" alignment="CENTER">
+            <Button fx:id="btnSave" text="Enregistrer" styleClass="btn-primary"/>
+            <Button fx:id="btnCancel" text="Annuler" styleClass="btn-danger"/>
+        </HBox>
+
+    </VBox>
+</StackPane>
