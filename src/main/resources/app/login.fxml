@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.PI_Gestion_des_utilisateurs.ui.LoginController">
+    
+    <!-- Header -->
+    <top>
+        <VBox alignment="CENTER" styleClass="header">
+            <Label styleClass="title" text="Connexion" />
+        </VBox>
+    </top>
+    
+    <!-- Contenu principal -->
+    <center>
+        <VBox alignment="CENTER" spacing="24" styleClass="main-container">
+            
+            <!-- Formulaire de connexion -->
+            <VBox alignment="CENTER" spacing="20">
+                
+                <!-- Email -->
+                <VBox alignment="CENTER_LEFT" spacing="8">
+                    <Label styleClass="form-label" text="Email :" />
+                    <TextField fx:id="emailField" prefHeight="40" promptText="exemple@email.com" styleClass="text-field" />
+                </VBox>
+                
+                <!-- Mot de passe -->
+                <VBox alignment="CENTER_LEFT" spacing="8">
+                    <Label styleClass="form-label" text="Mot de passe :" />
+                    <PasswordField fx:id="passwordField" prefHeight="40" promptText="Entrez votre mot de passe" styleClass="password-field" />
+                </VBox>
+                
+                <!-- Message d'erreur -->
+                <Label fx:id="errorLabel" styleClass="error-label" visible="false" wrapText="true" />
+                
+            </VBox>
+            
+            <!-- Boutons d'action -->
+            <VBox spacing="16" styleClass="action-buttons">
+                <Button fx:id="loginButton" onAction="#onLogin" prefHeight="45" prefWidth="140" styleClass="button primary" text="Se connecter" />
+                <Button onAction="#onForgotPassword" prefHeight="45" prefWidth="160" styleClass="button secondary" text="Mot de passe oublié" />
+                <Button onAction="#onCancel" prefHeight="45" prefWidth="120" styleClass="button cancel" text="Quitté" />
+            </VBox>
+            
+        </VBox>
+    </center>
+    
+    <!-- Marges responsives -->
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+    
+</BorderPane>
