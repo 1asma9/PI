@@ -37,7 +37,6 @@
                                        smooth="true"
                                        styleClass="headerImage">
                                 <image>
-                                    <!-- MUST exist: src/main/resources/images/activity_banner.jpg -->
                                     <Image url="@images/activity_banner.jpg"/>
                                 </image>
                             </ImageView>
@@ -108,6 +107,19 @@
                                           wrapText="true"
                                           styleClass="inputArea"
                                           GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                                <!-- ✅ IMAGE (STATIC FIELD) -->
+                                <Label text="Image (URL ou /images/...)" styleClass="fieldLabel"
+                                       GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+
+                                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                    <TextField fx:id="tfImageUrl"
+                                               promptText="Ex: https://...jpg  ou  /images/activity_banner.jpg"
+                                               styleClass="input"/>
+                                    <Label text="Astuce: mets une URL http(s) ou un chemin resource comme /images/banner.jpg"
+                                           styleClass="reqText"/>
+                                </VBox>
+
                             </GridPane>
 
                             <Separator styleClass="formSep"/>
@@ -126,7 +138,6 @@
                                         styleClass="btnGreen"/>
                             </HBox>
 
-                            <!-- ✅ OPTIONAL: if you also want to remove this line, tell me -->
                             <HBox alignment="CENTER" spacing="6">
                                 <Label text="*" styleClass="reqStar"/>
                                 <Label text="Champs obligatoires" styleClass="reqText"/>

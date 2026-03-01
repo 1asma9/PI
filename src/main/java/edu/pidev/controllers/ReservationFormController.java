@@ -1,7 +1,10 @@
 package edu.pidev.controllers;
 
+import edu.pidev.entities.Activite;
 import edu.pidev.entities.ReservationActivite;
+import edu.pidev.services.ActiviteService;
 import edu.pidev.services.ReservationActiviteService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -11,10 +14,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import javafx.event.ActionEvent;
+import javafx.scene.Node;
 
 public class ReservationFormController {
 
@@ -27,7 +37,11 @@ public class ReservationFormController {
     @FXML private Button btnSave;
     @FXML private FlowPane reservationsContainer;
 
+    // ✅ AI panel
+    @FXML private Label aiExpectText;
+
     private final ReservationActiviteService service = new ReservationActiviteService();
+    private final ActiviteService activiteService = new ActiviteService();
 
     // contexte
     private int idActivite = -1;
@@ -36,27 +50,134 @@ public class ReservationFormController {
     // mode update
     private int selectedIdReservation = -1;
 
+    // ✅ Selected activity full object (for AI payload)
+    private Activite selectedActivite = null;
+
+    // ✅ AI endpoint
+    private static final String AI_EXPECT_URL = "http://localhost/pidev_api/ai_expect.php";
+    private final HttpClient httpClient = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(10))
+            .build();
+
     @FXML
     public void initialize() {
-        // ✅ safety: in case FXML mismatch
         if (cbStatut != null) {
             cbStatut.getItems().setAll("EN_ATTENTE", "CONFIRMEE", "ANNULEE");
             cbStatut.setValue("EN_ATTENTE");
         }
         if (dpDate != null) dpDate.setValue(LocalDate.now());
 
+        if (aiExpectText != null) {
+            aiExpectText.setText("Click Generate to get AI tips for this activity.");
+        }
+
         setModeAdd();
     }
 
-    // appelé depuis AffichageActivitesController quand on clique 📌
     public void setData(int idActivite, String nomActivite) {
         this.idActivite = idActivite;
         this.nomActivite = (nomActivite == null || nomActivite.isBlank()) ? "-" : nomActivite.trim();
         lblActivite.setText("Activité : " + this.nomActivite);
+
+        // ✅ Load full activity data for AI (type/lieu/duree/prix)
+        selectedActivite = null;
+        try {
+            List<Activite> all = activiteService.getAllActivites();
+            selectedActivite = all.stream()
+                    .filter(a -> a.getIdActivite() == idActivite)
+                    .findFirst()
+                    .orElse(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (aiExpectText != null) {
+            aiExpectText.setText("Click Generate to get AI tips for this activity.");
+        }
+
         refreshList();
     }
 
-    // ====== ACTIONS UI ======
+    // ===================== AI BUTTON =====================
+    @FXML
+    private void onGenerateWhatToExpect() {
+        if (aiExpectText == null) return;
+
+        if (idActivite <= 0) {
+            aiExpectText.setText("Open this page from an activity first.");
+            return;
+        }
+
+        if (selectedActivite == null) {
+            aiExpectText.setText("Activity details not loaded. Try reopening the reservation screen.");
+            return;
+        }
+
+        aiExpectText.setText("Generating AI tips...");
+
+        String jsonBody = "{"
+                + "\"title\":\"" + escapeJson(selectedActivite.getNom()) + "\","
+                + "\"type\":\"" + escapeJson(selectedActivite.getType()) + "\","
+                + "\"lieu\":\"" + escapeJson(selectedActivite.getLieu()) + "\","
+                + "\"duree\":" + selectedActivite.getDuree() + ","
+                + "\"prix\":" + selectedActivite.getPrix()
+                + "}";
+
+        HttpRequest req = HttpRequest.newBuilder()
+                .uri(URI.create(AI_EXPECT_URL))
+                .timeout(Duration.ofSeconds(30))
+                .header("Content-Type", "application/json; charset=utf-8")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonBody, StandardCharsets.UTF_8))
+                .build();
+
+        new Thread(() -> {
+            try {
+                HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+                if (res.statusCode() != 200) {
+                    Platform.runLater(() ->
+                            aiExpectText.setText("AI error (" + res.statusCode() + "): " + res.body())
+                    );
+                    return;
+                }
+
+                String text = extractJsonField(res.body(), "text");
+                if (text == null || text.isBlank()) text = "No AI text returned.";
+
+                String finalText = text.replace("\\n", "\n");
+
+                Platform.runLater(() -> aiExpectText.setText(finalText));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() ->
+                        aiExpectText.setText("AI request failed: " + e.getMessage())
+                );
+            }
+        }).start();
+    }
+
+    private String escapeJson(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
+    // simple JSON extraction: {"ok":true,"text":"...."}
+    private String extractJsonField(String json, String field) {
+        String key = "\"" + field + "\":";
+        int i = json.indexOf(key);
+        if (i == -1) return null;
+        int start = json.indexOf("\"", i + key.length());
+        if (start == -1) return null;
+        int end = json.indexOf("\"", start + 1);
+        while (end != -1 && json.charAt(end - 1) == '\\') { // skip escaped quotes
+            end = json.indexOf("\"", end + 1);
+        }
+        if (end == -1) return null;
+        return json.substring(start + 1, end);
+    }
+
+    // ===================== ACTIONS UI =====================
     @FXML
     private void onSave() {
         hideError();
@@ -110,40 +231,34 @@ public class ReservationFormController {
         refreshList();
     }
 
-    /**
-     * ✅ FIXED BACK:
-     * - uses FXMLLoader instance
-     * - reuses SAME Stage
-     * - clears stylesheets to avoid stacking
-     * - maximizes + show
-     */
     @FXML
-    private void onBack() {
+    private void onBack(ActionEvent event) {
+        switchScene(event, "/affichage_activites_back.fxml", "/affichage.css");
+    }
+
+    private void switchScene(ActionEvent event, String fxml, String cssFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/affichage_activites.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
 
-            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            // ✅ clean stylesheets then add affichage.css
+            Scene scene = stage.getScene();
+            if (scene == null) {
+                scene = new Scene(root);
+                stage.setScene(scene);
+            } else {
+                scene.setRoot(root);
+            }
+
             scene.getStylesheets().clear();
-            var css = getClass().getResource("/affichage.css");
+            var css = getClass().getResource(cssFile);
             if (css != null) scene.getStylesheets().add(css.toExternalForm());
 
-            Stage stage = (Stage) lblActivite.getScene().getWindow();
-
-            stage.setScene(scene);
-
-            // ✅ force full screen like you want
-            stage.setMaximized(true);
-
-            // ✅ VERY IMPORTANT: show again
             stage.show();
 
-            // ✅ force focus so scroll works immediately
-            javafx.application.Platform.runLater(() -> {
-                root.requestFocus();
-            });
+            // ✅ maximize AFTER show (prevents stuck)
+            Platform.runLater(() -> stage.setMaximized(true));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,8 +266,7 @@ public class ReservationFormController {
         }
     }
 
-
-    // ====== LIST ======
+    // ===================== LIST =====================
     private void refreshList() {
         reservationsContainer.getChildren().clear();
 
@@ -169,7 +283,6 @@ public class ReservationFormController {
         VBox card = new VBox(12);
         card.getStyleClass().add("resCard");
 
-        // Header with ID and status badge
         HBox header = new HBox(10);
         header.setAlignment(Pos.CENTER_LEFT);
 
@@ -184,7 +297,6 @@ public class ReservationFormController {
 
         header.getChildren().addAll(idLabel, spacer, statusBadge);
 
-        // Details with icons
         VBox details = new VBox(8);
         details.setStyle("-fx-padding: 5 0;");
 
@@ -251,7 +363,7 @@ public class ReservationFormController {
         }
     }
 
-    // ====== MODE ======
+    // ===================== MODE =====================
     private void setModeAdd() {
         selectedIdReservation = -1;
         if (dpDate != null) dpDate.setValue(LocalDate.now());

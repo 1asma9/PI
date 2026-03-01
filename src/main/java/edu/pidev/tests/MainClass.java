@@ -10,7 +10,6 @@ public class MainClass {
 
         ReservationActiviteService service = new ReservationActiviteService();
 
-        // ✅ TEST 1: date passée (doit être REFUSÉ)
         System.out.println("----- TEST 1: date passée -----");
         ReservationActivite r1 = new ReservationActivite(
                 LocalDate.now().minusDays(1), // ❌ passé
@@ -25,7 +24,6 @@ public class MainClass {
             System.out.println("Erreur attrapée: " + e.getMessage());
         }
 
-        // ✅ TEST 2: nb personnes invalide (doit être REFUSÉ)
         System.out.println("----- TEST 2: nb personnes = 0 -----");
         ReservationActivite r2 = new ReservationActivite(
                 LocalDate.now().plusDays(2),
@@ -40,12 +38,11 @@ public class MainClass {
             System.out.println("Erreur attrapée: " + e.getMessage());
         }
 
-        // ✅ TEST 3: statut invalide (doit être REFUSÉ)
         System.out.println("----- TEST 3: statut invalide -----");
         ReservationActivite r3 = new ReservationActivite(
                 LocalDate.now().plusDays(2),
                 2,
-                "OK", // ❌ pas dans EN_ATTENTE/CONFIRMEE/ANNULEE
+                "OK",
                 1
         );
 
@@ -55,12 +52,11 @@ public class MainClass {
             System.out.println("Erreur attrapée: " + e.getMessage());
         }
 
-        // ✅ TEST 4: réservation correcte (doit être ACCEPTÉ)
         System.out.println("----- TEST 4: réservation correcte -----");
         ReservationActivite r4 = new ReservationActivite(
                 LocalDate.now().plusDays(3),
                 2,
-                "en_attente", // ✅ même si minuscule, validator le normalise si tu as ajouté r.setStatut(st)
+                "en_attente",
                 1
         );
 

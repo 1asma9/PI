@@ -10,6 +10,9 @@ public class Activite {
     private int duree;
     private String lieu;
 
+    // ✅ NEW: image path (AI or manual)
+    private String imageUrl;
+
     public Activite() {}
 
     // INSERT (sans id)
@@ -23,7 +26,8 @@ public class Activite {
     }
 
     // SELECT (avec id)
-    public Activite(int idActivite, String nom, String description, String type, double prix, int duree, String lieu) {
+    public Activite(int idActivite, String nom, String description, String type,
+                    double prix, int duree, String lieu) {
         this.idActivite = idActivite;
         this.nom = nom;
         this.description = description;
@@ -33,26 +37,73 @@ public class Activite {
         this.lieu = lieu;
     }
 
-    public int getIdActivite() { return idActivite; }
-    public void setIdActivite(int idActivite) { this.idActivite = idActivite; }
+    /* ================= GETTERS & SETTERS ================= */
 
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
+    public int getIdActivite() {
+        return idActivite;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setIdActivite(int idActivite) {
+        this.idActivite = idActivite;
+    }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
+    public String getNom() {
+        return nom;
+    }
 
-    public double getPrix() { return prix; }
-    public void setPrix(double prix) { this.prix = prix; }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 
-    public int getDuree() { return duree; }
-    public void setDuree(int duree) { this.duree = duree; }
+    public String getDescription() {
+        return description;
+    }
 
-    public String getLieu() { return lieu; }
-    public void setLieu(String lieu) { this.lieu = lieu; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getPrix() {
+        return prix;
+    }
+
+    public void setPrix(double prix) {
+        this.prix = prix;
+    }
+
+    public int getDuree() {
+        return duree;
+    }
+
+    public void setDuree(int duree) {
+        this.duree = duree;
+    }
+
+    public String getLieu() {
+        return lieu;
+    }
+
+    public void setLieu(String lieu) {
+        this.lieu = lieu;
+    }
+
+    // ✅ NEW
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    // ✅ NEW
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     @Override
     public String toString() {
@@ -64,8 +115,7 @@ public class Activite {
                 ", prix=" + prix +
                 ", duree=" + duree +
                 ", lieu='" + lieu + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
-
-
 }

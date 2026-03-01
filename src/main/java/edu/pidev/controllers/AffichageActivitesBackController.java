@@ -7,12 +7,17 @@ import edu.pidev.tools.CurrencyService;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,14 +26,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.Node;
 
-public class AffichageActivitesController {
 
+public class AffichageActivitesBackController {
     // ===== UI (cards + scroll + hero) =====
     @FXML private FlowPane cardsContainer;
     @FXML private ScrollPane scroll;
@@ -43,7 +43,7 @@ public class AffichageActivitesController {
     @FXML private TextField tfMinPrix;
     @FXML private TextField tfMaxPrix;
 
-    // Currency selector
+    // ✅ Currency selector (NEW)
     @FXML private ComboBox<String> currencyBox;
 
     private String selectedCurrency = "TND";
@@ -51,9 +51,9 @@ public class AffichageActivitesController {
 
     private final CurrencyService currencyService = new CurrencyService();
 
-    // ===== Chat UI =====
+    // ===== Chat UI (matches FXML) =====
     @FXML private VBox chatBubble;
-    @FXML private Label chatText;
+    @FXML private Label chatText;      // ✅ exists in your FXML
     @FXML private VBox chatMessages;
     @FXML private TextField chatInput;
     @FXML private Button btnMascot;
@@ -71,7 +71,6 @@ public class AffichageActivitesController {
 
     @FXML
     public void initialize() {
-
         // banner
         if (bannerImage != null) {
             var url = getClass().getResource("/images/banner.jpg");
@@ -125,14 +124,11 @@ public class AffichageActivitesController {
             if (hero != null) bannerImage.fitHeightProperty().bind(hero.heightProperty());
         }
 
-        // ✅ Avoid layout loop in fullscreen: DON'T bind FlowPane width to ScrollPane width
-        if (cardsContainer != null) {
-            // keep wrapping stable; you already have prefWrapLength="1100" in FXML
-            cardsContainer.setPrefWidth(Region.USE_COMPUTED_SIZE);
-            cardsContainer.setMaxWidth(Region.USE_COMPUTED_SIZE);
+        if (cardsContainer != null && scroll != null) {
+            cardsContainer.prefWidthProperty().bind(scroll.widthProperty().subtract(SIDE_PADDING));
         }
 
-        // currency default + listener
+        // ✅ Currency default + listener (NEW)
         if (currencyBox != null) {
             if (currencyBox.getValue() == null) currencyBox.setValue("TND");
             selectedCurrency = currencyBox.getValue();
@@ -144,17 +140,17 @@ public class AffichageActivitesController {
             });
         }
 
-        // ✅ IMPORTANT: async load (no UI freeze)
-        refreshAsync();
+        refresh();
     }
 
     // ===================== CURRENCY =====================
     private void loadRateAndRefresh() {
         if (currencyBox == null) return;
 
+        // if user selects TND, no need to call API
         if ("TND".equalsIgnoreCase(selectedCurrency)) {
             currentRate = 1.0;
-            refreshAsync();
+            refresh();
             return;
         }
 
@@ -167,21 +163,20 @@ public class AffichageActivitesController {
 
         task.setOnSucceeded(ev -> {
             currentRate = task.getValue();
-            refreshAsync();
+            refresh();
         });
 
         task.setOnFailed(ev -> {
             System.out.println("❌ Currency rate error: " + task.getException());
 
+            // fallback to TND
             currentRate = 1.0;
             selectedCurrency = "TND";
             currencyBox.setValue("TND");
-            refreshAsync();
+            refresh();
         });
 
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+        new Thread(task).start();
     }
 
     private String currencySymbol(String cur) {
@@ -194,12 +189,12 @@ public class AffichageActivitesController {
         };
     }
 
-    // Convert stored DB price (TND) to selected currency for display
+    // Convert a stored DB price (TND) to selected currency for display
     private double displayPrice(double prixTND) {
         return prixTND * currentRate;
     }
 
-    // Convert user input (selected currency) back to TND for DB filtering
+    // Convert user input (in selected currency) back to TND for DB filtering
     private double toTND(double amountInSelectedCurrency) {
         if (currentRate == 0) return amountInSelectedCurrency;
         return amountInSelectedCurrency / currentRate;
@@ -214,7 +209,7 @@ public class AffichageActivitesController {
         if (tfLieu != null) tfLieu.clear();
         if (tfMinPrix != null) tfMinPrix.clear();
         if (tfMaxPrix != null) tfMaxPrix.clear();
-        refreshAsync();
+        refresh();
     }
 
     @FXML
@@ -228,37 +223,18 @@ public class AffichageActivitesController {
 
         if (!minText.isEmpty() && min == null) { showWarn("Prix min doit être un nombre"); return; }
         if (!maxText.isEmpty() && max == null) { showWarn("Prix max doit être un nombre"); return; }
+
         if (min != null && min < 0) { showWarn("Prix min invalide"); return; }
         if (max != null && max < 0) { showWarn("Prix max invalide"); return; }
         if (min != null && max != null && min > max) { showWarn("Min > Max"); return; }
 
+        // ✅ interpret min/max as selected currency (UI), convert to TND for DB filtering
         Double minTND = (min == null) ? null : toTND(min);
         Double maxTND = (max == null) ? null : toTND(max);
 
-        searchAsync(lieu, minTND, maxTND);
-    }
-
-    private void searchAsync(String lieu, Double minTND, Double maxTND) {
-        Task<List<Activite>> task = new Task<>() {
-            @Override
-            protected List<Activite> call() {
-                return service.search(lieu, minTND, maxTND);
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            afficherListe(task.getValue());
-            if (scroll != null) scroll.setVvalue(0);
-        });
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Erreur recherche: " + task.getException().getMessage()).showAndWait();
-        });
-
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+        List<Activite> results = service.search(lieu, minTND, maxTND);
+        afficherListe(results);
+        if (scroll != null) scroll.setVvalue(0);
     }
 
     // ===================== CHAT =====================
@@ -297,38 +273,15 @@ public class AffichageActivitesController {
 
         botSay("⏳ NAVI réfléchit...");
 
-        // ✅ Load activities async then call API
-        loadAllActivitesAsync(all -> callChatApi(msg.trim(), all));
-    }
+        List<Activite> all = service.getAllActivites();
 
-    private void loadAllActivitesAsync(java.util.function.Consumer<List<Activite>> onDone) {
-        Task<List<Activite>> task = new Task<>() {
-            @Override
-            protected List<Activite> call() {
-                return service.getAllActivites();
-            }
-        };
-
-        task.setOnSucceeded(e -> onDone.accept(task.getValue()));
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            Platform.runLater(() -> botSay("❌ Erreur DB: " + task.getException().getMessage()));
-        });
-
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
-    }
-
-    private void callChatApi(String userMessage, List<Activite> all) {
         List<Map<String, Object>> acts = all.stream()
                 .map(a -> {
                     Map<String, Object> m = new LinkedHashMap<>();
                     m.put("id", a.getIdActivite());
                     m.put("nom", safe(a.getNom()));
                     m.put("lieu", safe(a.getLieu()));
-                    m.put("prix", a.getPrix()); // TND in DB
+                    m.put("prix", a.getPrix()); // still TND in DB
                     m.put("type", safe(a.getType()));
                     m.put("duree", a.getDuree());
                     return m;
@@ -336,7 +289,7 @@ public class AffichageActivitesController {
                 .collect(Collectors.toList());
 
         Map<String, Object> payload = new LinkedHashMap<>();
-        payload.put("message", userMessage);
+        payload.put("message", msg.trim());
         payload.put("activities", acts);
 
         new Thread(() -> {
@@ -412,130 +365,171 @@ public class AffichageActivitesController {
     private void afficherListe(List<Activite> activites) {
         if (cardsContainer == null) return;
         cardsContainer.getChildren().clear();
-        for (Activite a : activites) {
+        for (Activite a : activites)
             cardsContainer.getChildren().add(createCard(a));
-        }
     }
 
-    private void refreshAsync() {
-        Task<List<Activite>> task = new Task<>() {
-            @Override
-            protected List<Activite> call() {
-                return service.getAllActivites();
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            afficherListe(task.getValue());
-            if (scroll != null) scroll.setVvalue(0);
-        });
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Erreur chargement activités: " + task.getException().getMessage()).showAndWait();
-        });
-
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+    private void refresh() {
+        List<Activite> activites = service.getAllActivites();
+        afficherListe(activites);
+        if (scroll != null) scroll.setVvalue(0);
     }
 
     private VBox createCard(Activite a) {
+        VBox card = new VBox(12);
+        card.getStyleClass().add("card");
 
-        VBox card = new VBox();
-        card.getStyleClass().add("tripCard");
-        card.setPrefWidth(360);
-        card.setMaxWidth(360);
+        HBox top = new HBox(10);
 
-        ImageView img = new ImageView();
-        img.getStyleClass().add("tripCardImage");
-        img.setFitWidth(360);
-        img.setFitHeight(210);
-        img.setPreserveRatio(false);
-        img.setSmooth(true);
-        img.setImage(loadCardImage(a));
+        Label lieu = new Label(safeUpper(a.getLieu()));
+        lieu.getStyleClass().add("cardSmallTop");
 
-        StackPane imageWrap = new StackPane(img);
-        imageWrap.getStyleClass().add("tripCardImageWrap");
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        VBox body = new VBox(10);
-        body.setPadding(new Insets(14));
+        Label rating = new Label("★ 4.8");
+        rating.getStyleClass().add("metaText");
 
-        Label country = new Label(safeUpper(a.getLieu()));
-        country.getStyleClass().add("tripCardCountry");
-
-        Label star = new Label("★");
-        star.getStyleClass().add("tripCardStar");
-
-        Label rating = new Label("4.8");
-        rating.getStyleClass().add("tripCardRating");
-
-        HBox ratingBox = new HBox(6, star, rating);
-        ratingBox.setAlignment(Pos.CENTER_RIGHT);
-
-        Region spacer1 = new Region();
-        HBox.setHgrow(spacer1, Priority.ALWAYS);
-
-        HBox topRow = new HBox(10, country, spacer1, ratingBox);
-        topRow.setAlignment(Pos.CENTER_LEFT);
+        top.getChildren().addAll(lieu, spacer, rating);
 
         Label title = new Label(safe(a.getNom()));
-        title.getStyleClass().add("tripCardTitle");
+        title.getStyleClass().add("cardTitle");
         title.setWrapText(true);
 
-        Label people = new Label("👥 6-10");
-        people.getStyleClass().add("tripMeta");
+        HBox meta = new HBox(10);
+        meta.setAlignment(Pos.CENTER_LEFT);
 
-        Label duration = new Label("📅 " + a.getDuree() + " min");
-        duration.getStyleClass().add("tripMeta");
-
-        Label badge = new Label((a.getType() == null || a.getType().isBlank()) ? "Easy" : a.getType());
-        badge.getStyleClass().add("tripBadge");
+        Label duree = new Label("⏱ " + a.getDuree() + " min");
+        duree.getStyleClass().add("metaText");
 
         Region spacer2 = new Region();
         HBox.setHgrow(spacer2, Priority.ALWAYS);
 
-        HBox metaRow = new HBox(18, people, duration, spacer2, badge);
-        metaRow.setAlignment(Pos.CENTER_LEFT);
+        Label badge = new Label(safe(a.getType()));
+        badge.getStyleClass().add("badge");
 
-        Separator sep = new Separator();
-        sep.getStyleClass().add("tripDivider");
+        meta.getChildren().addAll(duree, spacer2, badge);
 
+        Separator hr = new Separator();
+        hr.getStyleClass().add("hr");
+
+        HBox bottom = new HBox(10);
+        bottom.setAlignment(Pos.CENTER_LEFT);
+
+        VBox priceBox = new VBox(2);
+
+        // price with currency conversion
         double prixConverted = displayPrice(a.getPrix());
         String sym = currencySymbol(selectedCurrency);
 
         Label price = new Label(formatPrix(prixConverted) + " " + sym);
-        price.getStyleClass().add("tripPrice");
+        price.getStyleClass().add("price");
 
-        Label per = new Label("Par activité");
-        per.getStyleClass().add("tripPer");
+        Label priceSub = new Label("Par activité");
+        priceSub.getStyleClass().add("priceSub");
 
-        VBox priceBox = new VBox(2, price, per);
-        priceBox.setAlignment(Pos.CENTER_LEFT);
-
-        Button book = new Button("Book Now  >");
-        book.getStyleClass().add("tripBookBtn");
-        book.setOnAction(e -> openReservationForm(a.getIdActivite(), a.getNom()));
+        priceBox.getChildren().addAll(price, priceSub);
 
         Region spacer3 = new Region();
         HBox.setHgrow(spacer3, Priority.ALWAYS);
 
-        HBox bottomRow = new HBox(10, priceBox, spacer3, book);
-        bottomRow.setAlignment(Pos.CENTER_LEFT);
+        // ADMIN ACTIONS
+        Button reserver = new Button("📌");
+        reserver.getStyleClass().addAll("iconBtn", "btnAdd");
+        reserver.setTooltip(new Tooltip("Réserver"));
+        reserver.setOnAction(e -> openReservationForm(a.getIdActivite(), a.getNom()));
 
-        body.getChildren().addAll(topRow, title, metaRow, sep, bottomRow);
+        Button modifier = new Button("✏");
+        modifier.getStyleClass().addAll("iconBtn", "btnEdit");
+        modifier.setTooltip(new Tooltip("Modifier"));
+        modifier.setOnAction(e -> ouvrirModifier(a));
 
-        card.getChildren().addAll(imageWrap, body);
+        Button ajouter = new Button("➕");
+        ajouter.getStyleClass().addAll("iconBtn", "btnAdd");
+        ajouter.setTooltip(new Tooltip("Ajouter"));
+        ajouter.setOnAction(e -> ouvrirAjouter());
+
+        Button supprimer = new Button("🗑");
+        supprimer.getStyleClass().addAll("iconBtn", "btnDelete");
+        supprimer.setTooltip(new Tooltip("Supprimer"));
+        supprimer.setOnAction(e -> confirmerEtSupprimer(a));
+
+        HBox actions = new HBox(8, reserver, modifier, ajouter, supprimer);
+        actions.setAlignment(Pos.CENTER_RIGHT);
+
+        bottom.getChildren().addAll(priceBox, spacer3, actions);
+
+        card.getChildren().addAll(top, title, meta, hr, bottom);
+        VBox.setMargin(hr, new Insets(2, 0, 2, 0));
+
         return card;
     }
 
-    private Image loadCardImage(Activite a) {
-        var url = getClass().getResource("/images/activity_banner.jpg");
-        if (url == null) url = getClass().getResource("/images/banner.jpg");
-        return new Image(Objects.requireNonNull(url).toExternalForm(), true);
+    // ===================== NAVIGATION / CRUD =====================
+    private void ouvrirModifier(Activite a) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/modifier_activite.fxml"));
+            Parent root = loader.load();
+
+            ModifierActiviteController controller = loader.getController();
+            controller.setActivite(a);
+
+            Stage stage = (Stage) cardsContainer.getScene().getWindow();
+            Scene scene = stage.getScene();
+
+            if (scene == null) {
+                scene = new Scene(root);
+                stage.setScene(scene);
+            } else {
+                scene.setRoot(root);
+            }
+
+            // ✅ Apply the CSS for modifier page (use your modifier CSS if you have it)
+            scene.getStylesheets().clear();
+            var css = getClass().getResource("/affichage.css"); // or "/modifier.css" if you have one
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            stage.show();
+
+            // ✅ Keep fullscreen state stable
+            javafx.application.Platform.runLater(() -> {
+                stage.setMaximized(true);   // if you always want full screen
+                // OR if you only want to keep current state:
+                // if (stage.isMaximized()) stage.setMaximized(true);
+            });
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Modification impossible: " + ex.getMessage()).showAndWait();
+        }
     }
 
-    // ===================== NAVIGATION / RESERVATION =====================
+    private void ouvrirAjouter() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ajout_activite.fxml"));
+            Parent root = loader.load();
+
+            Scene scene = new Scene(root);
+            var css = getClass().getResource("/form_activite.css");
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            Stage stage = (Stage) cardsContainer.getScene().getWindow();
+            boolean wasMax = stage.isMaximized();
+            stage.setMaximized(false);
+
+            stage.setScene(scene);
+            root.applyCss();
+            root.layout();
+
+            stage.setMaximized(wasMax);
+            stage.centerOnScreen();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            showError("Ajout impossible", ex);
+        }
+    }
+
     private void openReservationForm(int idActivite, String nomActivite) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservation_form.fxml"));
@@ -568,8 +562,29 @@ public class AffichageActivitesController {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
     }
+    private void confirmerEtSupprimer(Activite a) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Confirmation");
+        confirm.setHeaderText("Supprimer cette activité ?");
+        confirm.setContentText("Activité : " + safe(a.getNom()));
+
+        Optional<ButtonType> res = confirm.showAndWait();
+        if (res.isPresent() && res.get() == ButtonType.OK) {
+            service.deleteActivite(a.getIdActivite());
+            refresh();
+        }
+    }
 
     // ===================== HELPERS =====================
+    private void showError(String title, Exception ex) {
+        Alert err = new Alert(Alert.AlertType.ERROR);
+        err.setTitle("Erreur");
+        err.setHeaderText(title);
+        err.setContentText(ex.getMessage());
+        err.showAndWait();
+        ex.printStackTrace();
+    }
+
     private void showWarn(String msg) {
         Alert err = new Alert(Alert.AlertType.WARNING);
         err.setTitle("Attention");
@@ -593,4 +608,50 @@ public class AffichageActivitesController {
         try { return Double.parseDouble(s.replace(",", ".")); }
         catch (NumberFormatException e) { return null; }
     }
+    @FXML
+    private void goFrontOffice() {
+        switchScene("/affichage_activites_front.fxml");
+    }
+
+    private void switchScene(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) cardsContainer.getScene().getWindow();
+
+            Scene scene = stage.getScene();
+            if (scene == null) {
+                scene = new Scene(root);
+                stage.setScene(scene);
+            } else {
+                scene.setRoot(root);
+            }
+
+            // ✅ re-apply CSS every time after swapping root
+            scene.getStylesheets().clear();
+            var css = getClass().getResource("/affichage.css");
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            // ❌ REMOVE these (they cause fullscreen freeze):
+            // stage.sizeToScene();
+            // stage.centerOnScreen();
+
+            stage.show();
+
+            // ✅ if currently maximized, refresh maximize safely (avoids stuck layouts)
+            javafx.application.Platform.runLater(() -> {
+                if (stage.isMaximized()) {
+                    stage.setMaximized(false);
+                    stage.setMaximized(true);
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+        }
+    }
+
+
 }

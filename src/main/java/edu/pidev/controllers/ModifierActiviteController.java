@@ -64,8 +64,6 @@ public class ModifierActiviteController {
             lblMessage.setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
             lblMessage.setText("✅ Activité mise à jour avec succès !");
 
-            // ✅ Optionnel: retourner automatiquement à l'affichage après mise à jour
-            // retour(null);
 
         } catch (NumberFormatException e) {
             lblMessage.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
@@ -79,12 +77,11 @@ public class ModifierActiviteController {
     @FXML
     private void retour(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/affichage_activites.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/affichage_activites_back.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root);
 
-            // ✅ CSS safe (ONLY if affichage_activites.fxml does NOT already include stylesheets="@affichage.css")
             var css = getClass().getResource("/affichage.css");
             if (css != null) {
                 scene.getStylesheets().add(css.toExternalForm());
@@ -94,14 +91,12 @@ public class ModifierActiviteController {
 
             Stage stage = (Stage) tfNom.getScene().getWindow();
 
-            // ✅ FIX: prevents stuck window after switching scenes
             boolean wasMax = stage.isMaximized();
             stage.setMaximized(false);
 
             stage.setScene(scene);
             stage.setTitle("Affichage Activités");
 
-            // ✅ force layout recalculation
             root.applyCss();
             root.layout();
 

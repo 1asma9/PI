@@ -1,54 +1,36 @@
 /* =========================
-   ===== PAGE / LAYOUT =====
-   ========================= */
+   GLOBAL / PAGE
+========================= */
+.pageRoot {
+    -fx-background-color: #f6f1e7;
+    -fx-font-family: "Segoe UI", "Inter", Arial;
+}
 
 .page {
-    -fx-background-color: #f6f1e7;
+    -fx-background-color: transparent;
 }
 
 .pageContent {
-    -fx-background-color: #f6f1e7;
-    -fx-padding: 20 0 40 0; /* top, right, bottom, left */
-}
-
-/* Title block under banner */
-.topBar {
-    -fx-padding: 24 40 18 40;
-    -fx-background-color: #f6f1e7;
-}
-
-.pageTitle {
-    -fx-font-size: 26px;
-    -fx-font-weight: 800;
-    -fx-text-fill: #0f2a2a;
-}
-
-.pageSubtitle {
-    -fx-font-size: 14px;
-    -fx-text-fill: #6a7a73;
-    -fx-padding: 6 0 0 0;
+    -fx-background-color: transparent;
+    -fx-padding: 20 0 40 0;
+    -fx-alignment: TOP_CENTER;
 }
 
 /* =========================
-   ===== SCROLLPANE ========
-   ========================= */
-
+   SCROLLPANE (hidden bars)
+========================= */
 .scroll {
     -fx-background-color: transparent;
     -fx-background: transparent;
 }
+.scroll > .viewport { -fx-background-color: transparent; }
 
-.scroll > .viewport {
-    -fx-background-color: transparent;
-}
-
-/* Hide scrollbars but keep scrolling */
+/* keep scrolling, hide bars */
 .scroll .scroll-bar:vertical,
 .scroll .scroll-bar:horizontal {
     -fx-opacity: 0;
     -fx-padding: -9999;
 }
-
 .scroll .scroll-bar:vertical .increment-button,
 .scroll .scroll-bar:vertical .decrement-button,
 .scroll .scroll-bar:horizontal .increment-button,
@@ -56,23 +38,17 @@
     -fx-opacity: 0;
     -fx-padding: 0;
 }
-
 .scroll .scroll-bar:vertical .thumb,
 .scroll .scroll-bar:horizontal .thumb {
     -fx-opacity: 0;
 }
 
 /* =========================
-   ===== HERO BANNER =======
-   (website #2 style)
-   ========================= */
-
+   HERO
+========================= */
 .hero {
-    -fx-pref-width: 100%;
     -fx-min-height: 520px;
     -fx-max-height: 520px;
-
-    /* little space from top + small sides like the design */
     -fx-padding: 12 40 0 40;
 }
 
@@ -83,20 +59,13 @@
 }
 
 .heroOverlay {
-    -fx-background-color: rgba(0, 0, 0, 0.45);
+    -fx-background-color: rgba(0,0,0,0.45);
     -fx-background-radius: 18;
 }
 
 .heroText {
     -fx-alignment: CENTER;
     -fx-padding: 0 40 0 40;
-}
-
-.heroKicker {
-    -fx-text-fill: rgba(255,255,255,0.85);
-    -fx-font-size: 12px;
-    -fx-font-weight: 700;
-    -fx-letter-spacing: 2px;
 }
 
 .heroTitle {
@@ -112,19 +81,114 @@
 }
 
 /* =========================
-   ===== CARDS WRAPPER =====
-   ========================= */
-
-.cardsWrap {
-    -fx-padding: 80 40 40 40; /* 👈 pushes cards DOWN */
-    -fx-alignment: CENTER;   /* keeps cards centered */
+   SEARCH BAR
+========================= */
+.searchBarWrapper {
+    -fx-background-color: transparent;
+    -fx-padding: 28 0 12 0; /* pushes it down under hero */
 }
 
+.searchBarInner {
+    -fx-background-color: #0f3d2e;   /* dark green */
+    -fx-padding: 10 12;
+    -fx-background-radius: 12;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* white filter blocks */
+.searchBox {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #e3b341;      /* gold */
+    -fx-border-width: 3;
+    -fx-padding: 6 10;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 8, 0.2, 0, 2);
+}
+
+.searchIcon { -fx-font-size: 14; }
+
+.searchInput {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 13;
+    -fx-font-weight: 600;
+    -fx-prompt-text-fill: #8a8a8a;
+    -fx-text-fill: #111;
+}
+
+.searchInput.small { -fx-pref-width: 90; }
+
+.dash { -fx-text-fill: #666; -fx-font-size: 13; }
+
+.clearBtn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #222;
+    -fx-font-size: 13;
+    -fx-cursor: hand;
+    -fx-padding: 2 6;
+}
+
+/* ComboBox look */
+.currencyCombo {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Buttons */
+.searchBtn {
+    -fx-background-color: #1f7a5c;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-font-weight: 800;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-padding: 8 16;
+}
+.searchBtn:hover { -fx-opacity: 0.92; }
+
+.resetBtn {
+    -fx-background-color: #e3b341;
+    -fx-text-fill: #1f2933;
+    -fx-font-weight: 800;
+    -fx-background-radius: 12;
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+}
+.resetBtn:hover { -fx-background-color: #f1c75b; }
+.resetBtn:pressed { -fx-background-color: #d4a017; }
 
 /* =========================
-   ========= CARD ==========
-   ========================= */
+   SECTION TITLE (cards header)
+========================= */
+.section {
+    -fx-padding: 12 40 0 40;
+}
 
+.sectionTitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
+}
+
+.sectionHint {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6a7a73;
+}
+
+/* =========================
+   CARDS WRAPPER
+========================= */
+.cardsWrap {
+    -fx-padding: 18 0 40 0;
+    -fx-alignment: CENTER;
+}
+
+/* =========================
+   CARD
+========================= */
 .card {
     -fx-background-color: white;
     -fx-background-radius: 18;
@@ -141,7 +205,6 @@
     -fx-font-size: 12px;
     -fx-font-weight: 700;
     -fx-text-fill: #5c6d66;
-    -fx-letter-spacing: 1px;
 }
 
 .cardTitle {
@@ -165,25 +228,21 @@
     -fx-border-radius: 14;
 }
 
-.hr {
-    -fx-background-color: #e7e1d8;
-}
+.hr { -fx-background-color: #e7e1d8; }
 
 .price {
     -fx-font-size: 20px;
     -fx-font-weight: 900;
     -fx-text-fill: #0f2a2a;
 }
-
 .priceSub {
     -fx-font-size: 12px;
     -fx-text-fill: #6a7a73;
 }
 
 /* =========================
-   ===== ICON BUTTONS ======
-   ========================= */
-
+   ICON BUTTONS (edit/add/delete)
+========================= */
 .iconBtn {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
@@ -195,30 +254,19 @@
 
     -fx-background-radius: 10;
     -fx-padding: 0;
-
     -fx-alignment: center;
     -fx-cursor: hand;
 }
 
-/* ✏ Modifier (gold) */
-.btnEdit {
-    -fx-background-color: #c9a24a;
-    -fx-text-fill: white;
-}
-.btnEdit:hover {
-    -fx-background-color: #b8933f;
-}
+/* edit */
+.btnEdit { -fx-background-color: #c9a24a; -fx-text-fill: white; }
+.btnEdit:hover { -fx-background-color: #b8933f; }
 
-/* ➕ Ajouter / 📌 Réserver (dark green) */
-.btnAdd {
-    -fx-background-color: #0f2a2a;
-    -fx-text-fill: white;
-}
-.btnAdd:hover {
-    -fx-background-color: #163a3a;
-}
+/* add/reserve */
+.btnAdd { -fx-background-color: #0f2a2a; -fx-text-fill: white; }
+.btnAdd:hover { -fx-background-color: #163a3a; }
 
-/* 🗑 Supprimer (outline red) */
+/* delete */
 .btnDelete {
     -fx-background-color: transparent;
     -fx-border-color: #d9534f;
@@ -229,79 +277,185 @@
     -fx-background-color: #d9534f;
     -fx-text-fill: white;
 }
-/* ===== FORM CARD ===== */
-.formCard {
+
+/* =========================
+   MASCOT + CHAT
+========================= */
+.mascotLayer { -fx-alignment: BOTTOM_RIGHT; }
+
+/* mascot button */
+.mascotBtn {
     -fx-background-color: white;
-    -fx-background-radius: 24;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.28), 25, 0, 0, 10);
-    -fx-border-radius: 24;
+    -fx-background-radius: 50%;
+    -fx-pref-width: 72px;
+    -fx-pref-height: 72px;
+    -fx-min-width: 72px;
+    -fx-min-height: 72px;
+
+    -fx-border-color: #e3b341;
+    -fx-border-width: 3;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 12, 0.2, 0, 4);
+    -fx-cursor: hand;
+}
+.mascotBtn:hover { -fx-scale-x: 1.08; -fx-scale-y: 1.08; }
+
+/* bubble */
+.chatBubble {
+    -fx-background-color: white;
+    -fx-background-radius: 22;
+    -fx-border-color: #e3b341;
+    -fx-border-width: 3;
+    -fx-border-radius: 22;
+
+    -fx-padding: 16;
+    -fx-spacing: 12;
+
+    -fx-pref-width: 420px;
+    -fx-max-width: 420px;
+    -fx-pref-height: 300px;
+    -fx-max-height: 300px;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 22, 0.25, 0, 6);
 }
 
-/* ===== HEADER IMAGE ===== */
-.headerImageWrap {
-    -fx-background-radius: 24 24 0 0;
-    -fx-border-radius: 24 24 0 0;
+.chatTitle {
+    -fx-font-weight: 900;
+    -fx-font-size: 13;
+    -fx-text-fill: #0f2a2a;
+}
+
+.chatCloseBtn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #444;
+    -fx-font-size: 12;
+    -fx-cursor: hand;
+}
+
+.chatSubtitle { -fx-font-size: 12; -fx-text-fill: #6a7a73; }
+
+.chatScroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.chatMessages { -fx-padding: 4 2 4 2; -fx-spacing: 6; }
+
+.botMsg{
+    -fx-background-color: #1f7a5c;
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+    -fx-padding: 8 10;
+    -fx-font-size: 12;
+    -fx-font-weight: 600;
+}
+.userMsg{
+    -fx-background-color: #e3b341;
+    -fx-background-radius: 10;
+    -fx-padding: 6 8;
+    -fx-font-size: 12;
+}
+
+.chatInputField{
+    -fx-pref-height: 30;
+    -fx-font-size: 12;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #d9cdbf;
+    -fx-background-color: #fbf7f1;
+    -fx-padding: 6 10;
+}
+
+.chatSendBtn{
+    -fx-background-color: #1f7a5c;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 10;
+    -fx-padding: 6 12;
+    -fx-pref-height: 30;
+    -fx-cursor: hand;
+}
+/* =========================
+   TRAVEL CARD (new style)
+========================= */
+.tripCard {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 18, 0.2, 0, 6);
+}
+
+.tripCardImageWrap {
+    -fx-background-radius: 18 18 0 0;
+    -fx-border-radius: 18 18 0 0;
     -fx-overflow: hidden;
 }
 
-.headerOverlay {
-    -fx-background-color: rgba(0,0,0,0.25);
+.tripCardImage {
+    -fx-background-radius: 18 18 0 0;
+    -fx-border-radius: 18 18 0 0;
 }
 
-.headerTitle {
-    -fx-font-size: 28px;
-    -fx-font-weight: 900;
-    -fx-text-fill: white;
+.tripCardCountry {
+    -fx-font-size: 12px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #7a8a84;
 }
 
-.headerSub {
+.tripCardStar {
+    -fx-text-fill: #e3b341;
     -fx-font-size: 14px;
-    -fx-text-fill: rgba(255,255,255,0.85);
 }
 
-/* ===== INPUTS ===== */
-.fieldLabel {
-    -fx-font-weight: bold;
-    -fx-text-fill: #20364a;
+.tripCardRating {
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #51625c;
 }
 
-.fieldInput {
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-border-color: #d9cdbf;
-    -fx-background-color: #fbf7f1;
-    -fx-padding: 10 12;
+.tripCardTitle {
+    -fx-font-size: 20px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
 }
 
-.fieldArea {
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-border-color: #d9cdbf;
-    -fx-background-color: #fbf7f1;
-    -fx-padding: 10 12;
+.tripMeta {
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #6a7a73;
 }
 
-/* ===== BUTTONS ===== */
-.btnPrimary {
-    -fx-background-color: #c9a24a;
+.tripBadge {
+    -fx-background-color: #eefcf3;
+    -fx-text-fill: #1c7a44;
+    -fx-padding: 6 14;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #b9efcf;
+    -fx-font-weight: 800;
+}
+
+.tripDivider { -fx-opacity: 0.45; }
+
+.tripPrice {
+    -fx-font-size: 20px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
+}
+
+.tripPer {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6a7a73;
+}
+
+.tripBookBtn {
+    -fx-background-color: #0f2a2a;
     -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-background-radius: 24;
-    -fx-padding: 12 34;
+    -fx-font-weight: 900;
+    -fx-background-radius: 10;
+    -fx-padding: 10 16;
     -fx-cursor: hand;
 }
 
-.btnGhost {
-    -fx-background-color: transparent;
-    -fx-text-fill: #3b4a5a;
-    -fx-font-weight: bold;
-    -fx-border-color: #d9cdbf;
-    -fx-border-radius: 24;
-    -fx-background-radius: 24;
-    -fx-padding: 12 34;
-    -fx-cursor: hand;
-}
-
-.msgLabel {
-    -fx-font-weight: bold;
-}
+.tripBookBtn:hover { -fx-opacity: 0.92; }

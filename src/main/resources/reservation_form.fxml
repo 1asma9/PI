@@ -13,57 +13,107 @@
 
     <content>
         <VBox fx:id="pageContent" spacing="18" styleClass="page">
-            <padding>
-                <Insets top="28" right="28" bottom="28" left="28"/>
-            </padding>
 
-            <Label text="Réservation d’activité" styleClass="pageTitle"/>
+            <!-- ✅ HERO TITLE BLOCK -->
+            <StackPane styleClass="heroHeader">
+                <VBox styleClass="heroSection" alignment="CENTER" spacing="14">
 
-            <!-- ✅ CONTEXTE ACTIVITE -->
-            <Label fx:id="lblActivite" text="Activité : -" styleClass="pageSubtitle"/>
+                    <Label text="DÉTAILS DE L’ACTIVITÉ" styleClass="heroKicker"/>
 
-            <!-- ✅ 2 COLONNES : FORM + LISTE -->
-            <HBox spacing="18">
+                    <Label fx:id="lblActivite"
+                           text="Activité : Safari"
+                           styleClass="heroTitle"/>
 
-                <!-- FORM -->
-                <VBox spacing="12" styleClass="cardForm" prefWidth="380">
-                    <Label fx:id="lblMode" text="Ajouter une réservation" styleClass="sectionTitle"/>
-
-                    <Label text="Date de réservation" styleClass="fieldLabel"/>
-                    <DatePicker fx:id="dpDate"/>
-
-                    <Label text="Nombre de personnes" styleClass="fieldLabel"/>
-                    <TextField fx:id="tfNombre" promptText="Ex: 2"/>
-
-                    <Label text="Statut" styleClass="fieldLabel"/>
-                    <ComboBox fx:id="cbStatut"/>
-
-                    <Label fx:id="lblError" text="" styleClass="errorLabel" visible="false"/>
-
-                    <HBox spacing="10">
-                        <Button fx:id="btnSave" text="Ajouter" onAction="#onSave" styleClass="btnPrimary"/>
-                        <Button text="Vider" onAction="#onClear" styleClass="btnSecondary"/>
+                    <HBox alignment="CENTER">
+                        <Region styleClass="heroLine"/>
                     </HBox>
 
-                    <Separator/>
+                    <Label text="Une expérience immersive mêlant culture, découverte et moments uniques pour vivre pleinement la destination."
+                           styleClass="heroSubtitle"
+                           wrapText="true"
+                           maxWidth="600"/>
 
-                    <Button text="⬅ Retour activités" onAction="#onBack" styleClass="btnSecondary"/>
                 </VBox>
+            </StackPane>
 
-                <!-- LISTE -->
-                <VBox spacing="12" HBox.hgrow="ALWAYS">
+            <!-- ✅ BODY -->
+            <VBox spacing="18" styleClass="pageBody">
+                <padding>
+                    <Insets top="28" right="28" bottom="28" left="28"/>
+                </padding>
+
+                <!-- ✅ AI PANEL (FR + GOLD LINE) -->
+                <VBox fx:id="aiPanel"
+                      spacing="10"
+                      styleClass="aiPanel"
+                      maxWidth="420">
+
                     <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Label text="Liste des réservations" styleClass="sectionTitle"/>
+                        <VBox spacing="6">
+                            <Label text="🤖 Conseils IA" styleClass="aiTitle"/>
+                            <!-- ✅ Ligne dorée -->
+                            <Region styleClass="aiGoldLine"/>
+                            <Label text="À quoi s’attendre pour cette activité"
+                                   styleClass="aiSubTitle"/>
+                        </VBox>
+
                         <Region HBox.hgrow="ALWAYS"/>
+
+                        <Button text="Générer"
+                                onAction="#onGenerateWhatToExpect"
+                                styleClass="aiBtn"/>
                     </HBox>
 
-                    <FlowPane fx:id="reservationsContainer"
-                              hgap="16" vgap="16"
-                              prefWrapLength="900"
-                              styleClass="cardsWrap"/>
+                    <Label fx:id="aiExpectText"
+                           text="Cliquez sur “Générer” pour obtenir des conseils IA adaptés à cette activité."
+                           wrapText="true"
+                           styleClass="aiText"/>
                 </VBox>
 
-            </HBox>
+                <!-- ✅ 2 COLONNES : FORM + LISTE -->
+                <HBox spacing="18">
+
+                    <!-- FORM -->
+                    <VBox spacing="12" styleClass="cardForm" prefWidth="380">
+                        <Label fx:id="lblMode" text="Ajouter une réservation" styleClass="sectionTitle"/>
+
+                        <Label text="Date de réservation" styleClass="fieldLabel"/>
+                        <DatePicker fx:id="dpDate"/>
+
+                        <Label text="Nombre de personnes" styleClass="fieldLabel"/>
+                        <TextField fx:id="tfNombre" promptText="Ex : 2"/>
+
+                        <Label text="Statut" styleClass="fieldLabel"/>
+                        <ComboBox fx:id="cbStatut"/>
+
+                        <Label fx:id="lblError" text="" styleClass="errorLabel" visible="false"/>
+
+                        <HBox spacing="10">
+                            <Button fx:id="btnSave" text="Ajouter" onAction="#onSave" styleClass="btnPrimary"/>
+                            <Button text="Vider" onAction="#onClear" styleClass="btnSecondary"/>
+                        </HBox>
+
+                        <Separator/>
+
+                        <Button text="⬅ Retour aux activités" onAction="#onBack" styleClass="btnSecondary"/>
+                    </VBox>
+
+                    <!-- LISTE -->
+                    <VBox spacing="12" HBox.hgrow="ALWAYS">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Liste des réservations" styleClass="sectionTitle"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                        </HBox>
+
+                        <FlowPane fx:id="reservationsContainer"
+                                  hgap="16" vgap="16"
+                                  prefWrapLength="900"
+                                  styleClass="cardsWrap"/>
+                    </VBox>
+
+                </HBox>
+            </VBox>
+
         </VBox>
     </content>
 </ScrollPane>

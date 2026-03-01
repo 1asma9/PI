@@ -234,3 +234,89 @@
 .scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
+/* ================= AI WHAT TO EXPECT PANEL ================= */
+.aiPanel {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: rgba(201, 162, 74, 0.3);
+    -fx-padding: 14 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 3);
+    -fx-max-width: 420; /* keeps it aligned nicely on the left */
+}
+
+.aiTitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
+}
+
+.aiText {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: #374151;
+    -fx-background-color: #f8f4ec;
+    -fx-background-radius: 14;
+    -fx-padding: 10 12;
+}
+
+.aiBtn {
+    -fx-background-color: #c9a24a;
+    -fx-text-fill: white;
+    -fx-font-weight: 900;
+    -fx-font-size: 12px;
+    -fx-background-radius: 18;
+    -fx-padding: 7 14;
+    -fx-cursor: hand;
+}
+
+.aiBtn:hover {
+    -fx-background-color: #b8933f;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+/* ================= HERO HEADER (TITLE BLOCK) ================= */
+/* BIG GREEN HERO SECTION */
+.heroSection {
+    -fx-background-color: #0f2a2a;
+
+    /* THIS is what makes it tall */
+    -fx-min-height: 420;          /* try 420–520 */
+
+    -fx-padding: 80 40 80 40;     /* TOP RIGHT BOTTOM LEFT */
+}
+
+/* Small top label */
+.heroKicker {
+    -fx-text-fill: #c9a24a;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-letter-spacing: 1.5px;
+}
+
+/* Main title */
+.heroTitle {
+    -fx-text-fill: white;
+    -fx-font-size: 42px;
+    -fx-font-weight: 900;
+}
+
+/* Subtitle */
+.heroSubtitle {
+    -fx-text-fill: rgba(255,255,255,0.85);
+    -fx-font-size: 15px;
+    -fx-text-alignment: center;
+    -fx-line-spacing: 4px;
+}
+/* ================= GOLD LINE DETAIL ================= */
+.aiGoldLine {
+    -fx-pref-width: 48;     /* longueur (comme le site) */
+    -fx-min-width: 48;
+    -fx-max-width: 48;
+
+    -fx-pref-height: 2;     /* très fin */
+    -fx-min-height: 2;
+    -fx-max-height: 2;
+
+    -fx-background-color: #c9a24a; /* gold */
+    -fx-background-radius: 2;
+}

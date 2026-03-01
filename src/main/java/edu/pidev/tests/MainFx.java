@@ -10,7 +10,6 @@ public class MainFx extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        // ✅ TEST IMAGE PATH (doit afficher un URL, pas "null")
         System.out.println("IMAGE URL = " + MainFx.class.getResource("/images/background.png"));
 
         FXMLLoader loader = new FXMLLoader(

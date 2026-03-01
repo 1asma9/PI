@@ -12,7 +12,7 @@ public class ActiviteServiceTest {
 
     static ActiviteService service;
     static int createdId = -1;
-    static int idActiviteToCleanup = -1; // ✅ ID à nettoyer
+    static int idActiviteToCleanup = -1;
     static String uniqueName;
 
     @BeforeAll
@@ -49,11 +49,11 @@ public class ActiviteServiceTest {
         );
 
         try {
-            // ✅ CREATE (chez toi retourne void)
+
             service.addActivite(a);
             System.out.println("[DEBUG_LOG] addActivite() called");
 
-            // ✅ READ
+
             List<Activite> list = service.getAllActivites();
             assertFalse(list.isEmpty(), "List should not be empty");
 
@@ -65,7 +65,7 @@ public class ActiviteServiceTest {
             assertNotNull(created, "Created activite should exist in DB");
 
             createdId = created.getIdActivite();
-            idActiviteToCleanup = createdId; // ✅ pour cleanup
+            idActiviteToCleanup = createdId;
             System.out.println("[DEBUG_LOG] Found created activite ID: " + createdId);
 
             assertTrue(createdId > 0, "ID must be > 0");

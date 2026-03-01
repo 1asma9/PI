@@ -206,3 +206,10 @@
     -fx-background-radius: 8;
     -fx-padding: 8;
 }
+.previewImage {
+    -fx-background-color: white;
+    -fx-border-color: #e6e0d6;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6;
+}

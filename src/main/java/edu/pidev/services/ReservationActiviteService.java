@@ -18,7 +18,6 @@ public class ReservationActiviteService {
         cnx = MyConnection.getInstance().getCnx();
     }
 
-    // ✅ BONUS PRO: vérifier si l'activité existe
     private boolean activiteExiste(int idActivite) throws SQLException {
         String sql = "SELECT 1 FROM activite WHERE id_activite=?";
         try (PreparedStatement ps = cnx.prepareStatement(sql)) {

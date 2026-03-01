@@ -7,12 +7,17 @@ import edu.pidev.tools.CurrencyService;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,13 +26,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.scene.Node;
 
-public class AffichageActivitesController {
+public class AffichageActivitesFrontController {
 
     // ===== UI (cards + scroll + hero) =====
     @FXML private FlowPane cardsContainer;
@@ -43,12 +43,11 @@ public class AffichageActivitesController {
     @FXML private TextField tfMinPrix;
     @FXML private TextField tfMaxPrix;
 
-    // Currency selector
+    // ✅ Currency selector
     @FXML private ComboBox<String> currencyBox;
 
     private String selectedCurrency = "TND";
     private double currentRate = 1.0; // TND -> selectedCurrency
-
     private final CurrencyService currencyService = new CurrencyService();
 
     // ===== Chat UI =====
@@ -78,7 +77,7 @@ public class AffichageActivitesController {
             if (url == null) {
                 System.out.println("❌ Banner not found: /images/banner.jpg");
             } else {
-                bannerImage.setImage(new Image(url.toExternalForm()));
+                bannerImage.setImage(new Image(url.toExternalForm(), false));
             }
             bannerImage.setPreserveRatio(false);
             bannerImage.setSmooth(true);
@@ -88,7 +87,7 @@ public class AffichageActivitesController {
         if (btnMascot != null) {
             var mu = getClass().getResource("/images/mascot.png");
             if (mu != null) {
-                ImageView iv = new ImageView(new Image(mu.toExternalForm()));
+                ImageView iv = new ImageView(new Image(mu.toExternalForm(), false));
                 iv.setFitWidth(52);
                 iv.setFitHeight(52);
                 iv.setPreserveRatio(true);
@@ -125,14 +124,11 @@ public class AffichageActivitesController {
             if (hero != null) bannerImage.fitHeightProperty().bind(hero.heightProperty());
         }
 
-        // ✅ Avoid layout loop in fullscreen: DON'T bind FlowPane width to ScrollPane width
-        if (cardsContainer != null) {
-            // keep wrapping stable; you already have prefWrapLength="1100" in FXML
-            cardsContainer.setPrefWidth(Region.USE_COMPUTED_SIZE);
-            cardsContainer.setMaxWidth(Region.USE_COMPUTED_SIZE);
+        if (cardsContainer != null && scroll != null) {
+            cardsContainer.prefWidthProperty().bind(scroll.widthProperty().subtract(SIDE_PADDING));
         }
 
-        // currency default + listener
+        // Currency default + listener
         if (currencyBox != null) {
             if (currencyBox.getValue() == null) currencyBox.setValue("TND");
             selectedCurrency = currencyBox.getValue();
@@ -144,8 +140,7 @@ public class AffichageActivitesController {
             });
         }
 
-        // ✅ IMPORTANT: async load (no UI freeze)
-        refreshAsync();
+        refresh();
     }
 
     // ===================== CURRENCY =====================
@@ -154,7 +149,7 @@ public class AffichageActivitesController {
 
         if ("TND".equalsIgnoreCase(selectedCurrency)) {
             currentRate = 1.0;
-            refreshAsync();
+            refresh();
             return;
         }
 
@@ -167,21 +162,18 @@ public class AffichageActivitesController {
 
         task.setOnSucceeded(ev -> {
             currentRate = task.getValue();
-            refreshAsync();
+            refresh();
         });
 
         task.setOnFailed(ev -> {
             System.out.println("❌ Currency rate error: " + task.getException());
-
             currentRate = 1.0;
             selectedCurrency = "TND";
             currencyBox.setValue("TND");
-            refreshAsync();
+            refresh();
         });
 
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+        new Thread(task).start();
     }
 
     private String currencySymbol(String cur) {
@@ -194,12 +186,10 @@ public class AffichageActivitesController {
         };
     }
 
-    // Convert stored DB price (TND) to selected currency for display
     private double displayPrice(double prixTND) {
         return prixTND * currentRate;
     }
 
-    // Convert user input (selected currency) back to TND for DB filtering
     private double toTND(double amountInSelectedCurrency) {
         if (currentRate == 0) return amountInSelectedCurrency;
         return amountInSelectedCurrency / currentRate;
@@ -214,7 +204,7 @@ public class AffichageActivitesController {
         if (tfLieu != null) tfLieu.clear();
         if (tfMinPrix != null) tfMinPrix.clear();
         if (tfMaxPrix != null) tfMaxPrix.clear();
-        refreshAsync();
+        refresh();
     }
 
     @FXML
@@ -228,6 +218,7 @@ public class AffichageActivitesController {
 
         if (!minText.isEmpty() && min == null) { showWarn("Prix min doit être un nombre"); return; }
         if (!maxText.isEmpty() && max == null) { showWarn("Prix max doit être un nombre"); return; }
+
         if (min != null && min < 0) { showWarn("Prix min invalide"); return; }
         if (max != null && max < 0) { showWarn("Prix max invalide"); return; }
         if (min != null && max != null && min > max) { showWarn("Min > Max"); return; }
@@ -235,30 +226,9 @@ public class AffichageActivitesController {
         Double minTND = (min == null) ? null : toTND(min);
         Double maxTND = (max == null) ? null : toTND(max);
 
-        searchAsync(lieu, minTND, maxTND);
-    }
-
-    private void searchAsync(String lieu, Double minTND, Double maxTND) {
-        Task<List<Activite>> task = new Task<>() {
-            @Override
-            protected List<Activite> call() {
-                return service.search(lieu, minTND, maxTND);
-            }
-        };
-
-        task.setOnSucceeded(e -> {
-            afficherListe(task.getValue());
-            if (scroll != null) scroll.setVvalue(0);
-        });
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Erreur recherche: " + task.getException().getMessage()).showAndWait();
-        });
-
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+        List<Activite> results = service.search(lieu, minTND, maxTND);
+        afficherListe(results);
+        if (scroll != null) scroll.setVvalue(0);
     }
 
     // ===================== CHAT =====================
@@ -297,38 +267,15 @@ public class AffichageActivitesController {
 
         botSay("⏳ NAVI réfléchit...");
 
-        // ✅ Load activities async then call API
-        loadAllActivitesAsync(all -> callChatApi(msg.trim(), all));
-    }
+        List<Activite> all = service.getAllActivites();
 
-    private void loadAllActivitesAsync(java.util.function.Consumer<List<Activite>> onDone) {
-        Task<List<Activite>> task = new Task<>() {
-            @Override
-            protected List<Activite> call() {
-                return service.getAllActivites();
-            }
-        };
-
-        task.setOnSucceeded(e -> onDone.accept(task.getValue()));
-
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            Platform.runLater(() -> botSay("❌ Erreur DB: " + task.getException().getMessage()));
-        });
-
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
-    }
-
-    private void callChatApi(String userMessage, List<Activite> all) {
         List<Map<String, Object>> acts = all.stream()
                 .map(a -> {
                     Map<String, Object> m = new LinkedHashMap<>();
                     m.put("id", a.getIdActivite());
                     m.put("nom", safe(a.getNom()));
                     m.put("lieu", safe(a.getLieu()));
-                    m.put("prix", a.getPrix()); // TND in DB
+                    m.put("prix", a.getPrix());
                     m.put("type", safe(a.getType()));
                     m.put("duree", a.getDuree());
                     return m;
@@ -336,7 +283,7 @@ public class AffichageActivitesController {
                 .collect(Collectors.toList());
 
         Map<String, Object> payload = new LinkedHashMap<>();
-        payload.put("message", userMessage);
+        payload.put("message", msg.trim());
         payload.put("activities", acts);
 
         new Thread(() -> {
@@ -417,27 +364,50 @@ public class AffichageActivitesController {
         }
     }
 
-    private void refreshAsync() {
-        Task<List<Activite>> task = new Task<>() {
-            @Override
-            protected List<Activite> call() {
-                return service.getAllActivites();
+    private void refresh() {
+        List<Activite> activites = service.getAllActivites();
+        afficherListe(activites);
+        if (scroll != null) scroll.setVvalue(0);
+    }
+
+    // ✅ FIXED: synchronous image loading + guaranteed fallback (NO MORE WHITE)
+    private Image loadCardImage(Activite a) {
+
+        // fallback (always works)
+        var fallbackRes = getClass().getResource("/images/activity_banner.jpg");
+        Image fallback = new Image(
+                Objects.requireNonNull(fallbackRes).toExternalForm(),
+                true
+        );
+
+        if (a == null) return fallback;
+
+        String url = a.getImageUrl();
+        if (url == null || url.isBlank()) return fallback;
+
+        url = url.trim();
+        System.out.println("🖼️ FRONT image_url id=" + a.getIdActivite() + " => " + url);
+
+        try {
+            // ✅ ONLY allow real image files
+            if (!url.matches(".*\\.(jpg|jpeg|png|webp)$")) {
+                System.out.println("❌ Not a direct image file: " + url);
+                return fallback;
             }
-        };
 
-        task.setOnSucceeded(e -> {
-            afficherListe(task.getValue());
-            if (scroll != null) scroll.setVvalue(0);
-        });
+            Image img = new Image(url, true);
 
-        task.setOnFailed(e -> {
-            task.getException().printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Erreur chargement activités: " + task.getException().getMessage()).showAndWait();
-        });
+            if (img.isError()) {
+                System.out.println("❌ Image load failed: " + url);
+                return fallback;
+            }
 
-        Thread th = new Thread(task);
-        th.setDaemon(true);
-        th.start();
+            return img;
+
+        } catch (Exception e) {
+            System.out.println("❌ Image exception: " + url + " | " + e.getMessage());
+            return fallback;
+        }
     }
 
     private VBox createCard(Activite a) {
@@ -453,7 +423,8 @@ public class AffichageActivitesController {
         img.setFitHeight(210);
         img.setPreserveRatio(false);
         img.setSmooth(true);
-        img.setImage(loadCardImage(a));
+
+        img.setImage(loadCardImage(a)); // ✅ DB image_url + fallback
 
         StackPane imageWrap = new StackPane(img);
         imageWrap.getStyleClass().add("tripCardImageWrap");
@@ -524,18 +495,12 @@ public class AffichageActivitesController {
         bottomRow.setAlignment(Pos.CENTER_LEFT);
 
         body.getChildren().addAll(topRow, title, metaRow, sep, bottomRow);
-
         card.getChildren().addAll(imageWrap, body);
+
         return card;
     }
 
-    private Image loadCardImage(Activite a) {
-        var url = getClass().getResource("/images/activity_banner.jpg");
-        if (url == null) url = getClass().getResource("/images/banner.jpg");
-        return new Image(Objects.requireNonNull(url).toExternalForm(), true);
-    }
-
-    // ===================== NAVIGATION / RESERVATION =====================
+    // ===================== NAVIGATION =====================
     private void openReservationForm(int idActivite, String nomActivite) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/reservation_form.fxml"));
@@ -544,7 +509,7 @@ public class AffichageActivitesController {
             ReservationFormController controller = loader.getController();
             controller.setData(idActivite, nomActivite);
 
-            Stage stage = (Stage) cardsContainer.getScene().getWindow();
+            Stage stage = (Stage) scroll.getScene().getWindow();
 
             Scene scene = stage.getScene();
             if (scene == null) {
@@ -559,9 +524,46 @@ public class AffichageActivitesController {
             if (css != null) scene.getStylesheets().add(css.toExternalForm());
 
             stage.show();
+            Platform.runLater(() -> stage.setMaximized(true));
 
-            // ✅ maximize AFTER showing (prevents freeze)
-            javafx.application.Platform.runLater(() -> stage.setMaximized(true));
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+        }
+    }
+
+    @FXML
+    private void goBackOffice() {
+        switchScene("/affichage_activites_back.fxml");
+    }
+
+    private void switchScene(String fxml) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) cardsContainer.getScene().getWindow();
+
+            Scene scene = stage.getScene();
+            if (scene == null) {
+                scene = new Scene(root);
+                stage.setScene(scene);
+            } else {
+                scene.setRoot(root);
+            }
+
+            scene.getStylesheets().clear();
+            var css = getClass().getResource("/affichage.css");
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            stage.show();
+
+            Platform.runLater(() -> {
+                if (stage.isMaximized()) {
+                    stage.setMaximized(false);
+                    stage.setMaximized(true);
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
