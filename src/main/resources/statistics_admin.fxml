@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" 
+            styleClass="page"
+            stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.StatisticsAdminController">
+   
+   <!-- Top Bar -->
+   <top>
+      <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
+         <Button text="← Retour" styleClass="btnOutline" onAction="#retourMenu" />
+         <Label text="STATISTIQUES &amp; ANALYSES" styleClass="pageTitle" />
+      </HBox>
+   </top>
+   
+   <!-- Center Content -->
+   <center>
+      <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+         <VBox styleClass="pageContent" spacing="25">
+            
+            <!-- Key Stats Cards -->
+            <HBox spacing="20">
+               <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="10" minWidth="200">
+                  <Label text="TOTAL RÉCLAMATIONS" styleClass="metaText" />
+                  <Label fx:id="lblTotalComplaints" text="0" styleClass="cardTitle" style="-fx-font-size: 32px; -fx-text-fill: #0f2a2a;" />
+               </VBox>
+               
+               <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="10" minWidth="200">
+                  <Label text="EN ATTENTE" styleClass="metaText" />
+                  <Label fx:id="lblPendingComplaints" text="0" styleClass="cardTitle" style="-fx-font-size: 32px; -fx-text-fill: #c9a24a;" />
+               </VBox>
+               
+               <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="10" minWidth="200">
+                  <Label text="NOTE MOYENNE" styleClass="metaText" />
+                  <Label fx:id="lblAverageRating" text="0.0/5" styleClass="cardTitle" style="-fx-font-size: 32px; -fx-text-fill: #c9a24a;" />
+               </VBox>
+               
+               <VBox styleClass="card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="10" minWidth="200">
+                  <Label text="TOTAL AVIS" styleClass="metaText" />
+                  <Label fx:id="lblTotalReviews" text="0" styleClass="cardTitle" style="-fx-font-size: 32px; -fx-text-fill: #0f2a2a;" />
+               </VBox>
+            </HBox>
+            
+            <!-- Charts Section -->
+            <HBox spacing="20" VBox.vgrow="ALWAYS">
+               <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="15">
+                  <Label text="STATUT DES RÉCLAMATIONS" styleClass="cardTitle" />
+                  <PieChart fx:id="pieChartStatus" prefHeight="350" />
+               </VBox>
+               
+               <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="15">
+                  <Label text="DISTRIBUTION DES NOTES" styleClass="cardTitle" />
+                  <BarChart fx:id="barChartRatings" prefHeight="350">
+                     <xAxis><CategoryAxis side="BOTTOM" /></xAxis>
+                     <yAxis><NumberAxis side="LEFT" /></yAxis>
+                  </BarChart>
+               </VBox>
+            </HBox>
+            
+         </VBox>
+      </ScrollPane>
+   </center>
+   
+</BorderPane>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" 
+            styleClass="page"
+            stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.UserAvisController">
+   
+   <!-- Top Bar -->
+   <top>
+      <VBox>
+         <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
+            <Button text="← Retour" styleClass="btnOutline" onAction="#retourMenu" />
+            <Label text="MES AVIS" styleClass="pageTitle" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnAdd" text="+ Donner un avis" styleClass="btnGold" onAction="#ajouterAvis" />
+         </HBox>
+      </VBox>
+   </top>
+   
+   <!-- Center Content -->
+   <center>
+      <VBox styleClass="pageContent" spacing="20">
+         
+          <!-- Barre de recherche et filtres -->
+          <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
+             
+             <!-- Champ de recherche -->
+             <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Rechercher :" styleClass="metaText" />
+                <TextField fx:id="txtRecherche" 
+                           promptText="Rechercher par commentaire..." 
+                           prefWidth="300" onKeyReleased="#appliquerFiltres" />
+             </VBox>
+             
+             <!-- Filtre par note -->
+             <VBox spacing="5">
+                <Label text="Note :" styleClass="metaText" />
+                <ComboBox fx:id="comboNote" prefWidth="120" promptText="Toutes" onAction="#appliquerFiltres" />
+             </VBox>
+             
+             <!-- Bouton rechercher -->
+             <Button text="🔍" 
+                     styleClass="btnGold" 
+                     onAction="#appliquerFiltres" />
+             
+             <!-- Bouton réinitialiser -->
+             <Button text="↻" 
+                     styleClass="btnOutline" 
+                     onAction="#reinitialiser" />
+             
+          </HBox>
+          
+          <!-- Table -->
+         <TableView fx:id="tableAvis" styleClass="table-view" VBox.vgrow="ALWAYS">
+            <columns>
+               <TableColumn fx:id="colNote" text="Note /5" prefWidth="100" />
+               <TableColumn fx:id="colCommentaire" text="Commentaire" prefWidth="400" />
+                <TableColumn fx:id="colReponse" text="Réponse Admin" prefWidth="250" />
+                <TableColumn fx:id="colDateReponse" text="Date réponse" prefWidth="150" />
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="100" />
+            </columns>
+         </TableView>
+         
+      </VBox>
+   </center>
+   
+</BorderPane>

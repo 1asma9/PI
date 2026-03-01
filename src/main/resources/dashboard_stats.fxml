@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefHeight="700.0" prefWidth="1200.0" 
+            styleClass="page"
+            stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.DashboardStatsController">
+   
+   <!-- Top Bar -->
+   <top>
+      <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
+         <Button text="← Retour" styleClass="btnOutline" onAction="#retourMenu" />
+         <Label text="TABLEAU DE BORD" styleClass="pageTitle" />
+         <Label text="Statistiques et analyses" styleClass="pageSubtitle" />
+      </HBox>
+   </top>
+   
+   <!-- Center Content -->
+   <center>
+      <ScrollPane styleClass="scroll-pane" fitToWidth="true">
+         <VBox styleClass="pageContent" spacing="25">
+            
+            <!-- ========== SECTION 1 : KPI CARDS ========== -->
+            <HBox spacing="20" alignment="CENTER">
+               
+               <!-- Card 1 : Total Réclamations -->
+               <VBox styleClass="card" alignment="CENTER" spacing="12" 
+                     prefWidth="260" prefHeight="160">
+                  <Label text="📋" style="-fx-font-size: 42px;" />
+                  <Label fx:id="lblTotalReclamations" text="0" 
+                         style="-fx-font-size: 38px; -fx-font-weight: 900; -fx-text-fill: #c9a24a;" />
+                  <Label text="Total Réclamations" styleClass="cardTitle" />
+                  <Label fx:id="lblEvolutionReclamations" text="+12% ce mois" 
+                         styleClass="metaText" style="-fx-text-fill: #1c7a44;" />
+               </VBox>
+               
+               <!-- Card 2 : En Attente -->
+               <VBox styleClass="card" alignment="CENTER" spacing="12" 
+                     prefWidth="260" prefHeight="160">
+                  <Label text="⏳" style="-fx-font-size: 42px;" />
+                  <Label fx:id="lblEnAttente" text="0" 
+                         style="-fx-font-size: 38px; -fx-font-weight: 900; -fx-text-fill: #9a6a11;" />
+                  <Label text="En Attente" styleClass="cardTitle" />
+                  <Label fx:id="lblPourcentageAttente" text="0% du total" 
+                         styleClass="metaText" />
+               </VBox>
+               
+               <!-- Card 3 : Traitées -->
+               <VBox styleClass="card" alignment="CENTER" spacing="12" 
+                     prefWidth="260" prefHeight="160">
+                  <Label text="✅" style="-fx-font-size: 42px;" />
+                  <Label fx:id="lblTraitees" text="0" 
+                         style="-fx-font-size: 38px; -fx-font-weight: 900; -fx-text-fill: #1c7a44;" />
+                  <Label text="Traitées" styleClass="cardTitle" />
+                  <Label fx:id="lblTauxTraitement" text="0% traitées" 
+                         styleClass="metaText" style="-fx-text-fill: #1c7a44;" />
+               </VBox>
+               
+               <!-- Card 4 : Note Moyenne -->
+               <VBox styleClass="card" alignment="CENTER" spacing="12" 
+                     prefWidth="260" prefHeight="160">
+                  <Label text="⭐" style="-fx-font-size: 42px;" />
+                  <Label fx:id="lblNoteMoyenne" text="0.0" 
+                         style="-fx-font-size: 38px; -fx-font-weight: 900; -fx-text-fill: #c9a24a;" />
+                  <Label text="Note Moyenne" styleClass="cardTitle" />
+                  <Label fx:id="lblTotalAvis" text="sur 0 avis" 
+                         styleClass="metaText" />
+               </VBox>
+               
+            </HBox>
+            
+            <!-- ========== SECTION 2 : GRAPHIQUES LIGNE 1 ========== -->
+            <HBox spacing="20" alignment="CENTER">
+               
+               <!-- PieChart : Répartition des statuts -->
+               <VBox styleClass="card" spacing="15" prefWidth="560" prefHeight="400">
+                  <Label text="RÉPARTITION DES STATUTS" styleClass="cardTitle" />
+                  <Label text="Visualisation des réclamations par statut" styleClass="metaText" />
+                  <Separator styleClass="hr" />
+                  <PieChart fx:id="pieChartStatuts" 
+                            legendVisible="true"
+                            prefHeight="300" 
+                            styleClass="chart-pie" />
+               </VBox>
+               
+               <!-- LineChart : Évolution temporelle -->
+               <VBox styleClass="card" spacing="15" prefWidth="560" prefHeight="400">
+                  <Label text="ÉVOLUTION TEMPORELLE" styleClass="cardTitle" />
+                  <Label text="Réclamations et avis sur les 7 derniers jours" styleClass="metaText" />
+                  <Separator styleClass="hr" />
+                  <LineChart fx:id="lineChartEvolution" 
+                             prefHeight="300"
+                             legendVisible="true">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </LineChart>
+               </VBox>
+               
+            </HBox>
+            
+            <!-- ========== SECTION 3 : GRAPHIQUES LIGNE 2 ========== -->
+            <HBox spacing="20" alignment="CENTER">
+               
+               <!-- BarChart : Distribution des notes -->
+               <VBox styleClass="card" spacing="15" prefWidth="560" prefHeight="400">
+                  <Label text="DISTRIBUTION DES NOTES" styleClass="cardTitle" />
+                  <Label text="Répartition des avis par étoiles (1 à 5)" styleClass="metaText" />
+                  <Separator styleClass="hr" />
+                  <BarChart fx:id="barChartNotes" 
+                            prefHeight="300"
+                            legendVisible="false">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" label="Nombre d'étoiles" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" label="Nombre d'avis" />
+                     </yAxis>
+                  </BarChart>
+               </VBox>
+               
+               <!-- Top 5 Utilisateurs -->
+               <VBox styleClass="card" spacing="15" prefWidth="560" prefHeight="400">
+                  <Label text="TOP 5 UTILISATEURS" styleClass="cardTitle" />
+                  <Label text="Utilisateurs les plus actifs" styleClass="metaText" />
+                  <Separator styleClass="hr" />
+                  
+                  <VBox spacing="12" fx:id="containerTopUsers">
+                     <!-- Généré dynamiquement dans le contrôleur -->
+                  </VBox>
+               </VBox>
+               
+            </HBox>
+            
+            <!-- ========== SECTION 4 : STATISTIQUES DÉTAILLÉES ========== -->
+            <VBox styleClass="card" spacing="15">
+               <Label text="STATISTIQUES DÉTAILLÉES" styleClass="cardTitle" />
+               <Separator styleClass="hr" />
+               
+               <GridPane hgap="40" vgap="20">
+                  <padding>
+                     <Insets top="15" bottom="15" left="15" right="15" />
+                  </padding>
+                  
+                  <!-- Colonne 1 -->
+                  <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                     <Label text="Temps de réponse moyen" styleClass="metaText" />
+                     <Label fx:id="lblTempsReponse" text="2.5 jours" 
+                            style="-fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: #0f2a2a;" />
+                  </VBox>
+                  
+                  <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                     <Label text="Réclamations ce mois" styleClass="metaText" />
+                     <Label fx:id="lblReclamationsMois" text="0" 
+                            style="-fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: #0f2a2a;" />
+                  </VBox>
+                  
+                  <VBox spacing="8" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                     <Label text="Avis ce mois" styleClass="metaText" />
+                     <Label fx:id="lblAvisMois" text="0" 
+                            style="-fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: #0f2a2a;" />
+                  </VBox>
+                  
+                  <!-- Colonne 2 -->
+                  <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                     <Label text="Taux de satisfaction" styleClass="metaText" />
+                     <Label fx:id="lblTauxSatisfaction" text="0%" 
+                            style="-fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: #1c7a44;" />
+                  </VBox>
+                  
+                  <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <Label text="Réclamations résolues" styleClass="metaText" />
+                     <Label fx:id="lblResolues" text="0" 
+                            style="-fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: #1c7a44;" />
+                  </VBox>
+                  
+                  <VBox spacing="8" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <Label text="Utilisateurs actifs" styleClass="metaText" />
+                     <Label fx:id="lblUsersActifs" text="0" 
+                            style="-fx-font-size: 22px; -fx-font-weight: 900; -fx-text-fill: #c9a24a;" />
+                  </VBox>
+                  
+               </GridPane>
+            </VBox>
+            
+            <!-- ========== SECTION 5 : ACTIONS ET HISTORIQUE ========== -->
+            <VBox spacing="20">
+                <!-- Actions d'export -->
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="📥 Générer Rapport PDF" 
+                            styleClass="btnGold" 
+                            prefWidth="250" 
+                            prefHeight="50"
+                            onAction="#genererRapportPDF" />
+                    
+                    <Button text="🔄 Actualiser" 
+                            styleClass="btnOutline" 
+                            prefWidth="200" 
+                            prefHeight="50"
+                            onAction="#actualiser" />
+                </HBox>
+
+                <!-- ========== SECTION 6 : HISTORIQUE DES RAPPORTS PDF ========== -->
+                <VBox styleClass="card" spacing="15">
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label text="📁 HISTORIQUE DES RAPPORTS" styleClass="cardTitle" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label fx:id="lblNombreRapports" text="0 rapport(s)" styleClass="metaText" />
+                    </HBox>
+                    
+                    <Separator styleClass="hr" />
+                    
+                    <!-- Liste des rapports PDF -->
+                    <ScrollPane styleClass="scroll-pane" prefHeight="300" fitToWidth="true">
+                        <VBox fx:id="containerHistoriquePDF" spacing="12">
+                            <!-- Généré dynamiquement dans le contrôleur -->
+                        </VBox>
+                    </ScrollPane>
+                    
+                    <!-- Message si aucun rapport -->
+                    <VBox fx:id="messageAucunRapport" alignment="CENTER" spacing="10" visible="true">
+                        <Label text="📄" style="-fx-font-size: 48px; -fx-opacity: 0.3;" />
+                        <Label text="Aucun rapport généré" 
+                               styleClass="metaText" 
+                               style="-fx-font-size: 16px; -fx-text-fill: #6a7a73;" />
+                        <Label text="Cliquez sur 'Générer Rapport PDF' pour créer votre premier rapport" 
+                               styleClass="metaText" />
+                    </VBox>
+                </VBox>
+            </VBox>
+            
+         </VBox>
+      </ScrollPane>
+   </center>
+   
+</BorderPane>
