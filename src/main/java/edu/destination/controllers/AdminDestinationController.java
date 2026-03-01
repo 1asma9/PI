@@ -21,12 +21,16 @@ import java.util.stream.Collectors;
 
 public class AdminDestinationController {
 
-    // Table des destinations
+    // ==============================
+    // TABLE
+    // ==============================
+
     @FXML private TableView<Destination> tableDestinations;
     @FXML private TableColumn<Destination, Integer> colId;
     @FXML private TableColumn<Destination, String> colNom;
     @FXML private TableColumn<Destination, String> colPays;
     @FXML private TableColumn<Destination, String> colDescription;
+    @FXML private TableColumn<Destination, String> colVideoPath; // ✅ AJOUTÉ
     @FXML private TableColumn<Destination, Boolean> colStatut;
     @FXML private TableColumn<Destination, String> colSaison;
     @FXML private TableColumn<Destination, Double> colLatitude;
@@ -36,35 +40,53 @@ public class AdminDestinationController {
     @FXML private TableColumn<Destination, String> colDateDepart;
     @FXML private TableColumn<Destination, String> colDateArrivee;
 
-    // Actions table
     @FXML private Button btnAjouter, btnModifier, btnSupprimer;
 
     // ==============================
-    // FXML — Recherche (à ajouter dans le FXML)
+    // FILTRES
     // ==============================
-    @FXML private TextField searchPays;          // Recherche par pays
-    @FXML private ComboBox<String> comboStatut;  // Tous / Actif / Inactif
-    @FXML private ComboBox<String> comboSaison;  // Toutes les saisons / ...
-    @FXML private DatePicker dateDepart;         // Filtrer par date de départ
-    @FXML private Button btnReset;               // Réinitialiser les filtres
 
-    // Sidebar navigation
+    @FXML private TextField searchPays;
+    @FXML private ComboBox<String> comboStatut;
+    @FXML private ComboBox<String> comboSaison;
+    @FXML private DatePicker dateDepart;
+    @FXML private Button btnReset;
+
+    // Sidebar
     @FXML private Button navDashboard, navDestinations, navTransports, navImages, navClient;
 
     private final DestinationService service = new DestinationService();
     private final ObservableList<Destination> filteredList = FXCollections.observableArrayList();
-
-    // ✅ Liste complète en mémoire — zéro requête SQL supplémentaire
     private List<Destination> allDestinations;
 
     @FXML
     private void initialize() {
 
-        // Colonnes
+        // ==============================
+        // LIAISON COLONNES
+        // ==============================
+
         colId.setCellValueFactory(new PropertyValueFactory<>("idDestination"));
         colNom.setCellValueFactory(new PropertyValueFactory<>("nom"));
         colPays.setCellValueFactory(new PropertyValueFactory<>("pays"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        // 🎬 VIDEO
+        colVideoPath.setCellValueFactory(new PropertyValueFactory<>("videoPath"));
+
+        // Affichage propre 🎬
+        colVideoPath.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.isBlank()) {
+                    setText("");
+                } else {
+                    setText("🎬 Disponible");
+                }
+            }
+        });
+
         colStatut.setCellValueFactory(new PropertyValueFactory<>("statut"));
         colSaison.setCellValueFactory(new PropertyValueFactory<>("meilleureSaison"));
         colLatitude.setCellValueFactory(new PropertyValueFactory<>("latitude"));
@@ -79,13 +101,18 @@ public class AdminDestinationController {
         loadData();
         setupSearch();
 
-        // Actions table
+        // ==============================
+        // ACTIONS
+        // ==============================
+
         btnAjouter.setOnAction(e -> openForm(null));
+
         btnModifier.setOnAction(e -> {
             Destination selected = tableDestinations.getSelectionModel().getSelectedItem();
             if (selected != null) openForm(selected);
             else showAlert("Veuillez sélectionner une destination à modifier.");
         });
+
         btnSupprimer.setOnAction(e -> {
             Destination selected = tableDestinations.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -95,7 +122,7 @@ public class AdminDestinationController {
             } else showAlert("Veuillez sélectionner une destination à supprimer.");
         });
 
-        // Sidebar
+        // Navigation
         navDashboard.setOnAction(e -> openView("/AdminDashboard.fxml"));
         navDestinations.setOnAction(e -> openView("/AdminDestinationView.fxml"));
         navTransports.setOnAction(e -> openView("/AdminTransportView.fxml"));
@@ -104,39 +131,40 @@ public class AdminDestinationController {
     }
 
     // ==============================
-    // CHARGEMENT DONNÉES
+    // CHARGEMENT
     // ==============================
+
     private void loadData() {
         allDestinations = service.getData();
         applyFilter();
     }
 
     // ==============================
-    // RECHERCHE EN MÉMOIRE
+    // FILTRAGE
     // ==============================
+
     private void setupSearch() {
-        // ComboBox Statut
+
         comboStatut.getItems().addAll("Tous", "Actif", "Inactif");
         comboStatut.getSelectionModel().selectFirst();
 
-        // ComboBox Saison — peuplé depuis les données
         comboSaison.getItems().add("Toutes les saisons");
+
         List<String> saisons = allDestinations.stream()
                 .map(Destination::getMeilleureSaison)
                 .filter(s -> s != null && !s.isBlank())
                 .distinct()
                 .sorted()
                 .collect(Collectors.toList());
+
         comboSaison.getItems().addAll(saisons);
         comboSaison.getSelectionModel().selectFirst();
 
-        // Listeners — filtre en temps réel
         searchPays.textProperty().addListener((obs, o, n) -> applyFilter());
         comboStatut.valueProperty().addListener((obs, o, n) -> applyFilter());
         comboSaison.valueProperty().addListener((obs, o, n) -> applyFilter());
         dateDepart.valueProperty().addListener((obs, o, n) -> applyFilter());
 
-        // Reset
         btnReset.setOnAction(e -> {
             searchPays.clear();
             comboStatut.getSelectionModel().selectFirst();
@@ -146,30 +174,28 @@ public class AdminDestinationController {
     }
 
     private void applyFilter() {
+
         if (allDestinations == null) return;
 
-        String pays       = searchPays.getText() == null ? "" : searchPays.getText().toLowerCase().trim();
-        String statut     = comboStatut.getValue();
-        String saison     = comboSaison.getValue();
+        String pays = searchPays.getText() == null ? "" : searchPays.getText().toLowerCase().trim();
+        String statut = comboStatut.getValue();
+        String saison = comboSaison.getValue();
         LocalDate dateDep = dateDepart.getValue();
 
         List<Destination> filtered = allDestinations.stream()
                 .filter(d -> {
-                    // Filtre pays
+
                     boolean matchPays = pays.isEmpty()
                             || d.getPays().toLowerCase().contains(pays)
                             || d.getNom().toLowerCase().contains(pays);
 
-                    // Filtre statut
                     boolean matchStatut = statut == null || statut.equals("Tous")
-                            || (statut.equals("Actif")   &&  d.getStatut())
+                            || (statut.equals("Actif") && d.getStatut())
                             || (statut.equals("Inactif") && !d.getStatut());
 
-                    // Filtre saison
                     boolean matchSaison = saison == null || saison.equals("Toutes les saisons")
                             || saison.equalsIgnoreCase(d.getMeilleureSaison());
 
-                    // Filtre date de départ (exact)
                     boolean matchDate = dateDep == null
                             || dateDep.equals(d.getDateDepart());
 
@@ -181,8 +207,9 @@ public class AdminDestinationController {
     }
 
     // ==============================
-    // FORMULAIRE
+    // FORM
     // ==============================
+
     private void openForm(Destination destination) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDestinationForm.fxml"));
@@ -200,7 +227,6 @@ public class AdminDestinationController {
 
             stage.showAndWait();
 
-            // Recharger et réappliquer le filtre après modification
             loadData();
 
         } catch (IOException ex) {
@@ -223,8 +249,7 @@ public class AdminDestinationController {
     private void applyCss(Scene scene) {
         scene.getStylesheets().clear();
         scene.getStylesheets().add(
-                Objects.requireNonNull(getClass().getResource("/app.css"), "app.css introuvable")
-                        .toExternalForm()
+                Objects.requireNonNull(getClass().getResource("/app.css")).toExternalForm()
         );
     }
 

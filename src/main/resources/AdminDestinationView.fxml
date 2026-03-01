@@ -63,6 +63,7 @@
                         <TableColumn fx:id="colPrix" text="Prix"/>
                         <TableColumn fx:id="colDateDepart" text="Départ"/>
                         <TableColumn fx:id="colDateArrivee" text="Arrivée"/>
+                        <TableColumn fx:id="colVideoPath" text="Vidéo"/>
                     </columns>
                 </TableView>
 

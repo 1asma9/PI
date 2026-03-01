@@ -27,6 +27,7 @@ public class MainFx extends Application {
     }
 
     public static void main(String[] args) {
+        System.setProperty("prism.order", "sw");
         System.setProperty("prism.forceGPU", "false");
         System.setProperty("javafx.webview.userAgent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
         launch(args);

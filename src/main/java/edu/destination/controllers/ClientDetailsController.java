@@ -8,26 +8,29 @@ import edu.destination.services.TransportService;
 import edu.destination.tools.SceneUtil;
 import javafx.application.Platform;
 import javafx.concurrent.Worker;
+import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import uk.co.caprica.vlcj.factory.discovery.NativeDiscovery;
+import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,14 +46,10 @@ import java.util.List;
 
 public class ClientDetailsController {
 
-    // ============================================================
-    // 🔑 CLÉ API OPENWEATHERMAP — remplace ici ta clé
-    //    Inscription gratuite : https://openweathermap.org/api
-    // ============================================================
     private static final String WEATHER_API_KEY = "60b4f367276104cdace06362a000085f";
 
     // ==============================
-    // FXML — existant
+    // FXML — champs existants
     // ==============================
     @FXML private ImageView imageView;
     @FXML private Label lblName, lblCountry, lblDescription, lblSeason, lblVisits, lblTotal;
@@ -60,37 +59,60 @@ public class ClientDetailsController {
     @FXML private HBox imagesContainer;
     @FXML private BorderPane mapPane;
     @FXML private Label lblDistance, lblDuration, lblTransport;
-    @FXML private Button btnReserve;
+    @FXML private VBox weatherBox;
+    @FXML private Label lblWeatherCity, lblWeatherTemp, lblWeatherDesc;
+    @FXML private Label lblWeatherFeels, lblWeatherHumidity, lblWeatherWind;
+    @FXML private Label lblWeatherIndex, lblWeatherPeriod;
+    @FXML private HBox forecastContainer;
 
     // ==============================
-    // FXML — météo (dans WeatherView.fxml)
+    // FXML — section vidéo intégrée
     // ==============================
-    @FXML private VBox weatherBox;
-    @FXML private Label lblWeatherCity;
-    @FXML private Label lblWeatherTemp;
-    @FXML private Label lblWeatherDesc;
-    @FXML private Label lblWeatherFeels;
-    @FXML private Label lblWeatherHumidity;
-    @FXML private Label lblWeatherWind;
-    @FXML private Label lblWeatherIndex;
-    @FXML private Label lblWeatherPeriod;
-    @FXML private HBox forecastContainer;
+    @FXML private Button    btnWatchVideo;
+    @FXML private VBox      videoSection;
+    @FXML private Label     lblVideoTitle;
+    @FXML private Button    btnCloseVideo;
+    @FXML private StackPane videoContainer;
+    @FXML private VBox      videoLoadingPane;
+    @FXML private Label     lblVideoLoading;
+    @FXML private VBox      videoErrorPane;
+    @FXML private Label     lblVideoError;
+    @FXML private HBox      videoControls;
+    @FXML private Button    btnPlayPause;
+    @FXML private Button    btnStop;
+    @FXML private Slider    timeSlider;
+    @FXML private Label     lblVideoTime;
+    @FXML private Slider    volumeSlider;
 
     // ==============================
     // Services & état
     // ==============================
-    private final ImageService imageService = new ImageService();
+    private final ImageService     imageService     = new ImageService();
     private final TransportService transportService = new TransportService();
 
     private List<DestinationImage> images;
     private int currentIndex = 0;
 
-    private WebView mapView;
+    private WebView   mapView;
     private WebEngine webEngine;
-    private JSBridge bridge;
+    private JSBridge  bridge;
 
     private Destination currentDestination;
-    private Transport currentTransport;
+    private Transport   currentTransport;
+
+    // ── Lecteur VLCJ ──
+    private EmbeddedMediaPlayerComponent vlcPlayer;
+    private SwingNode                    vlcSwingNode;
+    private boolean                      vlcAvailable   = false;
+    private boolean                      sliderDragging = false;
+    private Thread                       sliderThread;
+
+    // ── Lecteur JavaFX (fallback) ──
+    private MediaPlayer mediaPlayerFx;
+    private MediaView   mediaViewFx;
+
+    // ── WebView YouTube ──
+    private WebView youtubeWebView;
 
     // ==============================
     // INITIALIZE
@@ -100,10 +122,18 @@ public class ClientDetailsController {
         btnNext.setOnAction(e -> nextImage());
         btnPrev.setOnAction(e -> prevImage());
         btnBackToList.setOnAction(e -> goBackToList());
-        btnReserve.setOnAction(e -> {
-            System.out.println("Réservation confirmée !");
-            System.out.println(lblDistance.getText() + " | " + lblDuration.getText() + " | " + lblTransport.getText());
-        });
+
+        if (volumeSlider != null) volumeSlider.setValue(1.0);
+
+        try {
+            // ✅ Forcer le chemin VLC
+            System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
+            vlcAvailable = new NativeDiscovery().discover();
+            System.out.println("✅ VLC détecté : " + vlcAvailable);
+        } catch (Exception e) {
+            vlcAvailable = false;
+            System.out.println("❌ VLC non disponible : " + e.getMessage());
+        }
 
         initMap();
     }
@@ -115,7 +145,7 @@ public class ClientDetailsController {
         if (d == null) return;
         currentDestination = d;
 
-        lblDepart.setText(d.getDateDepart() != null ? d.getDateDepart().toString() : "-");
+        lblDepart.setText(d.getDateDepart()   != null ? d.getDateDepart().toString()  : "-");
         lblArrival.setText(d.getDateArrivee() != null ? d.getDateArrivee().toString() : "-");
         lblName.setText(d.getNom());
         lblCountry.setText(d.getPays());
@@ -124,15 +154,415 @@ public class ClientDetailsController {
         lblVisits.setText(String.valueOf(d.getNbVisites()));
         lblTotal.setText(String.valueOf(d.getPrix()));
 
+        disposeVideo();
+        hideVideoSection();
+
+        lblVideoTitle.setText("🎬 " + d.getNom() + " — Vidéo promotionnelle");
+        btnWatchVideo.setText("▶  Regarder la vidéo promotionnelle");
+        btnWatchVideo.setDisable(false);
+
+        boolean hasVideo = d.getVideoPath() != null && !d.getVideoPath().isBlank();
+        btnWatchVideo.setVisible(hasVideo);
+        btnWatchVideo.setManaged(hasVideo);
+
         loadImages(d);
         loadTransports(d);
 
-        if (webEngine.getLoadWorker().getState() == Worker.State.SUCCEEDED && currentTransport != null) {
+        if (webEngine.getLoadWorker().getState() == Worker.State.SUCCEEDED && currentTransport != null)
             addRouteToMap(currentDestination, currentTransport);
+
+        loadWeather(d);
+    }
+
+    // ==============================
+    // VIDÉO — handleWatchVideo
+    // ==============================
+    @FXML
+    private void handleWatchVideo() {
+        String videoPath = currentDestination.getVideoPath();
+
+        if (videoPath == null || videoPath.isBlank()) {
+            showVideoSection();
+            showErrorState("Aucune vidéo disponible pour cette destination.");
+            return;
         }
 
-        // ✅ Charger la météo
-        loadWeather(d);
+        // ✅ Résoudre le chemin depuis les resources
+        String resolvedPath = videoPath;
+        if (!videoPath.startsWith("http") && !new File(videoPath).isAbsolute()) {
+            URL resource = getClass().getResource("/" + videoPath);
+            if (resource != null) {
+                resolvedPath = resource.toExternalForm();
+            }
+        }
+
+        final String finalPath = resolvedPath;
+        showVideoSection();
+        showLoadingState(true);
+        btnWatchVideo.setDisable(true);
+        btnWatchVideo.setText("⏳ Chargement...");
+
+        Platform.runLater(() -> {
+            btnWatchVideo.setDisable(false);
+            btnWatchVideo.setText("▶  Regarder la vidéo promotionnelle");
+
+            String embedUrl = convertToEmbedUrl(finalPath);
+
+            if (embedUrl != null) {
+                playWithWebView(embedUrl);
+            } else if (vlcAvailable) {
+                playWithVlcj(finalPath);
+            } else {
+                try {
+                    playWithJavaFX(new Media(finalPath));
+                } catch (Exception ex) {
+                    showErrorState("Impossible de charger la vidéo :\n" + ex.getMessage());
+                }
+            }
+        });
+    }
+    // ==============================
+    // CONVERTISSEUR URL YOUTUBE
+    // ==============================
+
+    /**
+     * Convertit n'importe quelle URL YouTube en URL embed.
+     * Retourne null si ce n'est pas une URL YouTube (= fichier local ou autre).
+     */
+    private String convertToEmbedUrl(String url) {
+        if (url == null) return null;
+
+        if (url.contains("youtube.com/embed/")) {
+            // Ajouter autoplay si pas déjà présent
+            return url.contains("?") ? url + "&autoplay=1" : url + "?autoplay=1";
+        }
+        if (url.contains("youtube.com/watch?v=")) {
+            String videoId = url.split("v=")[1].split("&")[0];
+            return "https://www.youtube.com/embed/" + videoId + "?autoplay=1&rel=0";
+        }
+        if (url.contains("youtu.be/")) {
+            String videoId = url.split("youtu.be/")[1].split("\\?")[0];
+            return "https://www.youtube.com/embed/" + videoId + "?autoplay=1&rel=0";
+        }
+        return null;
+    }
+    // ==============================
+    // LECTEUR YOUTUBE VIA WEBVIEW
+    // ==============================
+    private void playWithVlcj(String videoPath) {
+        disposeVideo();
+        try {
+            System.out.println("🎬 Tentative lecture VLCJ : " + videoPath); // ← ajouter
+
+            vlcSwingNode = new SwingNode();
+            StackPane wrapper = new StackPane(vlcSwingNode);
+            wrapper.prefWidthProperty().bind(videoContainer.widthProperty());
+            wrapper.prefHeightProperty().bind(videoContainer.heightProperty());
+            wrapper.maxWidthProperty().bind(videoContainer.widthProperty());
+            wrapper.maxHeightProperty().bind(videoContainer.heightProperty());
+            videoContainer.getChildren().add(0, wrapper);
+
+            showLoadingState(false);
+            showControls(true);
+
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                vlcPlayer = new EmbeddedMediaPlayerComponent();
+                vlcSwingNode.setContent(vlcPlayer);
+
+                final EmbeddedMediaPlayerComponent player = vlcPlayer;
+
+                // ← Ajouter listener d'erreur
+                player.mediaPlayer().events().addMediaPlayerEventListener(
+                        new uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter() {
+                            @Override
+                            public void error(uk.co.caprica.vlcj.player.base.MediaPlayer mediaPlayer) {
+                                System.out.println("❌ ERREUR VLCJ lecture");
+                                Platform.runLater(() -> showErrorState("Erreur VLCJ lors de la lecture."));
+                            }
+                            @Override
+                            public void playing(uk.co.caprica.vlcj.player.base.MediaPlayer mediaPlayer) {
+                                System.out.println("✅ VLCJ en cours de lecture !");
+                            }
+                        }
+                );
+
+                player.addHierarchyListener(e -> {
+                    if ((e.getChangeFlags() & java.awt.event.HierarchyEvent.SHOWING_CHANGED) != 0
+                            && player.isShowing()) {
+                        player.removeHierarchyListener(player.getHierarchyListeners()[0]);
+                        boolean result = player.mediaPlayer().media().play(videoPath);
+                        System.out.println("▶ play() result : " + result); // ← ajouter
+                        Platform.runLater(() -> btnPlayPause.setText("⏸  Pause"));
+                    }
+                });
+            });
+
+            volumeSlider.valueProperty().addListener((obs, o, n) -> {
+                if (vlcPlayer != null)
+                    vlcPlayer.mediaPlayer().audio().setVolume((int)(n.doubleValue() * 100));
+            });
+
+            timeSlider.setOnMousePressed(e -> sliderDragging = true);
+            timeSlider.setOnMouseReleased(e -> {
+                sliderDragging = false;
+                if (vlcPlayer != null) {
+                    long total = vlcPlayer.mediaPlayer().status().length();
+                    vlcPlayer.mediaPlayer().controls()
+                            .setTime((long)(timeSlider.getValue() / 100.0 * total));
+                }
+            });
+
+            startSliderThread();
+
+        } catch (Exception e) {
+            System.out.println("❌ Exception VLCJ : " + e.getMessage()); // ← ajouter
+            showErrorState("Erreur VLCJ : " + e.getMessage());
+        }
+    }
+    private void playWithWebView(String embedUrl) {
+        disposeVideo();
+        try {
+            String watchUrl = embedUrl
+                    .replace("youtube.com/embed/", "youtube.com/watch?v=")
+                    .replaceAll("\\?autoplay=1.*", "")
+                    .replaceAll("&autoplay=1.*", "");
+
+            java.awt.Desktop.getDesktop().browse(new java.net.URI(watchUrl));
+
+            showVideoSection();
+            showLoadingState(false);
+            showControls(false);
+            showErrorState("▶  La vidéo s'est ouverte dans votre navigateur.");
+
+        } catch (Exception e) {
+            showErrorState("Impossible d'ouvrir la vidéo :\n" + e.getMessage());
+        }
+    }
+
+    // ── Thread slider VLCJ ──
+    private void startSliderThread() {
+        stopSliderThread();
+        sliderThread = new Thread(() -> {
+            while (vlcPlayer != null && !Thread.currentThread().isInterrupted()) {
+                try {
+                    Thread.sleep(500);
+                    if (vlcPlayer == null) break;
+                    long total   = vlcPlayer.mediaPlayer().status().length();
+                    long current = vlcPlayer.mediaPlayer().status().time();
+                    if (total > 0 && !sliderDragging) {
+                        double pct = (double) current / total * 100.0;
+                        Platform.runLater(() -> {
+                            timeSlider.setValue(pct);
+                            lblVideoTime.setText(formatMs(current) + " / " + formatMs(total));
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        });
+        sliderThread.setDaemon(true);
+        sliderThread.start();
+    }
+
+    private void stopSliderThread() {
+        if (sliderThread != null) {
+            sliderThread.interrupt();
+            sliderThread = null;
+        }
+    }
+
+    // ==============================
+    // LECTEUR JAVAFX (fallback)
+    // ==============================
+    private void playWithJavaFX(Media media) {
+        disposeVideo();
+        try {
+            mediaPlayerFx = new MediaPlayer(media);
+            mediaViewFx   = new MediaView(mediaPlayerFx);
+            mediaViewFx.setPreserveRatio(true);
+            mediaViewFx.fitWidthProperty().bind(videoContainer.widthProperty());
+            mediaViewFx.fitHeightProperty().bind(videoContainer.heightProperty());
+            videoContainer.getChildren().add(0, mediaViewFx);
+
+            timeSlider.setOnMousePressed(e -> sliderDragging = true);
+            timeSlider.setOnMouseReleased(e -> {
+                sliderDragging = false;
+                if (mediaPlayerFx.getTotalDuration() != null) {
+                    double total = mediaPlayerFx.getTotalDuration().toSeconds();
+                    mediaPlayerFx.seek(Duration.seconds(timeSlider.getValue() / 100.0 * total));
+                }
+            });
+
+            mediaPlayerFx.currentTimeProperty().addListener((obs, o, n) -> {
+                if (!sliderDragging && mediaPlayerFx.getTotalDuration() != null
+                        && !mediaPlayerFx.getTotalDuration().isUnknown()) {
+                    double total   = mediaPlayerFx.getTotalDuration().toSeconds();
+                    double current = n.toSeconds();
+                    timeSlider.setValue(total > 0 ? (current / total) * 100.0 : 0);
+                    lblVideoTime.setText(
+                            formatDuration(n) + " / " + formatDuration(mediaPlayerFx.getTotalDuration()));
+                }
+            });
+
+            volumeSlider.setValue(1.0);
+            mediaPlayerFx.volumeProperty().bind(volumeSlider.valueProperty());
+
+            mediaPlayerFx.setOnReady(() -> Platform.runLater(() -> {
+                showLoadingState(false);
+                showControls(true);
+                mediaPlayerFx.play();
+                btnPlayPause.setText("⏸  Pause");
+            }));
+
+            mediaPlayerFx.setOnEndOfMedia(() -> Platform.runLater(() -> {
+                btnPlayPause.setText("▶  Revoir");
+                timeSlider.setValue(100);
+            }));
+
+            mediaPlayerFx.setOnError(() -> Platform.runLater(() ->
+                    showErrorState(mediaPlayerFx.getError() != null
+                            ? mediaPlayerFx.getError().getMessage()
+                            : "Erreur de lecture.")));
+
+        } catch (Exception e) {
+            showErrorState("Erreur lecteur JavaFX :\n" + e.getMessage());
+        }
+    }
+
+    // ==============================
+    // CONTRÔLES
+    // ==============================
+    @FXML
+    private void handlePlayPause() {
+        // Les contrôles play/pause ne s'appliquent pas au WebView YouTube
+        if (youtubeWebView != null) return;
+
+        if (vlcPlayer != null) {
+            if (vlcPlayer.mediaPlayer().status().isPlaying()) {
+                vlcPlayer.mediaPlayer().controls().pause();
+                btnPlayPause.setText("▶  Play");
+            } else {
+                vlcPlayer.mediaPlayer().controls().play();
+                btnPlayPause.setText("⏸  Pause");
+            }
+        } else if (mediaPlayerFx != null) {
+            if (mediaPlayerFx.getStatus() == MediaPlayer.Status.PLAYING) {
+                mediaPlayerFx.pause();
+                btnPlayPause.setText("▶  Play");
+            } else {
+                mediaPlayerFx.play();
+                btnPlayPause.setText("⏸  Pause");
+            }
+        }
+    }
+
+    @FXML
+    private void handleStop() {
+        // Les contrôles stop ne s'appliquent pas au WebView YouTube
+        if (youtubeWebView != null) return;
+
+        if (vlcPlayer != null) vlcPlayer.mediaPlayer().controls().stop();
+        else if (mediaPlayerFx != null) mediaPlayerFx.stop();
+        timeSlider.setValue(0);
+        lblVideoTime.setText("0:00 / 0:00");
+        btnPlayPause.setText("▶  Play");
+    }
+
+    @FXML
+    private void handleCloseVideo() {
+        disposeVideo();
+        hideVideoSection();
+        btnWatchVideo.setText("▶  Regarder la vidéo promotionnelle");
+        btnWatchVideo.setDisable(false);
+    }
+
+    // ==============================
+    // DISPOSE
+    // ==============================
+    private void disposeVideo() {
+        stopSliderThread();
+
+        // ✅ Nettoyer le WebView YouTube
+        if (youtubeWebView != null) {
+            youtubeWebView.getEngine().load("about:blank");
+            videoContainer.getChildren().remove(youtubeWebView);
+            youtubeWebView = null;
+        }
+
+        // Nettoyer VLCJ
+        if (vlcPlayer != null) {
+            try { vlcPlayer.mediaPlayer().controls().stop(); vlcPlayer.release(); } catch (Exception ignored) {}
+            vlcPlayer = null;
+        }
+        videoContainer.getChildren().removeIf(n ->
+                n instanceof StackPane &&
+                        ((StackPane) n).getChildren().stream()
+                                .anyMatch(c -> c instanceof SwingNode));
+        vlcSwingNode = null;
+
+        // Nettoyer JavaFX MediaPlayer
+        if (mediaPlayerFx != null) {
+            mediaPlayerFx.stop();
+            mediaPlayerFx.dispose();
+            mediaPlayerFx = null;
+        }
+        if (mediaViewFx != null) {
+            videoContainer.getChildren().remove(mediaViewFx);
+            mediaViewFx = null;
+        }
+
+        if (timeSlider   != null) timeSlider.setValue(0);
+        if (lblVideoTime != null) lblVideoTime.setText("0:00 / 0:00");
+    }
+
+    // ==============================
+    // HELPERS VISIBILITÉ
+    // ==============================
+    private void showVideoSection() {
+        videoSection.setVisible(true);
+        videoSection.setManaged(true);
+    }
+
+    private void hideVideoSection() {
+        videoSection.setVisible(false);
+        videoSection.setManaged(false);
+        showControls(false);
+        showLoadingState(false);
+    }
+
+    private void showLoadingState(boolean loading) {
+        videoLoadingPane.setVisible(loading);
+        videoLoadingPane.setManaged(loading);
+        videoErrorPane.setVisible(false);
+        videoErrorPane.setManaged(false);
+    }
+
+    private void showErrorState(String msg) {
+        showLoadingState(false);
+        showControls(false);
+        lblVideoError.setText(msg != null ? msg : "Erreur inconnue.");
+        videoErrorPane.setVisible(true);
+        videoErrorPane.setManaged(true);
+    }
+
+    private void showControls(boolean show) {
+        videoControls.setVisible(show);
+        videoControls.setManaged(show);
+    }
+
+    // ==============================
+    // FORMATEURS DE DURÉE
+    // ==============================
+    private String formatDuration(Duration d) {
+        if (d == null || d.isUnknown() || d.isIndefinite()) return "0:00";
+        int totalSec = (int) d.toSeconds();
+        return String.format("%d:%02d", totalSec / 60, totalSec % 60);
+    }
+
+    private String formatMs(long ms) {
+        long totalSec = ms / 1000;
+        return String.format("%d:%02d", totalSec / 60, totalSec % 60);
     }
 
     // ==============================
@@ -141,49 +571,33 @@ public class ClientDetailsController {
     private void loadWeather(Destination d) {
         double lat = d.getLatitude();
         double lon = d.getLongitude();
-
-        // ✅ getDateDepart() retourne déjà LocalDate — pas de toLocalDate()
-        LocalDate dateDepart  = d.getDateDepart();
-        LocalDate dateArrivee = d.getDateArrivee();
-
-        if (lblWeatherPeriod != null && dateDepart != null && dateArrivee != null) {
+        LocalDate dep = d.getDateDepart();
+        LocalDate arr = d.getDateArrivee();
+        if (lblWeatherPeriod != null && dep != null && arr != null) {
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            lblWeatherPeriod.setText("🗓️ " + dateDepart.format(fmt) + "  →  " + dateArrivee.format(fmt));
+            lblWeatherPeriod.setText(dep.format(fmt) + "  →  " + arr.format(fmt));
         }
-
-        Thread thread = new Thread(() -> {
+        new Thread(() -> {
             try {
-                // Météo actuelle
                 String currentUrl = "https://api.openweathermap.org/data/2.5/weather"
                         + "?lat=" + lat + "&lon=" + lon
-                        + "&appid=" + WEATHER_API_KEY
-                        + "&units=metric&lang=fr";
-
+                        + "&appid=" + WEATHER_API_KEY + "&units=metric&lang=fr";
                 JSONObject current = new JSONObject(fetchUrl(currentUrl));
-
                 double temp      = current.getJSONObject("main").getDouble("temp");
                 double feelsLike = current.getJSONObject("main").getDouble("feels_like");
                 int    humidity  = current.getJSONObject("main").getInt("humidity");
                 double windMs    = current.getJSONObject("wind").getDouble("speed");
                 String desc      = current.getJSONArray("weather").getJSONObject(0).getString("description");
                 String cityName  = current.getString("name");
-
-                // Prévisions 5 jours
                 String forecastUrl = "https://api.openweathermap.org/data/2.5/forecast"
                         + "?lat=" + lat + "&lon=" + lon
-                        + "&appid=" + WEATHER_API_KEY
-                        + "&units=metric&lang=fr&cnt=40";
-
+                        + "&appid=" + WEATHER_API_KEY + "&units=metric&lang=fr&cnt=40";
                 JSONObject forecastJson = new JSONObject(fetchUrl(forecastUrl));
                 List<String[]> forecastDays = parseForecast(forecastJson);
-
-                // Indice voyage
-                int    index      = computeTravelIndex(temp, humidity, windMs, desc);
+                int index = computeTravelIndex(temp, humidity, windMs, desc);
                 String indexLabel = getTravelIndexLabel(index);
-
-                // Mise à jour UI
                 Platform.runLater(() -> {
-                    lblWeatherCity.setText("📍 " + cityName);
+                    lblWeatherCity.setText(cityName);
                     lblWeatherTemp.setText(String.format("%.0f°C", temp));
                     lblWeatherDesc.setText(capitalize(desc));
                     lblWeatherFeels.setText(String.format("Ressenti : %.0f°C", feelsLike));
@@ -194,37 +608,28 @@ public class ClientDetailsController {
                     buildForecastUI(forecastDays);
                     if (weatherBox != null) weatherBox.setVisible(true);
                 });
-
             } catch (Exception e) {
                 Platform.runLater(() -> {
-                    if (lblWeatherCity != null)
-                        lblWeatherCity.setText("⚠️ Météo indisponible — vérifier la clé API");
+                    if (lblWeatherCity != null) lblWeatherCity.setText("⚠️ Météo indisponible");
                 });
-                System.err.println("Erreur météo : " + e.getMessage());
             }
-        });
-        thread.setDaemon(true);
-        thread.start();
+        }).start();
     }
 
     private int computeTravelIndex(double temp, int humidity, double windMs, String desc) {
         int score = 10;
-        if (temp < 0 || temp > 40)        score -= 4;
-        else if (temp < 10 || temp > 35)  score -= 2;
-        else if (temp < 15 || temp > 30)  score -= 1;
-
+        if (temp < 0 || temp > 40)       score -= 4;
+        else if (temp < 10 || temp > 35) score -= 2;
+        else if (temp < 15 || temp > 30) score -= 1;
         if (humidity > 85)      score -= 2;
         else if (humidity > 70) score -= 1;
-
         double windKmh = windMs * 3.6;
-        if (windKmh > 54)       score -= 2;
-        else if (windKmh > 36)  score -= 1;
-
+        if (windKmh > 54)      score -= 2;
+        else if (windKmh > 36) score -= 1;
         String dl = desc.toLowerCase();
         if (dl.contains("orage") || dl.contains("neige") || dl.contains("tempête")) score -= 3;
-        else if (dl.contains("pluie") || dl.contains("brouillard"))                 score -= 2;
-        else if (dl.contains("nuageux"))                                             score -= 1;
-
+        else if (dl.contains("pluie") || dl.contains("brouillard"))                  score -= 2;
+        else if (dl.contains("nuageux"))                                              score -= 1;
         return Math.max(0, score);
     }
 
@@ -238,25 +643,19 @@ public class ClientDetailsController {
 
     private void applyIndexStyle(int index) {
         if (lblWeatherIndex == null) return;
-        String color;
-        if (index >= 8)      color = "#27ae60";
-        else if (index >= 6) color = "#2980b9";
-        else if (index >= 4) color = "#f39c12";
-        else                 color = "#e74c3c";
-        lblWeatherIndex.setStyle("-fx-text-fill: " + color + "; -fx-font-weight: bold; -fx-font-size: 13px;");
+        String color = index >= 8 ? "#2ecc71" : index >= 6 ? "#74b9ff" : index >= 4 ? "#fdcb6e" : "#ff7675";
+        lblWeatherIndex.setStyle("-fx-text-fill:" + color + ";-fx-font-weight:900;-fx-font-size:13px;");
     }
 
     private List<String[]> parseForecast(JSONObject forecastJson) {
         List<String[]> days = new ArrayList<>();
         JSONArray list = forecastJson.getJSONArray("list");
         String lastDate = "";
-
         for (int i = 0; i < list.length() && days.size() < 5; i++) {
             JSONObject item = list.getJSONObject(i);
             long dt = item.getLong("dt");
             LocalDate date = Instant.ofEpochSecond(dt).atZone(ZoneId.systemDefault()).toLocalDate();
             String dateStr = date.format(DateTimeFormatter.ofPattern("EEE dd/MM"));
-
             if (!dateStr.equals(lastDate)) {
                 lastDate = dateStr;
                 String desc = item.getJSONArray("weather").getJSONObject(0).getString("description");
@@ -272,63 +671,28 @@ public class ClientDetailsController {
     private void buildForecastUI(List<String[]> days) {
         if (forecastContainer == null) return;
         forecastContainer.getChildren().clear();
-
         for (String[] day : days) {
-            VBox card = new VBox(4);
+            VBox card = new VBox(6);
             card.setAlignment(Pos.CENTER);
-            card.setPadding(new Insets(8));
-            card.setMinWidth(90);
-            card.setStyle(
-                    "-fx-background-color: rgba(255,255,255,0.15);" +
-                            "-fx-background-radius: 10;" +
-                            "-fx-border-color: rgba(255,255,255,0.25);" +
-                            "-fx-border-radius: 10; -fx-border-width: 1;"
-            );
-
+            card.setPadding(new Insets(14, 16, 14, 16));
+            card.setMinWidth(110); card.setMaxWidth(120);
+            card.setStyle("-fx-background-color:rgba(255,255,255,0.14);"
+                    + "-fx-background-radius:14;-fx-border-color:rgba(255,255,255,0.22);"
+                    + "-fx-border-radius:14;-fx-border-width:1;");
             Label dateL = new Label(day[0]);
-            dateL.setStyle("-fx-font-weight: bold; -fx-font-size: 11px; -fx-text-fill: white;");
-
+            dateL.setStyle("-fx-font-weight:700;-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.9);");
             ImageView icon = new ImageView();
-            try {
-                icon.setImage(new Image(
-                        "https://openweathermap.org/img/wn/" + day[4] + "@2x.png",
-                        48, 48, true, true
-                ));
-            } catch (Exception ignored) {}
-            icon.setFitWidth(48);
-            icon.setFitHeight(48);
-
+            try { icon.setImage(new Image("https://openweathermap.org/img/wn/" + day[4] + "@2x.png", 52, 52, true, true)); } catch (Exception ignored) {}
+            icon.setFitWidth(52); icon.setFitHeight(52);
             Label descL = new Label(day[1]);
-            descL.setStyle("-fx-font-size: 10px; -fx-text-fill: rgba(255,255,255,0.85);");
-            descL.setWrapText(true);
-            descL.setMaxWidth(85);
-
+            descL.setStyle("-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.75);");
+            descL.setWrapText(true); descL.setMaxWidth(100);
             Label tempL = new Label(day[2] + " / " + day[3]);
-            tempL.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: white;");
-
-            card.getChildren().addAll(dateL, icon, descL, tempL);
+            tempL.setStyle("-fx-font-size:13px;-fx-font-weight:800;-fx-text-fill:white;"
+                    + "-fx-background-color:rgba(0,0,0,0.2);-fx-background-radius:6;-fx-padding:4 10 4 10;");
+            card.getChildren().addAll(dateL, icon, descL, new Separator(), tempL);
             forecastContainer.getChildren().add(card);
         }
-    }
-
-    private String fetchUrl(String urlStr) throws Exception {
-        URL url = new URL(urlStr);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setConnectTimeout(5000);
-        conn.setReadTimeout(5000);
-        conn.setRequestProperty("User-Agent", "Mozilla/5.0");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) sb.append(line);
-        reader.close();
-        return sb.toString();
-    }
-
-    private String capitalize(String s) {
-        if (s == null || s.isEmpty()) return s;
-        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 
     // ==============================
@@ -343,14 +707,9 @@ public class ClientDetailsController {
                 File file = new File(img.getUrlImage());
                 Image fxImg = new Image(file.toURI().toString());
                 ImageView iv = new ImageView(fxImg);
-                iv.setFitWidth(140);
-                iv.setFitHeight(90);
-                iv.setPreserveRatio(true);
+                iv.setFitWidth(140); iv.setFitHeight(90); iv.setPreserveRatio(true);
                 iv.getStyleClass().add("tableImg");
-                iv.setOnMouseClicked(e -> {
-                    imageView.setImage(iv.getImage());
-                    currentIndex = images.indexOf(img);
-                });
+                iv.setOnMouseClicked(e -> { imageView.setImage(iv.getImage()); currentIndex = images.indexOf(img); });
                 imagesContainer.getChildren().add(iv);
             }
             loadImage(0);
@@ -360,10 +719,8 @@ public class ClientDetailsController {
     }
 
     private void loadImage(int index) {
-        if (images == null || images.isEmpty()) return;
-        if (index < 0 || index >= images.size()) return;
-        File file = new File(images.get(index).getUrlImage());
-        imageView.setImage(new Image(file.toURI().toString()));
+        if (images == null || images.isEmpty() || index < 0 || index >= images.size()) return;
+        imageView.setImage(new Image(new File(images.get(index).getUrlImage()).toURI().toString()));
     }
 
     private void nextImage() {
@@ -384,81 +741,79 @@ public class ClientDetailsController {
     private void loadTransports(Destination d) {
         transportContainer.getChildren().clear();
         currentTransport = null;
-
         List<Transport> transports = transportService.getTransportsByDestination(d.getIdDestination());
         if (transports != null && !transports.isEmpty()) {
             currentTransport = transports.get(0);
-            for (Transport t : transports) {
-                transportContainer.getChildren().add(createTransportLine(t));
-            }
+            for (Transport t : transports) transportContainer.getChildren().add(createTransportLine(t));
         }
-
-        if (currentTransport != null) {
-            lblTransport.setText("Transport : " + currentTransport.getTypeTransport());
-            addRouteToMap(currentDestination, currentTransport);
-        } else {
-            lblTransport.setText("Transport : -");
-        }
+        lblTransport.setText(currentTransport != null ? currentTransport.getTypeTransport() : "—");
+        if (currentTransport != null) addRouteToMap(currentDestination, currentTransport);
     }
 
     private HBox createTransportLine(Transport t) {
-        Label type = new Label("Transport : " + t.getTypeTransport());
-        type.getStyleClass().add("details-text");
-        HBox box = new HBox(type);
-        box.setSpacing(10);
-        box.getStyleClass().add("glass-card");
+        Label icon = new Label(getTransportIcon(t.getTypeTransport()));
+        icon.setStyle("-fx-font-size:16px;");
+        Label type = new Label(t.getTypeTransport());
+        type.setStyle("-fx-text-fill:#3a4a6b;-fx-font-size:13px;-fx-font-weight:600;");
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        HBox box = new HBox(12, icon, type, spacer);
+        box.setAlignment(Pos.CENTER_LEFT);
+        box.setStyle("-fx-background-color:#f8faff;-fx-background-radius:10;"
+                + "-fx-border-color:#e8edf5;-fx-border-radius:10;-fx-border-width:1;-fx-padding:12 16 12 16;");
         return box;
+    }
+
+    private String getTransportIcon(String type) {
+        if (type == null) return "🚗";
+        String l = type.toLowerCase();
+        if (l.contains("avion") || l.contains("vol"))    return "✈️";
+        if (l.contains("train"))                          return "🚆";
+        if (l.contains("bus") || l.contains("car"))      return "🚌";
+        if (l.contains("bateau") || l.contains("ferry")) return "🚢";
+        return "🚗";
     }
 
     // ==============================
     // CARTE
     // ==============================
     private void initMap() {
-        mapView = new WebView();
+        mapView   = new WebView();
         webEngine = mapView.getEngine();
-
         System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
-        webEngine.setUserAgent(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
-                        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        );
+        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
         webEngine.setJavaScriptEnabled(true);
-
         URL url = getClass().getResource("/map.html");
         if (url != null) webEngine.load(url.toExternalForm());
-
         bridge = new JSBridge(lblDistance, lblDuration, lblTransport);
-
-        webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
+        webEngine.getLoadWorker().stateProperty().addListener((obs, o, n) -> {
+            if (n == Worker.State.SUCCEEDED) {
                 JSObject window = (JSObject) webEngine.executeScript("window");
                 window.setMember("javaConnector", bridge);
-
                 Object exists = webEngine.executeScript("typeof setDestination === 'function'");
-                if (exists != null && "true".equals(exists.toString())
-                        && currentDestination != null && currentTransport != null) {
+                if ("true".equals(String.valueOf(exists)) && currentDestination != null && currentTransport != null)
                     addRouteToMap(currentDestination, currentTransport);
-                }
             }
         });
-
         mapPane.setCenter(mapView);
     }
 
     private void addRouteToMap(Destination d, Transport t) {
-        try {
-            Object exists = webEngine.executeScript("typeof setDestination === 'function'");
-            if (exists != null && "true".equals(exists.toString())) {
-                webEngine.executeScript(
-                        "setDestination(" + d.getLatitude() + "," + d.getLongitude()
-                                + ",'" + t.getTypeTransport() + "')"
-                );
-            } else {
-                System.err.println("JS function setDestination non trouvée !");
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        Platform.runLater(() -> {
+            try {
+                Object exists = webEngine.executeScript("typeof setDestination === 'function'");
+                if ("true".equals(String.valueOf(exists))) {
+                    webEngine.executeScript("setDestination(" + d.getLatitude() + "," + d.getLongitude()
+                            + ",'" + t.getTypeTransport() + "')");
+                } else {
+                    Thread th = new Thread(() -> {
+                        try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+                        Platform.runLater(() -> addRouteToMap(d, t));
+                    });
+                    th.setDaemon(true); th.start();
+                }
+            } catch (Exception ex) { ex.printStackTrace(); }
+        });
     }
 
     // ==============================
@@ -466,6 +821,7 @@ public class ClientDetailsController {
     // ==============================
     @FXML
     private void goBackToList() {
+        disposeVideo();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientDestinationListView.fxml"));
             Parent root = loader.load();
@@ -474,9 +830,7 @@ public class ClientDetailsController {
             SceneUtil.applyCss(scene);
             stage.setScene(scene);
             stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     // ==============================
@@ -484,23 +838,37 @@ public class ClientDetailsController {
     // ==============================
     public static class JSBridge {
         private final Label lblDistance, lblDuration, lblTransport;
-
-        public JSBridge(Label lblDistance, Label lblDuration, Label lblTransport) {
-            this.lblDistance = lblDistance;
-            this.lblDuration = lblDuration;
-            this.lblTransport = lblTransport;
-        }
-
+        public JSBridge(Label d, Label du, Label tr) { lblDistance = d; lblDuration = du; lblTransport = tr; }
         public void sendRouteInfo(String distance, String duration, String transportType) {
             Platform.runLater(() -> {
-                lblDistance.setText("Distance : " + distance + " km");
-                lblDuration.setText("Durée : " + duration + " min");
-                lblTransport.setText("Transport : " + transportType);
+                lblDistance.setText(distance + " km");
+                lblDuration.setText(duration + " min");
+                lblTransport.setText(transportType);
             });
         }
     }
 
-    public Destination getCurrentDestination() {
-        return currentDestination;
+    public Destination getCurrentDestination() { return currentDestination; }
+
+    // ==============================
+    // UTILITAIRES
+    // ==============================
+    private String fetchUrl(String urlStr) throws Exception {
+        URL url = new URL(urlStr);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setConnectTimeout(5000); conn.setReadTimeout(5000);
+        conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) sb.append(line);
+        reader.close();
+        return sb.toString();
+    }
+
+    private String capitalize(String s) {
+        if (s == null || s.isEmpty()) return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 }

@@ -14,11 +14,10 @@ public class Destination {
     private double latitude;
     private double longitude;
     private int nbVisites;
-
-    // Nouveaux attributs
     private double prix;
     private LocalDate dateDepart;
     private LocalDate dateArrivee;
+    private String videoPath; // ← URL MP4 (locale ou web directe)
 
     // Constructeur vide
     public Destination() {}
@@ -61,101 +60,44 @@ public class Destination {
     }
 
     // Getters & Setters
-    public int getIdDestination() {
-        return idDestination;
-    }
+    public int getIdDestination() { return idDestination; }
+    public void setIdDestination(int idDestination) { this.idDestination = idDestination; }
 
-    public void setIdDestination(int idDestination) {
-        this.idDestination = idDestination;
-    }
+    public String getNom() { return nom; }
+    public void setNom(String nom) { this.nom = nom; }
 
-    public String getNom() {
-        return nom;
-    }
+    public String getPays() { return pays; }
+    public void setPays(String pays) { this.pays = pays; }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getPays() {
-        return pays;
-    }
+    public boolean getStatut() { return statut; }
+    public void setStatut(boolean statut) { this.statut = statut; }
 
-    public void setPays(String pays) {
-        this.pays = pays;
-    }
+    public String getMeilleureSaison() { return meilleureSaison; }
+    public void setMeilleureSaison(String meilleureSaison) { this.meilleureSaison = meilleureSaison; }
 
-    public String getDescription() {
-        return description;
-    }
+    public double getLatitude() { return latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public double getLongitude() { return longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
-    public boolean getStatut() {
-        return statut;
-    }
+    public int getNbVisites() { return nbVisites; }
+    public void setNbVisites(int nbVisites) { this.nbVisites = nbVisites; }
 
-    public void setStatut(boolean statut) {
-        this.statut = statut;
-    }
+    public double getPrix() { return prix; }
+    public void setPrix(double prix) { this.prix = prix; }
 
-    public String getMeilleureSaison() {
-        return meilleureSaison;
-    }
+    public LocalDate getDateDepart() { return dateDepart; }
+    public void setDateDepart(LocalDate dateDepart) { this.dateDepart = dateDepart; }
 
-    public void setMeilleureSaison(String meilleureSaison) {
-        this.meilleureSaison = meilleureSaison;
-    }
+    public LocalDate getDateArrivee() { return dateArrivee; }
+    public void setDateArrivee(LocalDate dateArrivee) { this.dateArrivee = dateArrivee; }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public int getNbVisites() {
-        return nbVisites;
-    }
-
-    public void setNbVisites(int nbVisites) {
-        this.nbVisites = nbVisites;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public LocalDate getDateDepart() {
-        return dateDepart;
-    }
-
-    public void setDateDepart(LocalDate dateDepart) {
-        this.dateDepart = dateDepart;
-    }
-
-    public LocalDate getDateArrivee() {
-        return dateArrivee;
-    }
-
-    public void setDateArrivee(LocalDate dateArrivee) {
-        this.dateArrivee = dateArrivee;
-    }
+    public String getVideoPath() { return videoPath; }
+    public void setVideoPath(String videoPath) { this.videoPath = videoPath; }
 
     @Override
     public String toString() {
@@ -172,6 +114,7 @@ public class Destination {
                 ", prix=" + prix +
                 ", dateDepart=" + dateDepart +
                 ", dateArrivee=" + dateArrivee +
+                ", videoPath='" + videoPath + '\'' +
                 '}';
     }
 

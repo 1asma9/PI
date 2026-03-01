@@ -16,7 +16,7 @@ public class DestinationService implements IService<Destination> {
     public void addEntity(Destination destination) throws SQLException {
 
         String sql = "INSERT INTO destination " +
-                "(nom, pays, description, statut, meilleure_saison, latitude, longitude, nb_visites, prix, date_depart, date_arrivee) " +
+                "(nom, pays, description, statut, meilleure_saison, latitude, longitude, nb_visites, prix, date_depart, date_arrivee, video_path) " +
                 "VALUES ('" + destination.getNom() + "','" +
                 destination.getPays() + "','" +
                 destination.getDescription() + "'," +
@@ -27,7 +27,8 @@ public class DestinationService implements IService<Destination> {
                 destination.getNbVisites() + "," +
                 destination.getPrix() + ",'" +
                 destination.getDateDepart() + "','" +
-                destination.getDateArrivee() + "')";
+                destination.getDateArrivee() + "','" +
+                destination.getVideoPath() + "')";
 
         Statement st = new MyConnection().getCnx().createStatement();
         st.executeUpdate(sql);
@@ -39,8 +40,8 @@ public class DestinationService implements IService<Destination> {
     public void addEntity2(Destination destination) throws SQLException {
 
         String sql = "INSERT INTO destination " +
-                "(nom, pays, description, statut, meilleure_saison, latitude, longitude, nb_visites, prix, date_depart, date_arrivee) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "(nom, pays, description, statut, meilleure_saison, latitude, longitude, nb_visites, prix, date_depart, date_arrivee, video_path) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement pst = new MyConnection().getCnx().prepareStatement(sql);
 
@@ -55,6 +56,7 @@ public class DestinationService implements IService<Destination> {
         pst.setDouble(9, destination.getPrix());
         pst.setDate(10, Date.valueOf(destination.getDateDepart()));
         pst.setDate(11, Date.valueOf(destination.getDateArrivee()));
+        pst.setString(12, destination.getVideoPath());
 
         pst.executeUpdate();
         System.out.println("Destination ajoutée");
@@ -82,7 +84,7 @@ public class DestinationService implements IService<Destination> {
 
         String sql = "UPDATE destination SET " +
                 "nom=?, pays=?, description=?, statut=?, meilleure_saison=?, " +
-                "latitude=?, longitude=?, nb_visites=?, prix=?, date_depart=?, date_arrivee=? " +
+                "latitude=?, longitude=?, nb_visites=?, prix=?, date_depart=?, date_arrivee=?, video_path=? " +
                 "WHERE id_destination=?";
 
         try {
@@ -99,7 +101,8 @@ public class DestinationService implements IService<Destination> {
             pst.setDouble(9, destination.getPrix());
             pst.setDate(10, Date.valueOf(destination.getDateDepart()));
             pst.setDate(11, Date.valueOf(destination.getDateArrivee()));
-            pst.setInt(12, id);
+            pst.setString(12, destination.getVideoPath());
+            pst.setInt(13, id);
 
             pst.executeUpdate();
             System.out.println("Destination modifiée");
@@ -136,10 +139,12 @@ public class DestinationService implements IService<Destination> {
                 d.setPrix(rs.getDouble("prix"));
 
                 Date depart = rs.getDate("date_depart");
-                if(depart != null) d.setDateDepart(depart.toLocalDate());
+                if (depart != null) d.setDateDepart(depart.toLocalDate());
 
                 Date arrivee = rs.getDate("date_arrivee");
-                if(arrivee != null) d.setDateArrivee(arrivee.toLocalDate());
+                if (arrivee != null) d.setDateArrivee(arrivee.toLocalDate());
+
+                d.setVideoPath(rs.getString("video_path")); // ← récupère l'URL MP4
 
                 list.add(d);
             }

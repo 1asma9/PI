@@ -18,13 +18,10 @@ import java.sql.SQLException;
 
 public class AdminDestinationFormController {
 
-    // ============================================================
-    // 🔑 CLÉ API GROQ
-    // ============================================================
-    private static final String GROQ_API_KEY = "";
+    private static final String GROQ_API_KEY = "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";
 
     // ==============================
-    // FXML — champs
+    // FXML — champs existants
     // ==============================
     @FXML private TextField  txtNom, txtPays, txtDescription, txtSaison;
     @FXML private TextField  txtLatitude, txtLongitude, txtNbVisites;
@@ -34,7 +31,11 @@ public class AdminDestinationFormController {
     @FXML private DatePicker dateDepart;
     @FXML private DatePicker dateArrivee;
 
-    // Labels d'erreur
+    // ← NOUVEAU : champ URL vidéo
+    @FXML private TextField txtVideoPath;
+    @FXML private Label     errVideoPath;
+
+    // Labels d'erreur existants
     @FXML private Label errNom, errPays, errDescription, errSaison;
     @FXML private Label errLatitude, errLongitude, errNbVisites;
     @FXML private Label errPrix, errDateDepart, errDateArrivee;
@@ -57,7 +58,6 @@ public class AdminDestinationFormController {
             txtPays.setText(destination.getPays());
             txtDescription.setText(destination.getDescription());
             txtSaison.setText(destination.getMeilleureSaison());
-
             txtLatitude.setText(String.valueOf(destination.getLatitude()));
             txtLongitude.setText(String.valueOf(destination.getLongitude()));
             txtNbVisites.setText(String.valueOf(destination.getNbVisites()));
@@ -67,6 +67,10 @@ public class AdminDestinationFormController {
             if (destination.getDateArrivee() != null) dateArrivee.setValue(destination.getDateArrivee());
 
             chkStatut.setSelected(destination.getStatut());
+
+            // ← Charger l'URL vidéo si elle existe
+            if (destination.getVideoPath() != null)
+                txtVideoPath.setText(destination.getVideoPath());
         }
     }
 
@@ -78,7 +82,7 @@ public class AdminDestinationFormController {
     }
 
     // ==============================
-    // 🤖 GÉNÉRATION IA
+    // 🤖 GÉNÉRATION IA (inchangé)
     // ==============================
     private void genererDescriptionIA() {
         String nom    = txtNom.getText().trim();
@@ -110,16 +114,12 @@ public class AdminDestinationFormController {
                     lblIaStatus.setStyle("-fx-text-fill: #e74c3c;");
                     btnGenererDescription.setDisable(false);
                 });
-                System.err.println("Erreur Groq : " + ex.getMessage());
             }
         });
         thread.setDaemon(true);
         thread.start();
     }
 
-    // ==============================
-    // APPEL GROQ
-    // ==============================
     private String callGroq(String nom, String pays, String saison) throws Exception {
         URL url = new URL("https://api.groq.com/openai/v1/chat/completions");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -132,9 +132,8 @@ public class AdminDestinationFormController {
 
         String prompt = "Tu es un assistant de voyage strict. "
                 + "Si le nom '" + nom + "' ou le pays '" + pays + "' ne correspondent pas "
-                + "à une vraie destination géographique connue (ville, région, site touristique réel), "
+                + "à une vraie destination géographique connue, "
                 + "réponds UNIQUEMENT avec le mot : DESTINATION_INVALIDE "
-                + "Sans rien ajouter d'autre. "
                 + "Sinon, rédige une description de voyage courte et attractive (3 à 4 phrases) "
                 + "pour la destination : " + nom + ", située en " + pays + ". "
                 + (saison != null && !saison.isBlank()
@@ -159,7 +158,6 @@ public class AdminDestinationFormController {
 
         if (status != 200) throw new Exception("Groq HTTP " + status);
 
-        // Parser robuste caractère par caractère
         String json = sb.toString();
         int start = json.indexOf("\"content\":\"");
         if (start == -1) throw new Exception("Réponse Groq invalide");
@@ -196,19 +194,15 @@ public class AdminDestinationFormController {
 
         String description = result.toString()
                 .replaceAll("\\*\\*(.*?)\\*\\*", "$1")
-                .replaceAll("\\*(.*?)\\*",       "$1")
+                .replaceAll("\\*(.*?)\\*", "$1")
                 .trim();
 
-        if (description.toUpperCase().contains("DESTINATION_INVALIDE")) {
+        if (description.toUpperCase().contains("DESTINATION_INVALIDE"))
             throw new Exception("Destination invalide. Veuillez entrer un nom et un pays réels.");
-        }
 
         return description;
     }
 
-    // ==============================
-    // ESCAPE JSON
-    // ==============================
     private String escapeJson(String text) {
         return text
                 .replace("\\", "\\\\")
@@ -237,14 +231,16 @@ public class AdminDestinationFormController {
             destination.setDescription(txtDescription.getText().trim());
             destination.setMeilleureSaison(capitalize(txtSaison.getText().trim()));
             destination.setStatut(chkStatut.isSelected());
-
             destination.setLatitude(Double.parseDouble(txtLatitude.getText().trim()));
             destination.setLongitude(Double.parseDouble(txtLongitude.getText().trim()));
             destination.setNbVisites(Integer.parseInt(txtNbVisites.getText().trim()));
-
             destination.setPrix(Double.parseDouble(txtPrix.getText().trim()));
             destination.setDateDepart(dateDepart.getValue());
             destination.setDateArrivee(dateArrivee.getValue());
+
+            // ← Sauvegarder l'URL vidéo (champ optionnel)
+            String videoPath = txtVideoPath.getText().trim();
+            destination.setVideoPath(videoPath.isEmpty() ? null : videoPath);
 
             if (destination.getIdDestination() == 0) {
                 service.addEntity2(destination);
@@ -268,40 +264,22 @@ public class AdminDestinationFormController {
         boolean isValid = true;
 
         String nom = txtNom.getText().trim();
-        if (nom.isEmpty()) {
-            setError(txtNom, errNom, "Le nom est obligatoire");
-            isValid = false;
-        } else if (!nom.matches("^[A-Za-zÀ-ÿ\\s-]+$")) {
-            setError(txtNom, errNom, "Lettres uniquement (pas de chiffres)");
-            isValid = false;
-        }
+        if (nom.isEmpty()) { setError(txtNom, errNom, "Le nom est obligatoire"); isValid = false; }
+        else if (!nom.matches("^[A-Za-zÀ-ÿ\\s-]+$")) { setError(txtNom, errNom, "Lettres uniquement"); isValid = false; }
 
         String pays = txtPays.getText().trim();
-        if (pays.isEmpty()) {
-            setError(txtPays, errPays, "Le pays est obligatoire");
-            isValid = false;
-        } else if (!pays.matches("^[A-Za-zÀ-ÿ\\s-]+$")) {
-            setError(txtPays, errPays, "Lettres uniquement (pas de chiffres)");
-            isValid = false;
-        }
+        if (pays.isEmpty()) { setError(txtPays, errPays, "Le pays est obligatoire"); isValid = false; }
+        else if (!pays.matches("^[A-Za-zÀ-ÿ\\s-]+$")) { setError(txtPays, errPays, "Lettres uniquement"); isValid = false; }
 
         String desc = txtDescription.getText().trim();
-        if (desc.isEmpty()) {
-            setError(txtDescription, errDescription, "Description obligatoire");
-            isValid = false;
-        } else if (desc.length() < 10) {
-            setError(txtDescription, errDescription, "Minimum 10 caractères");
-            isValid = false;
-        }
+        if (desc.isEmpty()) { setError(txtDescription, errDescription, "Description obligatoire"); isValid = false; }
+        else if (desc.length() < 10) { setError(txtDescription, errDescription, "Minimum 10 caractères"); isValid = false; }
 
         String saison = txtSaison.getText().trim().toLowerCase();
-        if (saison.isEmpty()) {
-            setError(txtSaison, errSaison, "Champ obligatoire");
-            isValid = false;
-        } else if (!(saison.equals("printemps") || saison.equals("été") || saison.equals("ete")
+        if (saison.isEmpty()) { setError(txtSaison, errSaison, "Champ obligatoire"); isValid = false; }
+        else if (!(saison.equals("printemps") || saison.equals("été") || saison.equals("ete")
                 || saison.equals("automne") || saison.equals("hiver"))) {
-            setError(txtSaison, errSaison, "Valeurs : Printemps, Été, Automne, Hiver");
-            isValid = false;
+            setError(txtSaison, errSaison, "Valeurs : Printemps, Été, Automne, Hiver"); isValid = false;
         }
 
         isValid = validateDouble(txtLatitude,  errLatitude,  "Latitude entre -90 et 90",    -90,  90)  && isValid;
@@ -310,37 +288,49 @@ public class AdminDestinationFormController {
         try {
             int nb = Integer.parseInt(txtNbVisites.getText().trim());
             if (nb < 0) { setError(txtNbVisites, errNbVisites, "Doit être positif"); isValid = false; }
-        } catch (NumberFormatException e) {
-            setError(txtNbVisites, errNbVisites, "Nombre invalide"); isValid = false;
-        }
+        } catch (NumberFormatException e) { setError(txtNbVisites, errNbVisites, "Nombre invalide"); isValid = false; }
 
         try {
             double prix = Double.parseDouble(txtPrix.getText().trim());
             if (prix < 0) { setError(txtPrix, errPrix, "Doit être positif"); isValid = false; }
-        } catch (NumberFormatException e) {
-            setError(txtPrix, errPrix, "Nombre invalide"); isValid = false;
-        }
+        } catch (NumberFormatException e) { setError(txtPrix, errPrix, "Nombre invalide"); isValid = false; }
 
         if (dateDepart.getValue() == null) {
             errDateDepart.setText("La date de départ est obligatoire");
-            dateDepart.getStyleClass().add("input-error");
-            isValid = false;
+            dateDepart.getStyleClass().add("input-error"); isValid = false;
         }
-
         if (dateArrivee.getValue() == null) {
             errDateArrivee.setText("La date d'arrivée est obligatoire");
-            dateArrivee.getStyleClass().add("input-error");
-            isValid = false;
+            dateArrivee.getStyleClass().add("input-error"); isValid = false;
         }
-
         if (dateDepart.getValue() != null && dateArrivee.getValue() != null) {
             if (dateArrivee.getValue().isBefore(dateDepart.getValue())) {
                 errDateArrivee.setText("La date d'arrivée doit être après le départ");
-                dateArrivee.getStyleClass().add("input-error");
-                isValid = false;
+                dateArrivee.getStyleClass().add("input-error"); isValid = false;
             }
         }
 
+        // ← Validation URL vidéo (optionnelle mais doit être une URL valide si remplie)
+        // Validation video_path — accepte URL web ET chemin local .mp4
+        String videoPath = txtVideoPath != null ? txtVideoPath.getText().trim() : "";
+        if (!videoPath.isEmpty()) {
+            boolean isWebUrl   = videoPath.startsWith("http://") || videoPath.startsWith("https://");
+            boolean isLocalMp4 = videoPath.toLowerCase().endsWith(".mp4");
+
+            if (!isWebUrl && !isLocalMp4) {
+                if (errVideoPath != null)
+                    errVideoPath.setText("Chemin invalide : doit être une URL http/https ou un fichier .mp4");
+                isValid = false;
+            } else if (isLocalMp4 && !isWebUrl) {
+                // Vérifier que le fichier existe vraiment sur le PC
+                java.io.File f = new java.io.File(videoPath);
+                if (!f.exists()) {
+                    if (errVideoPath != null)
+                        errVideoPath.setText("Fichier introuvable : " + videoPath);
+                    isValid = false;
+                }
+            }
+        }
         return isValid;
     }
 
@@ -349,9 +339,7 @@ public class AdminDestinationFormController {
             double value = Double.parseDouble(field.getText().trim());
             if (value < min || value > max) { setError(field, errLabel, msg); return false; }
             return true;
-        } catch (NumberFormatException e) {
-            setError(field, errLabel, "Nombre invalide"); return false;
-        }
+        } catch (NumberFormatException e) { setError(field, errLabel, "Nombre invalide"); return false; }
     }
 
     private void setError(Control field, Label label, String message) {
@@ -362,9 +350,11 @@ public class AdminDestinationFormController {
 
     private void clearErrors() {
         Control[] fields = { txtNom, txtPays, txtDescription, txtSaison,
-                txtLatitude, txtLongitude, txtNbVisites, txtPrix, dateDepart, dateArrivee };
-        Label[] labels   = { errNom, errPays, errDescription, errSaison,
-                errLatitude, errLongitude, errNbVisites, errPrix, errDateDepart, errDateArrivee };
+                txtLatitude, txtLongitude, txtNbVisites, txtPrix,
+                dateDepart, dateArrivee, txtVideoPath };
+        Label[] labels = { errNom, errPays, errDescription, errSaison,
+                errLatitude, errLongitude, errNbVisites, errPrix,
+                errDateDepart, errDateArrivee, errVideoPath };
 
         for (Control c : fields) if (c != null) c.getStyleClass().remove("input-error");
         for (Label  l : labels)  if (l != null) l.setText("");
@@ -372,10 +362,8 @@ public class AdminDestinationFormController {
 
     private void showAlert(String title, String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
+        alert.setTitle(title); alert.setHeaderText(null);
+        alert.setContentText(msg); alert.showAndWait();
     }
 
     private String capitalize(String text) {

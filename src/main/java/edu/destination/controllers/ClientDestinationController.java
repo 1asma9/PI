@@ -37,7 +37,7 @@ public class ClientDestinationController {
     // ============================================================
     // 🔑 CLÉ GROQ
     // ============================================================
-    private static final String GROQ_API_KEY = "";
+    private static final String GROQ_API_KEY = "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";
 
     // ==============================
     // FXML — destinations
