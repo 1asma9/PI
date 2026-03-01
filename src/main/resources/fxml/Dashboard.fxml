@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fitToWidth="true"
+            hbarPolicy="NEVER"
+            styleClass="dashboard-scroll"
+            stylesheets="@../css/DashboardStyle.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.connexion3a8.controllers.DashboardController">
+
+    <VBox spacing="24" styleClass="dashboard-root">
+        <padding>
+            <Insets top="26" right="26" bottom="26" left="26"/>
+        </padding>
+
+        <StackPane styleClass="hero-panel">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="18">
+                    <VBox spacing="8" HBox.hgrow="ALWAYS">
+                        <Label text="Analytics Command Center" styleClass="hero-title"/>
+                        <Label text="Track publication performance, engagement, and content quality in one place."
+                               styleClass="hero-subtitle"/>
+                    </VBox>
+                    <HBox spacing="10">
+                        <Button text="Refresh Data" onAction="#refreshData" styleClass="btn-primary"/>
+                        <Button text="Close" onAction="#closeDashboard" styleClass="btn-danger"/>
+                    </HBox>
+                </HBox>
+            </children>
+        </StackPane>
+
+        <GridPane hgap="16" vgap="16">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25"/>
+                <ColumnConstraints percentWidth="25"/>
+                <ColumnConstraints percentWidth="25"/>
+                <ColumnConstraints percentWidth="25"/>
+            </columnConstraints>
+
+            <VBox GridPane.columnIndex="0" styleClass="metric-card metric-blogs" spacing="6">
+                <Label text="Total Blogs" styleClass="metric-label"/>
+                <Label fx:id="totalBlogsLabel" text="0" styleClass="metric-value"/>
+            </VBox>
+
+            <VBox GridPane.columnIndex="1" styleClass="metric-card metric-views" spacing="6">
+                <Label text="Total Views" styleClass="metric-label"/>
+                <Label fx:id="totalViewsLabel" text="0" styleClass="metric-value"/>
+            </VBox>
+
+            <VBox GridPane.columnIndex="2" styleClass="metric-card metric-comments" spacing="6">
+                <Label text="Total Comments" styleClass="metric-label"/>
+                <Label fx:id="totalCommentsLabel" text="0" styleClass="metric-value"/>
+            </VBox>
+
+            <VBox GridPane.columnIndex="3" styleClass="metric-card metric-growth" spacing="6">
+                <Label text="Growth Rate" styleClass="metric-label"/>
+                <Label fx:id="growthRateLabel" text="0%" styleClass="metric-value"/>
+            </VBox>
+        </GridPane>
+
+        <VBox spacing="10" styleClass="panel-card panel-graph">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Traffic Trend (Last 7 Days)" styleClass="panel-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Live pulse" styleClass="badge"/>
+            </HBox>
+            <LineChart fx:id="viewsTrendChart" prefHeight="320" legendVisible="false" animated="false">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT"/>
+                </yAxis>
+            </LineChart>
+        </VBox>
+
+        <GridPane hgap="16" vgap="16">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33.33"/>
+                <ColumnConstraints percentWidth="33.33"/>
+                <ColumnConstraints percentWidth="33.34"/>
+            </columnConstraints>
+
+            <VBox GridPane.columnIndex="0" spacing="10" styleClass="panel-card">
+                <Label text="Most Viewed Blogs" styleClass="panel-title"/>
+                <TableView fx:id="topViewedTable" prefHeight="250" styleClass="modern-table">
+                    <columns>
+                        <TableColumn fx:id="topViewedTitleCol" text="Blog Title" prefWidth="220"/>
+                        <TableColumn fx:id="topViewedCountCol" text="Views" prefWidth="90"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <VBox GridPane.columnIndex="1" spacing="10" styleClass="panel-card">
+                <Label text="Most Commented Blogs" styleClass="panel-title"/>
+                <TableView fx:id="topCommentedTable" prefHeight="250" styleClass="modern-table">
+                    <columns>
+                        <TableColumn fx:id="topCommentedTitleCol" text="Blog Title" prefWidth="220"/>
+                        <TableColumn fx:id="topCommentedCountCol" text="Comments" prefWidth="90"/>
+                    </columns>
+                </TableView>
+            </VBox>
+
+            <VBox GridPane.columnIndex="2" spacing="10" styleClass="panel-card">
+                <Label text="Best Rated Blogs" styleClass="panel-title"/>
+                <TableView fx:id="topRatedTable" prefHeight="250" styleClass="modern-table">
+                    <columns>
+                        <TableColumn fx:id="topRatedTitleCol" text="Blog Title" prefWidth="220"/>
+                        <TableColumn fx:id="topRatedScoreCol" text="Rating" prefWidth="90"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </GridPane>
+    </VBox>
+</ScrollPane>

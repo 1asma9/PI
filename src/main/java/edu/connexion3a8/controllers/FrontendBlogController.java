@@ -5,10 +5,10 @@ import edu.connexion3a8.services.BlogService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class FrontendBlogController implements Initializable {
 
     @FXML private GridPane blogGridContainer;
-    @FXML private TextField searchInput;
+    @FXML private ComboBox<String> destinationFilter;
 
     private BlogService blogService;
     private List<Blog> allBlogs;
@@ -30,12 +30,19 @@ public class FrontendBlogController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         blogService = new BlogService();
 
-        // Setup search listener
-        searchInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            searchBlogs(newValue);
-        });
+        destinationFilter.getItems().addAll(
+                "All Continents",
+                "Africa",
+                "Asia",
+                "Europe",
+                "North America",
+                "South America",
+                "Oceania",
+                "Antarctica"
+        );
+        destinationFilter.setValue("All Continents");
+        destinationFilter.setOnAction(event -> filterByDestination());
 
-        // Load all published blogs
         loadPublishedBlogs();
     }
 
@@ -43,13 +50,11 @@ public class FrontendBlogController implements Initializable {
         blogGridContainer.getChildren().clear();
 
         try {
-            // Récupérer tous les blogs
             allBlogs = blogService.afficher();
 
-            // Filtrer uniquement les blogs publiés
             List<Blog> publishedBlogs = new ArrayList<>();
             for (Blog blog : allBlogs) {
-                if (blog.isStatus()) { // Seulement les blogs publiés
+                if (blog.isStatus()) {
                     publishedBlogs.add(blog);
                 }
             }
@@ -71,7 +76,7 @@ public class FrontendBlogController implements Initializable {
         for (Blog blog : blogs) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FrontendBlogCard.fxml"));
-                VBox blogCard = loader.load();
+                Parent blogCard = loader.load();
 
                 FrontendBlogCardController cardController = loader.getController();
                 cardController.setData(blog, this);
@@ -79,7 +84,7 @@ public class FrontendBlogController implements Initializable {
                 blogGridContainer.add(blogCard, column, row);
 
                 column++;
-                if (column == 4) { // 4 colonnes
+                if (column == 3) {
                     column = 0;
                     row++;
                 }
@@ -90,20 +95,16 @@ public class FrontendBlogController implements Initializable {
         }
     }
 
-    private void searchBlogs(String searchText) {
-        if (searchText == null || searchText.trim().isEmpty()) {
+    private void filterByDestination() {
+        String selected = destinationFilter.getValue();
+        if (selected == null || selected.equals("All Continents")) {
             loadPublishedBlogs();
             return;
         }
 
         List<Blog> filteredBlogs = new ArrayList<>();
-        String searchLower = searchText.toLowerCase();
-
         for (Blog blog : allBlogs) {
-            if (blog.isStatus() && // Seulement les blogs publiés
-                    ((blog.getTitre() != null && blog.getTitre().toLowerCase().contains(searchLower)) ||
-                            (blog.getContenu() != null && blog.getContenu().toLowerCase().contains(searchLower)) ||
-                            (blog.getExtrait() != null && blog.getExtrait().toLowerCase().contains(searchLower)))) {
+            if (blog.isStatus() && matchesContinent(blog, selected)) {
                 filteredBlogs.add(blog);
             }
         }
@@ -111,31 +112,51 @@ public class FrontendBlogController implements Initializable {
         displayBlogs(filteredBlogs);
     }
 
+    private boolean matchesContinent(Blog blog, String continent) {
+        String text = getBlogSearchText(blog);
+        return switch (continent) {
+            case "Africa" -> containsAny(text, "africa", "morocco", "tunisia", "egypt", "kenya", "south africa", "ghana", "senegal");
+            case "Asia" -> containsAny(text, "asia", "japan", "china", "india", "thailand", "indonesia", "korea", "vietnam");
+            case "Europe" -> containsAny(text, "europe", "france", "italy", "spain", "germany", "greece", "portugal", "uk");
+            case "North America" -> containsAny(text, "north america", "usa", "canada", "mexico", "new york", "california");
+            case "South America" -> containsAny(text, "south america", "brazil", "argentina", "chile", "peru", "colombia");
+            case "Oceania" -> containsAny(text, "oceania", "australia", "new zealand", "fiji", "sydney", "melbourne");
+            case "Antarctica" -> containsAny(text, "antarctica");
+            default -> false;
+        };
+    }
+
+    private String getBlogSearchText(Blog blog) {
+        String titre = blog.getTitre() != null ? blog.getTitre().toLowerCase() : "";
+        String contenu = blog.getContenu() != null ? blog.getContenu().toLowerCase() : "";
+        String extrait = blog.getExtrait() != null ? blog.getExtrait().toLowerCase() : "";
+        String slug = blog.getSlug() != null ? blog.getSlug().toLowerCase() : "";
+        return titre + " " + contenu + " " + extrait + " " + slug;
+    }
+
+    private boolean containsAny(String text, String... keywords) {
+        for (String keyword : keywords) {
+            if (text.contains(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void openBlogDetailView(Blog blog) {
         try {
-            System.out.println("Loading detail view for: " + blog.getTitre()); // Debug
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/FrontendBlogDetail.fxml"));
-            VBox detailView = loader.load();
-
-            System.out.println("Detail view loaded successfully!"); // Debug
+            Parent detailView = loader.load();
 
             FrontendBlogDetailController detailController = loader.getController();
             detailController.setData(blog, this);
 
-            System.out.println("Setting data to detail controller..."); // Debug
-
-            // Créer une nouvelle scène pour les détails
             Scene detailScene = new Scene(detailView, 1366, 750);
-
-            // Obtenir le stage actuel
             Stage stage = (Stage) blogGridContainer.getScene().getWindow();
             stage.setScene(detailScene);
 
-            System.out.println("Scene changed successfully!"); // Debug
-
         } catch (IOException e) {
-            System.err.println("ERROR: Could not load detail view!"); // Debug
+            System.err.println("ERROR: Could not load detail view!");
             e.printStackTrace();
         }
     }

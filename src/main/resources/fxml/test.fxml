@@ -4,52 +4,37 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
+<HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-background-color: #f8f9fa; -fx-padding: 20px 50px;">
+    <children>
+        <Label text="Liste des Blogs" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.connexion3a8.controllers.AdminDashboardController"
-            stylesheets="@../css/sidenavbar.css">
+        <Region HBox.hgrow="ALWAYS"/>
 
-    <!-- LEFT SIDEBAR -->
-    <left>
-        <VBox prefWidth="230" spacing="20" styleClass="card">
+        <!-- Zone de recherche et filtres -->
+        <TextField fx:id="searchInput" promptText="🔍 Rechercher..."
+                   style="-fx-background-color: white; -fx-background-radius: 20px; -fx-padding: 10px 20px; -fx-min-width: 250px;"/>
 
-            <Label text="ADMIN PANEL" styleClass="title"/>
+        <ComboBox fx:id="sortComboBox" value="Date (Récent)"
+                  style="-fx-background-color: white; -fx-background-radius: 8px; -fx-padding: 8px;">
+            <HBox.margin>
+                <Insets left="15.0"/>
+            </HBox.margin>
+        </ComboBox>
 
-            <Button fx:id="dashboardBtn"
-                    text="Tableau de bord"
-                    onAction="#open_Dashboard"
-                    styleClass="btnOutline"
-                    maxWidth="Infinity"/>
+        <!-- Bouton Ajouter -->
+        <Button text="+ Ajouter" onAction="#showAddBlogForm"
+                style="-fx-background-color: #c9a87c; -fx-text-fill: white; -fx-padding: 12px 30px; -fx-background-radius: 8px; -fx-font-weight: bold; -fx-cursor: hand;">
+            <HBox.margin>
+                <Insets left="15.0"/>
+            </HBox.margin>
+        </Button>
 
-            <Button fx:id="blogBtn"
-                    text="Blogs"
-                    onAction="#open_BlogList"
-                    styleClass="btnOutline"
-                    maxWidth="Infinity"/>
-
-        </VBox>
-    </left>
-
-    <!-- TOP BAR -->
-    <top>
-        <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="card">
-
-            <Label text="Admin Dashboard" styleClass="title"/>
-
-            <Region HBox.hgrow="ALWAYS"/>
-
-            <Label fx:id="navFullname" text="Admin" styleClass="muted"/>
-
-            <Button text="Déconnexion"
-                    onAction="#handleLogout"
-                    styleClass="btnOutline"/>
-        </HBox>
-    </top>
-
-    <!-- CENTER CONTENT -->
-    <center>
-        <StackPane fx:id="content_area" styleClass="card"/>
-    </center>
-
-</BorderPane>
+        <!-- NOUVEAU : Bouton Dashboard -->
+        <Button text="📊 Dashboard" onAction="#showDashboard"
+                style="-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2); -fx-text-fill: white; -fx-padding: 12px 30px; -fx-background-radius: 8px; -fx-font-weight: bold; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(102,126,234,0.4), 10, 0, 0, 3);">
+            <HBox.margin>
+                <Insets left="15.0"/>
+            </HBox.margin>
+        </Button>
+    </children>
+</HBox>

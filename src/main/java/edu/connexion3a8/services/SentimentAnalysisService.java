@@ -23,6 +23,15 @@ public class SentimentAnalysisService {
      * @return Sentiment (POSITIVE, NEGATIVE, NEUTRAL)
      */
     public Sentiment analyzeSentiment(String text) {
+        if (text == null || text.trim().isEmpty()) {
+            return Sentiment.NEUTRAL;
+        }
+
+        // Fallback to local heuristic when API key is not configured.
+        if (API_KEY == null || API_KEY.trim().isEmpty() || API_KEY.contains("VOTRE_CLE")) {
+            return analyzeSentimentHeuristic(text);
+        }
+
         try {
             JSONObject requestBody = new JSONObject();
             requestBody.put("model", "claude-sonnet-4-20250514");
@@ -72,8 +81,8 @@ public class SentimentAnalysisService {
             return Sentiment.valueOf(sentimentText);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return Sentiment.NEUTRAL;
+            System.err.println("Sentiment API error, using fallback: " + e.getMessage());
+            return analyzeSentimentHeuristic(text);
         }
     }
 
@@ -114,6 +123,37 @@ public class SentimentAnalysisService {
         }
 
         return score;
+    }
+
+    private Sentiment analyzeSentimentHeuristic(String text) {
+        String lower = text.toLowerCase();
+
+        String[] positiveWords = {
+                "good", "great", "excellent", "amazing", "awesome", "love", "liked", "helpful", "nice",
+                "perfect", "super", "fantastic", "beautiful", "interesting", "merci", "bravo", "top"
+        };
+        String[] negativeWords = {
+                "bad", "terrible", "awful", "hate", "boring", "poor", "worst", "useless", "slow",
+                "problem", "bug", "nul", "mauvais", "déçu", "decu"
+        };
+
+        int positive = 0;
+        int negative = 0;
+
+        for (String word : positiveWords) {
+            if (lower.contains(word)) {
+                positive++;
+            }
+        }
+        for (String word : negativeWords) {
+            if (lower.contains(word)) {
+                negative++;
+            }
+        }
+
+        if (positive > negative) return Sentiment.POSITIVE;
+        if (negative > positive) return Sentiment.NEGATIVE;
+        return Sentiment.NEUTRAL;
     }
 }
 

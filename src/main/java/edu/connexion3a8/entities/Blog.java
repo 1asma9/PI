@@ -16,6 +16,16 @@ public class Blog {
     private String extrait;
     private String slug;
 
+    // Dans Blog.java, ajoutez :
+    private double ratingAverage;
+    private int ratingCount;
+
+    public double getRatingAverage() { return ratingAverage; }
+    public void setRatingAverage(double ratingAverage) { this.ratingAverage = ratingAverage; }
+
+    public int getRatingCount() { return ratingCount; }
+    public void setRatingCount(int ratingCount) { this.ratingCount = ratingCount; }
+
     public Blog(String authorNom) {
         author_nom = authorNom;
     }

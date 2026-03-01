@@ -2,13 +2,16 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import java.lang.String?>
 
 <?import javafx.scene.shape.Rectangle?>
 <ScrollPane fitToWidth="true" fitToHeight="true"
             style="-fx-background-color: white;"
+            stylesheets="@../css/FrontendBlogStyle.css"
             xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.connexion3a8.controllers.FrontendBlogDetailController">
@@ -30,23 +33,28 @@
                 <!-- Dark Overlay -->
                 <Pane style="-fx-background-color: rgba(0, 0, 0, 0.5);"/>
 
+                <HBox alignment="TOP_LEFT" StackPane.alignment="TOP_LEFT">
+                    <padding>
+                        <Insets top="25.0" left="35.0"/>
+                    </padding>
+                    <Button text="&lt; Back"
+                            onAction="#goBackToBlogList"
+                            styleClass="back-chip"/>
+                </HBox>
+
                 <!-- Title and Breadcrumb -->
                 <VBox alignment="BOTTOM_LEFT" spacing="15.0">
                     <padding>
                         <Insets bottom="50.0" left="100.0" right="100.0"/>
                     </padding>
 
-                    <!-- Breadcrumb -->
+                    <!-- Slug -->
                     <HBox spacing="8.0">
                         <Label fx:id="blogCategory"
-                               text="Bucket List"
+                               text="slug"
                                textFill="white"
                                style="-fx-font-size: 12px; -fx-font-family: 'Montserrat';">
                         </Label>
-                        <Label text="◊" textFill="white" style="-fx-font-size: 10px;"/>
-                        <Label text="Hawaii" textFill="white" style="-fx-font-size: 12px; -fx-font-family: 'Montserrat';"/>
-                        <Label text="◊" textFill="white" style="-fx-font-size: 10px;"/>
-                        <Label text="Kauai" textFill="white" style="-fx-font-size: 12px; -fx-font-family: 'Montserrat';"/>
                     </HBox>
 
                     <!-- Title -->
@@ -58,7 +66,8 @@
 
                     <!-- Meta Info -->
                     <HBox spacing="15.0">
-                        <Label text="by David &amp; Intan"
+                        <Label fx:id="blogAuthorName"
+                               text="by User"
                                textFill="white"
                                style="-fx-font-size: 13px; -fx-font-family: 'Montserrat';"/>
                         <Label text="|" textFill="white"/>
@@ -77,6 +86,33 @@
 
                 <!-- LEFT: Blog Content -->
                 <VBox spacing="25.0" prefWidth="700.0" HBox.hgrow="ALWAYS">
+
+                    <!-- Translation -->
+                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                        <Label text="Translate to:"
+                               style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1f2937;"/>
+
+                        <ComboBox fx:id="languageComboBox" prefWidth="190.0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Français (FR)"/>
+                                    <String fx:value="English (EN)"/>
+                                    <String fx:value="Español (ES)"/>
+                                    <String fx:value="العربية (AR)"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <Button fx:id="translateBtn"
+                                text="Translate"
+                                onAction="#handleTranslate"
+                                style="-fx-background-color: #143a59; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand;"/>
+
+                        <Button fx:id="resetBtn"
+                                text="Original"
+                                onAction="#resetTranslation"
+                                style="-fx-background-color: transparent; -fx-border-color: #143a59; -fx-border-radius: 20; -fx-text-fill: #143a59; -fx-cursor: hand;"/>
+                    </HBox>
 
                     <!-- Excerpt -->
                     <Text fx:id="blogExcerpt"
@@ -145,6 +181,45 @@
 
                 </VBox>
             </HBox>
+            <!-- Ajouter avant la section commentaires -->
+            <VBox spacing="20.0" style="-fx-background-color: white; -fx-padding: 30px; -fx-background-radius: 10px;">
+                <HBox alignment="CENTER_LEFT" spacing="12.0"
+                      style="-fx-background-color: #f5f8fb; -fx-padding: 12px 16px; -fx-background-radius: 10px;">
+                    <Label text="Audience Sentiment:"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1f2937;"/>
+                    <Label fx:id="sentimentLabel"
+                           text="Not analyzed yet"
+                           style="-fx-font-size: 14px; -fx-text-fill: #1f2937;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="sentimentBreakdownLabel"
+                           text=""
+                           style="-fx-font-size: 12px; -fx-text-fill: #6b7280;"/>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <Label text="Rate this blog:" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+
+                    <!-- Étoiles cliquables -->
+                    <HBox fx:id="ratingStarsInput" spacing="5.0">
+                        <Text fx:id="ratingStar1" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating1"/>
+                        <Text fx:id="ratingStar2" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating2"/>
+                        <Text fx:id="ratingStar3" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating3"/>
+                        <Text fx:id="ratingStar4" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating4"/>
+                        <Text fx:id="ratingStar5" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating5"/>
+                    </HBox>
+
+                    <Label fx:id="currentRatingLabel" text="0/5" style="-fx-text-fill: #666;"/>
+                </HBox>
+
+                <TextField fx:id="reviewUserNameInput" promptText="Your name"/>
+                <TextArea fx:id="reviewTextInput" promptText="Write your review (optional)" prefRowCount="3"/>
+                <Button text="Submit Rating" onAction="#submitRating" styleClass="btn-primary"/>
+            </VBox>
 
             <!-- ===== COMMENTS SECTION ===== -->
             <VBox spacing="30.0" style="-fx-background-color: #f8f9fa; -fx-padding: 60px 100px;">

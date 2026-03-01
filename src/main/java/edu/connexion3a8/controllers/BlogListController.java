@@ -5,11 +5,14 @@ import edu.connexion3a8.services.BlogService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -22,6 +25,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.util.ArrayList;
 
 public class BlogListController implements Initializable {
@@ -81,6 +88,64 @@ public class BlogListController implements Initializable {
         }
         if (deleteConfirmModal != null) {
             deleteConfirmModal.setVisible(false);
+        }
+    }
+
+    @FXML
+    public void showDashboard() {
+        try {
+            // Charger le Dashboard
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
+            Parent dashboardRoot = loader.load();
+
+            // Créer la popup avec un fond semi-transparent
+            Stage dashboardStage = new Stage();
+            dashboardStage.initModality(Modality.APPLICATION_MODAL);
+            dashboardStage.initStyle(StageStyle.TRANSPARENT); // Fenêtre transparente
+
+            // Wrapper avec effet d'ombre
+            StackPane wrapper = new StackPane();
+            wrapper.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"); // Fond sombre transparent
+
+            // Ajouter le dashboard au centre
+            dashboardRoot.setStyle(
+                    "-fx-background-color: white; " +
+                            "-fx-background-radius: 15px; " +
+                            "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 30, 0, 0, 10);"
+            );
+
+            wrapper.getChildren().add(dashboardRoot);
+            StackPane.setMargin(dashboardRoot, new javafx.geometry.Insets(20));
+
+            // Créer la scène
+            Scene scene = new Scene(wrapper, 1250, 850);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+
+            dashboardStage.setScene(scene);
+            dashboardStage.centerOnScreen();
+
+            // Fermer en cliquant sur le fond sombre
+            wrapper.setOnMouseClicked(event -> {
+                if (event.getTarget() == wrapper) {
+                    dashboardStage.close();
+                }
+            });
+
+            // Animation d'entrée (optionnel)
+            dashboardRoot.setOpacity(0);
+            javafx.animation.FadeTransition fadeIn = new javafx.animation.FadeTransition(
+                    javafx.util.Duration.millis(300),
+                    dashboardRoot
+            );
+            fadeIn.setFromValue(0);
+            fadeIn.setToValue(1);
+            fadeIn.play();
+
+            dashboardStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ouvrir le Dashboard", Alert.AlertType.ERROR);
         }
     }
 

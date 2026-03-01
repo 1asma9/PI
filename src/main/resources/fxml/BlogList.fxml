@@ -50,6 +50,14 @@
                            -fx-text-fill: white;
                            -fx-background-radius: 20;
                            -fx-padding: 6 18;" />
+
+            <!-- APRÈS (ajouter juste après) -->
+            <Button text="📊 Dashboard" onAction="#showDashboard"
+                    style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-padding: 10px 25px; -fx-background-radius: 8px; -fx-cursor: hand; -fx-font-weight: bold;">
+                <HBox.margin>
+                    <Insets left="15.0"/>
+                </HBox.margin>
+            </Button>
         </HBox>
 
         <!-- ================= BLOG GRID ================= -->

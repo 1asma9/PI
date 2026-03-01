@@ -1,10 +1,12 @@
 package edu.connexion3a8.controllers;
 
 import edu.connexion3a8.entities.Blog;
+import edu.connexion3a8.entities.BlogRating;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
@@ -20,6 +22,10 @@ public class FrontendBlogCardController {
     @FXML private Text blogExcerpt;
     @FXML private Label blogDate;
     @FXML private Pane imageOverlay;
+
+    @FXML private HBox starsContainer;
+    @FXML private Label ratingLabel;
+    @FXML private Label reviewCountLabel;
 
     private Blog blog;
     private FrontendBlogController parentController;
@@ -65,6 +71,8 @@ public class FrontendBlogCardController {
                 System.out.println("Impossible de charger l'image: " + e.getMessage());
             }
         }
+        displayRating(blog.getRatingAverage(), blog.getRatingCount());
+
     }
 
     private void loadImage(String imagePath) {
@@ -103,6 +111,8 @@ public class FrontendBlogCardController {
             // Fallback
         }
         return dateStr;
+
+
     }
 
 
@@ -130,5 +140,46 @@ public class FrontendBlogCardController {
         if (imageOverlay != null) {
             imageOverlay.setStyle("-fx-background-color: transparent;");
         }
+    }
+
+    private void displayRating(double rating, int count) {
+        if (ratingLabel != null) {
+            ratingLabel.setText(String.format("%.1f", rating));
+        }
+
+        if (reviewCountLabel != null) {
+            reviewCountLabel.setText("(" + count + ")");
+        }
+
+        // Afficher les étoiles
+        if (starsContainer != null) {
+            starsContainer.getChildren().clear();
+            HBox stars = createStarDisplay(rating);
+            starsContainer.getChildren().add(stars);
+        }
+    }
+
+    private HBox createStarDisplay(double rating) {
+        HBox starsBox = new HBox(2);
+        int fullStars = (int) rating;
+        boolean hasHalfStar = (rating - fullStars) >= 0.5;
+
+        for (int i = 0; i < 5; i++) {
+            Text star = new Text("★");
+            star.setStyle("-fx-font-size: 14px;");
+
+            if (i < fullStars) {
+                star.setFill(javafx.scene.paint.Color.web("#FFD700")); // Or
+            } else if (i == fullStars && hasHalfStar) {
+                star.setFill(javafx.scene.paint.Color.web("#FFD700"));
+                star.setOpacity(0.5);
+            } else {
+                star.setFill(javafx.scene.paint.Color.web("#ddd")); // Gris
+            }
+
+            starsBox.getChildren().add(star);
+        }
+
+        return starsBox;
     }
 }
