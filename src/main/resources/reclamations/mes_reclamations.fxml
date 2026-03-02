@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/17" 
+           xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="controllers.UserReclamationsController">
+   <BorderPane prefHeight="600.0" prefWidth="900.0" 
+               styleClass="page"
+               stylesheets="@../style.css">
+      
+      <!-- Top Bar (Simplified, no Retour) -->
+      <top>
+         <VBox>
+            <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
+               <Label text="MES RÉCLAMATIONS" styleClass="pageTitle" />
+               <Region HBox.hgrow="ALWAYS" />
+               <Button fx:id="btnAdd" text="+ Ajouter" styleClass="btnGold" onAction="#ajouterReclamation" />
+            </HBox>
+         </VBox>
+      </top>
+      
+      <!-- Center Content -->
+      <center>
+         <VBox styleClass="pageContent" spacing="20">
+            
+            <!-- Search and Filter -->
+            <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
+               <VBox spacing="5" HBox.hgrow="ALWAYS">
+                  <Label text="Rechercher :" styleClass="metaText" />
+                  <TextField fx:id="txtRecherche" 
+                             promptText="Rechercher par titre ou description..." 
+                             prefWidth="300" onKeyReleased="#appliquerFiltres" />
+               </VBox>
+               
+               <VBox spacing="5">
+                  <Label text="Statut :" styleClass="metaText" />
+                  <ComboBox fx:id="comboStatut" prefWidth="150" promptText="Tous" onAction="#appliquerFiltres" />
+               </VBox>
+               
+               <Button text="🔍 Rechercher" 
+                       styleClass="btnGold" 
+                       onAction="#appliquerFiltres" />
+               
+               <Button text="↻ Réinitialiser" 
+                       styleClass="btnOutline" 
+                       onAction="#reinitialiser" />
+            </HBox>
+            
+            <!-- Table -->
+            <TableView fx:id="tableReclamations" styleClass="table-view" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="colTitre" text="Titre" prefWidth="200" />
+                  <TableColumn fx:id="colDescription" text="Description" prefWidth="300" />
+                  <TableColumn fx:id="colStatut" text="Statut" prefWidth="120" />
+                   <TableColumn fx:id="colDate" text="Date" prefWidth="150" />
+                   <TableColumn fx:id="colDateReponse" text="Date réponse" prefWidth="150" />
+                   <TableColumn fx:id="colActions" text="Actions" prefWidth="100" />
+               </columns>
+            </TableView>
+            
+         </VBox>
+      </center>
+   </BorderPane>
+
+    <!-- Chatbot floating button -->
+   <Button text="🤖 Assistant" 
+           styleClass="btnGold"
+           prefWidth="140"
+           prefHeight="50"
+           style="-fx-font-size: 16px; -fx-font-weight: 900; -fx-background-radius: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);"
+           onAction="#ouvrirChatbot"
+           StackPane.alignment="BOTTOM_RIGHT">
+      <StackPane.margin>
+         <Insets bottom="20" left="20" right="20" top="20" />
+      </StackPane.margin>
+   </Button>
+</StackPane>

@@ -1,7 +1,6 @@
 package services;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import okhttp3.*;
 
@@ -10,14 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ChatbotService {
 
-    // ⚠️ METTEZ VOTRE CLÉ API ICI
-    private static final String API_KEY = "AIzaSyCksjaGtKNgfX8BUAcNr9j0n7GWE0T4PTA";
+    // API Ollama locale
+    private static final String API_URL = "http://localhost:11434/api/generate";
 
-    // ✅ MODÈLE CORRIGÉ
-    private static final String MODEL = "gemini-pro";
-
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/"
-            + MODEL + ":generateContent?key=" + API_KEY;
+    // Modèle à utiliser (changez selon celui que vous avez téléchargé)
+    private static final String MODEL = "llama3.2"; // ou "mistral" ou "llama3"
 
     private final OkHttpClient client;
     private final Gson gson;
@@ -27,13 +23,13 @@ public class ChatbotService {
     public ChatbotService(String type) {
         this.chatbotType = type;
         this.client = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(120, TimeUnit.SECONDS)
                 .build();
         this.gson = new Gson();
         this.historique = new StringBuilder();
 
-        // Ajouter le system prompt au début
+        // Ajouter le system prompt
         historique.append(creerSystemPrompt()).append("\n\n");
     }
 
@@ -41,19 +37,17 @@ public class ChatbotService {
         // Ajouter le message à l'historique
         historique.append("Utilisateur: ").append(messageUtilisateur).append("\n");
 
-        // Créer le corps de la requête
+        // Créer le corps de la requête pour Ollama
         JsonObject requestBody = new JsonObject();
-        JsonArray contents = new JsonArray();
+        requestBody.addProperty("model", MODEL);
+        requestBody.addProperty("prompt", historique.toString());
+        requestBody.addProperty("stream", false); // Pas de streaming
 
-        JsonObject message = new JsonObject();
-        JsonArray parts = new JsonArray();
-        JsonObject textPart = new JsonObject();
-        textPart.addProperty("text", historique.toString());
-        parts.add(textPart);
-        message.add("parts", parts);
-
-        contents.add(message);
-        requestBody.add("contents", contents);
+        // Options pour rendre le modèle plus strict
+        JsonObject options = new JsonObject();
+        options.addProperty("temperature", 0.7);
+        options.addProperty("top_p", 0.9);
+        requestBody.add("options", options);
 
         // Faire l'appel API
         RequestBody body = RequestBody.create(
@@ -68,76 +62,80 @@ public class ChatbotService {
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 String errorBody = response.body() != null ? response.body().string() : "";
-                throw new IOException("Erreur API (" + response.code() + "): " + errorBody);
+                throw new IOException("Erreur Ollama (" + response.code() + "): " + errorBody);
             }
 
             String responseBody = response.body().string();
             JsonObject jsonResponse = gson.fromJson(responseBody, JsonObject.class);
 
-            // Extraire la réponse
-            String geminiResponse = jsonResponse
-                    .getAsJsonArray("candidates")
-                    .get(0).getAsJsonObject()
-                    .getAsJsonObject("content")
-                    .getAsJsonArray("parts")
-                    .get(0).getAsJsonObject()
-                    .get("text").getAsString();
+            // Extraire la réponse d'Ollama
+            String ollamaResponse = jsonResponse.get("response").getAsString();
 
             // Ajouter la réponse à l'historique
-            historique.append("Assistant: ").append(geminiResponse).append("\n");
+            historique.append("Assistant: ").append(ollamaResponse).append("\n");
 
-            return geminiResponse;
+            return ollamaResponse;
         }
     }
 
     private String creerSystemPrompt() {
         if (chatbotType.equals("reclamation")) {
             return """
-                    Tu es un assistant virtuel pour créer des RÉCLAMATIONS.
+                    Tu es un assistant virtuel spécialisé dans la création de RÉCLAMATIONS.
 
-                    RÈGLES STRICTES:
+                    RÈGLES STRICTES À RESPECTER :
                     1. Tu aides UNIQUEMENT à créer des réclamations
-                    2. Si l'utilisateur parle d'autre chose (football, météo, etc.), tu REFUSES poliment
-                    3. Tu poses les questions UNE PAR UNE
+                    2. Si l'utilisateur parle d'autre chose (football, météo, politique, etc.), tu DOIS REFUSER poliment
+                    3. Tu poses les questions UNE PAR UNE (jamais toutes en même temps)
+                    4. Sois concis et professionnel
 
-                    PROCESSUS:
-                    1. Saluer et demander le TITRE
-                    2. Demander la DESCRIPTION
-                    3. Afficher le récapitulatif avec ce format EXACT:
+                    PROCESSUS OBLIGATOIRE :
+                    1. Saluer l'utilisateur et demander le TITRE de la réclamation.
+                    2. Une fois le titre reçu, demander la DESCRIPTION détaillée.
+
+                    ASSISTANCE À LA RÉDACTION :
+                    - Si l'utilisateur mentionne un sujet (ex: "mauvais transport", "retard", "propreté"), tu DOIS lui proposer une description claire, professionnelle et concise (2-3 phrases).
+                    - Exemple pour "mauvais transport" : "Je déplore la qualité du transport fourni. Le véhicule était vétuste, inconfortable et ne respectait pas les normes d'hygiène attendues pour ce voyage."
+                    - Demande ensuite : "Est-ce que cette description vous convient ou souhaitez-vous la modifier ?"
+
+                    3. Une fois les deux informations validées, afficher EXACTEMENT ce format :
 
                     [CONFIRMATION]
-                    TITRE: [le titre donné par l'utilisateur]
-                    DESCRIPTION: [la description donnée par l'utilisateur]
+                    TITRE: [le titre reçu]
+                    DESCRIPTION: [la description finale validée]
                     [/CONFIRMATION]
 
-                    EXEMPLE DE REFUS:
-                    Si l'utilisateur demande "Parle-moi de football", tu réponds:
-                    "Je suis désolé, mais je suis spécialisé uniquement dans la création de réclamations.
-                    Je ne peux pas discuter de football. Puis-je vous aider avec une réclamation ?"
+                    EXEMPLES DE REFUS :
+                    - Si on te demande "Parle-moi de football" → "Je suis désolé, mais je suis spécialisé uniquement dans la création de réclamations. Je ne peux pas discuter de football. Puis-je vous aider à créer une réclamation ?"
+                    - Si on te demande "Quelle heure est-il ?" → "Je suis désolé, je suis un assistant pour les réclamations uniquement. Souhaitez-vous créer une réclamation ?"
+
+                    Commence maintenant par saluer l'utilisateur et demander le titre de sa réclamation.
                     """;
         } else {
             return """
-                    Tu es un assistant virtuel pour créer des AVIS.
+                    Tu es un assistant virtuel spécialisé dans la création d'AVIS.
 
-                    RÈGLES STRICTES:
+                    RÈGLES STRICTES À RESPECTER :
                     1. Tu aides UNIQUEMENT à créer des avis
-                    2. Si l'utilisateur parle d'autre chose, tu REFUSES poliment
-                    3. Tu poses les questions UNE PAR UNE
+                    2. Si l'utilisateur parle d'autre chose (football, météo, politique, etc.), tu DOIS REFUSER poliment
+                    3. Tu poses les questions UNE PAR UNE (jamais toutes en même temps)
+                    4. Sois concis et encourageant
 
-                    PROCESSUS:
-                    1. Saluer et demander la NOTE (1-5)
-                    2. Demander le COMMENTAIRE
-                    3. Afficher le récapitulatif avec ce format EXACT:
+                    PROCESSUS OBLIGATOIRE :
+                    1. Saluer l'utilisateur et demander la NOTE (un chiffre de 1 à 5)
+                    2. Une fois la note reçue, demander le COMMENTAIRE détaillé
+                    3. Une fois les deux informations reçues, afficher EXACTEMENT ce format :
 
                     [CONFIRMATION]
-                    NOTE: [la note donnée par l'utilisateur]
-                    COMMENTAIRE: [le commentaire donné par l'utilisateur]
+                    NOTE: [la note exacte donnée par l'utilisateur]
+                    COMMENTAIRE: [le commentaire exact donné par l'utilisateur]
                     [/CONFIRMATION]
 
-                    EXEMPLE DE REFUS:
-                    Si l'utilisateur demande "Qui a gagné le match ?", tu réponds:
-                    "Je suis désolé, mais je suis spécialisé uniquement dans la création d'avis.
-                    Je ne peux pas discuter de football. Puis-je vous aider à laisser un avis ?"
+                    EXEMPLES DE REFUS :
+                    - Si on te demande "Qui a gagné le match ?" → "Je suis désolé, mais je suis spécialisé uniquement dans la création d'avis. Je ne peux pas discuter de sport. Puis-je vous aider à laisser un avis ?"
+                    - Si on te demande "Raconte-moi une blague" → "Je suis désolé, je suis un assistant pour les avis uniquement. Souhaitez-vous laisser un avis ?"
+
+                    Commence maintenant par saluer l'utilisateur et demander sa note (de 1 à 5 étoiles).
                     """;
         }
     }
@@ -185,8 +183,8 @@ public class ChatbotService {
             }
         } catch (Exception e) {
             System.err.println("Erreur extraction: " + e.getMessage());
-            infos[0] = "Titre par défaut";
-            infos[1] = "Description par défaut";
+            infos[0] = "Erreur";
+            infos[1] = "Erreur d'extraction";
         }
 
         return infos;

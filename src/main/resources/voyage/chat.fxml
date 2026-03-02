@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <Label text="💬 Chat Voyage" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #9a8a6f;" />
+    <Label text="Discutez avec nos conseillers voyage." style="-fx-font-size: 14px; -fx-text-fill: #6a7a73;" />
+</VBox>

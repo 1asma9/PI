@@ -7,8 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Label;
 import services.ReclamationService;
 import services.AvisService;

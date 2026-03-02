@@ -465,9 +465,12 @@ public class DashboardStatsController implements Initializable {
 
     @FXML
     void retourMenu(ActionEvent event) {
+        // No longer needed with sidebar, but let's reload dashboard for safety if
+        // called
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/admin_menu.fxml"));
-            ((javafx.scene.Node) event.getSource()).getScene().setRoot(root);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/voyage/dashboard.fxml"));
+            Parent root = loader.load();
+            lblTotalReclamations.getScene().setRoot(root);
         } catch (IOException e) {
             AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
         }

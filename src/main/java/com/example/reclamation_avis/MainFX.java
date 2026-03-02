@@ -10,7 +10,8 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/main_menu.fxml"));
+        String layoutPath = tools.SessionManager.isAdmin() ? "/admin_layout.fxml" : "/user_layout.fxml";
+        Parent root = FXMLLoader.load(getClass().getResource(layoutPath));
         Scene scene = new Scene(root);
         if (getClass().getResource("/style.css") != null) {
             scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());

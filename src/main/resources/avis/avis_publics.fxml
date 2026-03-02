@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/17" 
+           xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="controllers.UserAvisController">
+   <BorderPane prefHeight="600.0" prefWidth="900.0" 
+               styleClass="page"
+               stylesheets="@../style.css">
+      
+      <!-- Top Bar -->
+      <top>
+         <VBox>
+            <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
+               <Label text="AVIS PUBLICS" styleClass="pageTitle" />
+               <Region HBox.hgrow="ALWAYS" />
+            </HBox>
+         </VBox>
+      </top>
+      
+      <!-- Center Content -->
+      <center>
+         <VBox styleClass="pageContent" spacing="20">
+            
+             <!-- Barre de recherche et filtres -->
+             <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
+                <VBox spacing="5" HBox.hgrow="ALWAYS">
+                   <Label text="Rechercher :" styleClass="metaText" />
+                   <TextField fx:id="txtRecherche" 
+                              promptText="Rechercher par commentaire..." 
+                              prefWidth="300" onKeyReleased="#appliquerFiltres" />
+                </VBox>
+                
+                <VBox spacing="5">
+                   <Label text="Note :" styleClass="metaText" />
+                   <ComboBox fx:id="comboNote" prefWidth="120" promptText="Toutes" onAction="#appliquerFiltres" />
+                </VBox>
+                
+                <Button text="🔍" 
+                        styleClass="btnGold" 
+                        onAction="#appliquerFiltres" />
+             </HBox>
+             
+             <!-- Table (Sans colonne Actions) -->
+            <TableView fx:id="tableAvis" styleClass="table-view" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="colNote" text="Note /5" prefWidth="100" />
+                   <TableColumn fx:id="colCommentaire" text="Commentaire" prefWidth="400" />
+                   <TableColumn fx:id="colReponse" text="Réponse Admin" prefWidth="250" />
+                   <TableColumn fx:id="colDateReponse" text="Date Réponse" prefWidth="150" />
+               </columns>
+            </TableView>
+            
+         </VBox>
+      </center>
+   </BorderPane>
+
+    <!-- Chatbot floating button -->
+   <Button text="🤖 Assistant" 
+           styleClass="btnGold"
+           prefWidth="140"
+           prefHeight="50"
+           style="-fx-font-size: 16px; -fx-font-weight: 900; -fx-background-radius: 25; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);"
+           onAction="#ouvrirChatbot"
+           StackPane.alignment="BOTTOM_RIGHT">
+      <StackPane.margin>
+         <Insets bottom="20" left="20" right="20" top="20" />
+      </StackPane.margin>
+   </Button>
+</StackPane>

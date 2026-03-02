@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefHeight="700.0" prefWidth="1400.0" 
+            styleClass="page"
+            stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.AdminLayoutController">
+   
+   <!-- SIDEBAR GAUCHE -->
+   <left>
+      <VBox styleClass="sidebar" prefWidth="240" spacing="5">
+         
+         <!-- LOGO / BRAND -->
+         <VBox spacing="3" styleClass="sidebarHeader">
+            <padding>
+               <Insets top="20" bottom="20" left="15" right="15" />
+            </padding>
+            <Label text="🏝️ VOYAGE &amp; SERVICES" styleClass="brand" />
+            <Label text="Espace Administration" 
+                   style="-fx-font-size: 11px; -fx-text-fill: #9a6a11; -fx-font-weight: 600;" />
+         </VBox>
+         
+         <Separator styleClass="hr" />
+         
+         <!-- ========== SECTION ADMIN VOYAGE ========== -->
+         <VBox spacing="3">
+            <padding>
+               <Insets top="15" bottom="5" left="15" right="15" />
+            </padding>
+            
+            <Label text="ADMIN VOYAGE" 
+                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
+            
+            <Button text="🏠 Dashboard" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherDashboard" />
+
+            <Button text="➕ Ajouter" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherAjouter" />
+            
+            <Button text="📋 Gérer Hébergements" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherGererHebergements" />
+            
+            <Button text="✈️ Réservations Admin" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherReservationsAdmin" />
+            
+            <Button text="👥 Utilisateurs" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherUtilisateurs" />
+         </VBox>
+         
+         <Separator styleClass="hr" />
+         
+         <!-- ========== SECTION ADMIN SERVICES ========== -->
+         <VBox spacing="3">
+            <padding>
+               <Insets top="15" bottom="5" left="15" right="15" />
+            </padding>
+            
+            <Label text="ADMIN SERVICES" 
+                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
+            
+            <Button text="📋 Gérer Réclamations" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherAdminReclamations" />
+            
+            <Button text="⭐ Gérer Avis" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherAdminAvis" />
+            
+            <Button text="📊 Statistiques" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherStatistiques" />
+         </VBox>
+         
+         <!-- SPACER -->
+         <Region VBox.vgrow="ALWAYS" />
+         
+         <Separator styleClass="hr" />
+         
+         <!-- ========== SECTION BAS ========== -->
+         <VBox spacing="3">
+            <padding>
+               <Insets top="10" bottom="20" left="15" right="15" />
+            </padding>
+            
+            <Button text="👤 User Mode" 
+                    onAction="#switchRole"
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    style="-fx-background-color: #e8fff0; -fx-text-fill: #1c7a44; -fx-font-weight: bold; -fx-border-color: #1c7a44; -fx-border-radius: 10; -fx-background-radius: 10;" />
+            
+            <Button text="🚪 Déconnexion" 
+                    styleClass="nav-btn-danger" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#deconnexion" />
+         </VBox>
+         
+      </VBox>
+   </left>
+   
+   <!-- CONTENU PRINCIPAL -->
+   <center>
+      <StackPane fx:id="contentArea" styleClass="pageContent">
+         <!-- Le contenu sera chargé ici dynamiquement -->
+      </StackPane>
+   </center>
+   
+</BorderPane>

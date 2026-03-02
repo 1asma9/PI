@@ -52,7 +52,7 @@ public class UserReclamationsController implements Initializable {
     private Button btnAdd;
 
     private ReclamationService reclamationService = new ReclamationService();
-    private int currentUserId = 1; // Simulation session
+    private int currentUserId = tools.SessionManager.getCurrentUserId();
 
     private ObservableList<Reclamation> listeComplete;
     private FilteredList<Reclamation> listeFiltree;
@@ -78,89 +78,98 @@ public class UserReclamationsController implements Initializable {
         // Date Formatting
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-        colDate.setCellFactory(column -> new TableCell<Reclamation, Date>() {
-            @Override
-            protected void updateItem(Date date, boolean empty) {
-                super.updateItem(date, empty);
-                if (empty || date == null) {
-                    setText(null);
-                } else {
-                    setText(dateFormat.format(date));
+        if (colDate != null) {
+            colDate.setCellFactory(column -> new TableCell<Reclamation, Date>() {
+                @Override
+                protected void updateItem(Date date, boolean empty) {
+                    super.updateItem(date, empty);
+                    if (empty || date == null) {
+                        setText(null);
+                    } else {
+                        setText(dateFormat.format(date));
+                    }
                 }
-            }
-        });
+            });
+        }
 
-        colDateReponse.setCellFactory(column -> new TableCell<Reclamation, Date>() {
-            @Override
-            protected void updateItem(Date date, boolean empty) {
-                super.updateItem(date, empty);
-                if (empty) {
-                    setText(null);
-                    setGraphic(null);
-                } else if (date == null) {
-                    setText("En attente...");
-                    setStyle("-fx-text-fill: #6a7a73; -fx-font-style: italic;");
-                    setGraphic(null);
-                } else {
-                    setText(dateFormat.format(date));
-                    setStyle("-fx-text-fill: #0f2a2a; -fx-font-weight: bold;");
-                    // Simple check icon
-                    Label icon = new Label("✓ ");
-                    icon.setStyle("-fx-text-fill: #c9a24a;");
-                    setGraphic(icon);
+        if (colDateReponse != null) {
+            colDateReponse.setCellFactory(column -> new TableCell<Reclamation, Date>() {
+                @Override
+                protected void updateItem(Date date, boolean empty) {
+                    super.updateItem(date, empty);
+                    if (empty) {
+                        setText(null);
+                        setGraphic(null);
+                    } else if (date == null) {
+                        setText("En attente...");
+                        setStyle("-fx-text-fill: #6a7a73; -fx-font-style: italic;");
+                        setGraphic(null);
+                    } else {
+                        setText(dateFormat.format(date));
+                        setStyle("-fx-text-fill: #0f2a2a; -fx-font-weight: bold;");
+                        // Simple check icon
+                        Label icon = new Label("✓ ");
+                        icon.setStyle("-fx-text-fill: #c9a24a;");
+                        setGraphic(icon);
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // Status Badge
-        colStatut.setCellFactory(param -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                } else {
-                    Label badge = new Label(item);
-                    badge.getStyleClass().add("statusBadge");
-                    if (item.equals("En attente")) {
-                        badge.getStyleClass().add("status-En_attente");
-                    } else if (item.equals("Traitée") || item.equals("Traitee")) {
-                        badge.getStyleClass().add("status-Traitee");
+        if (colStatut != null) {
+            colStatut.setCellFactory(param -> new TableCell<>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setGraphic(null);
+                    } else {
+                        Label badge = new Label(item);
+                        badge.getStyleClass().add("statusBadge");
+                        if (item.equals("En attente")) {
+                            badge.getStyleClass().add("status-En_attente");
+                        } else if (item.equals("Traitée") || item.equals("Traitee")) {
+                            badge.getStyleClass().add("status-Traitee");
+                        }
+                        setGraphic(badge);
                     }
-                    setGraphic(badge);
                 }
-            }
-        });
+            });
+        }
 
         // Actions Column
-        colActions.setCellFactory(param -> new TableCell<>() {
-            private final Button btnEdit = new Button("✏");
-            private final Button btnDelete = new Button("🗑");
-            {
-                btnEdit.getStyleClass().addAll("iconBtn", "btnEdit");
-                btnDelete.getStyleClass().addAll("iconBtn", "btnDelete");
-                btnEdit.setOnAction(e -> {
-                    Reclamation rec = getTableView().getItems().get(getIndex());
-                    modifierReclamationSpecific(rec);
-                });
-                btnDelete.setOnAction(e -> {
-                    Reclamation rec = getTableView().getItems().get(getIndex());
-                    supprimerReclamationSpecific(rec);
-                });
-            }
+        if (colActions != null) {
+            colActions.setCellFactory(param -> new TableCell<>() {
+                private final Button btnEdit = new Button("✏");
+                private final Button btnDelete = new Button("🗑");
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    HBox hbox = new HBox(8, btnEdit, btnDelete);
-                    hbox.setAlignment(javafx.geometry.Pos.CENTER);
-                    setGraphic(hbox);
+                {
+                    btnEdit.getStyleClass().addAll("iconBtn", "btnEdit");
+                    btnDelete.getStyleClass().addAll("iconBtn", "btnDelete");
+                    btnEdit.setOnAction(e -> {
+                        Reclamation rec = getTableView().getItems().get(getIndex());
+                        modifierReclamationSpecific(rec);
+                    });
+                    btnDelete.setOnAction(e -> {
+                        Reclamation rec = getTableView().getItems().get(getIndex());
+                        supprimerReclamationSpecific(rec);
+                    });
                 }
-            }
-        });
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        HBox hbox = new HBox(8, btnEdit, btnDelete);
+                        hbox.setAlignment(javafx.geometry.Pos.CENTER);
+                        setGraphic(hbox);
+                    }
+                }
+            });
+        }
     }
 
     private void loadData() {
@@ -247,8 +256,11 @@ public class UserReclamationsController implements Initializable {
 
     @FXML
     void retourMenu(ActionEvent event) {
+        // With the new layout, we don't really need a retour button anymore
+        // But if needed, we can reload the dashboard
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/user_menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/voyage/dashboard.fxml"));
+            Parent root = loader.load();
             tableReclamations.getScene().setRoot(root);
         } catch (IOException e) {
             AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());

@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefHeight="700.0" prefWidth="1400.0" 
+            styleClass="page"
+            stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.MainLayoutController">
+   
+   <!-- SIDEBAR GAUCHE -->
+   <left>
+      <VBox styleClass="sidebar" prefWidth="240" spacing="5">
+         
+         <!-- LOGO / BRAND -->
+         <VBox spacing="3" styleClass="sidebarHeader">
+            <padding>
+               <Insets top="20" bottom="20" left="15" right="15" />
+            </padding>
+            <Label text="🏝️ VOYAGE &amp; SERVICES" styleClass="brand" />
+            <Label text="Plateforme Complète" 
+                   style="-fx-font-size: 11px; -fx-text-fill: #6a7a73; -fx-font-weight: 600;" />
+         </VBox>
+         
+         <Separator styleClass="hr" />
+         
+         <!-- ========== SECTION VOYAGE ========== -->
+         <VBox spacing="3">
+            <padding>
+               <Insets top="15" bottom="5" left="15" right="15" />
+            </padding>
+            
+            <Label text="VOYAGE" 
+                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
+            
+            <Button text="🏠 Dashboard" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherDashboard" />
+            
+            <Button text="🗓️ Réserver" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherReserver" />
+            
+            <Button text="💬 Chat" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherChat" />
+         </VBox>
+         
+         <Separator styleClass="hr" />
+         
+         <!-- ========== SECTION MES SERVICES (USER) ========== -->
+         <VBox spacing="3">
+            <padding>
+               <Insets top="15" bottom="5" left="15" right="15" />
+            </padding>
+            
+            <Label text="MES SERVICES" 
+                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
+            
+            <!-- Mes Réclamations (seulement celles de l'utilisateur) -->
+            <Button text="📋 Mes Réclamations" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherMesReclamations" />
+            
+            <!-- Mes Avis (seulement ceux de l'utilisateur) -->
+            <Button text="⭐ Mes Avis" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherMesAvis" />
+            
+            <!-- Avis Publics (tous les avis de tous les utilisateurs - lecture seule) -->
+            <Button text="👁️ Avis Publics" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherAvisPublics" />
+         </VBox>
+         
+         <Separator styleClass="hr" />
+         
+         <!-- ========== SECTION ADMIN VOYAGE ========== -->
+         <VBox spacing="3" fx:id="adminVoyageSection">
+            <padding>
+               <Insets top="15" bottom="5" left="15" right="15" />
+            </padding>
+            
+            <Label text="ADMIN VOYAGE" 
+                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
+            
+            <Button text="➕ Ajouter" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherAjouter" />
+            
+            <Button text="📋 Gérer Hébergements" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherGererHebergements" />
+            
+            <Button text="✈️ Réservations Admin" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherReservationsAdmin" />
+            
+            <Button text="👥 Utilisateurs" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherUtilisateurs" />
+         </VBox>
+         
+         <Separator styleClass="hr" fx:id="separatorAdmin" />
+         
+         <!-- ========== SECTION ADMIN SERVICES ========== -->
+         <VBox spacing="3" fx:id="adminServicesSection">
+            <padding>
+               <Insets top="15" bottom="5" left="15" right="15" />
+            </padding>
+            
+            <Label text="ADMIN SERVICES" 
+                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
+            
+            <!-- Gérer toutes les réclamations -->
+            <Button text="📋 Gérer Réclamations" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherAdminReclamations" />
+            
+            <!-- Gérer tous les avis -->
+            <Button text="⭐ Gérer Avis" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherAdminAvis" />
+            
+            <!-- Statistiques des réclamations et avis -->
+            <Button text="📊 Statistiques" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherStatistiques" />
+         </VBox>
+         
+         <!-- SPACER -->
+         <Region VBox.vgrow="ALWAYS" />
+         
+         <Separator styleClass="hr" />
+         
+         <!-- ========== SECTION BAS ========== -->
+         <VBox spacing="3">
+            <padding>
+               <Insets top="10" bottom="20" left="15" right="15" />
+            </padding>
+            
+            <!-- Nom de l'utilisateur -->
+            <Label fx:id="lblUsername" 
+                   text="Ahmed Elarbi (ADMIN)" 
+                   styleClass="userLabel"
+                   style="-fx-font-size: 12px; -fx-font-weight: 900; -fx-text-fill: #1c7a44; -fx-background-color: #e8fff0; -fx-background-radius: 10; -fx-padding: 8 12;" />
+            
+            <Button text="⚙️ Paramètres" 
+                    styleClass="nav-btn" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#afficherParametres" />
+            
+            <Button text="🚪 Déconnexion" 
+                    styleClass="nav-btn-danger" 
+                    prefWidth="210"
+                    alignment="CENTER_LEFT"
+                    onAction="#deconnexion" />
+         </VBox>
+         
+      </VBox>
+   </left>
+   
+   <!-- CONTENU PRINCIPAL -->
+   <center>
+      <StackPane fx:id="contentArea" styleClass="pageContent">
+         <!-- Le contenu sera chargé ici dynamiquement -->
+      </StackPane>
+   </center>
+   
+</BorderPane>

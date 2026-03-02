@@ -3,8 +3,6 @@ package services;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Comparator;
-import java.util.stream.Collectors;
 import entities.Avis;
 import interfaces.IService;
 import tools.MyConnection;

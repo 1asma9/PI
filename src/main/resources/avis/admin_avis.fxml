@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" 
+            styleClass="page"
+            stylesheets="@../style.css"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.AdminAvisController">
+   
+   <!-- Top Bar -->
+   <top>
+      <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
+         <Label text="GESTION DES AVIS" styleClass="pageTitle" />
+         <Region HBox.hgrow="ALWAYS" />
+      </HBox>
+   </top>
+   
+   <!-- Center Content -->
+   <center>
+      <VBox styleClass="pageContent" spacing="20">
+         
+         <!-- Filters and Search -->
+         <HBox spacing="15" alignment="CENTER_LEFT" styleClass="card">
+             <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="Rechercher :" styleClass="metaText" />
+                <TextField fx:id="txtSearch" promptText="Rechercher par commentaire..." prefWidth="300" />
+             </VBox>
+             <VBox spacing="5">
+                <Label text="Note :" styleClass="metaText" />
+                <ComboBox fx:id="comboFilter" promptText="Toutes les notes" prefWidth="150" />
+             </VBox>
+             <Button text="Réinitialiser" styleClass="btnOutline" onAction="#clearSearch" />
+         </HBox>
+         
+         <!-- Table -->
+         <TableView fx:id="tableAvis" styleClass="table-view" VBox.vgrow="ALWAYS">
+            <columns>
+               <TableColumn fx:id="colId" text="ID" prefWidth="60" />
+               <TableColumn fx:id="colUser" text="User ID" prefWidth="80" />
+               <TableColumn fx:id="colNote" text="Note /5" prefWidth="80" />
+               <TableColumn fx:id="colCommentaire" text="Commentaire" prefWidth="350" />
+               <TableColumn fx:id="colReponse" text="Réponse Admin" prefWidth="250" />
+                <TableColumn fx:id="colDateReponse" text="Date réponse" prefWidth="150" />
+            </columns>
+         </TableView>
+         
+         <!-- Response Area -->
+         <VBox styleClass="card" spacing="15">
+            <Label text="RÉPONDRE À L'AVIS SÉLECTIONNÉ" styleClass="cardTitle" />
+            <TextArea fx:id="txtReponse" 
+                      promptText="Saisissez votre réponse ici..." 
+                      prefHeight="100" 
+                      wrapText="true" />
+            <HBox alignment="CENTER_RIGHT">
+               <Button text="Envoyer la réponse" 
+                       styleClass="btnGreen" 
+                       onAction="#validerReponse" />
+            </HBox>
+         </VBox>
+         
+      </VBox>
+   </center>
+   
+</BorderPane>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <Label text="🏝️ Dashboard Voyage" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #9a8a6f;" />
+    <Label text="Bienvenue sur votre plateforme de voyage et services." style="-fx-font-size: 14px; -fx-text-fill: #6a7a73;" />
+</VBox>

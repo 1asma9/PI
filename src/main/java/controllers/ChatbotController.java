@@ -22,6 +22,8 @@ public class ChatbotController implements Initializable {
     @FXML
     private Label lblTitreChatbot;
     @FXML
+    private ScrollPane scrollPane;
+    @FXML
     private VBox chatContainer;
     @FXML
     private TextField txtMessage;
@@ -35,7 +37,10 @@ public class ChatbotController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Le type sera défini par setChatbotType() avant l'initialisation
+        // Scroller automatiquement vers le bas quand le contenu change
+        chatContainer.heightProperty().addListener((obs, oldVal, newVal) -> {
+            scrollPane.setVvalue(1.0);
+        });
     }
 
     public void setChatbotType(String type) {
@@ -272,9 +277,6 @@ public class ChatbotController implements Initializable {
 
     private void scrollToBottom() {
         // Scroller automatiquement vers le bas
-        chatContainer.heightProperty().addListener((obs, oldVal, newVal) -> {
-            ScrollPane sp = (ScrollPane) chatContainer.getParent().getParent();
-            sp.setVvalue(1.0);
-        });
+        scrollPane.setVvalue(1.0);
     }
 }

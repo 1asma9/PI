@@ -27,7 +27,8 @@
    <Separator styleClass="hr" />
    
    <!-- Zone de chat -->
-   <ScrollPane styleClass="scroll-pane" 
+   <ScrollPane fx:id="scrollPane" 
+               styleClass="scroll-pane" 
                fitToWidth="true" 
                VBox.vgrow="ALWAYS"
                style="-fx-background-color: #fbf7f1; -fx-background-radius: 12;">
