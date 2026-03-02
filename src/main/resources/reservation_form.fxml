@@ -83,6 +83,10 @@
                         <Label text="Nombre de personnes" styleClass="fieldLabel"/>
                         <TextField fx:id="tfNombre" promptText="Ex : 2"/>
 
+                        <!-- ✅ NEW: Total + Remise (métier) -->
+                        <Label fx:id="lblTotal" text="Total : -" styleClass="totalLabel"/>
+                        <Label fx:id="lblRemise" text="" styleClass="remiseLabel"/>
+
                         <Label text="Statut" styleClass="fieldLabel"/>
                         <ComboBox fx:id="cbStatut"/>
 

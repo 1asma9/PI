@@ -484,7 +484,7 @@ public class AffichageActivitesFrontController {
         VBox priceBox = new VBox(2, price, per);
         priceBox.setAlignment(Pos.CENTER_LEFT);
 
-        Button book = new Button("Book Now  >");
+        Button book = new Button("Réserver  >");
         book.getStyleClass().add("tripBookBtn");
         book.setOnAction(e -> openReservationForm(a.getIdActivite(), a.getNom()));
 

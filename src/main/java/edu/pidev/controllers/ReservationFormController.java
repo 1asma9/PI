@@ -5,9 +5,11 @@ import edu.pidev.entities.ReservationActivite;
 import edu.pidev.services.ActiviteService;
 import edu.pidev.services.ReservationActiviteService;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,8 +25,6 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import javafx.event.ActionEvent;
-import javafx.scene.Node;
 
 public class ReservationFormController {
 
@@ -40,6 +40,10 @@ public class ReservationFormController {
     // ✅ AI panel
     @FXML private Label aiExpectText;
 
+    // ✅ NEW: total labels
+    @FXML private Label lblTotal;
+    @FXML private Label lblRemise;
+
     private final ReservationActiviteService service = new ReservationActiviteService();
     private final ActiviteService activiteService = new ActiviteService();
 
@@ -50,7 +54,7 @@ public class ReservationFormController {
     // mode update
     private int selectedIdReservation = -1;
 
-    // ✅ Selected activity full object (for AI payload)
+    // ✅ Selected activity full object
     private Activite selectedActivite = null;
 
     // ✅ AI endpoint
@@ -61,6 +65,7 @@ public class ReservationFormController {
 
     @FXML
     public void initialize() {
+
         if (cbStatut != null) {
             cbStatut.getItems().setAll("EN_ATTENTE", "CONFIRMEE", "ANNULEE");
             cbStatut.setValue("EN_ATTENTE");
@@ -71,7 +76,13 @@ public class ReservationFormController {
             aiExpectText.setText("Click Generate to get AI tips for this activity.");
         }
 
+        // ✅ Live total when typing
+        if (tfNombre != null) {
+            tfNombre.textProperty().addListener((obs, oldV, newV) -> updateTotalUI());
+        }
+
         setModeAdd();
+        updateTotalUI();
     }
 
     public void setData(int idActivite, String nomActivite) {
@@ -79,7 +90,7 @@ public class ReservationFormController {
         this.nomActivite = (nomActivite == null || nomActivite.isBlank()) ? "-" : nomActivite.trim();
         lblActivite.setText("Activité : " + this.nomActivite);
 
-        // ✅ Load full activity data for AI (type/lieu/duree/prix)
+        // ✅ Load full activity data (type/lieu/duree/prix)
         selectedActivite = null;
         try {
             List<Activite> all = activiteService.getAllActivites();
@@ -96,6 +107,7 @@ public class ReservationFormController {
         }
 
         refreshList();
+        updateTotalUI();
     }
 
     // ===================== AI BUTTON =====================
@@ -145,7 +157,6 @@ public class ReservationFormController {
                 if (text == null || text.isBlank()) text = "No AI text returned.";
 
                 String finalText = text.replace("\\n", "\n");
-
                 Platform.runLater(() -> aiExpectText.setText(finalText));
 
             } catch (Exception e) {
@@ -170,11 +181,53 @@ public class ReservationFormController {
         int start = json.indexOf("\"", i + key.length());
         if (start == -1) return null;
         int end = json.indexOf("\"", start + 1);
-        while (end != -1 && json.charAt(end - 1) == '\\') { // skip escaped quotes
+        while (end != -1 && json.charAt(end - 1) == '\\') {
             end = json.indexOf("\"", end + 1);
         }
         if (end == -1) return null;
         return json.substring(start + 1, end);
+    }
+
+    // ===================== MÉTIER UI: TOTAL =====================
+    private void updateTotalUI() {
+        if (lblTotal == null) return;
+
+        try {
+            if (selectedActivite == null) {
+                lblTotal.setText("Total : -");
+                if (lblRemise != null) lblRemise.setText("");
+                return;
+            }
+
+            String txt = (tfNombre == null) ? "" : tfNombre.getText();
+            if (txt == null || txt.isBlank()) {
+                lblTotal.setText("Total : -");
+                if (lblRemise != null) lblRemise.setText("");
+                return;
+            }
+
+            int nb = Integer.parseInt(txt.trim());
+            if (nb <= 0) {
+                lblTotal.setText("Total : -");
+                if (lblRemise != null) lblRemise.setText("Nombre invalide");
+                return;
+            }
+
+            double prix = selectedActivite.getPrix();
+            double total = service.calculerTotal(prix, nb);
+
+            lblTotal.setText("Total : " + String.format("%.2f", total) + " TND");
+
+            if (lblRemise != null) {
+                if (nb >= 3 && nb <= 5) lblRemise.setText("Remise -5% appliquée");
+                else if (nb >= 6) lblRemise.setText("Remise -10% appliquée");
+                else lblRemise.setText("");
+            }
+
+        } catch (Exception e) {
+            lblTotal.setText("Total : -");
+            if (lblRemise != null) lblRemise.setText("");
+        }
     }
 
     // ===================== ACTIONS UI =====================
@@ -208,11 +261,9 @@ public class ReservationFormController {
         }
 
         if (selectedIdReservation <= 0) {
-            // ADD
             ReservationActivite r = new ReservationActivite(date, nb, statut, idActivite);
             service.addReservation(r);
         } else {
-            // UPDATE
             ReservationActivite r = new ReservationActivite(selectedIdReservation, date, nb, statut, idActivite);
             service.updateReservation(r);
         }
@@ -233,7 +284,7 @@ public class ReservationFormController {
 
     @FXML
     private void onBack(ActionEvent event) {
-        switchScene(event, "/affichage_activites_back.fxml", "/affichage.css");
+        switchScene(event, "/affichage_activites_front.fxml", "/affichage.css");
     }
 
     private void switchScene(ActionEvent event, String fxml, String cssFile) {
@@ -256,8 +307,6 @@ public class ReservationFormController {
             if (css != null) scene.getStylesheets().add(css.toExternalForm());
 
             stage.show();
-
-            // ✅ maximize AFTER show (prevents stuck)
             Platform.runLater(() -> stage.setMaximized(true));
 
         } catch (Exception e) {
@@ -269,11 +318,9 @@ public class ReservationFormController {
     // ===================== LIST =====================
     private void refreshList() {
         reservationsContainer.getChildren().clear();
-
         if (idActivite <= 0) return;
 
         List<ReservationActivite> list = service.getReservationsByActivite(idActivite);
-
         for (ReservationActivite r : list) {
             reservationsContainer.getChildren().add(createReservationCard(r));
         }
@@ -315,7 +362,15 @@ public class ReservationFormController {
         peopleLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #0f2a2a;");
         peopleBox.getChildren().addAll(peopleIcon, peopleLabel);
 
-        details.getChildren().addAll(dateBox, peopleBox);
+        // ✅ NEW: total line
+        HBox totalBox = new HBox(10);
+        Label moneyIcon = new Label("💰");
+        moneyIcon.setStyle("-fx-font-size: 14px;");
+        Label totalLabel = new Label(String.format("%.2f TND", r.getTotal()));
+        totalLabel.setStyle("-fx-font-size: 13px; -fx-font-weight: 800; -fx-text-fill: #0f2a2a;");
+        totalBox.getChildren().addAll(moneyIcon, totalLabel);
+
+        details.getChildren().addAll(dateBox, peopleBox, totalBox);
 
         Separator separator = new Separator();
         separator.setStyle("-fx-background-color: #e0d6cc; -fx-opacity: 0.5;");
@@ -347,6 +402,8 @@ public class ReservationFormController {
 
         lblMode.setText("Modifier la réservation #" + r.getIdReservation());
         btnSave.setText("Enregistrer");
+
+        updateTotalUI();
     }
 
     private void deleteReservation(ReservationActivite r) {
@@ -372,6 +429,7 @@ public class ReservationFormController {
         if (lblMode != null) lblMode.setText("Ajouter une réservation");
         if (btnSave != null) btnSave.setText("Ajouter");
         hideError();
+        updateTotalUI();
     }
 
     private void showError(String msg) {

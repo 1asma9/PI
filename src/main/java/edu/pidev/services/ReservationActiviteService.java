@@ -27,7 +27,32 @@ public class ReservationActiviteService {
         }
     }
 
-    // CREATE
+    // ✅ NEW: get prix of activite
+    private double getPrixActivite(int idActivite) throws SQLException {
+        String sql = "SELECT prix FROM activite WHERE id_activite=?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, idActivite);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getDouble("prix");
+            }
+        }
+        throw new SQLException("Prix introuvable pour l'activité id=" + idActivite);
+    }
+
+    // ✅ NEW: métier total calculation
+    public double calculerTotal(double prixUnitaire, int nbPersonnes) {
+        double total = prixUnitaire * nbPersonnes;
+
+        if (nbPersonnes >= 3 && nbPersonnes <= 5) {
+            total *= 0.95; // -5%
+        } else if (nbPersonnes >= 6) {
+            total *= 0.90; // -10%
+        }
+
+        return Math.round(total * 100.0) / 100.0;
+    }
+
+    // CREATE (✅ now stores total)
     public void addReservation(ReservationActivite r) {
         try {
             // ✅ Contrôle de saisie
@@ -38,17 +63,25 @@ public class ReservationActiviteService {
                 throw new ValidationException("Activité introuvable (id=" + r.getIdActivite() + ")");
             }
 
-            String sql = "INSERT INTO reservation_activite (date_reservation, nombre_personnes, statut, id_activite) " +
-                    "VALUES (?, ?, ?, ?)";
-            try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            // ✅ MÉTIER: total
+            double prix = getPrixActivite(r.getIdActivite());
+            double total = calculerTotal(prix, r.getNombrePersonnes());
+            r.setTotal(total);
 
+            String sql = """
+                    INSERT INTO reservation_activite (date_reservation, nombre_personnes, statut, id_activite, total)
+                    VALUES (?, ?, ?, ?, ?)
+                    """;
+
+            try (PreparedStatement ps = cnx.prepareStatement(sql)) {
                 ps.setDate(1, Date.valueOf(r.getDateReservation())); // LocalDate -> SQL Date
                 ps.setInt(2, r.getNombrePersonnes());
                 ps.setString(3, r.getStatut().trim().toUpperCase());
                 ps.setInt(4, r.getIdActivite());
+                ps.setDouble(5, r.getTotal());
 
                 ps.executeUpdate();
-                System.out.println("✅ Réservation ajoutée !");
+                System.out.println("✅ Réservation ajoutée ! Total=" + r.getTotal());
             }
 
         } catch (ValidationException e) {
@@ -58,7 +91,7 @@ public class ReservationActiviteService {
         }
     }
 
-    // READ ALL
+    // READ ALL (✅ reads total)
     public List<ReservationActivite> getAllReservations() {
         List<ReservationActivite> list = new ArrayList<>();
         String sql = "SELECT * FROM reservation_activite";
@@ -72,9 +105,11 @@ public class ReservationActiviteService {
                 int nb = rs.getInt("nombre_personnes");
                 String statut = rs.getString("statut");
                 int idActivite = rs.getInt("id_activite");
+                double total = rs.getDouble("total");
 
-                list.add(new ReservationActivite(idReservation, dateReservation, nb, statut, idActivite));
+                list.add(new ReservationActivite(idReservation, dateReservation, nb, statut, idActivite, total));
             }
+
         } catch (SQLException e) {
             System.out.println("❌ Erreur getAllReservations : " + e.getMessage());
         }
@@ -82,7 +117,7 @@ public class ReservationActiviteService {
         return list;
     }
 
-    // UPDATE
+    // UPDATE (✅ recompute + update total)
     public void updateReservation(ReservationActivite r) {
         try {
             // ✅ Contrôle de saisie
@@ -98,18 +133,27 @@ public class ReservationActiviteService {
                 throw new ValidationException("Activité introuvable (id=" + r.getIdActivite() + ")");
             }
 
-            String sql = "UPDATE reservation_activite SET date_reservation=?, nombre_personnes=?, statut=?, id_activite=? " +
-                    "WHERE id_reservation=?";
+            // ✅ MÉTIER: total recalculé
+            double prix = getPrixActivite(r.getIdActivite());
+            double total = calculerTotal(prix, r.getNombrePersonnes());
+            r.setTotal(total);
+
+            String sql = """
+                    UPDATE reservation_activite
+                    SET date_reservation=?, nombre_personnes=?, statut=?, id_activite=?, total=?
+                    WHERE id_reservation=?
+                    """;
 
             try (PreparedStatement ps = cnx.prepareStatement(sql)) {
                 ps.setDate(1, Date.valueOf(r.getDateReservation()));
                 ps.setInt(2, r.getNombrePersonnes());
                 ps.setString(3, r.getStatut().trim().toUpperCase());
                 ps.setInt(4, r.getIdActivite());
-                ps.setInt(5, r.getIdReservation());
+                ps.setDouble(5, r.getTotal());
+                ps.setInt(6, r.getIdReservation());
 
                 int rows = ps.executeUpdate();
-                if (rows > 0) System.out.println("✏️ Réservation modifiée !");
+                if (rows > 0) System.out.println("✏️ Réservation modifiée ! Total=" + r.getTotal());
                 else System.out.println("⚠️ Aucune réservation trouvée avec id = " + r.getIdReservation());
             }
 
@@ -136,7 +180,7 @@ public class ReservationActiviteService {
         }
     }
 
-    // BONUS: get reservations for one activite
+    // get reservations for one activite (✅ reads total)
     public List<ReservationActivite> getReservationsByActivite(int idActivite) {
         List<ReservationActivite> list = new ArrayList<>();
         String sql = "SELECT * FROM reservation_activite WHERE id_activite=?";
@@ -151,7 +195,8 @@ public class ReservationActiviteService {
                         rs.getDate("date_reservation").toLocalDate(),
                         rs.getInt("nombre_personnes"),
                         rs.getString("statut"),
-                        rs.getInt("id_activite")
+                        rs.getInt("id_activite"),
+                        rs.getDouble("total")
                 ));
             }
         } catch (SQLException e) {
@@ -161,11 +206,14 @@ public class ReservationActiviteService {
         return list;
     }
 
-    // BONUS PRO: JOIN to show activite name
+    // JOIN (unchanged) - optional: show total too
     public void afficherReservationsAvecNomActivite() {
-        String sql = "SELECT r.id_reservation, r.date_reservation, r.nombre_personnes, r.statut, a.nom AS nom_activite " +
-                "FROM reservation_activite r " +
-                "JOIN activite a ON r.id_activite = a.id_activite";
+        String sql = """
+                SELECT r.id_reservation, r.date_reservation, r.nombre_personnes, r.statut, r.total,
+                       a.nom AS nom_activite
+                FROM reservation_activite r
+                JOIN activite a ON r.id_activite = a.id_activite
+                """;
 
         try (Statement st = cnx.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
@@ -176,6 +224,7 @@ public class ReservationActiviteService {
                                 " | " + rs.getDate("date_reservation") +
                                 " | nb=" + rs.getInt("nombre_personnes") +
                                 " | " + rs.getString("statut") +
+                                " | total=" + rs.getDouble("total") +
                                 " | Activite=" + rs.getString("nom_activite")
                 );
             }
