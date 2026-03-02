@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/css/BlogStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/css/DashboardStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/css/FrontendBlogStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/css/sidenavbar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
