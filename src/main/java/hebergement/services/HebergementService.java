@@ -16,10 +16,9 @@ public class HebergementService implements Iservice<Hebergement> {
     @Override
     public void addEntity(Hebergement h) throws SQLException {
 
-        String sql = """
-            INSERT INTO hebergement(description, adresse, prix, type_id, image_path)
-            VALUES (?, ?, ?, ?, ?)
-        """;
+        String sql =
+                "INSERT INTO hebergement(description, adresse, prix, type_id, image_path, latitude, longitude) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(sql)) {
             pst.setString(1, h.getDescription());
@@ -29,7 +28,14 @@ public class HebergementService implements Iservice<Hebergement> {
             if (h.getTypeId() == null) pst.setNull(4, Types.INTEGER);
             else pst.setInt(4, h.getTypeId());
 
-            pst.setString(5, h.getImagePath()); // ✅ image path
+            pst.setString(5, h.getImagePath());
+
+            if (h.getLatitude() == null) pst.setNull(6, Types.DOUBLE);
+            else pst.setDouble(6, h.getLatitude());
+
+            if (h.getLongitude() == null) pst.setNull(7, Types.DOUBLE);
+            else pst.setDouble(7, h.getLongitude());
+
             pst.executeUpdate();
         }
     }
@@ -56,11 +62,9 @@ public class HebergementService implements Iservice<Hebergement> {
     @Override
     public void update(int id, Hebergement h) throws SQLException {
 
-        String sql = """
-            UPDATE hebergement
-            SET description=?, adresse=?, prix=?, type_id=?, image_path=?
-            WHERE id=?
-        """;
+        String sql =
+                "UPDATE hebergement SET description=?, adresse=?, prix=?, type_id=?, image_path=?, latitude=?, longitude=? " +
+                        "WHERE id=?";
 
         try (PreparedStatement pst = cnx.prepareStatement(sql)) {
             pst.setString(1, h.getDescription());
@@ -70,13 +74,18 @@ public class HebergementService implements Iservice<Hebergement> {
             if (h.getTypeId() == null) pst.setNull(4, Types.INTEGER);
             else pst.setInt(4, h.getTypeId());
 
-            pst.setString(5, h.getImagePath()); // ✅ image path
-            pst.setInt(6, id);
+            pst.setString(5, h.getImagePath());
 
+            if (h.getLatitude() == null) pst.setNull(6, Types.DOUBLE);
+            else pst.setDouble(6, h.getLatitude());
+
+            if (h.getLongitude() == null) pst.setNull(7, Types.DOUBLE);
+            else pst.setDouble(7, h.getLongitude());
+
+            pst.setInt(8, id);
             pst.executeUpdate();
         }
     }
-
     // ===== DELETE =====
     @Override
     public void deleteEntity(Hebergement h) throws SQLException {
@@ -118,12 +127,12 @@ public class HebergementService implements Iservice<Hebergement> {
     public List<Hebergement> getData() throws SQLException {
 
         List<Hebergement> list = new ArrayList<>();
-        String sql = """
-        SELECT h.*, t.libelle AS type_libelle
-        FROM hebergement h
-        LEFT JOIN type_hebergement t ON h.type_id = t.id
-        ORDER BY h.id ASC
-    """;
+
+        String sql =
+                "SELECT h.*, t.libelle AS type_libelle " +
+                        "FROM hebergement h " +
+                        "LEFT JOIN type_hebergement t ON h.type_id = t.id " +
+                        "ORDER BY h.id ASC";
 
         try (Statement st = cnx.createStatement();
              ResultSet rs = st.executeQuery(sql)) {
@@ -137,6 +146,10 @@ public class HebergementService implements Iservice<Hebergement> {
                 h.setTypeId((Integer) rs.getObject("type_id"));
                 h.setTypeLibelle(rs.getString("type_libelle"));
                 h.setImagePath(rs.getString("image_path"));
+
+                h.setLatitude((Double) rs.getObject("latitude"));
+                h.setLongitude((Double) rs.getObject("longitude"));
+
                 list.add(h);
             }
         }

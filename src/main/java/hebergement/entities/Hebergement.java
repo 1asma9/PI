@@ -7,10 +7,12 @@ public class Hebergement {
     private double prix;
     private String imagePath;
 
+    private Integer typeId;
+    private String typeLibelle;
 
     // ✅ NEW
-    private Integer typeId;      // nullable
-    private String typeLibelle;  // optionnel (pour affichage après JOIN)
+    private Double latitude;
+    private Double longitude;
 
     public Hebergement() {}
 
@@ -18,10 +20,8 @@ public class Hebergement {
         this.description = description;
         this.adresse = adresse;
         this.prix = prix;
-
     }
 
-    // ✅ NEW constructor avec typeId
     public Hebergement(String description, String adresse, double prix, Integer typeId) {
         this.description = description;
         this.adresse = adresse;
@@ -29,7 +29,6 @@ public class Hebergement {
         this.typeId = typeId;
     }
 
-    // getters/setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -42,23 +41,24 @@ public class Hebergement {
     public double getPrix() { return prix; }
     public void setPrix(double prix) { this.prix = prix; }
 
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+
     public Integer getTypeId() { return typeId; }
     public void setTypeId(Integer typeId) { this.typeId = typeId; }
 
     public String getTypeLibelle() { return typeLibelle; }
     public void setTypeLibelle(String typeLibelle) { this.typeLibelle = typeLibelle; }
-    public String getImagePath() { return imagePath; }
-    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
+    // ✅ lat/lng
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
 
     @Override
     public String toString() {
-        return "Hebergement{id=" + id +
-                ", description='" + description + '\'' +
-                ", adresse='" + adresse + '\'' +
-                ", prix=" + prix +
-                ", typeId=" + typeId +
-                (typeLibelle != null ? ", type='" + typeLibelle + '\'' : "") +
-                '}';
+        return "#" + id + " - " + description;
     }
 }

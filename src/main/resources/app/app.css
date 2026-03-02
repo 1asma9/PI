@@ -773,3 +773,45 @@ HBox.sidebar .nav-btn {
     -fx-max-width: -1;
     -fx-text-overrun: clip;
 }
+
+/* CARD */
+.chat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 25, 0, 0, 8);
+}
+
+/* TITLE */
+.chat-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+/* LIST */
+.chat-list {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #e0e0e0;
+}
+
+/* INPUT */
+.chat-input {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d0d7de;
+    -fx-padding: 8 12 8 12;
+}
+
+/* BUTTON */
+.chat-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-background-radius: 12;
+    -fx-padding: 8 18 8 18;
+}
+
+.chat-button:hover {
+    -fx-background-color: #45a049;
+}

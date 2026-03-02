@@ -10,16 +10,14 @@ import hebergement.tools.LocalPaymentCallbackServer;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.web.WebView;
 
 import java.awt.Desktop;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.layout.BorderPane;
+
 public class ReservationController {
 
     private final HebergementService hs = new HebergementService();
@@ -37,31 +35,25 @@ public class ReservationController {
     @FXML private Label lblTotal;
     @FXML private Label lblMsg;
 
+    // ✅ MAP (doit matcher reservation.fxml)
+    @FXML private WebView mapViewRes;
+    @FXML private Label lblMapInfoRes;
+
     @FXML
     public void initialize() {
         lblMsg.setText("");
         loadHebergements();
 
-        cbHebergement.valueProperty().addListener((obs, o, n) -> computeTotal());
+        cbHebergement.valueProperty().addListener((obs, o, n) -> {
+            computeTotal();
+            showSelectedHebergementOnMap(n);
+        });
+
         dpDebut.valueProperty().addListener((obs, o, n) -> computeTotal());
         dpFin.valueProperty().addListener((obs, o, n) -> computeTotal());
+
+        showEmptyMap("Sélectionne un hébergement pour voir sa position.");
     }
-    @FXML
-    private void onBack(ActionEvent event) {
-        try {
-            // ✅ si tu utilises MainLayout avec un centre (BorderPane)
-            Parent root = FXMLLoader.load(getClass().getResource("/app/dashboard.fxml"));
-            // ⬆️ change dashboard.fxml par la page que tu veux revenir
-
-            // Alternative: si tu as un main_layout avec BorderPane
-            // BorderPane main = (BorderPane) ((Node) event.getSource()).getScene().lookup("#mainRoot");
-            // main.setCenter(root);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private void loadHebergements() {
         try {
@@ -104,6 +96,66 @@ public class ReservationController {
         lblTotal.setText("Total: " + total + " DT (" + nuits + " nuits)");
     }
 
+    // ===================== MAP =====================
+
+    private void showSelectedHebergementOnMap(Hebergement h) {
+        if (h == null) {
+            showEmptyMap("Sélectionne un hébergement pour voir sa position.");
+            return;
+        }
+
+        if (h.getLatitude() == null || h.getLongitude() == null) {
+            showEmptyMap("⚠️ Cet hébergement n’a pas de latitude/longitude.");
+            lblMapInfoRes.setText("⚠️ Pas de position enregistrée.");
+            return;
+        }
+
+        lblMapInfoRes.setText("📍 " + h.getLatitude() + ", " + h.getLongitude());
+        loadMap(h.getLatitude(), h.getLongitude(), h.getDescription());
+    }
+
+    private void showEmptyMap(String msg) {
+        if (mapViewRes == null) return;
+
+        String safe = (msg == null ? "" : msg).replace("'", "\\'");
+
+        String html =
+                "<!DOCTYPE html><html><head><meta charset='utf-8'/>" +
+                        "<style>html,body{height:100%;margin:0;font-family:Arial;}" +
+                        ".box{height:100%;display:flex;align-items:center;justify-content:center;color:#6a7a73;}" +
+                        "</style></head><body><div class='box'>" + safe + "</div></body></html>";
+
+        mapViewRes.getEngine().loadContent(html);
+        if (lblMapInfoRes != null) lblMapInfoRes.setText(msg);
+    }
+
+    private void loadMap(double lat, double lng, String label) {
+        if (mapViewRes == null) return;
+
+        String safeLabel = (label == null ? "" : label).replace("'", "\\'");
+
+        String html = String.format(
+                "<!DOCTYPE html>" +
+                        "<html><head><meta charset='utf-8'/>" +
+                        "<meta name='viewport' content='width=device-width, initial-scale=1.0'/>" +
+                        "<link rel='stylesheet' href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'/>" +
+                        "<script src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'></script>" +
+                        "<style>html,body,#map{height:100%%;margin:0;}</style>" +
+                        "</head><body><div id='map'></div>" +
+                        "<script>" +
+                        "var map=L.map('map').setView([%f,%f],14);" +
+                        "L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(map);" +
+                        "L.marker([%f,%f]).addTo(map).bindPopup('%s').openPopup();" +
+                        "setTimeout(function(){map.invalidateSize();},600);" +
+                        "</script></body></html>",
+                lat, lng, lat, lng, safeLabel
+        );
+
+        mapViewRes.getEngine().loadContent(html);
+    }
+
+    // ===================== RESERVATION (ton code Stripe intact) =====================
+
     @FXML
     void addReservation() {
         lblMsg.setText("");
@@ -137,29 +189,18 @@ public class ReservationController {
             double total = nuits * h.getPrix();
 
             Reservation r = new Reservation(
-                    h.getId(),
-                    nom,
-                    tel,
-                    email,
-                    debut,
-                    fin,
-                    nuits,
-                    total,
-                    "EN_ATTENTE"
+                    h.getId(), nom, tel, email, debut, fin, nuits, total, "EN_ATTENTE"
             );
 
-            // ✅ 1) créer réservation et récupérer ID
             int reservationId = rs.addEntityReturnId(r);
             if (reservationId == -1) {
                 showError("Erreur", "Impossible de créer la réservation.");
                 return;
             }
 
-            // ✅ 2) démarrer serveur callback
             callbackServer.start(rs, payService);
             int port = callbackServer.getPort();
 
-            // ✅ 3) créer session Stripe + ouvrir navigateur
             var session = payService.createCheckoutSession(reservationId, total, email, port);
             Desktop.getDesktop().browse(new URI(session.getUrl()));
 
@@ -172,7 +213,6 @@ public class ReservationController {
         }
     }
 
-
     private void clearForm() {
         cbHebergement.getSelectionModel().clearSelection();
         tfNom.clear();
@@ -181,6 +221,7 @@ public class ReservationController {
         dpDebut.setValue(null);
         dpFin.setValue(null);
         lblTotal.setText("Total: 0.0 DT");
+        showEmptyMap("Sélectionne un hébergement pour voir sa position.");
     }
 
     private void showInfo(String title, String msg) {
@@ -198,15 +239,12 @@ public class ReservationController {
         a.setContentText(msg);
         a.showAndWait();
     }
+
     public void setSelectedHebergement(Hebergement h) {
         if (h == null) return;
-
-        // ✅ si tu as encore ComboBox
-        if (cbHebergement.getItems() == null || cbHebergement.getItems().isEmpty()) {
-            loadHebergements();
-        }
+        if (cbHebergement.getItems() == null || cbHebergement.getItems().isEmpty()) loadHebergements();
         cbHebergement.getSelectionModel().select(h);
         computeTotal();
+        showSelectedHebergementOnMap(h);
     }
-
 }
