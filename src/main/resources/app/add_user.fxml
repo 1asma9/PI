@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@app.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.PI_Gestion_des_utilisateurs.ui.AddUserController">
+
+    <!-- Header -->
+    <top>
+        <VBox alignment="CENTER" styleClass="header">
+            <Label styleClass="title" text="Ajouter un Utilisateur"/>
+        </VBox>
+    </top>
+
+    <!-- Contenu principal -->
+    <center>
+        <VBox alignment="CENTER" spacing="24" styleClass="main-container">
+
+            <GridPane hgap="20" styleClass="grid-pane" vgap="16">
+
+                <!-- Nom -->
+                <Label styleClass="form-label" text="Nom :"
+                       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <TextField fx:id="nomField" prefHeight="40"
+                           promptText="Entrez le nom"
+                           styleClass="text-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <!-- Prénom -->
+                <Label styleClass="form-label" text="Prénom :"
+                       GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <TextField fx:id="prenomField" prefHeight="40"
+                           promptText="Entrez le prénom"
+                           styleClass="text-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <!-- Email -->
+                <Label styleClass="form-label" text="Email :"
+                       GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <TextField fx:id="emailField" prefHeight="40"
+                           promptText="exemple@email.com"
+                           styleClass="text-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <!-- Mot de passe -->
+                <Label styleClass="form-label" text="Mot de passe :"
+                       GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                <PasswordField fx:id="passwordField" prefHeight="40"
+                               promptText="Entrez le mot de passe"
+                               styleClass="text-field"
+                               GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                <!-- Téléphone -->
+                <Label styleClass="form-label" text="Téléphone :"
+                       GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                <TextField fx:id="telephoneField" prefHeight="40"
+                           promptText="Numéro de téléphone"
+                           styleClass="text-field"
+                           GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                <!-- Rôle -->
+                <Label styleClass="form-label" text="Rôle :"
+                       GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                <ComboBox fx:id="roleCombo" prefHeight="40"
+                          promptText="Sélectionnez un rôle"
+                          styleClass="text-field"
+                          GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                <columnConstraints>
+                    <ColumnConstraints minWidth="120"/>
+                    <ColumnConstraints minWidth="200"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="50"/>
+                    <RowConstraints minHeight="50"/>
+                    <RowConstraints minHeight="50"/>
+                    <RowConstraints minHeight="50"/>
+                    <RowConstraints minHeight="50"/>
+                    <RowConstraints minHeight="50"/>
+                </rowConstraints>
+
+            </GridPane>
+
+            <!-- Boutons -->
+            <HBox spacing="16" alignment="CENTER">
+                <Button onAction="#onAdd"
+                        prefHeight="45" prefWidth="120"
+                        styleClass="btnGold"
+                        text="Ajouter"/>
+                <Button onAction="#onCancel"
+                        prefHeight="45" prefWidth="120"
+                        styleClass="btnOutline"
+                        text="Retour"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20"/>
+    </padding>
+
+</BorderPane>

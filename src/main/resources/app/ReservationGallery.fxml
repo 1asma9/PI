@@ -8,8 +8,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="hebergement.controllers.ReservationGalleryController"
             fitToWidth="true" pannable="true"
-            stylesheets="@reservation.css"
-            vbarPolicy="AS_NEEDED" hbarPolicy="NEVER">
+            stylesheets="@app.css"            vbarPolicy="AS_NEEDED" hbarPolicy="NEVER">
 
     <content>
         <VBox spacing="18" styleClass="page">

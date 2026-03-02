@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="hebergement.controllers.ChatController"
+      spacing="10"
+      styleClass="card"
+      prefWidth="600.0"
+      prefHeight="400.0">
+
+    <Label text="Assistant Réservation" styleClass="title"/>
+
+    <ListView fx:id="lvChat" styleClass="chatList" VBox.vgrow="ALWAYS"/>
+
+    <HBox spacing="10">
+        <TextField fx:id="tfMessage"
+                   promptText="Ex: je veux réserver à Tunis du 10 au 12 pour 2 personnes"
+                   styleClass="field"
+                   HBox.hgrow="ALWAYS"/>
+        <Button text="Envoyer" onAction="#onSend" styleClass="primary"/>
+    </HBox>
+
+</VBox>

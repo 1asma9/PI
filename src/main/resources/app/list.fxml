@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.web.WebView?>
 
 <VBox spacing="14"
       xmlns="http://javafx.com/javafx"
@@ -15,54 +16,100 @@
         <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
             <Label text="Hébergements" styleClass="title"/>
 
-            <!-- ✅ Filters + Export -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <TextField fx:id="tfSearch"
                            promptText="Rechercher (description, adresse)..."
                            styleClass="field"
                            HBox.hgrow="ALWAYS"/>
-
-                <ComboBox fx:id="cbTypeFilter" promptText="Type" prefWidth="180"/>
-
-                <TextField fx:id="tfMinPrix" promptText="Prix min" styleClass="field" prefWidth="110"/>
-                <TextField fx:id="tfMaxPrix" promptText="Prix max" styleClass="field" prefWidth="110"/>
-
-                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="btnOutline"/>
-
+                <ComboBox fx:id="cbTypeFilter"
+                          promptText="Type"
+                          prefWidth="180"/>
+                <TextField fx:id="tfMinPrix"
+                           promptText="Prix min"
+                           styleClass="field"
+                           prefWidth="110"/>
+                <TextField fx:id="tfMaxPrix"
+                           promptText="Prix max"
+                           styleClass="field"
+                           prefWidth="110"/>
+                <Button text="Réinitialiser"
+                        onAction="#resetFilters"
+                        styleClass="btnOutline"/>
                 <Region HBox.hgrow="ALWAYS"/>
-
-                <Button text="Export Excel" onAction="#exportHebExcel" styleClass="btnGold"/>
-                <Button text="Export PDF" onAction="#exportHebPdf" styleClass="btnOutline"/>
+                <Button text="Export Excel"
+                        onAction="#exportHebExcel"
+                        styleClass="btnGold"/>
+                <Button text="Export PDF"
+                        onAction="#exportHebPdf"
+                        styleClass="btnOutline"/>
             </HBox>
 
             <TableView fx:id="tableHeb" VBox.vgrow="ALWAYS">
                 <columns>
-                    <TableColumn fx:id="imgCol" text="Image" prefWidth="90"/>
-                    <TableColumn fx:id="descCol" text="Description" prefWidth="240"/>
-                    <TableColumn fx:id="adrCol" text="Adresse" prefWidth="190"/>
-                    <TableColumn fx:id="prixCol" text="Prix" prefWidth="110"/>
-                    <TableColumn fx:id="actionsCol" text="Actions" prefWidth="180"/>
+                    <TableColumn fx:id="imgCol"
+                                 text="Image"
+                                 prefWidth="90"/>
+                    <TableColumn fx:id="descCol"
+                                 text="Description"
+                                 prefWidth="240"/>
+                    <TableColumn fx:id="adrCol"
+                                 text="Adresse"
+                                 prefWidth="190"/>
+                    <TableColumn fx:id="prixCol"
+                                 text="Prix"
+                                 prefWidth="110"/>
+                    <TableColumn fx:id="actionsCol"
+                                 text="Actions"
+                                 prefWidth="180"/>
                 </columns>
             </TableView>
 
             <Label fx:id="lblHebInfo" styleClass="muted"/>
         </VBox>
 
-        <!-- Disponibilités -->
-        <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
-            <Label text="Disponibilités (hébergement sélectionné)" styleClass="title"/>
+        <!-- Disponibilités + Localisation -->
+        <VBox spacing="14" VBox.vgrow="ALWAYS">
 
-            <TableView fx:id="tableDispo" VBox.vgrow="ALWAYS">
-                <columns>
-                    <TableColumn fx:id="dispoIdCol" text="ID" prefWidth="70"/>
-                    <TableColumn fx:id="debutCol" text="Début" prefWidth="120"/>
-                    <TableColumn fx:id="finCol" text="Fin" prefWidth="120"/>
-                    <TableColumn fx:id="disponibleCol" text="Disponible" prefWidth="110"/>
-                    <TableColumn fx:id="dispoActionsCol" text="Actions" prefWidth="180"/>
-                </columns>
-            </TableView>
+            <!-- Disponibilités -->
+            <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
+                <Label text="Disponibilités" styleClass="title"/>
 
-            <Label fx:id="lblDispoInfo" styleClass="muted"/>
+                <TableView fx:id="tableDispo" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="dispoIdCol"
+                                     text="ID"
+                                     prefWidth="70"/>
+                        <TableColumn fx:id="debutCol"
+                                     text="Début"
+                                     prefWidth="120"/>
+                        <TableColumn fx:id="finCol"
+                                     text="Fin"
+                                     prefWidth="120"/>
+                        <TableColumn fx:id="disponibleCol"
+                                     text="Disponible"
+                                     prefWidth="110"/>
+                        <TableColumn fx:id="dispoActionsCol"
+                                     text="Actions"
+                                     prefWidth="180"/>
+                    </columns>
+                </TableView>
+
+                <Label fx:id="lblDispoInfo" styleClass="muted"/>
+            </VBox>
+
+            <!-- Localisation -->
+            <VBox spacing="10" styleClass="card">
+                <Label text="Localisation" styleClass="title"/>
+                <Label fx:id="lblMapInfo"
+                       styleClass="muted"
+                       text="Sélectionne un hébergement pour voir sa position."/>
+                <StackPane prefHeight="300" minHeight="300">
+                    <WebView fx:id="mapViewHeb"
+                             prefHeight="300"
+                             minHeight="300"/>
+                </StackPane>
+            </VBox>
+
         </VBox>
 
     </SplitPane>

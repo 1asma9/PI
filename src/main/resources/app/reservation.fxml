@@ -2,48 +2,85 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
 
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="hebergement.controllers.ReservationController"
-      spacing="14">
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.ReservationController"
+            fitToWidth="true"
+            hbarPolicy="NEVER">
 
-    <Label text="Réserver un Hébergement" styleClass="h1"/>
+    <content>
+        <VBox spacing="14" styleClass="content">
 
-    <HBox spacing="14">
+            <Label text="Réserver un Hébergement" styleClass="h1"/>
 
-        <!-- Card Form Reservation -->
-        <VBox styleClass="card" spacing="10" prefWidth="520">
-            <Label text="Informations Réservation" styleClass="title"/>
+            <HBox spacing="14">
 
-            <ComboBox fx:id="cbHebergement" promptText="Choisir Hébergement" styleClass="field"/>
+                <!-- Formulaire Réservation -->
+                <VBox styleClass="card" spacing="10" prefWidth="520">
+                    <Label text="Informations Réservation" styleClass="title"/>
 
-            <TextField fx:id="tfNom" promptText="Nom du client" styleClass="field"/>
-            <TextField fx:id="tfTel" promptText="Téléphone" styleClass="field"/>
-            <TextField fx:id="tfEmail" promptText="Email" styleClass="field"/>
+                    <ComboBox fx:id="cbHebergement"
+                              promptText="Choisir Hébergement"
+                              styleClass="field"/>
+                    <TextField fx:id="tfNom"
+                               promptText="Nom du client"
+                               styleClass="field"/>
+                    <TextField fx:id="tfTel"
+                               promptText="Téléphone"
+                               styleClass="field"/>
+                    <TextField fx:id="tfEmail"
+                               promptText="Email"
+                               styleClass="field"/>
+                    <DatePicker fx:id="dpDebut" styleClass="field"/>
+                    <DatePicker fx:id="dpFin" styleClass="field"/>
 
-            <DatePicker fx:id="dpDebut" styleClass="field"/>
-            <DatePicker fx:id="dpFin" styleClass="field"/>
+                    <Label fx:id="lblTotal"
+                           text="Total: 0.0 DT"
+                           styleClass="pill"/>
+                    <Button text="Confirmer Réservation"
+                            onAction="#addReservation"
+                            styleClass="btnGold"/>
+                    <Label fx:id="lblMsg" styleClass="muted"/>
+                </VBox>
 
-            <Label fx:id="lblTotal" text="Total: 0.0 DT" styleClass="pill"/>
+                <!-- Infos + Carte -->
+                <VBox spacing="14" prefWidth="520">
 
-            <Button text="✅ Confirmer Réservation" onAction="#addReservation" styleClass="primary"/>
-            <Label fx:id="lblMsg" styleClass="muted"/>
+                    <!-- Règles -->
+                    <VBox styleClass="card" spacing="10">
+                        <Label text="Règles" styleClass="title"/>
+                        <Label text="• La réservation doit être dans une période disponible."
+                               styleClass="muted"/>
+                        <Label text="• Impossible si conflit avec une autre réservation."
+                               styleClass="muted"/>
+                        <Label text="• Total = nb nuits × prix par nuit."
+                               styleClass="muted"/>
+                        <Separator/>
+                        <Label text="Astuce" styleClass="title"/>
+                        <Label text="Choisis d'abord l'hébergement, puis les dates."
+                               styleClass="muted"/>
+                    </VBox>
+
+                    <!-- Localisation -->
+                    <VBox styleClass="card" spacing="10">
+                        <Label text="Localisation" styleClass="title"/>
+                        <Label fx:id="lblMapInfoRes"
+                               text="Sélectionne un hébergement pour voir sa position."
+                               styleClass="muted"/>
+                        <StackPane prefHeight="300" minHeight="300">
+                            <WebView fx:id="mapViewRes"
+                                     prefHeight="300"
+                                     minHeight="300"/>
+                        </StackPane>
+                    </VBox>
+
+                </VBox>
+
+            </HBox>
+
         </VBox>
+    </content>
 
-        <!-- Card Infos -->
-        <VBox styleClass="card" spacing="10" prefWidth="520">
-            <Label text="Règles" styleClass="title"/>
-
-            <Label text="• La réservation doit être dans une période disponible." styleClass="muted"/>
-            <Label text="• Impossible si conflit avec une autre réservation." styleClass="muted"/>
-            <Label text="• Total = nb nuits × prix par nuit." styleClass="muted"/>
-
-            <Separator/>
-
-            <Label text="Astuce" styleClass="title"/>
-            <Label text="Choisis d’abord l’hébergement, puis les dates pour calculer le total." styleClass="muted"/>
-        </VBox>
-
-    </HBox>
-</VBox>
+</ScrollPane>

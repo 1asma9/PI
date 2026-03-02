@@ -1,6 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.web.WebView?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.AddHebergementController"
+            fitToWidth="true"
+            hbarPolicy="NEVER">
+
+    <content>
+
+        <VBox spacing="14" styleClass="content">
+
+            <Label text="Ajouter un Hébergement" styleClass="h1"/>
+
+            <HBox spacing="14">
+
+                <!-- Form Hébergement -->
+                <VBox styleClass="card" spacing="10" prefWidth="520">
+                    <Label text="Informations" styleClass="title"/>
+
+                    <TextField fx:id="tfDesc" promptText="Description" styleClass="field"/>
+                    <TextField fx:id="tfAdresse" promptText="Adresse" styleClass="field"/>
+                    <TextField fx:id="tfPrix" promptText="Prix (ex: 250.0)" styleClass="field"/>
+
+                    <ComboBox fx:id="cbType" promptText="Type"/>
+
+                    <!-- ✅ Position -->
+                    <Label text="Position (Carte)" styleClass="muted"/>
+                    <HBox spacing="10">
+                        <TextField fx:id="tfLat" promptText="Latitude (ex: 36.8065)" styleClass="field" prefWidth="250"/>
+                        <TextField fx:id="tfLng" promptText="Longitude (ex: 10.1815)" styleClass="field" prefWidth="250"/>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <Button text="📍 Localiser via adresse" onAction="#localiserAdresse" styleClass="nav-btn"/>
+                        <Button text="🗺️ Voir sur carte" onAction="#showOnMap" styleClass="nav-btn"/>
+                    </HBox>
+
+                    <!-- ✅ Image -->
+                    <Button text="📷 Choisir Image" onAction="#chooseImage" styleClass="nav-btn"/>
+                    <Label fx:id="lblImage" text="Aucune image choisie" styleClass="muted"/>
+
+                    <Button text="Enregistrer Hébergement" onAction="#addHebergement" styleClass="primary"/>
+                    <Label fx:id="lblHebMsg" styleClass="muted"/>
+
+                    <!-- ✅ Map -->
+                    <Label text="Aperçu Carte" styleClass="muted"/>
+                    <WebView fx:id="mapView" prefHeight="260" prefWidth="500"/>
+                </VBox>
+
+                <!-- Form Disponibilité -->
+                <VBox styleClass="card" spacing="10" prefWidth="520">
+                    <Label text="Ajouter une Disponibilité" styleClass="title"/>
+                    <Label text="Sélectionne un hébergement après l’avoir ajouté." styleClass="muted"/>
+
+                    <ComboBox fx:id="cbHebergement" promptText="Choisir Hébergement"/>
+                    <DatePicker fx:id="dpDebut"/>
+                    <DatePicker fx:id="dpFin"/>
+                    <CheckBox fx:id="chkDisponible" text="Disponible" selected="true"/>
+
+                    <Button text="Ajouter Disponibilité" onAction="#addDisponibilite" styleClass="primary"/>
+                    <Label fx:id="lblDispoMsg" styleClass="muted"/>
+                </VBox>
+
+            </HBox>
+
+        </VBox>
+
+    </content>
+</ScrollPane>
+
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="hebergement.controllers.AddHebergementController"

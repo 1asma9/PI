@@ -1,59 +1,78 @@
+/* ========================================
+   THÈME UNIFIÉ - PARCHMENT & PREMIUM
+   Fusion app.css + styles.css
+   ======================================== */
+
 /* =========================
-   ===== BASE / LAYOUT =====
+   ===== BASE / ROOT =======
    ========================= */
+
+.root {
+    -fx-font-family: 'Segoe UI', 'Arial', sans-serif;
+    -fx-background-color: #E5E0D8;
+    -fx-font-size: 14px;
+}
 
 .page {
     -fx-font-family: "Segoe UI";
-    -fx-background-color: #f6f1e7;
+    -fx-background-color: #E5E0D8;
 }
 
 .pageContent {
-    -fx-background-color: #f6f1e7;
+    -fx-background-color: #E5E0D8;
     -fx-padding: 20 20 30 20;
 }
 
-.topBar {
+.content {
+    -fx-padding: 18;
+    -fx-background-color: #E5E0D8;
+}
+
+.main-container {
+    -fx-background-color: transparent;
+    -fx-padding: 24px;
+}
+
+/* =========================
+   ===== TOP BAR / HEADER ==
+   ========================= */
+
+.topBar, .header {
     -fx-padding: 18 22 14 22;
-    -fx-background-color: #f6f1e7;
+    -fx-background-color: #D4C5B9;
+    -fx-background-radius: 8px;
     -fx-border-color: rgba(15,42,42,0.10);
     -fx-border-width: 0 0 1 0;
 }
 
-.pageTitle {
+/* =========================
+   ===== TITRES ============
+   ========================= */
+
+.pageTitle, .h1 {
     -fx-font-size: 26px;
     -fx-font-weight: 900;
     -fx-text-fill: #0f2a2a;
 }
 
-.pageSubtitle {
-    -fx-font-size: 14px;
+.title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-text-alignment: center;
+}
+
+.subtitle {
+    -fx-font-size: 18px;
+    -fx-font-weight: 500;
+    -fx-text-fill: #34495E;
+    -fx-text-alignment: center;
+}
+
+.pageSubtitle, .muted {
+    -fx-font-size: 13px;
     -fx-text-fill: #6a7a73;
     -fx-padding: 6 0 0 0;
-}
-
-/* =========================
-   ===== SCROLL (optional) ==
-   ========================= */
-
-.scroll {
-    -fx-background-color: transparent;
-    -fx-background: transparent;
-}
-.scroll > .viewport {
-    -fx-background-color: transparent;
-}
-
-/* =========================
-   ========= CARD ==========
-   ========================= */
-
-.card {
-    -fx-background-color: white;
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
-    -fx-border-color: rgba(201,162,74,0.22);
-    -fx-padding: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0, 0, 6);
 }
 
 .cardTitle {
@@ -67,58 +86,124 @@
     -fx-text-fill: #6a7a73;
 }
 
+.bigNumber {
+    -fx-text-fill: #0f2a2a;
+    -fx-font-size: 34px;
+    -fx-font-weight: 900;
+}
+
+.form-label {
+    -fx-text-fill: #2C3E50;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+.error-label {
+    -fx-text-fill: #E74C3C;
+    -fx-font-size: 14px;
+    -fx-font-weight: 500;
+}
+
+/* =========================
+   ===== SCROLL ============
+   ========================= */
+
+.scroll, .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll > .viewport,
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* =========================
+   ===== CARD ==============
+   ========================= */
+
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: rgba(196,154,40,0.22);
+    -fx-padding: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0, 0, 6);
+}
+
 .hr {
     -fx-background-color: #e7e1d8;
 }
 
 /* =========================
-   ===== BADGE / PILL ======
+   ===== INPUTS ============
    ========================= */
 
-.badge {
-    -fx-background-color: #e8fff0;
-    -fx-text-fill: #1c7a44;
-    -fx-padding: 6 14;
-    -fx-background-radius: 999;
-    -fx-font-weight: 800;
-    -fx-border-color: #b9efcf;
-    -fx-border-radius: 999;
-}
-
-/* =========================
-   ========= INPUTS ========
-   ========================= */
-
-.input, .inputSmall, .inputArea,
-.text-field, .combo-box, .date-picker, .text-area {
-    -fx-background-color: #fbf7f1;
-    -fx-background-radius: 12;
-    -fx-border-radius: 12;
-    -fx-border-color: #d9cdbf;
-    -fx-padding: 10 12;
+.input, .inputSmall, .inputArea, .field,
+.text-field, .password-field, .combo-box, .date-picker, .text-area {
+    -fx-background-color: white;
+    -fx-border-color: #D4C5B9;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-pref-height: 40px;
     -fx-font-size: 14px;
+    -fx-text-fill: #2C3E50;
+    -fx-padding: 8px 12px;
 }
 
-.text-field:focused, .text-area:focused, .combo-box:focused, .date-picker:focused {
-    -fx-border-color: #c9a24a;
-    -fx-effect: dropshadow(gaussian, rgba(201,162,74,0.28), 10, 0, 0, 0);
+.text-field:hover, .password-field:hover, .combo-box:hover {
+    -fx-border-color: #C49A28;
+    -fx-border-width: 1px;
+}
+
+.text-field:focused, .password-field:focused,
+.text-area:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #C49A28;
+    -fx-border-width: 2px;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(196,154,40,0.28), 10, 0, 0, 0);
 }
 
 /* =========================
-   ===== BUTTONS PREMIUM ===
+   ===== BOUTONS ===========
    ========================= */
 
-.btnGold {
-    -fx-background-color: #c9a24a;
+.button {
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+    -fx-pref-height: 40px;
+    -fx-padding: 0 20px;
+}
+
+.button:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.button:pressed {
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Gold / Primary */
+.btnGold, .primary, .button.primary {
+    -fx-background-color: #C49A28;
     -fx-text-fill: white;
     -fx-font-weight: 900;
     -fx-font-size: 14px;
     -fx-background-radius: 30;
     -fx-padding: 12 18;
     -fx-cursor: hand;
+    -fx-border-color: transparent;
 }
-.btnGold:hover { -fx-background-color: #b8933f; }
+.btnGold:hover, .primary:hover, .button.primary:hover {
+    -fx-background-color: #B38720;
+    -fx-effect: dropshadow(gaussian, rgba(196,154,40,0.30), 6, 0, 0, 2);
+}
 
+/* Dark Green */
 .btnGreen {
     -fx-background-color: #0f2a2a;
     -fx-text-fill: white;
@@ -130,6 +215,7 @@
 }
 .btnGreen:hover { -fx-background-color: #163a3a; }
 
+/* Outline */
 .btnOutline {
     -fx-background-color: transparent;
     -fx-text-fill: #0f2a2a;
@@ -147,7 +233,59 @@
     -fx-border-color: #0f2a2a;
 }
 
-/* Small icon buttons for actions columns */
+/* Secondary */
+.button.secondary {
+    -fx-background-color: #C49A28;
+    -fx-text-fill: white;
+    -fx-border-color: #D4C5B9;
+    -fx-border-width: 2px;
+}
+.button.secondary:hover {
+    -fx-background-color: #B38720;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+
+/* Cancel / Back */
+.button.cancel, .button.back {
+    -fx-background-color: #C49A28;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+.button.cancel:hover, .button.back:hover {
+    -fx-background-color: #B38720;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+/* Danger */
+.danger, .button.danger {
+    -fx-background-color: transparent;
+    -fx-border-color: #d9534f;
+    -fx-text-fill: #d9534f;
+    -fx-font-weight: 900;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-border-width: 2;
+    -fx-padding: 10 16;
+    -fx-cursor: hand;
+}
+.danger:hover, .button.danger:hover {
+    -fx-background-color: #d9534f;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(231,76,60,0.3), 6, 0, 0, 2);
+}
+
+/* Success */
+.button.success {
+    -fx-background-color: #27AE60;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+.button.success:hover {
+    -fx-background-color: #229954;
+    -fx-effect: dropshadow(gaussian, rgba(39,174,96,0.3), 6, 0, 0, 2);
+}
+
+/* Icon Buttons */
 .iconBtn {
     -fx-font-size: 14px;
     -fx-font-weight: 900;
@@ -161,21 +299,18 @@
     -fx-cursor: hand;
 }
 
-/* ✏ Edit */
 .btnEdit {
-    -fx-background-color: #c9a24a;
+    -fx-background-color: #C49A28;
     -fx-text-fill: white;
 }
-.btnEdit:hover { -fx-background-color: #b8933f; }
+.btnEdit:hover { -fx-background-color: #B38720; }
 
-/* ✅ Confirm / Add */
 .btnAdd {
     -fx-background-color: #0f2a2a;
     -fx-text-fill: white;
 }
 .btnAdd:hover { -fx-background-color: #163a3a; }
 
-/* 🗑 Delete outline */
 .btnDelete {
     -fx-background-color: transparent;
     -fx-border-color: #d9534f;
@@ -189,25 +324,25 @@
 }
 
 /* =========================
-   ===== SIDEBAR BEIGE =====
+   ===== SIDEBAR ===========
    ========================= */
 
-.sideBarBeige {
+.sideBarBeige, .sidebar {
     -fx-padding: 18;
     -fx-pref-width: 220;
-    -fx-background-color: #f6f1e7;
+    -fx-background-color: #D4C5B9;
     -fx-border-color: rgba(15,42,42,0.12);
     -fx-border-width: 0 1 0 0;
 }
 
-.sideBrand {
+.sideBrand, .brand {
     -fx-font-size: 20px;
     -fx-font-weight: 900;
     -fx-text-fill: #0f2a2a;
     -fx-padding: 6 0 10 0;
 }
 
-.sideBtn {
+.sideBtn, .nav-btn {
     -fx-background-color: transparent;
     -fx-text-fill: #0f2a2a;
     -fx-font-weight: 800;
@@ -215,73 +350,79 @@
     -fx-background-radius: 12;
     -fx-cursor: hand;
 }
-.sideBtn:hover {
-    -fx-background-color: rgba(201,162,74,0.14);
+.sideBtn:hover, .nav-btn:hover {
+    -fx-background-color: rgba(196,154,40,0.18);
 }
 
 /* =========================
-   ===== TABLE PREMIUM =====
+   ===== TABLE =============
    ========================= */
 
 .table-view {
     -fx-background-color: white;
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
-    -fx-border-color: rgba(201,162,74,0.28);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #D4C5B9;
     -fx-padding: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 18, 0, 0, 6);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 8, 0, 0, 2);
 }
 
 .table-view .filler { -fx-background-color: transparent; }
 
 .table-view .column-header-background {
-    -fx-background-color: #f3ece2;
-    -fx-background-radius: 20 20 0 0;
+    -fx-background-color: #F5F0E8;
+    -fx-background-radius: 8 8 0 0;
     -fx-padding: 8;
 }
 
 .table-view .column-header {
-    -fx-background-color: transparent;
-    -fx-border-color: rgba(15,42,42,0.08);
-    -fx-border-width: 0 1 1 0;
+    -fx-background-color: #F5F0E8;
+    -fx-text-fill: #2C3E50;
+    -fx-font-weight: 600;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent transparent #D4C5B9 transparent;
+    -fx-border-width: 0 0 1px 0;
 }
+
 .table-view .column-header .label {
-    -fx-text-fill: #0f2a2a;
+    -fx-text-fill: #2C3E50;
     -fx-font-weight: 900;
     -fx-font-size: 13px;
+    -fx-alignment: center;
 }
 
 .table-row-cell {
     -fx-background-color: white;
-    -fx-border-color: rgba(0,0,0,0.03);
+    -fx-border-color: #F0E8DC;
     -fx-border-width: 0 0 1 0;
 }
 .table-row-cell:odd {
-    -fx-background-color: #faf6ef;
+    -fx-background-color: #FAF6EF;
 }
 .table-row-cell:hover {
-    -fx-background-color: rgba(201,162,74,0.13);
-    -fx-effect: dropshadow(gaussian, rgba(201,162,74,0.18), 14, 0, 0, 2);
+    -fx-background-color: rgba(196,154,40,0.10);
 }
 .table-row-cell:selected {
-    -fx-background-color: #c9a24a;
-    -fx-effect: dropshadow(gaussian, rgba(201,162,74,0.35), 16, 0, 0, 4);
+    -fx-background-color: rgba(196,154,40,0.20);
+    -fx-text-fill: #2C3E50;
 }
-.table-row-cell:selected .text { -fx-fill: white; }
+.table-row-cell:selected .text { -fx-fill: #2C3E50; }
 
 .table-cell {
-    -fx-padding: 10 12;
+    -fx-padding: 8px;
     -fx-font-size: 13px;
-    -fx-text-fill: #0f2a2a;
+    -fx-text-fill: #2C3E50;
+    -fx-border-color: transparent transparent #F0E8DC transparent;
+    -fx-border-width: 0 0 1px 0;
 }
 
-/* Scrollbar */
+/* Scrollbar tableau */
 .table-view .scroll-bar:vertical,
 .table-view .scroll-bar:horizontal {
     -fx-background-color: transparent;
 }
 .table-view .thumb {
-    -fx-background-color: rgba(201,162,74,0.65);
+    -fx-background-color: rgba(196,154,40,0.65);
     -fx-background-radius: 10;
 }
 .table-view .increment-button,
@@ -297,7 +438,7 @@
 .tableImgWrap {
     -fx-background-radius: 12;
     -fx-border-radius: 12;
-    -fx-border-color: rgba(201,162,74,0.30);
+    -fx-border-color: rgba(196,154,40,0.30);
     -fx-background-color: #fbf7f1;
     -fx-padding: 4;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 10, 0, 0, 3);
@@ -310,6 +451,16 @@
 /* =========================
    ===== STATUS BADGES =====
    ========================= */
+
+.badge, .pill {
+    -fx-background-color: #e8fff0;
+    -fx-text-fill: #1c7a44;
+    -fx-padding: 6 14;
+    -fx-background-radius: 999;
+    -fx-font-weight: 800;
+    -fx-border-color: #b9efcf;
+    -fx-border-radius: 999;
+}
 
 .statusBadge {
     -fx-padding: 4 12;
@@ -338,113 +489,21 @@
 }
 
 /* =========================
-   ===== ALIAS (pour tes FXML actuels) =====
-   root/sidebar/nav-btn/header/content/h1/title/muted/primary/pill/field/danger/bigNumber
+   ===== RESERVATION CARDS =
    ========================= */
 
-.root { -fx-font-family: "Segoe UI"; -fx-background-color: #f6f1e7; }
-.content { -fx-padding: 18; -fx-background-color: #f6f1e7; }
-
-.header {
-    -fx-padding: 18 22 14 22;
-    -fx-background-color: #f6f1e7;
-    -fx-border-color: rgba(15,42,42,0.10);
-    -fx-border-width: 0 0 1 0;
-}
-
-.h1 { -fx-font-size: 26px; -fx-font-weight: 900; -fx-text-fill: #0f2a2a; }
-.title { -fx-font-size: 18px; -fx-font-weight: 900; -fx-text-fill: #0f2a2a; }
-.muted { -fx-font-size: 13px; -fx-text-fill: #6a7a73; }
-
-.pill {
-    -fx-background-color: #e8fff0;
-    -fx-text-fill: #1c7a44;
-    -fx-padding: 6 14;
-    -fx-background-radius: 999;
-    -fx-font-weight: 800;
-    -fx-border-color: #b9efcf;
-    -fx-border-radius: 999;
-}
-
-.field {
-    -fx-background-color: #fbf7f1;
-    -fx-background-radius: 12;
-    -fx-border-radius: 12;
-    -fx-border-color: #d9cdbf;
-    -fx-padding: 10 12;
-    -fx-font-size: 14px;
-}
-
-.primary {
-    -fx-background-color: #c9a24a;
-    -fx-text-fill: white;
-    -fx-font-weight: 900;
-    -fx-font-size: 14px;
-    -fx-background-radius: 30;
-    -fx-padding: 12 18;
-    -fx-cursor: hand;
-}
-.primary:hover { -fx-background-color: #b8933f; }
-
-.danger {
-    -fx-background-color: transparent;
-    -fx-border-color: #d9534f;
-    -fx-text-fill: #d9534f;
-    -fx-font-weight: 900;
-    -fx-background-radius: 30;
-    -fx-border-radius: 30;
-    -fx-border-width: 2;
-    -fx-padding: 10 16;
-    -fx-cursor: hand;
-}
-.danger:hover {
-    -fx-background-color: #d9534f;
-    -fx-text-fill: white;
-}
-
-.bigNumber { -fx-text-fill: #0f2a2a; -fx-font-size: 34px; -fx-font-weight: 900; }
-
-/* Sidebar beige en gardant tes noms actuels */
-.sidebar {
-    -fx-padding: 18;
-    -fx-pref-width: 220;
-    -fx-background-color: #f6f1e7;
-    -fx-border-color: rgba(15,42,42,0.12);
-    -fx-border-width: 0 1 0 0;
-}
-
-.brand {
-    -fx-font-size: 20px;
-    -fx-font-weight: 900;
-    -fx-text-fill: #0f2a2a;
-    -fx-padding: 6 0 10 0;
-}
-
-.nav-btn {
-    -fx-background-color: transparent;
-    -fx-text-fill: #0f2a2a;
-    -fx-font-weight: 800;
-    -fx-padding: 10 12;
-    -fx-background-radius: 12;
-    -fx-cursor: hand;
-}
-.nav-btn:hover { -fx-background-color: rgba(201,162,74,0.14); }
-
-
-/* Container cards */
 .cardsWrap {
     -fx-padding: 5;
     -fx-hgap: 18;
     -fx-vgap: 18;
 }
 
-/* Card */
 .resCard {
     -fx-background-color: white;
     -fx-background-radius: 20;
     -fx-padding: 18;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 3);
-    -fx-border-color: #eadfc7;
+    -fx-border-color: #D4C5B9;
     -fx-border-radius: 20;
     -fx-min-width: 280;
     -fx-max-width: 280;
@@ -465,10 +524,14 @@
 .resMeta {
     -fx-font-size: 13px;
     -fx-text-fill: #5d6e66;
-    -fx-background-color: #f8f4ec;
+    -fx-background-color: #F5F0E8;
     -fx-background-radius: 20;
     -fx-padding: 8 12;
 }
+
+/* =========================
+   ===== IMAGE CARD ========
+   ========================= */
 
 .imgCardRoot {
     -fx-cursor: hand;
@@ -478,7 +541,6 @@
     -fx-background-radius: 18;
     -fx-border-radius: 18;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 18, 0, 0, 6);
-    -fx-overflow: hidden;
 }
 
 .imgCardRoot:hover {
@@ -506,33 +568,169 @@
     -fx-font-weight: 900;
 }
 
+/* =========================
+   ===== WEB VIEW ==========
+   ========================= */
 
-.imgCardRoot { -fx-cursor: hand; }
-
-.imgCard {
-    -fx-background-radius: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 18, 0, 0, 6);
+.web-view {
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: rgba(196,154,40,0.30);
+    -fx-background-color: #fbf7f1;
 }
 
-.imgCardRoot:hover { -fx-scale-x: 1.02; -fx-scale-y: 1.02; }
+/* =========================
+   ===== CHAT UI ===========
+   ========================= */
 
-.imgOverlay {
-    -fx-padding: 18;
-    -fx-alignment: bottom-left;
-    -fx-pref-height: 360;
-    -fx-pref-width: 260;
-    -fx-background-color: linear-gradient(to top, rgba(0,0,0,0.72), rgba(0,0,0,0.05));
+.chatList {
+    -fx-background-color: transparent;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: rgba(196,154,40,0.25);
+    -fx-padding: 8;
 }
 
-.imgSmall {
-    -fx-text-fill: rgba(255,255,255,0.85);
-    -fx-font-size: 14px;
+.chatList .viewport {
+    -fx-background-color: transparent;
+}
+
+.chatList .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 6 8;
+}
+
+.chatBubble {
+    -fx-background-radius: 16;
+    -fx-padding: 10 12;
+    -fx-font-size: 13px;
     -fx-font-weight: 700;
+    -fx-wrap-text: true;
 }
 
-.imgBig {
+.userBubble {
+    -fx-background-color: rgba(196,154,40,0.18);
+    -fx-border-color: rgba(196,154,40,0.35);
+    -fx-border-radius: 16;
+    -fx-text-fill: #0f2a2a;
+}
+
+.botBubble {
+    -fx-background-color: #fbf7f1;
+    -fx-border-color: rgba(15,42,42,0.12);
+    -fx-border-radius: 16;
+    -fx-text-fill: #0f2a2a;
+}
+
+/* =========================
+   ===== LAYOUT UTILS ======
+   ========================= */
+
+.vbox-spacing {
+    -fx-spacing: 20px;
+}
+
+.action-buttons {
+    -fx-spacing: 16px;
+    -fx-alignment: center;
+}
+
+.grid-pane {
+    -fx-hgap: 20px;
+    -fx-vgap: 20px;
+    -fx-alignment: center;
+}
+
+/* ===== LOGIN PAGE ONLY ===== */
+
+.root {
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #f5f6fa;
+}
+
+/* Header */
+.header {
+    -fx-background-color: transparent;
+    -fx-padding: 30 0 10 0;
+}
+
+.title {
+    -fx-font-size: 30px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #111827;
+}
+
+/* Center container card */
+.main-container {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-padding: 35;
+    -fx-max-width: 420;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 18, 0, 0, 5);
+}
+
+/* Labels */
+.form-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #374151;
+}
+
+/* Inputs */
+.text-field, .password-field {
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10 14;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: #3b82f6;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.25), 10, 0, 0, 0);
+}
+
+/* Error */
+.error-label {
+    -fx-text-fill: #ef4444;
+    -fx-font-weight: 600;
+}
+
+/* Buttons */
+.button {
+    -fx-background-radius: 12;
+    -fx-font-weight: 700;
+    -fx-cursor: hand;
+    -fx-pref-height: 44;
+}
+
+.button.primary {
+    -fx-background-color: #3b82f6;
     -fx-text-fill: white;
-    -fx-font-size: 26px;
-    -fx-font-weight: 900;
 }
 
+.button.primary:hover {
+    -fx-background-color: #2563eb;
+}
+
+.button.secondary {
+    -fx-background-color: #e5e7eb;
+    -fx-text-fill: #111827;
+}
+
+.button.secondary:hover {
+    -fx-background-color: #d1d5db;
+}
+
+.button.cancel {
+    -fx-background-color: #111827;
+    -fx-text-fill: white;
+}
+
+.button.cancel:hover {
+    -fx-background-color: #000000;
+}
