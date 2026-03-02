@@ -193,35 +193,23 @@ public class UserAvisController implements Initializable {
 
     @FXML
     void ajouterAvis() {
-        if (UserLayoutController.getInstance() != null) {
-            UserLayoutController.getInstance().chargerPageExterne("/user_ajouter_avis.fxml");
-        } else {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/user_ajouter_avis.fxml"));
-                tableAvis.getScene().setRoot(root);
-            } catch (IOException e) {
-                AlertHelper.showError("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
-            }
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/user_ajouter_avis.fxml"));
+            tableAvis.getScene().setRoot(root);
+        } catch (IOException e) {
+            AlertHelper.showError("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
         }
     }
 
     private void modifierAvisSpecific(Avis av) {
-        if (UserLayoutController.getInstance() != null) {
-            UserLayoutController.getInstance().chargerPageWithData("/user_modifier_avis.fxml", controller -> {
-                if (controller instanceof ModifierAvisController) {
-                    ((ModifierAvisController) controller).setAvis(av);
-                }
-            });
-        } else {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/user_modifier_avis.fxml"));
-                Parent root = loader.load();
-                ModifierAvisController controller = loader.getController();
-                controller.setAvis(av);
-                tableAvis.getScene().setRoot(root);
-            } catch (IOException e) {
-                AlertHelper.showError("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
-            }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user_modifier_avis.fxml"));
+            Parent root = loader.load();
+            ModifierAvisController controller = loader.getController();
+            controller.setAvis(av);
+            tableAvis.getScene().setRoot(root);
+        } catch (IOException e) {
+            AlertHelper.showError("Erreur", "Impossible d'ouvrir le formulaire : " + e.getMessage());
         }
     }
 
@@ -239,29 +227,21 @@ public class UserAvisController implements Initializable {
 
     @FXML
     void retourMenu(ActionEvent event) {
-        if (UserLayoutController.getInstance() != null) {
-            UserLayoutController.getInstance().afficherDashboard();
-        } else {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/voyage/dashboard.fxml"));
-                tableAvis.getScene().setRoot(root);
-            } catch (IOException e) {
-                AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
-            }
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/voyage/dashboard.fxml"));
+            tableAvis.getScene().setRoot(root);
+        } catch (IOException e) {
+            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
         }
     }
 
     @FXML
     void switchToReclamations() {
-        if (UserLayoutController.getInstance() != null) {
-            UserLayoutController.getInstance().afficherMesReclamations();
-        } else {
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/user_reclamations.fxml"));
-                tableAvis.getScene().setRoot(root);
-            } catch (IOException e) {
-                AlertHelper.showError("Erreur", "Could not switch: " + e.getMessage());
-            }
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/reclamations/mes_reclamations.fxml"));
+            tableAvis.getScene().setRoot(root);
+        } catch (IOException e) {
+            AlertHelper.showError("Erreur", "Could not switch: " + e.getMessage());
         }
     }
 

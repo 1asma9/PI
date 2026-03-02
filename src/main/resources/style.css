@@ -3,19 +3,23 @@
    ========================= */
 
 .page {
-    -fx-font-family: "Segoe UI";
-    -fx-background-color: #f6f1e7;
+    -fx-font-family: "Segoe UI", "Tahoma", sans-serif;
+    -fx-background-color: #e6ddd0;
+    /* Sidebar area background */
 }
 
 .pageContent {
-    -fx-background-color: #f6f1e7;
-    -fx-padding: 20 20 30 20;
+    -fx-background-color: #f5efea;
+    /* Main content area background */
+    -fx-padding: 25;
+    -fx-background-radius: 30 0 0 0;
+    /* Rounded corner where main content meets sidebar top */
 }
 
 .topBar {
-    -fx-padding: 18 22 14 22;
-    -fx-background-color: #f6f1e7;
-    -fx-border-color: rgba(15, 42, 42, 0.10);
+    -fx-padding: 20 25;
+    -fx-background-color: #f5efea;
+    -fx-border-color: rgba(15, 42, 42, 0.05);
     -fx-border-width: 0 0 1 0;
 }
 
@@ -59,22 +63,22 @@
 
 .card {
     -fx-background-color: white;
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
-    -fx-border-color: rgba(201, 162, 74, 0.22);
-    -fx-padding: 18;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 18, 0, 0, 6);
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-border-color: rgba(201, 162, 74, 0.1);
+    -fx-padding: 30;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 15, 0, 0, 4);
 }
 
 .cardTitle {
-    -fx-font-size: 18px;
+    -fx-font-size: 20px;
     -fx-font-weight: 900;
     -fx-text-fill: #0f2a2a;
 }
 
 .metaText {
     -fx-font-size: 13px;
-    -fx-text-fill: #6a7a73;
+    -fx-text-fill: #8a7a6f;
 }
 
 .hr {
@@ -129,10 +133,11 @@
 .btnGold {
     -fx-background-color: #c9a24a;
     -fx-text-fill: white;
-    -fx-font-weight: 900;
+    -fx-font-weight: 800;
     -fx-font-size: 14px;
-    -fx-background-radius: 30;
-    -fx-padding: 12 18;
+    -fx-background-radius: 15;
+    /* More square-ish as in image but with rounding */
+    -fx-padding: 10 25;
     -fx-cursor: hand;
 }
 
@@ -143,27 +148,27 @@
 .btnGreen {
     -fx-background-color: #0f2a2a;
     -fx-text-fill: white;
-    -fx-font-weight: 900;
+    -fx-font-weight: 800;
     -fx-font-size: 14px;
-    -fx-background-radius: 30;
-    -fx-padding: 12 18;
+    -fx-background-radius: 15;
+    -fx-padding: 10 25;
     -fx-cursor: hand;
 }
 
 .btnGreen:hover {
-    -fx-background-color: #163a3a;
+    -fx-background-color: #1a3a3a;
 }
 
 .btnOutline {
     -fx-background-color: transparent;
     -fx-text-fill: #0f2a2a;
-    -fx-font-weight: 900;
+    -fx-font-weight: 800;
     -fx-font-size: 14px;
-    -fx-border-color: rgba(15, 42, 42, 0.28);
-    -fx-border-width: 2;
-    -fx-border-radius: 30;
-    -fx-background-radius: 30;
-    -fx-padding: 10 16;
+    -fx-border-color: #0f2a2a;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-padding: 10 25;
     -fx-cursor: hand;
 }
 
@@ -225,31 +230,51 @@
    ========================= */
 
 .sidebar {
-    -fx-padding: 18;
-    -fx-pref-width: 220;
-    -fx-background-color: #f6f1e7;
-    -fx-border-color: rgba(15, 42, 42, 0.12);
-    -fx-border-width: 0 1 0 0;
+    -fx-padding: 20;
+    -fx-pref-width: 240;
+    -fx-background-color: #e6ddd0;
+    -fx-border-width: 0;
 }
 
 .brand {
-    -fx-font-size: 20px;
+    -fx-font-size: 22px;
     -fx-font-weight: 900;
     -fx-text-fill: #0f2a2a;
-    -fx-padding: 6 0 10 0;
+    -fx-padding: 0 0 20 0;
 }
 
 .nav-btn {
     -fx-background-color: transparent;
     -fx-text-fill: #0f2a2a;
-    -fx-font-weight: 800;
-    -fx-padding: 10 12;
-    -fx-background-radius: 12;
+    -fx-font-weight: 700;
+    -fx-padding: 12 15;
+    -fx-background-radius: 15;
     -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
 }
 
 .nav-btn:hover {
-    -fx-background-color: rgba(201, 162, 74, 0.14);
+    -fx-background-color: #eadfc7;
+}
+
+.nav-btn-danger {
+    -fx-background-color: transparent;
+    -fx-text-fill: #b91c1c;
+    -fx-font-weight: 700;
+    -fx-padding: 12 15;
+    -fx-background-radius: 15;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.nav-btn-danger:hover {
+    -fx-background-color: #fee2e2;
+}
+
+/* For active item in image */
+.nav-btn-active {
+    -fx-background-color: #eadfc7;
+    -fx-font-weight: 900;
 }
 
 /* =========================
@@ -258,38 +283,35 @@
 
 .table-view {
     -fx-background-color: white;
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
-    -fx-border-color: rgba(201, 162, 74, 0.28);
-    -fx-padding: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.10), 18, 0, 0, 6);
-}
-
-.table-view .filler {
-    -fx-background-color: transparent;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: rgba(15, 42, 42, 0.05);
+    -fx-padding: 0;
+    -fx-effect: none;
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #f3ece2;
-    -fx-background-radius: 20 20 0 0;
-    -fx-padding: 8;
+    -fx-background-color: #f5efea;
+    -fx-background-radius: 15 15 0 0;
+    -fx-padding: 5;
+    -fx-border-color: rgba(0, 0, 0, 0.05);
+    -fx-border-width: 0 0 1 0;
 }
 
 .table-view .column-header {
     -fx-background-color: transparent;
-    -fx-border-color: rgba(15, 42, 42, 0.08);
-    -fx-border-width: 0 1 1 0;
+    -fx-border-width: 0;
 }
 
 .table-view .column-header .label {
     -fx-text-fill: #0f2a2a;
-    -fx-font-weight: 900;
+    -fx-font-weight: 800;
     -fx-font-size: 13px;
 }
 
 .table-row-cell {
     -fx-background-color: white;
-    -fx-border-color: rgba(0, 0, 0, 0.03);
+    -fx-border-color: rgba(0, 0, 0, 0.02);
     -fx-border-width: 0 0 1 0;
 }
 
@@ -324,14 +346,26 @@
 }
 
 .table-view .thumb {
-    -fx-background-color: rgba(201, 162, 74, 0.65);
+    -fx-background-color: #d9cdbf;
     -fx-background-radius: 10;
 }
 
-.table-view .increment-button,
-.table-view .decrement-button {
-    -fx-opacity: 0;
-    -fx-padding: 0;
+/* =========================
+   ===== USER PROFILE =======
+   ========================= */
+
+.user-profile-box {
+    -fx-padding: 10 15;
+    -fx-background-color: #d1fae5;
+    /* Mint green from image */
+    -fx-background-radius: 20;
+    -fx-alignment: CENTER;
+}
+
+.user-name {
+    -fx-text-fill: #065f46;
+    -fx-font-weight: 800;
+    -fx-font-size: 13px;
 }
 
 /* =========================

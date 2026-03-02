@@ -27,36 +27,6 @@
          
          <Separator styleClass="hr" />
          
-         <!-- ========== SECTION VOYAGE ========== -->
-         <VBox spacing="3">
-            <padding>
-               <Insets top="15" bottom="5" left="15" right="15" />
-            </padding>
-            
-            <Label text="VOYAGE" 
-                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
-            
-            <Button text="🏠 Dashboard" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherDashboard" />
-            
-            <Button text="🗓️ Réserver" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherReserver" />
-            
-            <Button text="💬 Chat" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherChat" />
-         </VBox>
-         
-         <Separator styleClass="hr" />
-         
          <!-- ========== SECTION MES SERVICES ========== -->
          <VBox spacing="3">
             <padding>
@@ -100,7 +70,7 @@
                     onAction="#switchRole"
                     styleClass="nav-btn" 
                     prefWidth="210"
-                    style="-fx-background-color: #fff8e8; -fx-text-fill: #9a6a11; -fx-font-weight: bold; -fx-border-color: #9a6a11; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                    style="-fx-background-color: #eadfc7; -fx-text-fill: #9a8a6f; -fx-font-weight: bold; -fx-border-color: #9a8a6f; -fx-border-radius: 10; -fx-background-radius: 10;" />
             
             <Button text="🚪 Déconnexion" 
                     styleClass="nav-btn-danger" 

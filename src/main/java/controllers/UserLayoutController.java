@@ -18,17 +18,10 @@ public class UserLayoutController implements Initializable {
     @FXML
     private StackPane contentArea;
 
-    private static UserLayoutController instance;
-
-    public static UserLayoutController getInstance() {
-        return instance;
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        instance = this;
-        // Charger le dashboard par défaut
-        afficherDashboard();
+        // Charger les réclamations par défaut (le dashboard a été supprimé)
+        afficherMesReclamations();
     }
 
     @FXML
@@ -89,30 +82,6 @@ public class UserLayoutController implements Initializable {
         if (AlertHelper.showConfirmation("Déconnexion", "Êtes-vous sûr de vouloir vous déconnecter ?")) {
             SessionManager.logout();
             System.exit(0);
-        }
-    }
-
-    public void chargerPageExterne(String fxmlPath) {
-        chargerPage(fxmlPath);
-    }
-
-    public void chargerPageWithData(String fxmlPath, java.util.function.Consumer<Object> controllerConsumer) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent newContent = loader.load();
-
-            if (controllerConsumer != null) {
-                controllerConsumer.accept(loader.getController());
-            }
-
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(newContent);
-        } catch (IOException e) {
-            Label errorLabel = new Label("Erreur de chargement : " + fxmlPath);
-            errorLabel.setStyle("-fx-text-fill: red;");
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(errorLabel);
-            e.printStackTrace();
         }
     }
 

@@ -27,48 +27,6 @@
          
          <Separator styleClass="hr" />
          
-         <!-- ========== SECTION ADMIN VOYAGE ========== -->
-         <VBox spacing="3">
-            <padding>
-               <Insets top="15" bottom="5" left="15" right="15" />
-            </padding>
-            
-            <Label text="ADMIN VOYAGE" 
-                   style="-fx-font-size: 10px; -fx-text-fill: #9a8a6f; -fx-font-weight: 900; -fx-padding: 0 0 8 0;" />
-            
-            <Button text="🏠 Dashboard" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherDashboard" />
-
-            <Button text="➕ Ajouter" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherAjouter" />
-            
-            <Button text="📋 Gérer Hébergements" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherGererHebergements" />
-            
-            <Button text="✈️ Réservations Admin" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherReservationsAdmin" />
-            
-            <Button text="👥 Utilisateurs" 
-                    styleClass="nav-btn" 
-                    prefWidth="210"
-                    alignment="CENTER_LEFT"
-                    onAction="#afficherUtilisateurs" />
-         </VBox>
-         
-         <Separator styleClass="hr" />
-         
          <!-- ========== SECTION ADMIN SERVICES ========== -->
          <VBox spacing="3">
             <padding>
@@ -112,7 +70,7 @@
                     onAction="#switchRole"
                     styleClass="nav-btn" 
                     prefWidth="210"
-                    style="-fx-background-color: #e8fff0; -fx-text-fill: #1c7a44; -fx-font-weight: bold; -fx-border-color: #1c7a44; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                    style="-fx-background-color: #eadfc7; -fx-text-fill: #9a8a6f; -fx-font-weight: bold; -fx-border-color: #9a8a6f; -fx-border-radius: 10; -fx-background-radius: 10;" />
             
             <Button text="🚪 Déconnexion" 
                     styleClass="nav-btn-danger" 
