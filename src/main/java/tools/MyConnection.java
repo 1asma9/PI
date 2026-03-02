@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyConnection {
-    private String url = "jdbc:mysql://localhost:3309/Reclamation/avis";
+    private String url = "jdbc:mysql://localhost:3306/hebergement";
     private String login = "root";
     private String pwd = "";
     private Connection cnx;

@@ -30,6 +30,9 @@
             <Button text="⭐ Ratings"
                     onAction="#goRatingStars"
                     styleClass="nav-btn"/>
+            <Button text="🚨 Mes Réclamations"
+                    onAction="#goMesReclamations"
+                    styleClass="nav-btn"/>
 
             <Region HBox.hgrow="ALWAYS"/>
             <Label fx:id="connectedLabel" text="Client" styleClass="pill"/>

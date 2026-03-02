@@ -171,14 +171,14 @@ public class AdminAvisController implements Initializable {
         comboFilter.setValue("Toutes");
         appliquerFiltres();
     }
-
     @FXML
-    void retourMenu() {
+    private void retourMenu() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/admin_menu.fxml"));
-            tableAvis.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
+            Parent root = FXMLLoader.load(getClass().getResource("/admin_reclamations.fxml"));
+            // remplacez "txtSearch" par n'importe quel fx:id qui existe dans AdminAvisController
+            txtSearch.getScene().setRoot(root);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

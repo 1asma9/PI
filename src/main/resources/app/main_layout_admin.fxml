@@ -54,6 +54,10 @@
                     onAction="#goBlogDashboard"
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
+            <Button text="🚨 Réclamations"
+                    onAction="#goAdminReclamations"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
 
             <Region VBox.vgrow="ALWAYS"/>
             <Button text="🚪 Déconnexion"

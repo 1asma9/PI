@@ -84,4 +84,8 @@ public class ClientLayoutController {
     public void goRatingStars() {
         loadPage("/fxml/RatingStars.fxml");
     }
+    @FXML
+    public void goMesReclamations() {
+        loadPage("/mes_reclamations.fxml");
+    }
 }

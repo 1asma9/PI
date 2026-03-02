@@ -13,7 +13,7 @@ public class CommentaireService implements ICommentaire<Commentaire> {
     Connection cnx;
 
     public CommentaireService() {
-        cnx = new MyConnection().getCnx();
+        MyConnection mc = MyConnection.getInstance();
     }
 
     @Override

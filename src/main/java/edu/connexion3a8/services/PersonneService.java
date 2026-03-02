@@ -13,8 +13,7 @@ public class PersonneService implements IService<Personne> {
     public void addEntity(Personne personne) throws SQLException {
         String requete = "INSERT INTO personne (nom,prenom)" +
                 "VALUES ('"+personne.getNom()+"','"+personne.getPrenom()+"')";
-        Statement st = new MyConnection().getCnx().createStatement();
-        st.executeUpdate(requete);
+        Statement st = MyConnection.getInstance().getCnx().createStatement();        st.executeUpdate(requete);
         System.out.println("Personne ajouté");
     }
 

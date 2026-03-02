@@ -103,4 +103,9 @@ public class AdminLayoutController {
     public void goBlogDashboard() {
         loadPage("/fxml/Dashboard.fxml", "Dashboard Blog");
     }
+    @FXML
+    public void goAdminReclamations() {
+        loadPage("/admin_reclamations.fxml", "Gestion Réclamations");
+    }
+
 }

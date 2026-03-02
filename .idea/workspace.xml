@@ -5,7 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/RatingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/RatingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AdminAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminAvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AdminReclamationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminReclamationsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/AnalyticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/AnalyticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/PersonneService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/PersonneService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/SmartRecommendationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/SmartRecommendationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tests/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tests/MainClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ActiviteController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesBackController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesFrontController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ModifierActiviteController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ReservationFormController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/Activite.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/ReservationActivite.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ReservationActiviteService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainAffichageActivites.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainClass.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainFx.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/CurrencyService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ReservationActiviteValidator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ValidationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tools/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/admin_reclamations.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/admin_reclamations.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

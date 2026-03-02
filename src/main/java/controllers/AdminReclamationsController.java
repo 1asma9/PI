@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import services.ReclamationService;
 import tools.AlertHelper;
+import tools.SessionManager;
 
 import java.io.IOException;
 import java.net.URL;
@@ -263,5 +264,40 @@ public class AdminReclamationsController implements Initializable {
         txtSearch.clear();
         comboFilter.setValue("Tous");
         appliquerFiltres();
+    }
+    @FXML
+    private void afficherAdminReclamations() {
+        // déjà sur cette page, ne rien faire
+    }
+
+    @FXML
+    private void afficherAdminAvis() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/admin_avis.fxml"));
+            // remplacer la scène
+            txtSearch.getScene().setRoot(root);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    @FXML
+    private void afficherStatistiques() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/statistiques/dashboard_stats.fxml"));
+            txtSearch.getScene().setRoot(root);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    @FXML
+    private void switchRole() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/user_layout.fxml"));
+            txtSearch.getScene().setRoot(root);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    @FXML
+    private void deconnexion() {
+        SessionManager.logout();
+        System.exit(0);
     }
 }
