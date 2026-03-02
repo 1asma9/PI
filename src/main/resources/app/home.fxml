@@ -1,74 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.PI_Gestion_des_utilisateurs.ui.HomeController"
-             stylesheets="@app.css">
-    
-    <!-- Header -->
-    <top>
-        <VBox styleClass="header" alignment="CENTER">
-            <Label styleClass="title" text="Gestion des Utilisateurs"/>
-        </VBox>
-    </top>
-    
-    <!-- Contenu principal -->
-    <center>
-        <VBox styleClass="main-container" alignment="CENTER" spacing="24">
-            
-            <!-- Grille de boutons responsive -->
-            <VBox styleClass="vbox-spacing" alignment="CENTER">
-                
-                <!-- Première ligne de boutons -->
-                <HBox styleClass="action-buttons" spacing="20">
-                    <Button text="Ajouter un utilisateur" 
-                            onAction="#onAddUser"
-                            HBox.hgrow="ALWAYS"
-                            prefHeight="50"
-                            styleClass="button primary"/>
-                    <Button text="Modifier un utilisateur" 
-                            onAction="#onEditUser"
-                            HBox.hgrow="ALWAYS"
-                            prefHeight="50"
-                            styleClass="button secondary"/>
-                </HBox>
-                
-                <!-- Deuxième ligne de boutons -->
-                <HBox styleClass="action-buttons" spacing="20">
-                    <Button text="Supprimer un utilisateur" 
-                            onAction="#onDeleteUser"
-                            HBox.hgrow="ALWAYS"
-                            prefHeight="50"
-                            styleClass="button danger"/>
-                    <Button text="Liste des utilisateurs" 
-                            onAction="#onListUsers"
-                            HBox.hgrow="ALWAYS"
-                            prefHeight="50"
-                            styleClass="button success"/>
-                </HBox>
-                
-                <!-- Bouton de déconnexion -->
-                <Button text="Déconnexion" 
-                        onAction="#onLogout"
-                        prefWidth="200"
-                        prefHeight="45"
-                        styleClass="button secondary"/>
-                
-            </VBox>
-            
-        </VBox>
-    </center>
-    
-    <!-- Marges responsives -->
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
-    
-</BorderPane>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.PI_Gestion_des_utilisateurs.ui.HomeController"
+      alignment="CENTER" spacing="24"
+      style="-fx-padding: 40;">
+
+    <Label text="Gestion des Utilisateurs"
+           style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="➕ Ajouter un utilisateur"
+                onAction="#onAddUser"
+                prefHeight="50" prefWidth="200"/>
+        <Button text="✏ Modifier un utilisateur"
+                onAction="#onEditUser"
+                prefHeight="50" prefWidth="200"/>
+    </HBox>
+
+    <HBox spacing="20" alignment="CENTER">
+        <Button text="🗑 Supprimer un utilisateur"
+                onAction="#onDeleteUser"
+                prefHeight="50" prefWidth="200"/>
+        <Button text="📋 Liste des utilisateurs"
+                onAction="#onListUsers"
+                prefHeight="50" prefWidth="200"/>
+    </HBox>
+
+    <Button text="Déconnexion"
+            onAction="#onLogout"
+            prefWidth="200" prefHeight="45"/>
+
+</VBox>

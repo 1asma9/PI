@@ -4,10 +4,12 @@ import hebergement.tools.MyConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import org.example.PI_Gestion_des_utilisateurs.entities.utilisateur;
 import org.example.PI_Gestion_des_utilisateurs.services.utilisateur_service;
-import org.example.PI_Gestion_des_utilisateurs.ui.navigation.SceneNavigator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -108,6 +110,12 @@ public class AddUserController {
         try {
             if (!validateRequiredFields()) return;
 
+            // Vérifier email unique avant tout
+            if (!service.verifierEmailUnique(emailField.getText().trim())) {
+                showError("Email déjà utilisé", "Un compte avec cet email existe déjà.");
+                return;
+            }
+
             utilisateur u = new utilisateur(
                     nomField.getText(),
                     prenomField.getText(),
@@ -124,7 +132,7 @@ public class AddUserController {
 
             boolean ok = service.ajouterutilisateur(u);
             if (!ok) {
-                showError("Ajout impossible", "Échec lors de l'ajout.");
+                showError("Ajout impossible", utilisateur_service.lastError);
                 return;
             }
 
@@ -142,23 +150,40 @@ public class AddUserController {
                 }
             }
 
-            showInfo("Succès", "Utilisateur ajouté avec succès.");
+            showInfo("Succès", "Utilisateur ajouté avec succès !");
             clearForm();
+
         } catch (Exception e) {
-            showError("Erreur", e.getMessage());
+            showError("Erreur", e.getMessage() != null ? e.getMessage() : "Erreur inconnue");
+            e.printStackTrace();
         }
     }
 
     @FXML
     private void onBack() {
-        SceneNavigator.goTo("/app/home.fxml", "Accueil");
+        loadInMainLayout("/app/home.fxml");
     }
 
     @FXML
     private void onCancel() {
-        SceneNavigator.goTo("/app/home.fxml", "Accueil");
+        loadInMainLayout("/app/home.fxml");
     }
 
+    private void loadInMainLayout(String fxmlPath) {
+        try {
+            hebergement.controllers.AdminLayoutController admin = hebergement.controllers.AdminLayoutController.getInstance();
+            if (admin != null) {
+                admin.loadPage(fxmlPath, "");
+                return;
+            }
+            hebergement.controllers.ClientLayoutController client = hebergement.controllers.ClientLayoutController.getInstance();
+            if (client != null) {
+                client.loadPage(fxmlPath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void clearForm() {
         nomField.clear();
         prenomField.clear();

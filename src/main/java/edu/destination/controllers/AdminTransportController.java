@@ -24,28 +24,17 @@ public class AdminTransportController {
     @FXML private TableColumn<Transport, Integer> colIdTransport;
     @FXML private TableColumn<Transport, String> colTypeTransport;
     @FXML private TableColumn<Transport, Integer> colIdDestination;
+    @FXML private Button btnRetour;
 
-    // ==============================
-    // FXML — Recherche (à ajouter dans le FXML)
-    // ==============================
-    @FXML private ComboBox<String> comboTypeTransport;  // Tous / Voiture / Avion / Train / Vélo / Piéton
-    @FXML private TextField searchIdDestination;         // Recherche par id destination
+    @FXML private ComboBox<String> comboTypeTransport;
+    @FXML private TextField searchIdDestination;
     @FXML private Button btnReset;
 
-    // Sidebar navigation
-    @FXML private Button navDashboard;
-    @FXML private Button navDestinations;
-    @FXML private Button navTransports;
-    @FXML private Button navImages;
-    @FXML private Button navClient;
-
-    // Table buttons
+    @FXML private Button navDashboard, navDestinations, navTransports, navImages, navClient;
     @FXML private Button btnAjouter, btnModifier, btnSupprimer;
 
     private final TransportService service = new TransportService();
     private final ObservableList<Transport> filteredList = FXCollections.observableArrayList();
-
-    // ✅ Liste complète en mémoire
     private List<Transport> allTransports;
 
     @FXML
@@ -59,12 +48,22 @@ public class AdminTransportController {
         loadData();
         setupSearch();
 
-        // Actions table
         btnAjouter.setOnAction(e -> openForm(null));
         btnModifier.setOnAction(e -> {
             Transport selected = tableTransports.getSelectionModel().getSelectedItem();
             if (selected != null) openForm(selected);
             else showAlert("Veuillez sélectionner un transport à modifier.");
+        });
+        btnRetour.setOnAction(e -> {
+            try {
+                Parent root = FXMLLoader.load(
+                        getClass().getResource("/hebergement/views/main_layout_admin.fxml")
+                );
+                Stage stage = (Stage) tableTransports.getScene().getWindow();
+                SceneUtil.setScene(stage, root, 1200, 800);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
         btnSupprimer.setOnAction(e -> {
             Transport selected = tableTransports.getSelectionModel().getSelectedItem();
@@ -74,7 +73,6 @@ public class AdminTransportController {
             } else showAlert("Veuillez sélectionner un transport à supprimer.");
         });
 
-        // Sidebar
         navDashboard.setOnAction(e -> openView("/AdminDashboard.fxml"));
         navDestinations.setOnAction(e -> openView("/AdminDestinationView.fxml"));
         navTransports.setOnAction(e -> openView("/AdminTransportView.fxml"));
@@ -82,27 +80,18 @@ public class AdminTransportController {
         navClient.setOnAction(e -> openView("/ClientDestinationListView.fxml"));
     }
 
-    // ==============================
-    // CHARGEMENT DONNÉES
-    // ==============================
     private void loadData() {
         allTransports = service.getData();
         applyFilter();
     }
 
-    // ==============================
-    // RECHERCHE EN MÉMOIRE
-    // ==============================
     private void setupSearch() {
-        // ComboBox types de transport
-        comboTypeTransport.getItems().addAll("Tous", "Voiture", "Avion", "Train", "Vélo", "Piéton");
+        comboTypeTransport.getItems().addAll("Tous", "Voiture", "Avion", "Train", "Velo", "Pieton");
         comboTypeTransport.getSelectionModel().selectFirst();
 
-        // Listeners temps réel
         comboTypeTransport.valueProperty().addListener((obs, o, n) -> applyFilter());
         searchIdDestination.textProperty().addListener((obs, o, n) -> applyFilter());
 
-        // Reset
         btnReset.setOnAction(e -> {
             comboTypeTransport.getSelectionModel().selectFirst();
             searchIdDestination.clear();
@@ -117,14 +106,10 @@ public class AdminTransportController {
 
         List<Transport> filtered = allTransports.stream()
                 .filter(t -> {
-                    // Filtre type transport
                     boolean matchType = type == null || type.equals("Tous")
                             || type.equalsIgnoreCase(t.getTypeTransport());
-
-                    // Filtre id destination (contient)
                     boolean matchId = idStr.isEmpty()
                             || String.valueOf(t.getIdDestination()).contains(idStr);
-
                     return matchType && matchId;
                 })
                 .collect(Collectors.toList());
@@ -132,9 +117,6 @@ public class AdminTransportController {
         filteredList.setAll(filtered);
     }
 
-    // ==============================
-    // FORMULAIRE
-    // ==============================
     private void openForm(Transport transport) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminTransportForm.fxml"));
@@ -162,7 +144,7 @@ public class AdminTransportController {
     private void openView(String fxml) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml)));
-            Stage stage = (Stage) navDashboard.getScene().getWindow();
+            Stage stage = (Stage) tableTransports.getScene().getWindow(); // ✅ utilise la table
             SceneUtil.setScene(stage, root, 1200, 800);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.AdminLayoutController"
+            styleClass="root">
+
+    <left>
+        <VBox fx:id="sidebar" spacing="12" styleClass="sidebar">
+            <Label text="VOYAGE" styleClass="brand"/>
+
+            <Button text="🏠 Dashboard"
+                    onAction="#goDashboard"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="📅 Réservations"
+                    onAction="#goReservationsAdmin"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="🏨 Hébergements"
+                    onAction="#goList"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="➕ Ajouter"
+                    onAction="#goAdd"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="👥 Utilisateurs"
+                    onAction="#goUtilisateurs"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="🌍 Destinations"
+                    onAction="#goDestination"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="💬 Chat"
+                    onAction="#goChat"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="🚪 Déconnexion"
+                    onAction="#goLogout"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+            <Label fx:id="connectedLabel" text="Admin" styleClass="pill"/>
+            <Label text="© 2026" styleClass="muted"/>
+        </VBox>
+    </left>
+
+    <top>
+        <HBox styleClass="header" spacing="10">
+            <Label fx:id="pageTitle" text="Dashboard" styleClass="title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contentPane" styleClass="content"/>
+    </center>
+
+</BorderPane>

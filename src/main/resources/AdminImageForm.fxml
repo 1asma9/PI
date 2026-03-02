@@ -6,7 +6,7 @@
 <StackPane xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="edu.destination.controllers.AdminImageFormController"
-           stylesheets="@app.css"
+           stylesheets="@/app/app.css"
            styleClass="root-dark">
 
     <VBox spacing="12" alignment="CENTER" maxWidth="520" styleClass="glass-card-large">

@@ -46,7 +46,6 @@ public class ClientDestinationController {
     @FXML private TextField searchField;
     @FXML private ComboBox<String> comboSaison;
     @FXML private Button btnReset;
-    @FXML private Button navDashboard, navDestinations, navTransports, navImages, navClient;
 
     // ==============================
     // FXML — chatbot
@@ -57,6 +56,9 @@ public class ClientDestinationController {
     @FXML private TextField  inputMessage;
     @FXML private Button     btnEnvoyer;
     @FXML private Button     btnToggleChat;
+    @FXML private ImageView heroImageView;
+    @FXML private Button btnRetourLogin;
+
 
     private final DestinationService destinationService = new DestinationService();
     private final ImageService       imageService       = new ImageService();
@@ -75,9 +77,34 @@ public class ClientDestinationController {
         setupSearch();
         setupSidebar();
         renderDestinations(allDestinations);
+
+        // ✅ Hero image
+        if (!allDestinations.isEmpty() && heroImageView != null) {
+            try {
+                ImageService imageService = new ImageService();
+                List<DestinationImage> images = imageService.getImagesByDestination(
+                        allDestinations.get(0).getIdDestination()
+                );
+                if (!images.isEmpty()) {
+                    String url = images.get(0).getUrlImage();
+                    Image hero = new Image(url, 1200, 220, false, true);
+                    heroImageView.setImage(hero);
+                }
+            } catch (Exception ignored) {}
+        }
+
         setupChatbot();
-        // Calcul des scores en arrière-plan
         computePopularityScoresAsync(allDestinations);
+        btnRetourLogin.setOnAction(e -> {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+                Stage stage = (Stage) flowDestinations.getScene().getWindow();
+                SceneUtil.setScene(stage, root, 800, 600);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
     }
 
     // ============================================================
@@ -763,24 +790,22 @@ public class ClientDestinationController {
 
     private void openDetails(Destination destination) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientDetailsView.fxml"));
-            Parent root = loader.load();
-            ClientDetailsController ctrl = loader.getController();
-            ctrl.setDestination(destination);
-            Stage stage = (Stage) flowDestinations.getScene().getWindow();
-            Scene scene = new Scene(root, 1200, 900);
-            SceneUtil.applyCss(scene);
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) { e.printStackTrace(); }
+            hebergement.controllers.ClientLayoutController client =
+                    hebergement.controllers.ClientLayoutController.getInstance();
+            if (client != null) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ClientDetailsView.fxml"));
+                Parent root = loader.load();
+                ClientDetailsController ctrl = loader.getController();
+                ctrl.setDestination(destination); // ✅ passer la destination
+                client.loadPageWithRoot(root); // ✅ charger dans le layout
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupSidebar() {
-        navDashboard.setOnAction(e -> openView("/AdminDashboard.fxml"));
-        navDestinations.setOnAction(e -> openView("/ClientDestinationListView.fxml"));
-        navTransports.setOnAction(e -> openView("/AdminTransportView.fxml"));
-        navImages.setOnAction(e -> openView("/AdminImageView.fxml"));
-        navClient.setOnAction(e -> openView("/ClientDestinationListView.fxml"));
+        // sidebar supprimée — rien à faire
     }
 
     private void openView(String fxml) {

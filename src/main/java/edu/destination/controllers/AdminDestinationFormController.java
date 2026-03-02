@@ -322,9 +322,9 @@ public class AdminDestinationFormController {
                     errVideoPath.setText("Chemin invalide : doit être une URL http/https ou un fichier .mp4");
                 isValid = false;
             } else if (isLocalMp4 && !isWebUrl) {
-                // Vérifier que le fichier existe vraiment sur le PC
-                java.io.File f = new java.io.File(videoPath);
-                if (!f.exists()) {
+                // Vérifier dans les resources
+                var resource = getClass().getResource("/" + videoPath);
+                if (resource == null) {
                     if (errVideoPath != null)
                         errVideoPath.setText("Fichier introuvable : " + videoPath);
                     isValid = false;

@@ -3,11 +3,16 @@ package org.example.PI_Gestion_des_utilisateurs.ui;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import org.example.PI_Gestion_des_utilisateurs.entities.utilisateur;
 import org.example.PI_Gestion_des_utilisateurs.services.utilisateur_service;
-import org.example.PI_Gestion_des_utilisateurs.ui.navigation.SceneNavigator;
+import hebergement.controllers.AdminLayoutController;
+import hebergement.controllers.ClientLayoutController;
 
+import java.util.Collections;
 import java.util.Optional;
 
 public class EditUserController {
@@ -77,7 +82,7 @@ public class EditUserController {
         if (email != null) {
             Optional<utilisateur> found = service.rechercherutilisateurParEmail(email);
             if (found.isPresent()) {
-                users.setAll(found.get());
+                users.setAll(Collections.singletonList(found.get())); // ← corrigé
                 usersTable.getSelectionModel().select(found.get());
             } else {
                 users.clear();
@@ -93,7 +98,7 @@ public class EditUserController {
                 if (u.getId() == id) { found = u; break; }
             }
             if (found != null) {
-                users.setAll(found);
+                users.setAll(Collections.singletonList(found)); // ← corrigé
                 usersTable.getSelectionModel().select(found);
             } else {
                 users.clear();
@@ -148,12 +153,28 @@ public class EditUserController {
 
     @FXML
     private void onBack() {
-        SceneNavigator.goTo("/app/home.fxml", "Accueil");
+        loadInMainLayout("/app/home.fxml");
     }
 
     @FXML
     private void onCancel() {
-        SceneNavigator.goTo("/app/home.fxml", "Accueil");
+        loadInMainLayout("/app/home.fxml");
+    }
+
+    private void loadInMainLayout(String fxmlPath) {
+        try {
+            AdminLayoutController admin = AdminLayoutController.getInstance();
+            if (admin != null) {
+                admin.loadPage(fxmlPath, "Utilisateurs");
+                return;
+            }
+            ClientLayoutController client = ClientLayoutController.getInstance();
+            if (client != null) {
+                client.loadPage(fxmlPath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showInfo(String title, String message) {

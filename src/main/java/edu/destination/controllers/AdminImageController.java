@@ -22,29 +22,19 @@ public class AdminImageController {
 
     @FXML private TableView<DestinationImage> tableImages;
     @FXML private TableColumn<DestinationImage, Integer> colIdImage;
+    @FXML private Button btnRetour;
+
     @FXML private TableColumn<DestinationImage, String> colUrlImage;
     @FXML private TableColumn<DestinationImage, Integer> colIdDestination;
 
-    // ==============================
-    // FXML — Recherche (à ajouter dans le FXML)
-    // ==============================
-    @FXML private TextField searchIdDestination; // Filtre par id destination
+    @FXML private TextField searchIdDestination;
     @FXML private Button btnReset;
 
-    // Sidebar navigation
-    @FXML private Button navDashboard;
-    @FXML private Button navDestinations;
-    @FXML private Button navTransports;
-    @FXML private Button navImages;
-    @FXML private Button navClient;
-
-    // Actions table
+    @FXML private Button navDashboard, navDestinations, navTransports, navImages, navClient;
     @FXML private Button btnAjouter, btnModifier, btnSupprimer;
 
     private final ImageService service = new ImageService();
     private final ObservableList<DestinationImage> filteredList = FXCollections.observableArrayList();
-
-    // ✅ Liste complète en mémoire
     private List<DestinationImage> allImages;
 
     @FXML
@@ -58,12 +48,21 @@ public class AdminImageController {
         loadData();
         setupSearch();
 
-        // Actions table
         btnAjouter.setOnAction(e -> openForm(null));
         btnModifier.setOnAction(e -> {
             DestinationImage selected = tableImages.getSelectionModel().getSelectedItem();
             if (selected != null) openForm(selected);
             else showAlert("Sélectionnez une image.");
+        });
+        btnRetour.setOnAction(e -> {
+            try {
+                Parent root = FXMLLoader.load(
+                        getClass().getResource("/main_layout_admin.fxml")
+                );
+                Stage stage = (Stage) tableImages.getScene().getWindow();                SceneUtil.setScene(stage, root, 1200, 800);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
         btnSupprimer.setOnAction(e -> {
             DestinationImage selected = tableImages.getSelectionModel().getSelectedItem();
@@ -73,7 +72,6 @@ public class AdminImageController {
             } else showAlert("Sélectionnez une image à supprimer.");
         });
 
-        // Sidebar
         navDashboard.setOnAction(e -> openView("/AdminDashboard.fxml"));
         navDestinations.setOnAction(e -> openView("/AdminDestinationView.fxml"));
         navTransports.setOnAction(e -> openView("/AdminTransportView.fxml"));
@@ -81,22 +79,13 @@ public class AdminImageController {
         navClient.setOnAction(e -> openView("/ClientDestinationListView.fxml"));
     }
 
-    // ==============================
-    // CHARGEMENT DONNÉES
-    // ==============================
     private void loadData() {
         allImages = service.getData();
         applyFilter();
     }
 
-    // ==============================
-    // RECHERCHE EN MÉMOIRE
-    // ==============================
     private void setupSearch() {
-        // Filtre en temps réel à chaque frappe
         searchIdDestination.textProperty().addListener((obs, o, n) -> applyFilter());
-
-        // Reset
         btnReset.setOnAction(e -> searchIdDestination.clear());
     }
 
@@ -113,9 +102,6 @@ public class AdminImageController {
         filteredList.setAll(filtered);
     }
 
-    // ==============================
-    // FORMULAIRE
-    // ==============================
     private void openForm(DestinationImage image) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminImageForm.fxml"));
@@ -142,7 +128,7 @@ public class AdminImageController {
     private void openView(String fxml) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml)));
-            Stage stage = (Stage) navDashboard.getScene().getWindow();
+            Stage stage = (Stage) tableImages.getScene().getWindow(); // ✅ utilise la table
             SceneUtil.setScene(stage, root, 1200, 800);
         } catch (Exception e) {
             e.printStackTrace();

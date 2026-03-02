@@ -8,7 +8,7 @@ public class MyConnection {
     private static MyConnection instance;
     private Connection cnx;
 
-    private final String url = "jdbc:mysql://localhost:3306/projet";
+    private final String url = "jdbc:mysql://localhost:3306/hebergement";
     private final String login = "root";
     private final String pwd = "";
 

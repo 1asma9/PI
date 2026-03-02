@@ -6,23 +6,21 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="edu.destination.controllers.AdminImageController"
-            stylesheets="@app.css"
+            stylesheets="@/app/app.css"
             styleClass="root-dark">
 
-    <left>
-        <VBox styleClass="sidebar" spacing="12">
+    <top>
+        <HBox styleClass="sidebar" spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
             <Label text="VOYAGE" styleClass="brand"/>
-            <VBox styleClass="nav-section">
-                <Button text="🏠 Dashboard" styleClass="nav-btn" fx:id="navDashboard"/>
-                <Button text="📍 Destinations" styleClass="nav-btn" fx:id="navDestinations"/>
-                <Button text="🚌 Transports" styleClass="nav-btn" fx:id="navTransports"/>
-                <Button text="🖼 Images" styleClass="nav-btn nav-btn-active" fx:id="navImages"/>
-                <Button text="👤 Espace Client" styleClass="nav-btn" fx:id="navClient"/>
-            </VBox>
-            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="Dashboard" styleClass="nav-btn" fx:id="navDashboard"/>
+            <Button text="Destinations" styleClass="nav-btn" fx:id="navDestinations"/>
+            <Button text="Transports" styleClass="nav-btn" fx:id="navTransports"/>
+            <Button text="Images" styleClass="nav-btn nav-btn-active" fx:id="navImages"/>
+            <Button text="Espace Client" styleClass="nav-btn" fx:id="navClient"/>
+            <Region HBox.hgrow="ALWAYS"/>
             <Label text="© 2026" styleClass="pageSubtitle"/>
-        </VBox>
-    </left>
+        </HBox>
+    </top>
 
     <center>
         <VBox styleClass="page" spacing="16">
@@ -33,13 +31,14 @@
                 <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
 
                     <TextField fx:id="searchIdDestination"
-                               promptText="🔍 Filtrer par ID destination..."
+                               promptText="Filtrer par ID destination..."
                                prefWidth="250"
                                styleClass="input-field"/>
 
-                    <Button fx:id="btnReset" text="✖ Reset" styleClass="btn-secondary"/>
+                    <Button fx:id="btnReset" text="Reset" styleClass="btn-secondary"/>
 
                 </HBox>
+
                 <TableView fx:id="tableImages" prefHeight="520" styleClass="table-modern">
                     <columns>
                         <TableColumn fx:id="colIdImage" text="ID"/>

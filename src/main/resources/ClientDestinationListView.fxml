@@ -1,144 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="edu.destination.controllers.ClientDestinationController"
-            stylesheets="@app.css"
-            styleClass="root-dark">
+            stylesheets="@/app/app.css"
+            style="-fx-background-color: #f5f0e8;">
 
-    <!-- SIDEBAR -->
-    <left>
-        <VBox styleClass="sidebar" spacing="12">
-            <Label text="VOYAGE" styleClass="brand"/>
-            <VBox styleClass="nav-section">
-                <Button fx:id="navDashboard"    text="🏠 Dashboard"     styleClass="nav-btn"/>
-                <Button fx:id="navDestinations" text="📍 Destinations"  styleClass="nav-btn nav-btn-active"/>
-                <Button fx:id="navTransports"   text="🚌 Transports"    styleClass="nav-btn"/>
-                <Button fx:id="navImages"       text="🖼 Images"        styleClass="nav-btn"/>
-                <Button fx:id="navClient"       text="👤 Espace Client" styleClass="nav-btn"/>
-            </VBox>
-            <Region VBox.vgrow="ALWAYS"/>
-            <Label text="© 2026" styleClass="pageSubtitle"/>
-        </VBox>
-    </left>
-
-    <!-- CONTENU PRINCIPAL -->
     <center>
-        <!-- HBox principal : liste destinations + panneau chatbot côte à côte -->
         <HBox spacing="0">
 
-            <!-- Colonne gauche : destinations -->
-            <VBox spacing="16" alignment="TOP_CENTER" styleClass="page" HBox.hgrow="ALWAYS">
+            <!-- COLONNE PRINCIPALE -->
+            <VBox spacing="0" HBox.hgrow="ALWAYS"
+                  style="-fx-background-color: #f5f0e8;">
 
-                <!-- Header -->
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label text="Nos Destinations" styleClass="pageTitle" HBox.hgrow="ALWAYS"/>
+                <!-- HEADER -->
+                <HBox alignment="CENTER_LEFT" spacing="16"
+                      style="-fx-background-color: #faf7f2;
+                             -fx-padding: 20 36 20 36;
+                             -fx-border-color: #e8e0d0;
+                             -fx-border-width: 0 0 1 0;
+                             -fx-effect: dropshadow(gaussian, rgba(100,80,40,0.07), 8, 0, 0, 3);">
+                    <VBox spacing="2">
+                        <Label text="NOS DESTINATIONS"
+                               style="-fx-text-fill: #c8b898;
+                                      -fx-font-size: 10px; -fx-font-weight: 800;"/>
+                        <Label text="Nos Destinations"
+                               style="-fx-text-fill: #2c1f0e;
+                                      -fx-font-size: 26px;
+                                      -fx-font-weight: 900;
+                                      -fx-font-family: 'Georgia';"/>
+                    </VBox>
                     <Region HBox.hgrow="ALWAYS"/>
-                    <!-- Bouton ouvrir/fermer le chatbot -->
+
+                    <!-- BOUTON RETOUR LOGIN -->
+                    <Button fx:id="btnRetourLogin"
+                            text="Deconnexion"
+                            style="-fx-background-color: transparent;
+                                   -fx-text-fill: #8a7560;
+                                   -fx-font-size: 12px; -fx-font-weight: 700;
+                                   -fx-border-color: #d8cfc0;
+                                   -fx-border-radius: 8; -fx-background-radius: 8;
+                                   -fx-border-width: 1; -fx-padding: 11 18 11 18;
+                                   -fx-cursor: hand;"/>
+
                     <Button fx:id="btnToggleChat"
-                            text="💬 Assistant Voyage"
-                            styleClass="btn-primary"
-                            style="-fx-background-radius:30;-fx-padding:8 18 8 18;"/>
+                            text="Assistant Voyage"
+                            style="-fx-background-color: #2c1f0e;
+                                   -fx-text-fill: #f5f0e8;
+                                   -fx-font-size: 12px; -fx-font-weight: 700;
+                                   -fx-background-radius: 8;
+                                   -fx-padding: 11 22 11 22;
+                                   -fx-cursor: hand;
+                                   -fx-effect: dropshadow(gaussian, rgba(44,31,14,0.3), 10, 0, 0, 4);"/>
                 </HBox>
 
-                <!-- Barre de recherche -->
-                <HBox spacing="10" alignment="CENTER_LEFT">
+                <!-- HERO IMAGE (VERSION CLAIRE) -->
+                <StackPane prefHeight="220" minHeight="180"
+                           style="-fx-background-color: #dbeafe;">
+                    <ImageView fx:id="heroImageView"
+                               fitHeight="220"
+                               preserveRatio="false"
+                               smooth="true">
+                        <StackPane.margin><Insets/></StackPane.margin>
+                    </ImageView>
+
+                    <!-- Gradient clair (bleu -> transparent) -->
+                    <Pane prefHeight="220"
+                          style="-fx-background-color: linear-gradient(to right,
+                                   rgba(56,189,248,0.55) 0%,
+                                   rgba(147,197,253,0.25) 45%,
+                                   rgba(255,255,255,0.00) 100%);"/>
+
+                    <!-- Légère brume en bas pour fondre avec la page -->
+                    <Pane prefHeight="220"
+                          style="-fx-background-color: linear-gradient(to top,
+                                   rgba(245,240,232,0.98) 0%,
+                                   rgba(245,240,232,0.35) 35%,
+                                   transparent 65%);"/>
+
+                    <VBox alignment="BOTTOM_LEFT"
+                          style="-fx-padding: 0 36 24 36;" prefHeight="220">
+                        <Label text="Explorez le monde, vivez des experiences inoubliables"
+                               style="-fx-text-fill: #0f172a;
+                                      -fx-font-size: 22px;
+                                      -fx-font-weight: 900;
+                                      -fx-font-family: 'Georgia';
+                                      -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.85), 10, 0, 0, 0);"/>
+                        <Label text="Decouvrez nos destinations soigneusement selectionnees"
+                               style="-fx-text-fill: rgba(15,23,42,0.75);
+                                      -fx-font-size: 13px;
+                                      -fx-padding: 6 0 0 0;"/>
+                    </VBox>
+                </StackPane>
+
+                <!-- BARRE RECHERCHE -->
+                <HBox spacing="12" alignment="CENTER_LEFT"
+                      style="-fx-padding: 16 36 16 36;
+                             -fx-background-color: #faf7f2;
+                             -fx-border-color: #e8e0d0;
+                             -fx-border-width: 1 0 1 0;
+                             -fx-effect: dropshadow(gaussian, rgba(100,80,40,0.05), 6, 0, 0, 2);">
                     <TextField fx:id="searchField"
-                               promptText="🔍 Rechercher..."
-                               prefWidth="280"
-                               styleClass="input-field"/>
+                               promptText="Rechercher une destination..."
+                               prefWidth="300"
+                               style="-fx-background-color: #f5f0e8;
+                                      -fx-background-radius: 8;
+                                      -fx-border-color: #e8e0d0;
+                                      -fx-border-radius: 8; -fx-border-width: 1;
+                                      -fx-padding: 10 16 10 16;
+                                      -fx-font-size: 13px;
+                                      -fx-text-fill: #2c1f0e;"/>
                     <ComboBox fx:id="comboSaison"
                               promptText="Toutes les saisons"
-                              prefWidth="180"/>
-                    <Button fx:id="btnReset"
-                            text="✖ Réinitialiser"
-                            styleClass="btn-secondary"/>
+                              prefWidth="190"
+                              style="-fx-background-color: #f5f0e8;
+                                     -fx-background-radius: 8;
+                                     -fx-border-color: #e8e0d0;
+                                     -fx-border-radius: 8; -fx-border-width: 1;
+                                     -fx-padding: 4 8 4 8;
+                                     -fx-font-size: 13px;"/>
+                    <Button fx:id="btnReset" text="Reinitialiser"
+                            style="-fx-background-color: transparent;
+                                   -fx-text-fill: #8a7560;
+                                   -fx-font-size: 12px; -fx-font-weight: 600;
+                                   -fx-border-color: #d8cfc0;
+                                   -fx-border-radius: 8; -fx-background-radius: 8;
+                                   -fx-border-width: 1; -fx-padding: 10 18 10 18;
+                                   -fx-cursor: hand;"/>
                 </HBox>
 
-                <!-- Destinations -->
-                <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
-                    <FlowPane fx:id="flowDestinations" hgap="20" vgap="20" prefWrapLength="900"/>
+                <!-- GRILLE DESTINATIONS -->
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                            style="-fx-background: #f5f0e8;
+                                   -fx-background-color: #f5f0e8;
+                                   -fx-border-color: transparent;">
+                    <FlowPane fx:id="flowDestinations"
+                              hgap="20" vgap="20"
+                              prefWrapLength="900"
+                              style="-fx-padding: 24 36 28 36;
+                                     -fx-background-color: #f5f0e8;"/>
                 </ScrollPane>
-
             </VBox>
 
-            <!-- ================================================ -->
-            <!-- Panneau CHATBOT intégré (droite, caché par défaut) -->
-            <!-- ================================================ -->
+            <!-- CHATBOT PANEL (inchangé) -->
             <VBox fx:id="chatPanel"
-                  prefWidth="360"
+                  prefWidth="355"
                   spacing="0"
-                  style="-fx-background-color: white;
-                         -fx-border-color: #e0e0e0;
+                  style="-fx-background-color: #faf7f2;
+                         -fx-border-color: #e8e0d0;
                          -fx-border-width: 0 0 0 1;">
-
-                <!-- Header chatbot -->
-                <HBox alignment="CENTER_LEFT" spacing="10"
-                      style="-fx-background-color: linear-gradient(to right, #1a6fa8, #0d3b6e);
-                             -fx-padding: 14 16 14 16;">
-                    <Label text="✈️" style="-fx-font-size:20px;"/>
-                    <VBox spacing="2">
+                <HBox alignment="CENTER_LEFT" spacing="12"
+                      style="-fx-background-color: #2c1f0e;
+                             -fx-padding: 18 20 18 20;">
+                    <Label text="✈"
+                           style="-fx-text-fill: #d4a855; -fx-font-size: 20px;"/>
+                    <VBox spacing="3">
                         <Label text="Assistant Voyage"
-                               style="-fx-text-fill:white;-fx-font-size:14px;-fx-font-weight:bold;"/>
-                        <Label text="🟢 En ligne"
-                               style="-fx-text-fill:rgba(255,255,255,0.75);-fx-font-size:11px;"/>
+                               style="-fx-text-fill: white; -fx-font-size: 14px;
+                                      -fx-font-weight: 800; -fx-font-family: 'Georgia';"/>
+                        <HBox alignment="CENTER_LEFT" spacing="6">
+                            <Label text="●"
+                                   style="-fx-text-fill: #4a9e4a; -fx-font-size: 8px;"/>
+                            <Label text="En ligne"
+                                   style="-fx-text-fill: rgba(255,255,255,0.5); -fx-font-size: 11px;"/>
+                        </HBox>
                     </VBox>
                 </HBox>
-
-                <!-- Messages -->
                 <ScrollPane fx:id="scrollPane"
                             VBox.vgrow="ALWAYS"
                             fitToWidth="true"
                             hbarPolicy="NEVER"
-                            style="-fx-background:white;-fx-background-color:white;-fx-border-width:0;">
-                    <VBox fx:id="chatMessages" spacing="6"
-                          style="-fx-background-color:white;-fx-padding:10 0 10 0;"/>
+                            style="-fx-background: #faf7f2;
+                                   -fx-background-color: #faf7f2;
+                                   -fx-border-width: 0;">
+                    <VBox fx:id="chatMessages" spacing="8"
+                          style="-fx-background-color: #faf7f2;
+                                 -fx-padding: 16 12 16 12;"/>
                 </ScrollPane>
-
-                <!-- Suggestions rapides -->
-                <HBox spacing="6"
-                      style="-fx-padding:6 10 6 10;-fx-background-color:#fafafa;
-                             -fx-border-color:#e0e0e0;-fx-border-width:1 0 0 0;">
-                    <Button text="🏖️ Été"
-                            onAction="#suggestionEte"
-                            style="-fx-background-color:#e8f4fd;-fx-text-fill:#1a6fa8;
-                                   -fx-background-radius:20;-fx-font-size:11px;
-                                   -fx-padding:4 10 4 10;-fx-cursor:hand;"/>
-                    <Button text="❄️ Hiver"
-                            onAction="#suggestionHiver"
-                            style="-fx-background-color:#e8f4fd;-fx-text-fill:#1a6fa8;
-                                   -fx-background-radius:20;-fx-font-size:11px;
-                                   -fx-padding:4 10 4 10;-fx-cursor:hand;"/>
-                    <Button text="💰 &lt;500 TND"
-                            onAction="#suggestionBudget"
-                            style="-fx-background-color:#e8f4fd;-fx-text-fill:#1a6fa8;
-                                   -fx-background-radius:20;-fx-font-size:11px;
-                                   -fx-padding:4 10 4 10;-fx-cursor:hand;"/>
-                    <Button text="🌍 Europe"
-                            onAction="#suggestionEurope"
-                            style="-fx-background-color:#e8f4fd;-fx-text-fill:#1a6fa8;
-                                   -fx-background-radius:20;-fx-font-size:11px;
-                                   -fx-padding:4 10 4 10;-fx-cursor:hand;"/>
+                <HBox spacing="6" alignment="CENTER_LEFT"
+                      style="-fx-padding: 10 12 10 12;
+                             -fx-background-color: #f5f0e8;
+                             -fx-border-color: #e8e0d0; -fx-border-width: 1 0 0 0;">
+                    <Button text="Ete" onAction="#suggestionEte"
+                            style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e;
+                                   -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: 600;
+                                   -fx-padding: 5 12 5 12; -fx-cursor: hand;
+                                   -fx-border-color: #fcd34d; -fx-border-radius: 20; -fx-border-width: 1;"/>
+                    <Button text="Hiver" onAction="#suggestionHiver"
+                            style="-fx-background-color: #eff6ff; -fx-text-fill: #1e40af;
+                                   -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: 600;
+                                   -fx-padding: 5 12 5 12; -fx-cursor: hand;
+                                   -fx-border-color: #bfdbfe; -fx-border-radius: 20; -fx-border-width: 1;"/>
+                    <Button text="&lt; 500" onAction="#suggestionBudget"
+                            style="-fx-background-color: #f0fdf4; -fx-text-fill: #166534;
+                                   -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: 600;
+                                   -fx-padding: 5 12 5 12; -fx-cursor: hand;
+                                   -fx-border-color: #bbf7d0; -fx-border-radius: 20; -fx-border-width: 1;"/>
+                    <Button text="Europe" onAction="#suggestionEurope"
+                            style="-fx-background-color: #fdf4ff; -fx-text-fill: #7e22ce;
+                                   -fx-background-radius: 20; -fx-font-size: 11px; -fx-font-weight: 600;
+                                   -fx-padding: 5 12 5 12; -fx-cursor: hand;
+                                   -fx-border-color: #e9d5ff; -fx-border-radius: 20; -fx-border-width: 1;"/>
                 </HBox>
-
-                <!-- Zone saisie -->
                 <HBox spacing="8" alignment="CENTER"
-                      style="-fx-padding:10 12 12 12;-fx-background-color:white;
-                             -fx-border-color:#e0e0e0;-fx-border-width:1 0 0 0;">
+                      style="-fx-padding: 12 14 14 14;
+                             -fx-background-color: #faf7f2;
+                             -fx-border-color: #e8e0d0; -fx-border-width: 1 0 0 0;">
                     <TextField fx:id="inputMessage"
                                promptText="Posez votre question..."
                                HBox.hgrow="ALWAYS"
-                               style="-fx-background-color:#f5f5f5;-fx-background-radius:22;
-                                      -fx-border-width:0;-fx-padding:10 14 10 14;-fx-font-size:13px;"/>
-                    <Button fx:id="btnEnvoyer" text="➤"
-                            style="-fx-background-color:#1a6fa8;-fx-text-fill:white;
-                                   -fx-background-radius:50;-fx-font-size:16px;
-                                   -fx-padding:8 12 8 12;-fx-cursor:hand;"/>
+                               style="-fx-background-color: #f5f0e8;
+                                      -fx-background-radius: 22;
+                                      -fx-border-color: #e8e0d0;
+                                      -fx-border-radius: 22; -fx-border-width: 1;
+                                      -fx-padding: 10 16 10 16;
+                                      -fx-font-size: 13px; -fx-text-fill: #2c1f0e;"/>
+                    <Button fx:id="btnEnvoyer" text="Envoyer"
+                            style="-fx-background-color: #d4a855;
+                                   -fx-text-fill: #1a150f;
+                                   -fx-background-radius: 8;
+                                   -fx-font-size: 12px; -fx-font-weight: 900;
+                                   -fx-padding: 9 16 9 16; -fx-cursor: hand;
+                                   -fx-effect: dropshadow(gaussian, rgba(212,168,85,0.4), 8, 0, 0, 3);"/>
                 </HBox>
-
             </VBox>
 
         </HBox>

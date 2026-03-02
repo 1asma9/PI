@@ -14,8 +14,7 @@ public final class SceneUtil {
     // Appliquer le CSS global
     public static void applyCss(Scene scene) {
         scene.getStylesheets().clear();
-        var css = SceneUtil.class.getResource("/app.css");
-
+        var css = SceneUtil.class.getResource("/app/app.css");
         if (css != null) {
             scene.getStylesheets().add(css.toExternalForm());
         } else {

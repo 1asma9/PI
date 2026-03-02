@@ -32,6 +32,8 @@ public class LoginController {
 
     @FXML
     private void onLogin() {
+        System.out.println("🔵 onLogin() appelé");
+
         String email = emailField.getText() == null ? "" : emailField.getText().trim();
         String password = passwordField.getText() == null ? "" : passwordField.getText();
 
@@ -46,12 +48,14 @@ public class LoginController {
         }
 
         Optional<utilisateur> userOpt = service.rechercherutilisateurParEmail(email);
+        System.out.println("🔵 userOpt: " + userOpt);
         if (userOpt.isEmpty()) {
             showInlineError("Email ou mot de passe incorrect");
             return;
         }
 
         utilisateur user = userOpt.get();
+        System.out.println("🔵 user: " + user.getEmail() + " role: " + user.getRoleName());
 
         boolean passwordValid;
         if (PasswordUtil.isHashedPassword(user.getPassword())) {
@@ -60,24 +64,36 @@ public class LoginController {
             passwordValid = password.equals(user.getPassword());
         }
 
+        System.out.println("🔵 passwordValid: " + passwordValid);
         if (!passwordValid) {
             showInlineError("Email ou mot de passe incorrect");
             return;
         }
 
-        // ✅ stocker l'utilisateur connecté
+        // ✅ Stocker utilisateur
         MainLayoutController.setCurrentUser(user);
 
-        // ✅ navigation vers main_layout.fxml (fiable)
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/main_layout.fxml"));
-            Scene scene = new Scene(loader.load(), 1100, 650);
+            String role = user.getRoleName();
+            System.out.println("🔵 role: " + role);
+
+            String layoutPath = "CLIENT".equals(role)
+                    ? "/app/main_layout_client.fxml"
+                    : "/app/main_layout_admin.fxml";
+
+            System.out.println("🔵 chargement layout: " + layoutPath);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(layoutPath));
+            Scene scene = new Scene(loader.load(), 1200, 700);
             scene.getStylesheets().add(getClass().getResource("/app/app.css").toExternalForm());
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.setTitle("Accueil");
+            stage.setTitle("Voyage & Découverte");
             stage.setScene(scene);
             stage.show();
+
+            System.out.println("✅ Navigation réussie vers: " + layoutPath);
+
         } catch (Exception e) {
             e.printStackTrace();
             showPopupError("Erreur", "Impossible d'ouvrir l'accueil: " + e.getMessage());
@@ -91,7 +107,6 @@ public class LoginController {
             showPopupError("Email invalide", "Veuillez entrer une adresse email valide.");
             return;
         }
-
         boolean success = service.motDePasseOublie(email);
         if (success) {
             showPopupInfo("Mot de passe oublié", "Un email de réinitialisation a été envoyé à : " + email);
@@ -110,7 +125,6 @@ public class LoginController {
         return email != null && email.contains("@") && email.contains(".");
     }
 
-    // ✅ message d'erreur dans la page
     private void showInlineError(String message) {
         errorLabel.setText(message);
         errorLabel.setVisible(true);

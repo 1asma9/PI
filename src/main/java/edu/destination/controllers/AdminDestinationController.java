@@ -30,7 +30,7 @@ public class AdminDestinationController {
     @FXML private TableColumn<Destination, String> colNom;
     @FXML private TableColumn<Destination, String> colPays;
     @FXML private TableColumn<Destination, String> colDescription;
-    @FXML private TableColumn<Destination, String> colVideoPath; // ✅ AJOUTÉ
+    @FXML private TableColumn<Destination, String> colVideoPath;
     @FXML private TableColumn<Destination, Boolean> colStatut;
     @FXML private TableColumn<Destination, String> colSaison;
     @FXML private TableColumn<Destination, Double> colLatitude;
@@ -39,6 +39,8 @@ public class AdminDestinationController {
     @FXML private TableColumn<Destination, Double> colPrix;
     @FXML private TableColumn<Destination, String> colDateDepart;
     @FXML private TableColumn<Destination, String> colDateArrivee;
+    @FXML private Button navRetour;
+    @FXML private Button btnRetour;
 
     @FXML private Button btnAjouter, btnModifier, btnSupprimer;
 
@@ -52,7 +54,7 @@ public class AdminDestinationController {
     @FXML private DatePicker dateDepart;
     @FXML private Button btnReset;
 
-    // Sidebar
+    // ✅ Navbar top
     @FXML private Button navDashboard, navDestinations, navTransports, navImages, navClient;
 
     private final DestinationService service = new DestinationService();
@@ -71,10 +73,7 @@ public class AdminDestinationController {
         colPays.setCellValueFactory(new PropertyValueFactory<>("pays"));
         colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        // 🎬 VIDEO
         colVideoPath.setCellValueFactory(new PropertyValueFactory<>("videoPath"));
-
-        // Affichage propre 🎬
         colVideoPath.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -82,12 +81,11 @@ public class AdminDestinationController {
                 if (empty || item == null || item.isBlank()) {
                     setText("");
                 } else {
-                    setText("🎬 Disponible");
+                    setText("Disponible");
                 }
             }
         });
-
-        colStatut.setCellValueFactory(new PropertyValueFactory<>("statut"));
+        navRetour.setOnAction(e -> openView("/app/main_layout_admin.fxml"));        colStatut.setCellValueFactory(new PropertyValueFactory<>("statut"));
         colSaison.setCellValueFactory(new PropertyValueFactory<>("meilleureSaison"));
         colLatitude.setCellValueFactory(new PropertyValueFactory<>("latitude"));
         colLongitude.setCellValueFactory(new PropertyValueFactory<>("longitude"));
@@ -102,17 +100,22 @@ public class AdminDestinationController {
         setupSearch();
 
         // ==============================
-        // ACTIONS
+        // ACTIONS BOUTONS
         // ==============================
 
-        btnAjouter.setOnAction(e -> openForm(null));
-
-        btnModifier.setOnAction(e -> {
-            Destination selected = tableDestinations.getSelectionModel().getSelectedItem();
-            if (selected != null) openForm(selected);
-            else showAlert("Veuillez sélectionner une destination à modifier.");
+        btnRetour.setOnAction(e -> {
+            try {
+                System.out.println("Chemin: " + getClass().getResource("/main_layout_admin.fxml"));
+                Parent root = FXMLLoader.load(
+                        Objects.requireNonNull(getClass().getResource("/main_layout_admin.fxml"))
+                );
+                Stage stage = (Stage) tableDestinations.getScene().getWindow();
+                SceneUtil.setScene(stage, root, 1200, 800);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                showAlert("Erreur: " + ex.getMessage());
+            }
         });
-
         btnSupprimer.setOnAction(e -> {
             Destination selected = tableDestinations.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -122,12 +125,15 @@ public class AdminDestinationController {
             } else showAlert("Veuillez sélectionner une destination à supprimer.");
         });
 
-        // Navigation
-        navDashboard.setOnAction(e -> openView("/AdminDashboard.fxml"));
+        // ==============================
+        // NAVIGATION TOP BAR
+        // ==============================
+
         navDestinations.setOnAction(e -> openView("/AdminDestinationView.fxml"));
         navTransports.setOnAction(e -> openView("/AdminTransportView.fxml"));
         navImages.setOnAction(e -> openView("/AdminImageView.fxml"));
         navClient.setOnAction(e -> openView("/ClientDestinationListView.fxml"));
+        // dans initialize(), après les autres boutons
     }
 
     // ==============================
@@ -184,7 +190,6 @@ public class AdminDestinationController {
 
         List<Destination> filtered = allDestinations.stream()
                 .filter(d -> {
-
                     boolean matchPays = pays.isEmpty()
                             || d.getPays().toLowerCase().contains(pays)
                             || d.getNom().toLowerCase().contains(pays);
@@ -215,18 +220,24 @@ public class AdminDestinationController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDestinationForm.fxml"));
             Parent formRoot = loader.load();
 
-            Scene formScene = new Scene(formRoot);
+            ScrollPane scrollPane = new ScrollPane(formRoot);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setFitToHeight(false);
+
+            Scene formScene = new Scene(scrollPane, 700, 650);
             applyCss(formScene);
 
             Stage stage = new Stage();
             stage.setScene(formScene);
             stage.setTitle(destination == null ? "Ajouter Destination" : "Modifier Destination");
+            stage.setMinWidth(600);
+            stage.setMinHeight(500);
+            stage.setMaxHeight(800);
 
             AdminDestinationFormController controller = loader.getController();
             controller.setDestination(destination);
 
             stage.showAndWait();
-
             loadData();
 
         } catch (IOException ex) {
@@ -238,7 +249,7 @@ public class AdminDestinationController {
     private void openView(String fxml) {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml)));
-            Stage stage = (Stage) navDashboard.getScene().getWindow();
+            Stage stage = (Stage) tableDestinations.getScene().getWindow();
             SceneUtil.setScene(stage, root, 1200, 800);
         } catch (Exception e) {
             e.printStackTrace();
@@ -249,7 +260,7 @@ public class AdminDestinationController {
     private void applyCss(Scene scene) {
         scene.getStylesheets().clear();
         scene.getStylesheets().add(
-                Objects.requireNonNull(getClass().getResource("/app.css")).toExternalForm()
+                Objects.requireNonNull(getClass().getResource("/app/app.css")).toExternalForm()
         );
     }
 

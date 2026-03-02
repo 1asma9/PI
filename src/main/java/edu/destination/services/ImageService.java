@@ -14,7 +14,7 @@ public class ImageService implements IService<DestinationImage> {
     @Override
     public void addEntity(DestinationImage image) throws SQLException {
 
-        String sql = "INSERT INTO image (url_image, id_destination) " +
+        String sql = "INSERT INTO destination_image (url_image, id_destination) " +
                 "VALUES ('" + image.getUrlImage() + "'," + image.getIdDestination() + ")";
 
         Statement st = new MyConnection().getCnx().createStatement();
@@ -26,7 +26,7 @@ public class ImageService implements IService<DestinationImage> {
     @Override
     public void addEntity2(DestinationImage image) throws SQLException {
 
-        String sql = "INSERT INTO image (url_image, id_destination) VALUES (?, ?)";
+        String sql = "INSERT INTO destination_image (url_image, id_destination) VALUES (?, ?)";
         PreparedStatement pst = new MyConnection().getCnx().prepareStatement(sql);
 
         pst.setString(1, image.getUrlImage());
@@ -40,7 +40,7 @@ public class ImageService implements IService<DestinationImage> {
     @Override
     public void deleteEntity(DestinationImage image) {
 
-        String sql = "DELETE FROM image WHERE id_image=?";
+        String sql = "DELETE FROM destination_image WHERE id_image=?";
 
         try {
             PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(sql);
@@ -56,7 +56,7 @@ public class ImageService implements IService<DestinationImage> {
     @Override
     public void update(int id, DestinationImage image) {
 
-        String sql = "UPDATE image SET url_image=?, id_destination=? WHERE id_image=?";
+        String sql = "UPDATE destination_image SET url_image=?, id_destination=? WHERE id_image=?";
 
         try {
             PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(sql);
@@ -76,7 +76,7 @@ public class ImageService implements IService<DestinationImage> {
     public List<DestinationImage> getData() {
 
         List<DestinationImage> list = new ArrayList<>();
-        String sql = "SELECT * FROM image";
+        String sql = "SELECT * FROM destination_image";
 
         try {
             Statement st = new MyConnection().getCnx().createStatement();
@@ -102,7 +102,7 @@ public class ImageService implements IService<DestinationImage> {
     public List<DestinationImage> getImagesByDestination(int idDestination) {
 
         List<DestinationImage> list = new ArrayList<>();
-        String sql = "SELECT * FROM image WHERE id_destination = ?";
+        String sql = "SELECT * FROM destination_image WHERE id_destination = ?";
 
         try {
             PreparedStatement pst = MyConnection.getInstance()

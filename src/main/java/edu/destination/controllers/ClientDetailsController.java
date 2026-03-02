@@ -110,6 +110,10 @@ public class ClientDetailsController {
     // ── Lecteur JavaFX (fallback) ──
     private MediaPlayer mediaPlayerFx;
     private MediaView   mediaViewFx;
+    private Media       currentMedia;
+
+    // ── État Play/Pause (comme dans le tutoriel) ──
+    private boolean isPlayed = false;
 
     // ── WebView YouTube ──
     private WebView youtubeWebView;
@@ -123,10 +127,16 @@ public class ClientDetailsController {
         btnPrev.setOnAction(e -> prevImage());
         btnBackToList.setOnAction(e -> goBackToList());
 
+        // Slider : min=0, max=100 (pourcentage)
+        if (timeSlider != null) {
+            timeSlider.setMin(0);
+            timeSlider.setMax(100);
+            timeSlider.setValue(0);
+        }
+
         if (volumeSlider != null) volumeSlider.setValue(1.0);
 
         try {
-            // ✅ Forcer le chemin VLC
             System.setProperty("jna.library.path", "C:\\Program Files\\VideoLAN\\VLC");
             vlcAvailable = new NativeDiscovery().discover();
             System.out.println("✅ VLC détecté : " + vlcAvailable);
@@ -187,7 +197,7 @@ public class ClientDetailsController {
             return;
         }
 
-        // ✅ Résoudre le chemin depuis les resources
+        // Résoudre le chemin depuis les resources
         String resolvedPath = videoPath;
         if (!videoPath.startsWith("http") && !new File(videoPath).isAbsolute()) {
             URL resource = getClass().getResource("/" + videoPath);
@@ -214,26 +224,22 @@ public class ClientDetailsController {
                 playWithVlcj(finalPath);
             } else {
                 try {
-                    playWithJavaFX(new Media(finalPath));
+                    currentMedia = new Media(finalPath);
+                    playWithJavaFX(currentMedia);
                 } catch (Exception ex) {
                     showErrorState("Impossible de charger la vidéo :\n" + ex.getMessage());
                 }
             }
         });
     }
+
     // ==============================
     // CONVERTISSEUR URL YOUTUBE
     // ==============================
-
-    /**
-     * Convertit n'importe quelle URL YouTube en URL embed.
-     * Retourne null si ce n'est pas une URL YouTube (= fichier local ou autre).
-     */
     private String convertToEmbedUrl(String url) {
         if (url == null) return null;
 
         if (url.contains("youtube.com/embed/")) {
-            // Ajouter autoplay si pas déjà présent
             return url.contains("?") ? url + "&autoplay=1" : url + "?autoplay=1";
         }
         if (url.contains("youtube.com/watch?v=")) {
@@ -246,13 +252,37 @@ public class ClientDetailsController {
         }
         return null;
     }
+
     // ==============================
-    // LECTEUR YOUTUBE VIA WEBVIEW
+    // LECTEUR YOUTUBE — ouvre dans le navigateur
+    // ==============================
+    private void playWithWebView(String embedUrl) {
+        disposeVideo();
+        try {
+            String watchUrl = embedUrl
+                    .replace("youtube.com/embed/", "youtube.com/watch?v=")
+                    .replaceAll("\\?autoplay=1.*", "")
+                    .replaceAll("&autoplay=1.*", "");
+
+            java.awt.Desktop.getDesktop().browse(new java.net.URI(watchUrl));
+
+            showVideoSection();
+            showLoadingState(false);
+            showControls(false);
+            showErrorState("▶  La vidéo s'est ouverte dans votre navigateur.");
+
+        } catch (Exception e) {
+            showErrorState("Impossible d'ouvrir la vidéo :\n" + e.getMessage());
+        }
+    }
+
+    // ==============================
+    // LECTEUR VLCJ
     // ==============================
     private void playWithVlcj(String videoPath) {
         disposeVideo();
         try {
-            System.out.println("🎬 Tentative lecture VLCJ : " + videoPath); // ← ajouter
+            System.out.println("🎬 Tentative lecture VLCJ : " + videoPath);
 
             vlcSwingNode = new SwingNode();
             StackPane wrapper = new StackPane(vlcSwingNode);
@@ -271,7 +301,6 @@ public class ClientDetailsController {
 
                 final EmbeddedMediaPlayerComponent player = vlcPlayer;
 
-                // ← Ajouter listener d'erreur
                 player.mediaPlayer().events().addMediaPlayerEventListener(
                         new uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter() {
                             @Override
@@ -282,6 +311,34 @@ public class ClientDetailsController {
                             @Override
                             public void playing(uk.co.caprica.vlcj.player.base.MediaPlayer mediaPlayer) {
                                 System.out.println("✅ VLCJ en cours de lecture !");
+                                Platform.runLater(() -> {
+                                    btnPlayPause.setText("⏸  Pause");
+                                    isPlayed = true;
+                                });
+                            }
+                            @Override
+                            public void paused(uk.co.caprica.vlcj.player.base.MediaPlayer mediaPlayer) {
+                                Platform.runLater(() -> {
+                                    btnPlayPause.setText("▶  Play");
+                                    isPlayed = false;
+                                });
+                            }
+                            @Override
+                            public void stopped(uk.co.caprica.vlcj.player.base.MediaPlayer mediaPlayer) {
+                                Platform.runLater(() -> {
+                                    btnPlayPause.setText("▶  Play");
+                                    isPlayed = false;
+                                    timeSlider.setValue(0);
+                                    lblVideoTime.setText("0:00 / 0:00");
+                                });
+                            }
+                            @Override
+                            public void finished(uk.co.caprica.vlcj.player.base.MediaPlayer mediaPlayer) {
+                                Platform.runLater(() -> {
+                                    btnPlayPause.setText("▶  Revoir");
+                                    isPlayed = false;
+                                    timeSlider.setValue(100);
+                                });
                             }
                         }
                 );
@@ -291,17 +348,18 @@ public class ClientDetailsController {
                             && player.isShowing()) {
                         player.removeHierarchyListener(player.getHierarchyListeners()[0]);
                         boolean result = player.mediaPlayer().media().play(videoPath);
-                        System.out.println("▶ play() result : " + result); // ← ajouter
-                        Platform.runLater(() -> btnPlayPause.setText("⏸  Pause"));
+                        System.out.println("▶ play() result : " + result);
                     }
                 });
             });
 
+            // Volume
             volumeSlider.valueProperty().addListener((obs, o, n) -> {
                 if (vlcPlayer != null)
                     vlcPlayer.mediaPlayer().audio().setVolume((int)(n.doubleValue() * 100));
             });
 
+            // Seek au relâchement du slider
             timeSlider.setOnMousePressed(e -> sliderDragging = true);
             timeSlider.setOnMouseReleased(e -> {
                 sliderDragging = false;
@@ -315,27 +373,8 @@ public class ClientDetailsController {
             startSliderThread();
 
         } catch (Exception e) {
-            System.out.println("❌ Exception VLCJ : " + e.getMessage()); // ← ajouter
+            System.out.println("❌ Exception VLCJ : " + e.getMessage());
             showErrorState("Erreur VLCJ : " + e.getMessage());
-        }
-    }
-    private void playWithWebView(String embedUrl) {
-        disposeVideo();
-        try {
-            String watchUrl = embedUrl
-                    .replace("youtube.com/embed/", "youtube.com/watch?v=")
-                    .replaceAll("\\?autoplay=1.*", "")
-                    .replaceAll("&autoplay=1.*", "");
-
-            java.awt.Desktop.getDesktop().browse(new java.net.URI(watchUrl));
-
-            showVideoSection();
-            showLoadingState(false);
-            showControls(false);
-            showErrorState("▶  La vidéo s'est ouverte dans votre navigateur.");
-
-        } catch (Exception e) {
-            showErrorState("Impossible d'ouvrir la vidéo :\n" + e.getMessage());
         }
     }
 
@@ -373,102 +412,160 @@ public class ClientDetailsController {
     }
 
     // ==============================
-    // LECTEUR JAVAFX (fallback)
+    // LECTEUR JAVAFX (fallback) — comme dans le tutoriel
     // ==============================
     private void playWithJavaFX(Media media) {
         disposeVideo();
+        isPlayed = false;
+
         try {
             mediaPlayerFx = new MediaPlayer(media);
             mediaViewFx   = new MediaView(mediaPlayerFx);
-            mediaViewFx.setPreserveRatio(true);
-            mediaViewFx.fitWidthProperty().bind(videoContainer.widthProperty());
-            mediaViewFx.fitHeightProperty().bind(videoContainer.heightProperty());
+
+            // ✅ Taille fixe et clip pour rester dans le container
+            mediaViewFx.setPreserveRatio(false);
+            mediaViewFx.setFitWidth(900);
+            mediaViewFx.setFitHeight(430);
+            mediaViewFx.setTranslateY(0);
+            mediaViewFx.setTranslateX(0);
+
+            // ✅ Clip pour empêcher le débordement
+            javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(900, 430);
+            mediaViewFx.setClip(clip);
+
+            StackPane.setAlignment(mediaViewFx, javafx.geometry.Pos.CENTER);
+
+            videoContainer.setClip(new javafx.scene.shape.Rectangle(
+                    videoContainer.getPrefWidth(),
+                    videoContainer.getPrefHeight()
+            ));
+
             videoContainer.getChildren().add(0, mediaViewFx);
 
+            // ── Slider seek ──
             timeSlider.setOnMousePressed(e -> sliderDragging = true);
             timeSlider.setOnMouseReleased(e -> {
                 sliderDragging = false;
-                if (mediaPlayerFx.getTotalDuration() != null) {
-                    double total = mediaPlayerFx.getTotalDuration().toSeconds();
-                    mediaPlayerFx.seek(Duration.seconds(timeSlider.getValue() / 100.0 * total));
+                if (mediaPlayerFx != null && mediaPlayerFx.getTotalDuration() != null
+                        && !mediaPlayerFx.getTotalDuration().isUnknown()) {
+                    double totalSec = mediaPlayerFx.getTotalDuration().toSeconds();
+                    mediaPlayerFx.seek(Duration.seconds(timeSlider.getValue() / 100.0 * totalSec));
                 }
             });
 
-            mediaPlayerFx.currentTimeProperty().addListener((obs, o, n) -> {
+            // ── Listener temps courant → slider + label ──
+            mediaPlayerFx.currentTimeProperty().addListener((obs, oldValue, newValue) -> {
                 if (!sliderDragging && mediaPlayerFx.getTotalDuration() != null
                         && !mediaPlayerFx.getTotalDuration().isUnknown()) {
-                    double total   = mediaPlayerFx.getTotalDuration().toSeconds();
-                    double current = n.toSeconds();
-                    timeSlider.setValue(total > 0 ? (current / total) * 100.0 : 0);
-                    lblVideoTime.setText(
-                            formatDuration(n) + " / " + formatDuration(mediaPlayerFx.getTotalDuration()));
+                    double totalSec   = mediaPlayerFx.getTotalDuration().toSeconds();
+                    double currentSec = newValue.toSeconds();
+                    double pct = totalSec > 0 ? (currentSec / totalSec) * 100.0 : 0;
+                    timeSlider.setValue(pct);
+                    lblVideoTime.setText(formatDuration(newValue) + " / " + formatDuration(mediaPlayerFx.getTotalDuration()));
                 }
             });
 
-            volumeSlider.setValue(1.0);
-            mediaPlayerFx.volumeProperty().bind(volumeSlider.valueProperty());
-
+            // ── onReady → initialiser et lancer ──
             mediaPlayerFx.setOnReady(() -> Platform.runLater(() -> {
+                timeSlider.setMax(100);
+                timeSlider.setValue(0);
+                lblVideoTime.setText("0:00 / " + formatDuration(mediaPlayerFx.getTotalDuration()));
                 showLoadingState(false);
                 showControls(true);
                 mediaPlayerFx.play();
                 btnPlayPause.setText("⏸  Pause");
+                isPlayed = true;
             }));
 
+            // ── Fin de vidéo ──
             mediaPlayerFx.setOnEndOfMedia(() -> Platform.runLater(() -> {
                 btnPlayPause.setText("▶  Revoir");
+                isPlayed = false;
                 timeSlider.setValue(100);
             }));
 
+            // ── Erreur ──
             mediaPlayerFx.setOnError(() -> Platform.runLater(() ->
                     showErrorState(mediaPlayerFx.getError() != null
                             ? mediaPlayerFx.getError().getMessage()
                             : "Erreur de lecture.")));
 
+            // ── Volume ──
+            volumeSlider.setValue(1.0);
+            mediaPlayerFx.volumeProperty().bind(volumeSlider.valueProperty());
+
         } catch (Exception e) {
             showErrorState("Erreur lecteur JavaFX :\n" + e.getMessage());
         }
     }
-
     // ==============================
-    // CONTRÔLES
+    // CONTRÔLES — Play/Pause (comme dans le tutoriel avec isPlayed)
     // ==============================
     @FXML
     private void handlePlayPause() {
-        // Les contrôles play/pause ne s'appliquent pas au WebView YouTube
+        // YouTube WebView : pas de contrôles natifs
         if (youtubeWebView != null) return;
 
+        // ── VLCJ ──
         if (vlcPlayer != null) {
-            if (vlcPlayer.mediaPlayer().status().isPlaying()) {
-                vlcPlayer.mediaPlayer().controls().pause();
-                btnPlayPause.setText("▶  Play");
-            } else {
+            if (!isPlayed) {
+                // Était en pause → on joue
                 vlcPlayer.mediaPlayer().controls().play();
                 btnPlayPause.setText("⏸  Pause");
-            }
-        } else if (mediaPlayerFx != null) {
-            if (mediaPlayerFx.getStatus() == MediaPlayer.Status.PLAYING) {
-                mediaPlayerFx.pause();
-                btnPlayPause.setText("▶  Play");
+                isPlayed = true;
             } else {
-                mediaPlayerFx.play();
+                // Était en lecture → on met en pause
+                vlcPlayer.mediaPlayer().controls().pause();
+                btnPlayPause.setText("▶  Play");
+                isPlayed = false;
+            }
+            return;
+        }
+
+        // ── JavaFX MediaPlayer (logique identique au tutoriel) ──
+        if (mediaPlayerFx != null) {
+            if (!isPlayed) {
+                // Bouton affiche "Pause" → on joue
                 btnPlayPause.setText("⏸  Pause");
+                mediaPlayerFx.play();
+                isPlayed = true;
+            } else {
+                // Bouton affiche "Play" → on met en pause
+                btnPlayPause.setText("▶  Play");
+                mediaPlayerFx.pause();
+                isPlayed = false;
             }
         }
     }
 
+    // ==============================
+    // CONTRÔLES — Stop (comme dans le tutoriel)
+    // ==============================
     @FXML
     private void handleStop() {
-        // Les contrôles stop ne s'appliquent pas au WebView YouTube
+        // YouTube WebView : pas de contrôles natifs
         if (youtubeWebView != null) return;
 
-        if (vlcPlayer != null) vlcPlayer.mediaPlayer().controls().stop();
-        else if (mediaPlayerFx != null) mediaPlayerFx.stop();
+        // ── VLCJ ──
+        if (vlcPlayer != null) {
+            vlcPlayer.mediaPlayer().controls().stop();
+        }
+
+        // ── JavaFX MediaPlayer ──
+        if (mediaPlayerFx != null) {
+            mediaPlayerFx.stop();
+        }
+
+        // Réinitialiser l'état (comme dans le tutoriel)
+        btnPlayPause.setText("▶  Play");
+        isPlayed = false;
         timeSlider.setValue(0);
         lblVideoTime.setText("0:00 / 0:00");
-        btnPlayPause.setText("▶  Play");
     }
 
+    // ==============================
+    // CONTRÔLES — Fermer la vidéo
+    // ==============================
     @FXML
     private void handleCloseVideo() {
         disposeVideo();
@@ -478,12 +575,13 @@ public class ClientDetailsController {
     }
 
     // ==============================
-    // DISPOSE
+    // DISPOSE — Libérer les ressources
     // ==============================
     private void disposeVideo() {
         stopSliderThread();
+        isPlayed = false;
 
-        // ✅ Nettoyer le WebView YouTube
+        // Nettoyer le WebView YouTube
         if (youtubeWebView != null) {
             youtubeWebView.getEngine().load("about:blank");
             videoContainer.getChildren().remove(youtubeWebView);
@@ -492,7 +590,10 @@ public class ClientDetailsController {
 
         // Nettoyer VLCJ
         if (vlcPlayer != null) {
-            try { vlcPlayer.mediaPlayer().controls().stop(); vlcPlayer.release(); } catch (Exception ignored) {}
+            try {
+                vlcPlayer.mediaPlayer().controls().stop();
+                vlcPlayer.release();
+            } catch (Exception ignored) {}
             vlcPlayer = null;
         }
         videoContainer.getChildren().removeIf(n ->
@@ -503,8 +604,10 @@ public class ClientDetailsController {
 
         // Nettoyer JavaFX MediaPlayer
         if (mediaPlayerFx != null) {
-            mediaPlayerFx.stop();
-            mediaPlayerFx.dispose();
+            try {
+                mediaPlayerFx.stop();
+                mediaPlayerFx.dispose();
+            } catch (Exception ignored) {}
             mediaPlayerFx = null;
         }
         if (mediaViewFx != null) {
@@ -512,8 +615,12 @@ public class ClientDetailsController {
             mediaViewFx = null;
         }
 
+        currentMedia = null;
+
+        // Réinitialiser slider et label
         if (timeSlider   != null) timeSlider.setValue(0);
         if (lblVideoTime != null) lblVideoTime.setText("0:00 / 0:00");
+        if (btnPlayPause != null) btnPlayPause.setText("▶  Play");
     }
 
     // ==============================
@@ -671,30 +778,37 @@ public class ClientDetailsController {
     private void buildForecastUI(List<String[]> days) {
         if (forecastContainer == null) return;
         forecastContainer.getChildren().clear();
-        for (String[] day : days) {
-            VBox card = new VBox(6);
+        String[] gradients = {
+                "linear-gradient(to bottom, #2c4a6e, #1a2e45)",
+                "linear-gradient(to bottom, #3a6b3a, #1e3d1e)",
+                "linear-gradient(to bottom, #6b4a1e, #3d2a0e)",
+                "linear-gradient(to bottom, #4a3a6b, #2a1e3d)",
+                "linear-gradient(to bottom, #6b3a3a, #3d1e1e)"
+        };
+        for (int i = 0; i < days.size(); i++) {
+            String[] day = days.get(i);
+            String gradient = gradients[i % gradients.length];
+            VBox card = new VBox(8);
             card.setAlignment(Pos.CENTER);
-            card.setPadding(new Insets(14, 16, 14, 16));
-            card.setMinWidth(110); card.setMaxWidth(120);
-            card.setStyle("-fx-background-color:rgba(255,255,255,0.14);"
-                    + "-fx-background-radius:14;-fx-border-color:rgba(255,255,255,0.22);"
-                    + "-fx-border-radius:14;-fx-border-width:1;");
+            card.setPadding(new Insets(18, 20, 18, 20));
+            card.setMinWidth(130); card.setMaxWidth(140);
+            card.setStyle("-fx-background-color:" + gradient + ";"
+                    + "-fx-background-radius:12;"
+                    + "-fx-effect:dropshadow(gaussian,rgba(0,0,0,0.15),10,0,0,4);");
             Label dateL = new Label(day[0]);
-            dateL.setStyle("-fx-font-weight:700;-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.9);");
+            dateL.setStyle("-fx-font-weight:700;-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.75);");
             ImageView icon = new ImageView();
-            try { icon.setImage(new Image("https://openweathermap.org/img/wn/" + day[4] + "@2x.png", 52, 52, true, true)); } catch (Exception ignored) {}
-            icon.setFitWidth(52); icon.setFitHeight(52);
+            try { icon.setImage(new Image("https://openweathermap.org/img/wn/" + day[4] + "@2x.png", 50, 50, true, true)); } catch (Exception ignored) {}
+            icon.setFitWidth(50); icon.setFitHeight(50);
             Label descL = new Label(day[1]);
-            descL.setStyle("-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.75);");
-            descL.setWrapText(true); descL.setMaxWidth(100);
+            descL.setStyle("-fx-font-size:11px;-fx-text-fill:rgba(255,255,255,0.6);");
+            descL.setWrapText(true); descL.setMaxWidth(120);
             Label tempL = new Label(day[2] + " / " + day[3]);
-            tempL.setStyle("-fx-font-size:13px;-fx-font-weight:800;-fx-text-fill:white;"
-                    + "-fx-background-color:rgba(0,0,0,0.2);-fx-background-radius:6;-fx-padding:4 10 4 10;");
-            card.getChildren().addAll(dateL, icon, descL, new Separator(), tempL);
+            tempL.setStyle("-fx-font-size:14px;-fx-font-weight:900;-fx-text-fill:white;");
+            card.getChildren().addAll(dateL, icon, descL, tempL);
             forecastContainer.getChildren().add(card);
         }
     }
-
     // ==============================
     // IMAGES
     // ==============================
@@ -709,7 +823,10 @@ public class ClientDetailsController {
                 ImageView iv = new ImageView(fxImg);
                 iv.setFitWidth(140); iv.setFitHeight(90); iv.setPreserveRatio(true);
                 iv.getStyleClass().add("tableImg");
-                iv.setOnMouseClicked(e -> { imageView.setImage(iv.getImage()); currentIndex = images.indexOf(img); });
+                iv.setOnMouseClicked(e -> {
+                    imageView.setImage(iv.getImage());
+                    currentIndex = images.indexOf(img);
+                });
                 imagesContainer.getChildren().add(iv);
             }
             loadImage(0);
@@ -810,9 +927,12 @@ public class ClientDetailsController {
                         try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
                         Platform.runLater(() -> addRouteToMap(d, t));
                     });
-                    th.setDaemon(true); th.start();
+                    th.setDaemon(true);
+                    th.start();
                 }
-            } catch (Exception ex) { ex.printStackTrace(); }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         });
     }
 
@@ -830,7 +950,9 @@ public class ClientDetailsController {
             SceneUtil.applyCss(scene);
             stage.setScene(scene);
             stage.show();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // ==============================
@@ -838,7 +960,13 @@ public class ClientDetailsController {
     // ==============================
     public static class JSBridge {
         private final Label lblDistance, lblDuration, lblTransport;
-        public JSBridge(Label d, Label du, Label tr) { lblDistance = d; lblDuration = du; lblTransport = tr; }
+
+        public JSBridge(Label d, Label du, Label tr) {
+            lblDistance  = d;
+            lblDuration  = du;
+            lblTransport = tr;
+        }
+
         public void sendRouteInfo(String distance, String duration, String transportType) {
             Platform.runLater(() -> {
                 lblDistance.setText(distance + " km");
@@ -848,7 +976,9 @@ public class ClientDetailsController {
         }
     }
 
-    public Destination getCurrentDestination() { return currentDestination; }
+    public Destination getCurrentDestination() {
+        return currentDestination;
+    }
 
     // ==============================
     // UTILITAIRES
@@ -857,7 +987,8 @@ public class ClientDetailsController {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
-        conn.setConnectTimeout(5000); conn.setReadTimeout(5000);
+        conn.setConnectTimeout(5000);
+        conn.setReadTimeout(5000);
         conn.setRequestProperty("User-Agent", "Mozilla/5.0");
         BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         StringBuilder sb = new StringBuilder();

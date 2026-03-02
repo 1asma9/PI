@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.ClientLayoutController"
+            styleClass="root">
+
+    <top>
+        <HBox styleClass="header" spacing="20" alignment="CENTER_LEFT">
+            <Label text="✈ VOYAGE" styleClass="brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button text="🌍 Destinations"
+                    onAction="#goDestination"
+                    styleClass="nav-btn"/>
+
+            <Button text="📅 Réserver"
+                    onAction="#goReservation"
+                    styleClass="nav-btn"/>
+
+            <Button text="💬 Chat"
+                    onAction="#goChat"
+                    styleClass="nav-btn"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="connectedLabel" text="Client" styleClass="pill"/>
+            <Button text="🚪"
+                    onAction="#goLogout"
+                    styleClass="nav-btn"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contentPane" styleClass="content"/>
+    </center>
+
+</BorderPane>

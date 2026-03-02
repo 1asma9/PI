@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 
 public class utilisateur_service {
 
+    public static String lastError = "";
+
     private final EmailService emailService = new EmailService();
 
     private static final Pattern EMAIL_PATTERN =
@@ -24,7 +26,7 @@ public class utilisateur_service {
     // =============== SQL ===============
 
     private static final String SQL_INSERT_USER =
-            "INSERT INTO users (nom, prenom, email, password_hash, telephone, created_at) VALUES (?, ?, ?, ?, ?, ?)";
+            "INSERT INTO users (nom, prenom, email, password_hash, telephone) VALUES (?, ?, ?, ?, ?)";
 
     private static final String SQL_SELECT_USERS_WITH_ROLES =
             "SELECT u.id_user, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
@@ -34,7 +36,6 @@ public class utilisateur_service {
                     "LEFT JOIN role r ON r.id = ur.role_id " +
                     "ORDER BY u.id_user";
 
-    // ✅ IMPORTANT: Login doit récupérer role_name
     private static final String SQL_SELECT_USER_BY_EMAIL =
             "SELECT u.id_user, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
                     "r.name AS role_name, r.description AS role_description " +
@@ -94,7 +95,6 @@ public class utilisateur_service {
 
     public String validerDonneesutilisateurAvecMessage(utilisateur u) {
         if (u == null) return "L'utilisateur ne peut pas être null";
-
         if (u.getNom() == null || u.getNom().trim().isEmpty()) return "Le nom ne peut pas être vide";
         if (u.getPrenom() == null || u.getPrenom().trim().isEmpty()) return "Le prénom ne peut pas être vide";
 
@@ -103,11 +103,6 @@ public class utilisateur_service {
 
         String pwd = u.getPassword();
         if (pwd == null || pwd.length() < 6) return "Le mot de passe doit contenir au moins 6 caractères";
-
-        // Si tu veux forcer mot de passe fort, décommente:
-        // if (!PasswordUtil.isPasswordStrong(pwd))
-        //    return "Le mot de passe n'est pas assez fort.\n\nRecommandations:\n"
-        //            + PasswordUtil.getPasswordRecommendations(pwd);
 
         String tel = u.getTelephone();
         if (tel != null && !tel.trim().isEmpty() && !tel.matches("\\d{8,}"))
@@ -135,44 +130,44 @@ public class utilisateur_service {
 
     // =============== CRUD ===============
 
-    /** ✅ Ajoute utilisateur + retourne l'ID dans u.setId() */
     public boolean ajouterutilisateur(utilisateur u) {
         String err = validerDonneesutilisateurAvecMessage(u);
-        if (err != null) return false;
-        if (!verifierEmailUnique(u.getEmail())) return false;
+        if (err != null) {
+            lastError = err;
+            return false;
+        }
+        if (!verifierEmailUnique(u.getEmail())) {
+            lastError = "Email déjà utilisé";
+            return false;
+        }
 
-        try (Connection cnx = getCnx();
-             PreparedStatement ps = cnx.prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = getCnx().prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, u.getNom().trim());
             ps.setString(2, u.getPrenom().trim());
             ps.setString(3, u.getEmail().trim());
-
-            // ✅ stocker en hash
             ps.setString(4, PasswordUtil.hashPassword(u.getPassword()));
-
             ps.setString(5, u.getTelephone());
-            ps.setTimestamp(6, Timestamp.valueOf(u.getDateCreation()));
 
             int rows = ps.executeUpdate();
-            if (rows <= 0) return false;
+            if (rows <= 0) {
+                lastError = "Aucune ligne insérée";
+                return false;
+            }
 
             try (ResultSet keys = ps.getGeneratedKeys()) {
                 if (keys.next()) u.setId(keys.getInt(1));
             }
 
-            // Email bienvenue (facultatif)
             envoyerEmailBienvenue(u);
-
             return true;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            lastError = e.getMessage();
             return false;
         }
     }
 
-    /** ✅ Liste users + role_name (pour TableView roleCol) */
     public List<utilisateur> afficherutilisateurs() {
         List<utilisateur> list = new ArrayList<>();
         try (PreparedStatement ps = getCnx().prepareStatement(SQL_SELECT_USERS_WITH_ROLES);
@@ -184,7 +179,6 @@ public class utilisateur_service {
         return list;
     }
 
-    /** ✅ Modifier user (roles inchangés) */
     public boolean modifierutilisateur(utilisateur u) {
         String err = validerDonneesutilisateurAvecMessage(u);
         if (err != null) return false;
@@ -203,30 +197,27 @@ public class utilisateur_service {
         }
     }
 
-    /** ✅ Delete user + delete pivot */
     public boolean supprimerutilisateur(int id) {
-        Connection cnx = getCnx();
         try {
-            boolean auto = cnx.getAutoCommit();
-            cnx.setAutoCommit(false);
+            getCnx().setAutoCommit(false);
 
-            try (PreparedStatement ps1 = cnx.prepareStatement(SQL_DELETE_USER_ROLES)) {
+            try (PreparedStatement ps1 = getCnx().prepareStatement(SQL_DELETE_USER_ROLES)) {
                 ps1.setInt(1, id);
                 ps1.executeUpdate();
             }
 
             boolean ok;
-            try (PreparedStatement ps2 = cnx.prepareStatement(SQL_DELETE_USER)) {
+            try (PreparedStatement ps2 = getCnx().prepareStatement(SQL_DELETE_USER)) {
                 ps2.setInt(1, id);
                 ok = ps2.executeUpdate() > 0;
             }
 
-            cnx.commit();
-            cnx.setAutoCommit(auto);
+            getCnx().commit();
+            getCnx().setAutoCommit(true);
             return ok;
 
         } catch (SQLException e) {
-            try { cnx.rollback(); } catch (SQLException ignored) {}
+            try { getCnx().rollback(); } catch (SQLException ignored) {}
             e.printStackTrace();
             return false;
         }
@@ -234,13 +225,12 @@ public class utilisateur_service {
 
     // =============== SEARCH ===============
 
-    /** ✅ retourne user + role_name */
     public Optional<utilisateur> rechercherutilisateurParEmail(String email) {
         if (email == null || email.trim().isEmpty()) return Optional.empty();
         try (PreparedStatement ps = getCnx().prepareStatement(SQL_SELECT_USER_BY_EMAIL)) {
             ps.setString(1, email.trim());
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return Optional.of(mapUtilisateur(rs, true)); // ✅ true = role
+                if (rs.next()) return Optional.of(mapUtilisateur(rs, true));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -248,12 +238,11 @@ public class utilisateur_service {
         return Optional.empty();
     }
 
-    /** ✅ retourne user + role_name */
     public Optional<utilisateur> rechercherutilisateurParId(int id) {
         try (PreparedStatement ps = getCnx().prepareStatement(SQL_SELECT_USER_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return Optional.of(mapUtilisateur(rs, true)); // ✅ true = role
+                if (rs.next()) return Optional.of(mapUtilisateur(rs, true));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -263,11 +252,9 @@ public class utilisateur_service {
 
     // =============== ROLE ASSIGN ===============
 
-    /** ✅ Associer 1 rôle (remplace l’ancien) */
     public boolean associerRoleAutilisateur(int userId, int roleId) {
         if (userId <= 0 || roleId <= 0) return false;
 
-        // 1 seul rôle par user
         try (PreparedStatement del = getCnx().prepareStatement("DELETE FROM user_role WHERE user_id=?")) {
             del.setInt(1, userId);
             del.executeUpdate();
@@ -320,9 +307,7 @@ public class utilisateur_service {
 
     private void envoyerEmailBienvenue(utilisateur u) {
         try {
-            // si ton EmailService n’a pas isConfigured(), supprime ce if
             if (!emailService.isConfigured()) return;
-
             String sujet = "Bienvenue";
             String corps = EmailVianovaTemplate.genererEmailBienvenueSimple(
                     u.getNom(), u.getPrenom(), u.getEmail(), u.getPassword()
