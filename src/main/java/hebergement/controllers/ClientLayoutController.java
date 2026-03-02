@@ -75,4 +75,13 @@ public class ClientLayoutController {
     public void loadPageWithRoot(Parent root) {
         contentPane.getChildren().setAll(root);
     }
+    @FXML
+    public void goFrontendBlog() {
+        loadPage("/fxml/FrontendBlogList.fxml");
+    }
+
+    @FXML
+    public void goRatingStars() {
+        loadPage("/fxml/RatingStars.fxml");
+    }
 }

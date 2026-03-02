@@ -23,6 +23,13 @@
             <Button text="💬 Chat"
                     onAction="#goChat"
                     styleClass="nav-btn"/>
+            <Button text="📝 Blog"
+                    onAction="#goFrontendBlog"
+                    styleClass="nav-btn"/>
+
+            <Button text="⭐ Ratings"
+                    onAction="#goRatingStars"
+                    styleClass="nav-btn"/>
 
             <Region HBox.hgrow="ALWAYS"/>
             <Label fx:id="connectedLabel" text="Client" styleClass="pill"/>

@@ -94,4 +94,13 @@ public class AdminLayoutController {
             e.printStackTrace();
         }
     }
+    @FXML
+    public void goBlogList() {
+        loadPage("/fxml/BlogList.fxml", "Gestion Blog");
+    }
+
+    @FXML
+    public void goBlogDashboard() {
+        loadPage("/fxml/Dashboard.fxml", "Dashboard Blog");
+    }
 }

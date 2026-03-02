@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class MyConnection {
 
-    private final String URL = "jdbc:mysql://localhost:3306/pi";
+    private final String URL = "jdbc:mysql://localhost:3306/hebergement";
     private final String LOGIN = "root";
     private final String PWD = "";
 

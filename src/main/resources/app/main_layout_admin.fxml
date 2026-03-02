@@ -45,6 +45,15 @@
                     onAction="#goChat"
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
+            <Button text="📝 Blog"
+                    onAction="#goBlogList"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="📊 Dashboard Blog"
+                    onAction="#goBlogDashboard"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
 
             <Region VBox.vgrow="ALWAYS"/>
             <Button text="🚪 Déconnexion"
