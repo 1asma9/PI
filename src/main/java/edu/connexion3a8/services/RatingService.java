@@ -12,8 +12,7 @@ public class RatingService {
     private Connection cnx;
 
     public RatingService() {
-        cnx = new MyConnection().getCnx();
-    }
+        cnx = MyConnection.getInstance().getCnx();    }
 
     /**
      * Ajouter une note/avis à un blog
