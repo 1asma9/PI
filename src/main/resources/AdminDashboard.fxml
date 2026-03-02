@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.destination.controllers.AdminDashboardController"
+            stylesheets="@app.css"
+            styleClass="root-dark">
+
+    <!-- SIDEBAR -->
+    <left>
+        <VBox styleClass="sidebar" spacing="12">
+            <Label text="VOYAGE" styleClass="brand"/>
+
+            <VBox styleClass="nav-section">
+                <Button text="🏠 Dashboard" styleClass="nav-btn nav-btn-active"/>
+                <Button text="📍 Destinations" styleClass="nav-btn" fx:id="btnDestination"/>
+                <Button text="🚌 Transports" styleClass="nav-btn" fx:id="btnTransport"/>
+                <Button text="🖼 Images" styleClass="nav-btn" fx:id="btnImage"/>
+                <Button text="👤 Espace Client" styleClass="nav-btn" fx:id="btnClientHome"/>
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label text="© 2026" styleClass="pageSubtitle"/>
+        </VBox>
+    </left>
+
+    <!-- CONTENT -->
+    <center>
+        <VBox styleClass="page" spacing="18">
+            <Label text="Dashboard" styleClass="pageTitle"/>
+
+            <HBox spacing="18">
+                <VBox styleClass="glass-card" prefWidth="320" spacing="8">
+                    <Label text="Destinations" styleClass="pageSubtitle"/>
+                    <Label text="-" styleClass="details-highlight"/>
+                </VBox>
+
+                <VBox styleClass="glass-card" prefWidth="320" spacing="8">
+                    <Label text="Transports" styleClass="pageSubtitle"/>
+                    <Label text="-" styleClass="details-highlight"/>
+                </VBox>
+
+                <VBox styleClass="glass-card" prefWidth="320" spacing="8">
+                    <Label text="Images" styleClass="pageSubtitle"/>
+                    <Label text="-" styleClass="details-highlight"/>
+                </VBox>
+            </HBox>
+
+            <VBox styleClass="glass-card-large" spacing="10">
+                <Label text="Conseil Voyage" styleClass="title-white"/>
+                <Label text="Gère tes destinations, transports et images depuis le menu à gauche."
+                       styleClass="pageSubtitle"/>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>

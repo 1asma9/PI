@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="edu.destination.controllers.AdminTransportFormController"
+           stylesheets="@app.css"
+           styleClass="root-dark">
+
+    <VBox spacing="12" alignment="CENTER" maxWidth="520" styleClass="glass-card-large">
+
+        <!-- Titre -->
+        <Label text="Ajouter / Modifier Transport" styleClass="title-white"/>
+
+        <!-- Destination -->
+        <VBox spacing="4">
+            <ComboBox fx:id="comboDestination" promptText="Choisir Destination" styleClass="form-field"/>
+            <Label fx:id="errDestination" textFill="red" styleClass="error-label"/>
+        </VBox>
+
+        <!-- Type de transport -->
+        <VBox spacing="4">
+            <ComboBox fx:id="txtTypeTransport" promptText="Choisir un transport" maxWidth="Infinity" />            <Label fx:id="errType" textFill="red" styleClass="error-label"/>
+        </VBox>
+
+        <!-- Boutons -->
+        <HBox spacing="14" alignment="CENTER">
+            <Button fx:id="btnSave" text="Enregistrer" styleClass="btn-primary"/>
+            <Button fx:id="btnCancel" text="Annuler" styleClass="btn-danger"/>
+        </HBox>
+
+    </VBox>
+</StackPane>

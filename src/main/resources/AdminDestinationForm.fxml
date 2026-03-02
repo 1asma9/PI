@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="edu.destination.controllers.AdminDestinationFormController"
+           stylesheets="@app.css"
+           styleClass="root-dark">
+
+    <VBox spacing="12" alignment="CENTER" maxWidth="520" styleClass="glass-card-large">
+
+        <Label text="Nouvelle Destination" styleClass="title-white"/>
+
+        <TextField fx:id="txtNom" promptText="Nom" styleClass="form-field"/>
+        <Label fx:id="errNom" styleClass="error-label"/>
+
+        <TextField fx:id="txtPays" promptText="Pays" styleClass="form-field"/>
+        <Label fx:id="errPays" styleClass="error-label"/>
+
+        <TextField fx:id="txtDescription" promptText="Description" styleClass="form-field"/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button fx:id="btnGenererDescription"
+                    text="🤖 Générer avec IA"
+                    styleClass="btn-primary"/>
+            <Label fx:id="lblIaStatus"
+                   style="-fx-font-size: 12px;"/>
+        </HBox>
+        <Label fx:id="errDescription" styleClass="error-label"/>
+
+        <TextField fx:id="txtSaison" promptText="Meilleure Saison" styleClass="form-field"/>
+        <Label fx:id="errSaison" styleClass="error-label"/>
+
+        <HBox spacing="10">
+            <DatePicker fx:id="dateDepart" styleClass="form-field"/>
+            <DatePicker fx:id="dateArrivee" styleClass="form-field"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label fx:id="errDateDepart" styleClass="error-label"/>
+            <Label fx:id="errDateArrivee" styleClass="error-label"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <TextField fx:id="txtLatitude" promptText="Latitude" styleClass="form-field"/>
+            <TextField fx:id="txtLongitude" promptText="Longitude" styleClass="form-field"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label fx:id="errLatitude" styleClass="error-label"/>
+            <Label fx:id="errLongitude" styleClass="error-label"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <TextField fx:id="txtNbVisites" promptText="Nombre de visites" styleClass="form-field"/>
+            <TextField fx:id="txtPrix" promptText="Prix" styleClass="form-field"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label fx:id="errNbVisites" styleClass="error-label"/>
+            <Label fx:id="errPrix" styleClass="error-label"/>
+        </HBox>
+        <TextField fx:id="txtVideoPath"
+                   promptText="URL vidéo promotionnelle (https://...)"
+                   styleClass="form-field"/>
+        <Label fx:id="errVideoPath" styleClass="error-label"/>
+        <CheckBox fx:id="chkStatut" text="Destination Active" styleClass="checkbox-light"/>
+
+        <HBox spacing="14" alignment="CENTER">
+            <Button fx:id="btnSave" text="Enregistrer" styleClass="btn-primary"/>
+            <Button fx:id="btnCancel" text="Annuler" styleClass="btn-danger"/>
+        </HBox>
+
+    </VBox>
+</StackPane>

@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.destination.controllers.ClientDetailsController"
+            stylesheets="@app.css"
+            style="-fx-background-color: #f7f8fc;">
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--  HEADER                                                 -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color: rgba(10,15,40,0.55);
+                     -fx-padding: 16 32 16 32;">
+
+            <Button fx:id="btnBackToList"
+                    text="← Retour"
+                    style="-fx-background-color: rgba(255,255,255,0.15);
+                           -fx-text-fill: white;
+                           -fx-font-size: 12px;
+                           -fx-font-weight: 700;
+                           -fx-background-radius: 6;
+                           -fx-border-color: rgba(255,255,255,0.3);
+                           -fx-border-radius: 6;
+                           -fx-border-width: 1;
+                           -fx-padding: 7 16 7 16;
+                           -fx-cursor: hand;"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <HBox alignment="CENTER" spacing="6"
+                  style="-fx-background-color: rgba(39,174,96,0.2);
+                         -fx-border-color: rgba(39,174,96,0.5);
+                         -fx-border-radius: 20;
+                         -fx-background-radius: 20;
+                         -fx-border-width: 1;
+                         -fx-padding: 5 14 5 14;">
+                <Label text="● Disponible"
+                       style="-fx-text-fill: #2ecc71;
+                              -fx-font-size: 12px;
+                              -fx-font-weight: 700;"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!--  CONTENU PRINCIPAL                                     -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background: #f7f8fc;
+                           -fx-background-color: #f7f8fc;
+                           -fx-border-color: transparent;">
+            <VBox spacing="0"
+                  style="-fx-background-color: #f7f8fc;">
+
+                <!-- ════════════════════════════════════════════ -->
+                <!--  HERO FULL-WIDTH                              -->
+                <!-- ════════════════════════════════════════════ -->
+                <StackPane minHeight="520" prefHeight="560">
+
+                    <ImageView fx:id="imageView"
+                               fitWidth="1280"
+                               fitHeight="560"
+                               preserveRatio="false"
+                               style="-fx-smooth: true;"/>
+
+                    <VBox style="-fx-background-color: linear-gradient(to right,
+                                     rgba(10,20,70,0.82) 0%,
+                                     rgba(10,20,70,0.55) 50%,
+                                     rgba(10,20,70,0.10) 100%);"
+                          prefHeight="560"/>
+
+                    <VBox style="-fx-background-color: linear-gradient(to top,
+                                     rgba(0,0,0,0.45) 0%,
+                                     transparent 45%);"
+                          prefHeight="560"/>
+
+                    <VBox alignment="BOTTOM_LEFT" prefHeight="560"
+                          style="-fx-padding: 0 60 52 60;">
+
+                        <Label fx:id="lblCountry"
+                               style="-fx-text-fill: rgba(255,255,255,0.65);
+                                      -fx-font-size: 13px;
+                                      -fx-font-weight: 700;"/>
+
+                        <Label fx:id="lblName"
+                               style="-fx-text-fill: white;
+                                      -fx-font-size: 72px;
+                                      -fx-font-weight: 900;
+                                      -fx-font-family: 'Segoe UI';
+                                      -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 8, 0, 0, 3);"/>
+
+                        <Region prefHeight="20"/>
+
+                        <HBox spacing="16" alignment="CENTER_LEFT">
+                            <HBox alignment="CENTER"
+                                  style="-fx-background-color: #3a6df0;
+                                         -fx-background-radius: 30;
+                                         -fx-padding: 10 24 10 24;
+                                         -fx-effect: dropshadow(gaussian, rgba(58,109,240,0.5), 14, 0, 0, 4);">
+                                <Label text="À PARTIR DE  "
+                                       style="-fx-text-fill: rgba(255,255,255,0.75);
+                                              -fx-font-size: 11px; -fx-font-weight: 700;"/>
+                                <Label fx:id="lblTotal"
+                                       style="-fx-text-fill: white;
+                                              -fx-font-size: 15px; -fx-font-weight: 800;"/>
+                                <Label text="  TND"
+                                       style="-fx-text-fill: rgba(255,255,255,0.75);
+                                              -fx-font-size: 11px; -fx-font-weight: 700;"/>
+                            </HBox>
+
+                            <Region HBox.hgrow="ALWAYS"/>
+
+                            <HBox spacing="20" alignment="CENTER">
+                                <Button fx:id="btnPrev"
+                                        text="← PREV"
+                                        style="-fx-background-color: transparent;
+                                               -fx-text-fill: rgba(255,255,255,0.55);
+                                               -fx-font-size: 11px; -fx-font-weight: 700;
+                                               -fx-border-color: transparent;
+                                               -fx-cursor: hand;"/>
+                                <Label text="|"
+                                       style="-fx-text-fill: rgba(255,255,255,0.25);
+                                              -fx-font-size: 14px;"/>
+                                <Button fx:id="btnNext"
+                                        text="NEXT →"
+                                        style="-fx-background-color: transparent;
+                                               -fx-text-fill: rgba(255,255,255,0.9);
+                                               -fx-font-size: 11px; -fx-font-weight: 700;
+                                               -fx-border-color: transparent;
+                                               -fx-cursor: hand;"/>
+                            </HBox>
+                        </HBox>
+                    </VBox>
+                </StackPane>
+
+                <!-- ════════════════════════════════════════════ -->
+                <!--  BANDE STATS                                  -->
+                <!-- ════════════════════════════════════════════ -->
+                <HBox spacing="0"
+                      style="-fx-background-color: white;
+                             -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);">
+
+                    <HBox spacing="12" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS"
+                          style="-fx-padding: 20 28 20 32;
+                                 -fx-border-color: transparent #f0f2f8 transparent transparent;
+                                 -fx-border-width: 0 1 0 0;">
+                        <StackPane style="-fx-background-color: #fff3e0;
+                                          -fx-background-radius: 10;
+                                          -fx-min-width: 38; -fx-min-height: 38;">
+                            <Label text="✈️" style="-fx-font-size: 16px;"/>
+                        </StackPane>
+                        <VBox spacing="2">
+                            <Label text="DÉPART"
+                                   style="-fx-text-fill: #b0bcd8; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                            <Label fx:id="lblDepart"
+                                   style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 700;"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS"
+                          style="-fx-padding: 20 28 20 28;
+                                 -fx-border-color: transparent #f0f2f8 transparent transparent;
+                                 -fx-border-width: 0 1 0 0;">
+                        <StackPane style="-fx-background-color: #e8f8f0;
+                                          -fx-background-radius: 10;
+                                          -fx-min-width: 38; -fx-min-height: 38;">
+                            <Label text="🏁" style="-fx-font-size: 16px;"/>
+                        </StackPane>
+                        <VBox spacing="2">
+                            <Label text="ARRIVÉE"
+                                   style="-fx-text-fill: #b0bcd8; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                            <Label fx:id="lblArrival"
+                                   style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 700;"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS"
+                          style="-fx-padding: 20 28 20 28;
+                                 -fx-border-color: transparent #f0f2f8 transparent transparent;
+                                 -fx-border-width: 0 1 0 0;">
+                        <StackPane style="-fx-background-color: #eef3ff;
+                                          -fx-background-radius: 10;
+                                          -fx-min-width: 38; -fx-min-height: 38;">
+                            <Label text="🌤" style="-fx-font-size: 16px;"/>
+                        </StackPane>
+                        <VBox spacing="2">
+                            <Label text="SAISON"
+                                   style="-fx-text-fill: #b0bcd8; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                            <Label fx:id="lblSeason"
+                                   style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 700;"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="12" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS"
+                          style="-fx-padding: 20 32 20 28;">
+                        <StackPane style="-fx-background-color: #fce4ec;
+                                          -fx-background-radius: 10;
+                                          -fx-min-width: 38; -fx-min-height: 38;">
+                            <Label text="👁" style="-fx-font-size: 16px;"/>
+                        </StackPane>
+                        <VBox spacing="2">
+                            <Label text="VISITES"
+                                   style="-fx-text-fill: #b0bcd8; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                            <Label fx:id="lblVisits"
+                                   style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 700;"/>
+                        </VBox>
+                    </HBox>
+                </HBox>
+
+                <!-- ════════════════════════════════════════════ -->
+                <!--  GALERIE THUMBNAILS                           -->
+                <!-- ════════════════════════════════════════════ -->
+                <HBox fx:id="imagesContainer"
+                      spacing="10"
+                      style="-fx-padding: 20 32 0 32;
+                             -fx-background-color: #f7f8fc;"/>
+
+                <!-- ════════════════════════════════════════════ -->
+                <!--  2 COLONNES : À propos + Carte                -->
+                <!-- ════════════════════════════════════════════ -->
+                <HBox spacing="22"
+                      style="-fx-padding: 28 32 0 32;
+                             -fx-background-color: #f7f8fc;">
+
+                    <VBox spacing="22" HBox.hgrow="ALWAYS">
+
+                        <!-- À propos -->
+                        <VBox spacing="0"
+                              style="-fx-background-color: white;
+                                     -fx-background-radius: 16;
+                                     -fx-border-color: #eaedf5;
+                                     -fx-border-radius: 16;
+                                     -fx-border-width: 1;
+                                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 3);">
+                            <HBox alignment="CENTER_LEFT"
+                                  style="-fx-padding: 18 22 18 22;
+                                         -fx-border-color: transparent transparent #f4f6fb transparent;
+                                         -fx-border-width: 0 0 1 0;">
+                                <Label text="✦  À PROPOS"
+                                       style="-fx-text-fill: #3a6df0; -fx-font-size: 11px; -fx-font-weight: 800;"/>
+                            </HBox>
+                            <VBox spacing="14" style="-fx-padding: 22;">
+                                <Label text="Description de la destination"
+                                       style="-fx-text-fill: #1a2340; -fx-font-size: 20px; -fx-font-weight: 900;"/>
+                                <Label fx:id="lblDescription"
+                                       wrapText="true"
+                                       style="-fx-text-fill: #7a8aaa; -fx-font-size: 13.5px; -fx-line-spacing: 5;"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- Transports -->
+                        <VBox spacing="0"
+                              style="-fx-background-color: white;
+                                     -fx-background-radius: 16;
+                                     -fx-border-color: #eaedf5;
+                                     -fx-border-radius: 16;
+                                     -fx-border-width: 1;
+                                     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 3);">
+                            <HBox alignment="CENTER_LEFT" spacing="10"
+                                  style="-fx-padding: 18 22 18 22;
+                                         -fx-border-color: transparent transparent #f4f6fb transparent;
+                                         -fx-border-width: 0 0 1 0;">
+                                <Label text="🚌" style="-fx-font-size: 15px;"/>
+                                <Label text="Transports disponibles"
+                                       style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 800;"/>
+                            </HBox>
+                            <VBox fx:id="transportContainer"
+                                  spacing="8"
+                                  style="-fx-padding: 16 22 16 22;"/>
+                        </VBox>
+                    </VBox>
+
+                    <!-- Carte -->
+                    <VBox spacing="0" minWidth="480" maxWidth="520"
+                          style="-fx-background-color: white;
+                                 -fx-background-radius: 16;
+                                 -fx-border-color: #eaedf5;
+                                 -fx-border-radius: 16;
+                                 -fx-border-width: 1;
+                                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 12, 0, 0, 4);">
+                        <HBox alignment="CENTER_LEFT" spacing="10"
+                              style="-fx-padding: 18 22 18 22;
+                                     -fx-border-color: transparent transparent #f4f6fb transparent;
+                                     -fx-border-width: 0 0 1 0;">
+                            <Label text="🗺" style="-fx-font-size: 15px;"/>
+                            <Label text="Carte &amp; Itinéraire"
+                                   style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 800;"/>
+                        </HBox>
+                        <BorderPane fx:id="mapPane"
+                                    prefHeight="320"
+                                    style="-fx-background-color: #eef0f5;"/>
+                        <HBox spacing="0"
+                              style="-fx-background-color: #f8faff;
+                                     -fx-border-color: #f0f2f8 transparent transparent transparent;
+                                     -fx-border-width: 1 0 0 0;
+                                     -fx-background-radius: 0 0 16 16;">
+                            <VBox spacing="4" alignment="CENTER" HBox.hgrow="ALWAYS"
+                                  style="-fx-padding: 14 10 14 10;">
+                                <Label text="DISTANCE"
+                                       style="-fx-text-fill: #b0bcd8; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                                <Label fx:id="lblDistance" text="—"
+                                       style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 700;"/>
+                            </VBox>
+                            <Separator orientation="VERTICAL"
+                                       style="-fx-background-color: #e8edf5;" prefHeight="36"/>
+                            <VBox spacing="4" alignment="CENTER" HBox.hgrow="ALWAYS"
+                                  style="-fx-padding: 14 10 14 10;">
+                                <Label text="DURÉE"
+                                       style="-fx-text-fill: #b0bcd8; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                                <Label fx:id="lblDuration" text="—"
+                                       style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 700;"/>
+                            </VBox>
+                            <Separator orientation="VERTICAL"
+                                       style="-fx-background-color: #e8edf5;" prefHeight="36"/>
+                            <VBox spacing="4" alignment="CENTER" HBox.hgrow="ALWAYS"
+                                  style="-fx-padding: 14 10 14 10;">
+                                <Label text="TRANSPORT"
+                                       style="-fx-text-fill: #b0bcd8; -fx-font-size: 10px; -fx-font-weight: 700;"/>
+                                <Label fx:id="lblTransport" text="—"
+                                       style="-fx-text-fill: #1a2340; -fx-font-size: 14px; -fx-font-weight: 700;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <!-- ════════════════════════════════════════════ -->
+                <!--  MÉTÉO                                         -->
+                <!-- ════════════════════════════════════════════ -->
+                <VBox fx:id="weatherBox"
+                      spacing="0"
+                      visible="false"
+                      style="-fx-background-color: linear-gradient(to right, #2344d4, #3a6df0, #5882f2);
+                             -fx-background-radius: 18;
+                             -fx-padding: 28 32 28 32;
+                             -fx-effect: dropshadow(gaussian, rgba(36,68,212,0.35), 22, 0, 0, 8);">
+                    <VBox.margin>
+                        <Insets top="28" right="32" bottom="0" left="32"/>
+                    </VBox.margin>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <VBox spacing="5">
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <Label text="🌤" style="-fx-font-size: 16px;"/>
+                                <Label text="Météo à destination"
+                                       style="-fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: 800;"/>
+                            </HBox>
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <Label text="📍" style="-fx-font-size: 11px;"/>
+                                <Label fx:id="lblWeatherCity"
+                                       style="-fx-text-fill: rgba(255,255,255,0.6); -fx-font-size: 11px;"/>
+                            </HBox>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <HBox alignment="CENTER" spacing="6"
+                              style="-fx-background-color: rgba(255,255,255,0.15);
+                                     -fx-background-radius: 10;
+                                     -fx-border-color: rgba(255,255,255,0.25);
+                                     -fx-border-radius: 10;
+                                     -fx-border-width: 1;
+                                     -fx-padding: 8 16 8 16;">
+                            <Label text="📅" style="-fx-font-size: 12px;"/>
+                            <Label fx:id="lblWeatherPeriod"
+                                   style="-fx-text-fill: rgba(255,255,255,0.92);
+                                          -fx-font-size: 12px; -fx-font-weight: 600;"/>
+                        </HBox>
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="0" style="-fx-padding: 16 0 6 0;">
+                        <VBox spacing="2" HBox.hgrow="ALWAYS" alignment="BOTTOM_LEFT">
+                            <Label fx:id="lblWeatherTemp"
+                                   style="-fx-text-fill: white; -fx-font-size: 90px;
+                                          -fx-font-weight: 900; -fx-font-family: 'Segoe UI';"/>
+                            <Label fx:id="lblWeatherDesc"
+                                   style="-fx-text-fill: rgba(255,255,255,0.75);
+                                          -fx-font-size: 15px; -fx-padding: 0 0 8 4;"/>
+                        </VBox>
+                        <VBox spacing="12" alignment="TOP_LEFT"
+                              style="-fx-background-color: rgba(255,255,255,0.14);
+                                     -fx-background-radius: 14;
+                                     -fx-border-color: rgba(255,255,255,0.22);
+                                     -fx-border-radius: 14;
+                                     -fx-border-width: 1;
+                                     -fx-padding: 16 22 16 22;
+                                     -fx-min-width: 210;">
+                            <Label fx:id="lblWeatherFeels"
+                                   style="-fx-text-fill: rgba(255,255,255,0.92); -fx-font-size: 13px;"/>
+                            <Separator style="-fx-background-color: rgba(255,255,255,0.2);"/>
+                            <Label fx:id="lblWeatherHumidity"
+                                   style="-fx-text-fill: rgba(255,255,255,0.92); -fx-font-size: 13px;"/>
+                            <Separator style="-fx-background-color: rgba(255,255,255,0.2);"/>
+                            <Label fx:id="lblWeatherWind"
+                                   style="-fx-text-fill: rgba(255,255,255,0.92); -fx-font-size: 13px;"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT"
+                          style="-fx-background-color: rgba(255,255,255,0.12);
+                                 -fx-background-radius: 10;
+                                 -fx-border-color: rgba(255,255,255,0.18);
+                                 -fx-border-radius: 10;
+                                 -fx-border-width: 1;
+                                 -fx-padding: 12 20 12 20;">
+                        <HBox.margin><Insets top="10" bottom="10"/></HBox.margin>
+                        <Label text="Indice de voyage : "
+                               style="-fx-text-fill: rgba(255,255,255,0.75); -fx-font-size: 13px;"/>
+                        <Label fx:id="lblWeatherIndex" style="-fx-font-size: 13px; -fx-font-weight: 900;"/>
+                    </HBox>
+
+                    <Separator style="-fx-background-color: rgba(255,255,255,0.22);">
+                        <VBox.margin><Insets top="8" bottom="14"/></VBox.margin>
+                    </Separator>
+
+                    <Label text="PRÉVISIONS 5 JOURS"
+                           style="-fx-text-fill: rgba(255,255,255,0.5);
+                                  -fx-font-size: 11px; -fx-font-weight: 800;">
+                        <VBox.margin><Insets bottom="12"/></VBox.margin>
+                    </Label>
+
+                    <HBox fx:id="forecastContainer" spacing="12" alignment="CENTER"/>
+                </VBox>
+
+                <!-- ════════════════════════════════════════════ -->
+                <!--  BOUTON "REGARDER LA VIDÉO"                  -->
+                <!--  Affiché uniquement si video_path est rempli -->
+                <!-- ════════════════════════════════════════════ -->
+                <HBox alignment="CENTER"
+                      style="-fx-padding: 32 0 0 0;
+                             -fx-background-color: #f7f8fc;">
+                    <Button fx:id="btnWatchVideo"
+                            text="▶  Regarder la vidéo promotionnelle"
+                            onAction="#handleWatchVideo"
+                            visible="false"
+                            managed="false"
+                            style="-fx-background-color: linear-gradient(to right, #c0392b, #e74c3c);
+                                   -fx-text-fill: white;
+                                   -fx-font-size: 14px;
+                                   -fx-font-weight: 700;
+                                   -fx-background-radius: 30;
+                                   -fx-padding: 15 40 15 40;
+                                   -fx-cursor: hand;
+                                   -fx-effect: dropshadow(gaussian, rgba(231,76,60,0.45), 18, 0, 0, 6);"/>
+                </HBox>
+
+                <!-- ════════════════════════════════════════════ -->
+                <!--  SECTION VIDÉO INTÉGRÉE                      -->
+                <!--  Cachée par défaut (visible=false)           -->
+                <!--  Le contrôleur l'affiche au clic du bouton   -->
+                <!-- ════════════════════════════════════════════ -->
+                <VBox fx:id="videoSection"
+                      visible="false"
+                      managed="false"
+                      spacing="0"
+                      style="-fx-background-color: #0d1117;
+                             -fx-border-color: #e74c3c;
+                             -fx-border-width: 3 0 0 0;">
+                    <VBox.margin>
+                        <Insets top="0" right="0" bottom="44" left="0"/>
+                    </VBox.margin>
+
+                    <!-- En-tête de la section vidéo -->
+                    <HBox alignment="CENTER_LEFT" spacing="12"
+                          style="-fx-background-color: #141b2e;
+                                 -fx-padding: 14 20 14 20;
+                                 -fx-border-color: rgba(255,255,255,0.07);
+                                 -fx-border-width: 0 0 1 0;">
+                        <Label text="🎬" style="-fx-font-size: 18px;"/>
+                        <Label fx:id="lblVideoTitle"
+                               text="Vidéo promotionnelle"
+                               style="-fx-text-fill: white;
+                                      -fx-font-size: 14px;
+                                      -fx-font-weight: 700;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="btnCloseVideo"
+                                text="✕  Fermer"
+                                onAction="#handleCloseVideo"
+                                style="-fx-background-color: rgba(231,76,60,0.85);
+                                       -fx-text-fill: white;
+                                       -fx-font-weight: 700;
+                                       -fx-font-size: 12px;
+                                       -fx-background-radius: 8;
+                                       -fx-padding: 6 14 6 14;
+                                       -fx-cursor: hand;"/>
+                    </HBox>
+
+                    <!-- Zone MediaView : le contrôleur injecte la MediaView ici via StackPane -->
+                    <StackPane fx:id="videoContainer"
+                               minHeight="400"
+                               prefHeight="430"
+                               style="-fx-background-color: black;">
+
+                        <!-- Fond noir de base -->
+                        <Pane style="-fx-background-color: black;"/>
+
+                        <!-- Spinner de chargement -->
+                        <VBox fx:id="videoLoadingPane"
+                              alignment="CENTER"
+                              spacing="16">
+                            <ProgressIndicator prefWidth="52" prefHeight="52"/>
+                            <Label fx:id="lblVideoLoading"
+                                   text="⏳ Chargement de la vidéo..."
+                                   style="-fx-text-fill: rgba(255,255,255,0.65);
+                                          -fx-font-size: 13px;"/>
+                        </VBox>
+
+                        <!-- Panneau d'erreur (caché par défaut) -->
+                        <VBox fx:id="videoErrorPane"
+                              alignment="CENTER"
+                              spacing="12"
+                              visible="false"
+                              managed="false">
+                            <Label text="⚠️" style="-fx-font-size: 40px;"/>
+                            <Label fx:id="lblVideoError"
+                                   text="Vidéo introuvable"
+                                   wrapText="true"
+                                   style="-fx-text-fill: #ff7675;
+                                          -fx-font-size: 13px;
+                                          -fx-font-weight: 700;
+                                          -fx-alignment: center;"/>
+                        </VBox>
+
+                    </StackPane>
+
+                    <!-- Barre de contrôles (cachée jusqu'à la fin du chargement) -->
+                    <HBox fx:id="videoControls"
+                          alignment="CENTER_LEFT"
+                          spacing="10"
+                          visible="false"
+                          managed="false"
+                          style="-fx-background-color: #0d1220;
+                                 -fx-padding: 12 18 12 18;
+                                 -fx-border-color: rgba(255,255,255,0.05);
+                                 -fx-border-width: 1 0 0 0;">
+
+                        <!-- Play / Pause -->
+                        <Button fx:id="btnPlayPause"
+                                text="⏸  Pause"
+                                onAction="#handlePlayPause"
+                                style="-fx-background-color: #3a6df0;
+                                       -fx-text-fill: white;
+                                       -fx-font-weight: 700;
+                                       -fx-font-size: 12px;
+                                       -fx-background-radius: 16;
+                                       -fx-padding: 8 18 8 18;
+                                       -fx-cursor: hand;"/>
+
+                        <!-- Stop -->
+                        <Button fx:id="btnStop"
+                                text="⏹  Stop"
+                                onAction="#handleStop"
+                                style="-fx-background-color: rgba(255,255,255,0.08);
+                                       -fx-text-fill: white;
+                                       -fx-font-weight: 700;
+                                       -fx-font-size: 12px;
+                                       -fx-background-radius: 16;
+                                       -fx-border-color: rgba(255,255,255,0.18);
+                                       -fx-border-radius: 16;
+                                       -fx-border-width: 1;
+                                       -fx-padding: 8 18 8 18;
+                                       -fx-cursor: hand;"/>
+
+                        <Separator orientation="VERTICAL"
+                                   style="-fx-background-color: rgba(255,255,255,0.12);"
+                                   prefHeight="20"/>
+
+                        <!-- Slider de progression -->
+                        <Slider fx:id="timeSlider"
+                                min="0" max="100" value="0"
+                                HBox.hgrow="ALWAYS"
+                                style="-fx-accent: #3a6df0;"/>
+
+                        <!-- Affichage du temps -->
+                        <Label fx:id="lblVideoTime"
+                               text="0:00 / 0:00"
+                               style="-fx-text-fill: rgba(255,255,255,0.5);
+                                      -fx-font-size: 11px;"/>
+
+                        <Separator orientation="VERTICAL"
+                                   style="-fx-background-color: rgba(255,255,255,0.12);"
+                                   prefHeight="20"/>
+
+                        <!-- Contrôle du volume -->
+                        <Label text="🔊"
+                               style="-fx-font-size: 15px; -fx-text-fill: rgba(255,255,255,0.6);"/>
+                        <Slider fx:id="volumeSlider"
+                                min="0" max="1" value="1.0"
+                                prefWidth="85"
+                                style="-fx-accent: #3a6df0;"/>
+
+                    </HBox>
+
+                </VBox>
+                <!-- ════ FIN SECTION VIDÉO ════ -->
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
