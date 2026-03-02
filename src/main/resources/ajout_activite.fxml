@@ -12,7 +12,7 @@
             pannable="true"
             vbarPolicy="AS_NEEDED"
             hbarPolicy="NEVER"
-            stylesheets="@ajout.css">
+            stylesheets="@form_activite.css">
 
     <content>
         <VBox spacing="22" styleClass="page">

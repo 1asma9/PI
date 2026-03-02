@@ -1,0 +1,214 @@
+.boRoot {
+    -fx-background-color: #e7ded5;
+    -fx-font-family: "Segoe UI";
+}
+
+.boTopBar {
+    -fx-padding: 14 18;
+    -fx-background-color: #d7c9bd;
+}
+
+.boBrand {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+}
+
+.boSidebar {
+    -fx-padding: 18 14;
+    -fx-pref-width: 190;
+    -fx-background-color: #d7c9bd;
+}
+
+.boSideItem {
+    -fx-text-fill: #2b2b2b;
+    -fx-font-size: 13px;
+}
+
+.boSideItemActive {
+    -fx-text-fill: #2b2b2b;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-background-color: rgba(201, 162, 74, 0.35);
+    -fx-padding: 10 12;
+    -fx-background-radius: 12;
+}
+
+.boContent {
+    -fx-padding: 22 22 22 22;
+}
+
+.boTitle {
+    -fx-font-size: 22px;
+    -fx-font-weight: 800;
+}
+
+.boFilters {
+    -fx-padding: 10 12;
+    -fx-background-color: rgba(255,255,255,0.55);
+    -fx-background-radius: 16;
+    -fx-border-color: rgba(0,0,0,0.08);
+    -fx-border-radius: 16;
+}
+
+.boInput {
+    -fx-pref-width: 320;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
+.boCombo {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
+.boCard {
+    -fx-padding: 14;
+    -fx-background-color: rgba(255,255,255,0.75);
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: rgba(0,0,0,0.08);
+}
+
+.boActions {
+    -fx-padding: 10 0 0 0;
+}
+
+.boBtnGold {
+    -fx-background-color: #c9a24a;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 14;
+    -fx-padding: 10 18;
+}
+
+.boBtnDark {
+    -fx-background-color: #173b3b;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 14;
+    -fx-padding: 10 18;
+}
+
+.boBtnDanger {
+    -fx-background-color: #e05b5b;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-background-radius: 14;
+    -fx-padding: 10 18;
+}
+
+.boBtnGhost {
+    -fx-background-color: transparent;
+    -fx-border-color: rgba(0,0,0,0.2);
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 9 16;
+    -fx-font-weight: 700;
+}
+/* =========================
+   TABLE CARD (container)
+   ========================= */
+.tableCard {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: rgba(0,0,0,0.06);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 22, 0, 0, 10);
+    -fx-padding: 14;
+}
+/* =========================
+   TABLE CARD (container)
+   ========================= */
+.boCard {
+    -fx-padding: 14;
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: rgba(0,0,0,0.06);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 22, 0, 0, 10);
+}
+
+/* =========================
+   TABLEVIEW (Destinations style)
+   ========================= */
+.boTable {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+}
+
+/* Remove ugly background layers */
+.boTable .virtual-flow {
+    -fx-background-color: transparent;
+}
+.boTable .corner {
+    -fx-background-color: transparent;
+}
+
+/* Header background + rounded feeling */
+.boTable .column-header-background {
+    -fx-background-color: #f4efe7;
+    -fx-background-radius: 14;
+    -fx-background-insets: 0 0 8 0;
+    -fx-padding: 10 10 10 10;
+}
+
+/* Header cells */
+.boTable .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.boTable .column-header .label {
+    -fx-text-fill: #2b2b2b;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+}
+
+/* Rows */
+.boTable .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-cell-size: 38px;
+}
+.boTable .table-row-cell:filled:selected,
+.boTable .table-row-cell:filled:hover {
+    -fx-background-color: #f7f1e7;
+}
+
+/* Zebra */
+.boTable .table-row-cell:odd {
+    -fx-background-color: #fbf8f3;
+}
+
+/* Cells */
+.boTable .table-cell {
+    -fx-border-color: transparent;
+    -fx-padding: 10 12 10 12;
+    -fx-text-fill: #3a3a3a;
+    -fx-font-size: 12.5px;
+}
+
+/* Subtle separators */
+.boTable .table-row-cell:filled {
+    -fx-border-color: rgba(0,0,0,0.04);
+    -fx-border-width: 0 0 1 0;
+}
+
+/* Scrollbar minimal */
+.boTable .scroll-bar:vertical,
+.boTable .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.boTable .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+.boTable .scroll-bar .thumb {
+    -fx-background-color: rgba(201, 162, 74, 0.35);
+    -fx-background-radius: 10;
+}
+.boTable .scroll-bar .increment-button,
+.boTable .scroll-bar .decrement-button {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}

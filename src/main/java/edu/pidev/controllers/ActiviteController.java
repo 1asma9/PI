@@ -22,12 +22,9 @@ public class ActiviteController {
     @FXML private TextField tfDuree;
     @FXML private TextArea taDescription;
 
-    // ✅ NEW (from your FXML)
     @FXML private TextField tfImageUrl;
-
     @FXML private Label lblMessage;
 
-    // ✅ optional preview (only if you keep an ImageView in FXML)
     @FXML private ImageView imgPreview;
 
     private final ActiviteService service = new ActiviteService();
@@ -36,7 +33,6 @@ public class ActiviteController {
     public void initialize() {
         System.out.println("[DEBUG_LOG] ActiviteController (AJOUT) chargé");
 
-        // ✅ live preview when user types/pastes a link
         if (tfImageUrl != null) {
             tfImageUrl.textProperty().addListener((obs, oldV, newV) -> previewImage(newV));
         }
@@ -44,6 +40,7 @@ public class ActiviteController {
 
     private void previewImage(String url) {
         if (imgPreview == null) return;
+
         if (url == null || url.trim().isEmpty()) {
             imgPreview.setImage(null);
             return;
@@ -51,20 +48,23 @@ public class ActiviteController {
 
         String u = url.trim();
 
-        // Only preview direct image links or local path
         try {
             if (u.startsWith("http://") || u.startsWith("https://")) {
                 imgPreview.setImage(new Image(u, true));
-            } else if (u.matches("^[A-Za-z]:\\\\.*")) { // windows path
+                return;
+            }
+
+            // Windows local path
+            if (u.matches("^[A-Za-z]:\\\\.*")) {
                 String uri = new java.io.File(u).toURI().toString();
                 imgPreview.setImage(new Image(uri, true));
-            } else if (u.startsWith("/")) { // resource path
-                var res = getClass().getResource(u);
-                imgPreview.setImage(res != null ? new Image(res.toExternalForm(), true) : null);
-            } else { // resource without /
-                var res = getClass().getResource("/" + u);
-                imgPreview.setImage(res != null ? new Image(res.toExternalForm(), true) : null);
+                return;
             }
+
+            // Resource path
+            var res = u.startsWith("/") ? getClass().getResource(u) : getClass().getResource("/" + u);
+            imgPreview.setImage(res != null ? new Image(res.toExternalForm(), true) : null);
+
         } catch (Exception e) {
             imgPreview.setImage(null);
         }
@@ -91,7 +91,6 @@ public class ActiviteController {
 
             Activite a = new Activite(nom, description, type, prix, duree, lieu);
 
-            // ✅ store URL from user (NO API)
             String imageUrl = (tfImageUrl == null) ? null : tfImageUrl.getText();
             if (imageUrl != null) imageUrl = imageUrl.trim();
             a.setImageUrl((imageUrl == null || imageUrl.isBlank()) ? null : imageUrl);
@@ -101,7 +100,8 @@ public class ActiviteController {
             new Alert(Alert.AlertType.INFORMATION,
                     "L’activité a été ajoutée avec succès !").showAndWait();
 
-            switchTo(event, "/affichage_activites_back.fxml", "/affichage.css", "Affichage Activités");
+            // ✅ back office + back css
+            switchTo(event, "/affichage_activites_back.fxml", "/back_admin.css", "Back Office");
 
         } catch (NumberFormatException e) {
             showError("Erreur de saisie", "Prix ou durée invalide",
@@ -126,7 +126,8 @@ public class ActiviteController {
 
     @FXML
     private void retourListe(ActionEvent event) {
-        switchTo(event, "/affichage_activites_back.fxml", "/affichage.css", "Affichage Activités");
+        // ✅ FIX: back css (NOT affichage.css)
+        switchTo(event, "/affichage_activites_back.fxml", "/back_admin.css", "Back Office");
     }
 
     private void switchTo(ActionEvent event, String fxmlPath, String cssPath, String title) {
@@ -136,6 +137,8 @@ public class ActiviteController {
 
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
 
+            boolean wasMax = stage.isMaximized();
+
             Scene scene = stage.getScene();
             if (scene == null) {
                 scene = new Scene(root);
@@ -144,16 +147,27 @@ public class ActiviteController {
                 scene.setRoot(root);
             }
 
+            // ✅ IMPORTANT: apply css after root swap
             scene.getStylesheets().clear();
             var css = getClass().getResource(cssPath);
-            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+            if (css != null) {
+                scene.getStylesheets().add(css.toExternalForm());
+            } else {
+                System.out.println("❌ CSS introuvable: " + cssPath);
+            }
 
             stage.setTitle(title);
             stage.show();
 
+            // ✅ FORCE layout refresh (NO centerOnScreen)
             Platform.runLater(() -> {
-                stage.setMaximized(true);
-                stage.centerOnScreen();
+                root.applyCss();
+                root.layout();
+
+                if (wasMax) {
+                    stage.setMaximized(false);
+                    stage.setMaximized(true);
+                }
             });
 
         } catch (Exception e) {

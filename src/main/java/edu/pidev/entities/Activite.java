@@ -10,8 +10,11 @@ public class Activite {
     private int duree;
     private String lieu;
 
-    // ✅ NEW: image url (stored in DB column: image_url)
+    // ✅ image url (DB column: image_url)
     private String imageUrl;
+
+    // ✅ NEW: AI rating (DB column: ai_rating)
+    private Double aiRating; // Double so it can be NULL in DB
 
     public Activite() {}
 
@@ -57,9 +60,12 @@ public class Activite {
     public String getLieu() { return lieu; }
     public void setLieu(String lieu) { this.lieu = lieu; }
 
-    // ✅ NEW
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    // ✅ AI rating getters/setters
+    public Double getAiRating() { return aiRating; }
+    public void setAiRating(Double aiRating) { this.aiRating = aiRating; }
 
     @Override
     public String toString() {
@@ -72,6 +78,7 @@ public class Activite {
                 ", duree=" + duree +
                 ", lieu='" + lieu + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
+                ", aiRating=" + aiRating +
                 '}';
     }
 }

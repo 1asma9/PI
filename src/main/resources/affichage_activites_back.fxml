@@ -1,216 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import java.lang.String?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane xmlns="http://javafx.com/javafx/21"
-           xmlns:fx="http://javafx.com/fxml"
-           fx:controller="edu.pidev.controllers.AffichageActivitesBackController"
-           styleClass="pageRoot">
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.pidev.controllers.AffichageActivitesBackController"
+            styleClass="boRoot">
 
-    <!-- ================= MAIN PAGE ================= -->
-    <VBox styleClass="page">
+    <!-- ===== TOP BAR ===== -->
+    <top>
+        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="boTopBar">
+            <Label text="VOYAGE" styleClass="boBrand"/>
+            <Region HBox.hgrow="ALWAYS"/>
 
-        <ScrollPane fx:id="scroll"
-                    fitToWidth="true"
-                    pannable="true"
-                    vbarPolicy="NEVER"
-                    hbarPolicy="NEVER"
-                    styleClass="scroll">
+            <Button text="Front (Client)" onAction="#goFrontOffice" styleClass="boBtnGhost"/>
+        </HBox>
+    </top>
 
-            <content>
-                <!-- Centered content with max width -->
-                <VBox fx:id="pageContent"
-                      spacing="20"
-                      styleClass="pageContent"
-                      maxWidth="1180">
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <left>
+        <VBox spacing="14" styleClass="boSidebar">
+            <Label text="Dashboard" styleClass="boSideItem"/>
+            <Label text="Réservations" styleClass="boSideItem"/>
+            <Label text="Hébergements" styleClass="boSideItem"/>
 
-                    <!-- ================= HERO ================= -->
-                    <StackPane fx:id="hero" styleClass="hero">
+            <Separator />
 
-                        <ImageView fx:id="bannerImage"
-                                   styleClass="heroImage"/>
+            <Label text="Activités" styleClass="boSideItemActive"/>
+            <Label text="Chat" styleClass="boSideItem"/>
 
-                        <VBox styleClass="heroOverlay" mouseTransparent="true"/>
+            <Region VBox.vgrow="ALWAYS"/>
 
-                        <VBox spacing="10" styleClass="heroText" mouseTransparent="true">
-                            <Label text="TROUVEZ VOTRE PROCHAINE AVENTURE"
-                                   styleClass="heroTitle"/>
-                            <Label text="Des itinéraires soigneusement conçus avec des guides locaux experts."
-                                   wrapText="true"
-                                   styleClass="heroSubtitle"/>
-                        </VBox>
-
-                    </StackPane>
-
-                    <HBox alignment="CENTER_RIGHT" styleClass="section" spacing="10">
-                        <Button text="Front (Client)"
-                                onAction="#goFrontOffice"
-                                styleClass="resetBtn"/>
-                    </HBox>
-
-                    <!-- ================= SEARCH BAR ================= -->
-                    <HBox alignment="CENTER" styleClass="searchBarWrapper">
-
-                        <HBox spacing="10"
-                              alignment="CENTER_LEFT"
-                              styleClass="searchBarInner">
-
-                            <!-- LIEU -->
-                            <HBox spacing="8" alignment="CENTER_LEFT"
-                                  styleClass="searchBox" prefWidth="260">
-                                <Label text="📍" styleClass="searchIcon"/>
-                                <TextField fx:id="tfLieu"
-                                           promptText="Ville / Lieu"
-                                           styleClass="searchInput"/>
-                                <Button text="✕"
-                                        onAction="#onClearLieu"
-                                        styleClass="clearBtn"/>
-                            </HBox>
-
-                            <!-- PRIX -->
-                            <HBox spacing="8" alignment="CENTER_LEFT"
-                                  styleClass="searchBox" prefWidth="300">
-                                <Label text="💰" styleClass="searchIcon"/>
-                                <TextField fx:id="tfMinPrix"
-                                           promptText="Min"
-                                           styleClass="searchInput small"/>
-                                <Label text="—" styleClass="dash"/>
-                                <TextField fx:id="tfMaxPrix"
-                                           promptText="Max"
-                                           styleClass="searchInput small"/>
-                            </HBox>
-
-                            <!-- DEVISE -->
-                            <HBox spacing="8" alignment="CENTER_LEFT"
-                                  styleClass="searchBox" prefWidth="150">
-                                <Label text="💱" styleClass="searchIcon"/>
-                                <ComboBox fx:id="currencyBox"
-                                          prefWidth="110"
-                                          styleClass="currencyCombo">
-                                    <items>
-                                        <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value="TND"/>
-                                            <String fx:value="EUR"/>
-                                            <String fx:value="USD"/>
-                                            <String fx:value="GBP"/>
-                                        </FXCollections>
-                                    </items>
-                                </ComboBox>
-                            </HBox>
-
-                            <!-- SEARCH -->
-                            <Button text="Rechercher"
-                                    onAction="#onRechercher"
-                                    styleClass="searchBtn"
-                                    prefWidth="140"/>
-
-                            <!-- RESET -->
-                            <Button text="Tout afficher"
-                                    onAction="#onResetRecherche"
-                                    styleClass="resetBtn"
-                                    prefWidth="140"/>
-                        </HBox>
-                    </HBox>
-
-                    <!-- ================= CARDS SECTION (NEW) ================= -->
-                    <!-- ================= CARDS SECTION ================= -->
-                    <VBox spacing="10" styleClass="section">
-
-                        <HBox alignment="CENTER_LEFT">
-                            <Label text="Activités populaires" styleClass="sectionTitle"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label text="Filtrez puis choisissez une activité" styleClass="sectionHint"/>
-                        </HBox>
-
-                        <FlowPane fx:id="cardsContainer"
-                                  hgap="24" vgap="24"
-                                  styleClass="cardsWrap"
-                                  prefWrapLength="1100"/>
-                    </VBox>
-
-                </VBox>
-            </content>
-        </ScrollPane>
-    </VBox>
-
-    <!-- ================= MASCOT CHATBOT ================= -->
-    <StackPane fx:id="mascotLayer"
-               pickOnBounds="false"
-               styleClass="mascotLayer">
-
-        <StackPane.margin>
-            <Insets top="0" right="22" bottom="22" left="0"/>
-        </StackPane.margin>
-
-        <!-- CHAT BUBBLE -->
-        <VBox fx:id="chatBubble"
-              visible="false"
-              managed="false"
-              spacing="10"
-              styleClass="chatBubble">
-
-            <!-- header -->
-            <HBox alignment="CENTER_LEFT" spacing="8">
-                <Label text="🤖 NAVI" styleClass="chatTitle"/>
-
-                <Region>
-                    <HBox.hgrow>
-                        <Priority fx:constant="ALWAYS"/>
-                    </HBox.hgrow>
-                </Region>
-
-                <Button text="✕" onAction="#onMascotClose" styleClass="chatCloseBtn"/>
-            </HBox>
-
-            <Label fx:id="chatText"
-                   text="Salut !"
-                   wrapText="true"
-                   styleClass="chatSubtitle"/>
-
-            <!-- messages area -->
-            <ScrollPane fx:id="chatScroll"
-                        fitToWidth="true"
-                        vbarPolicy="AS_NEEDED"
-                        hbarPolicy="NEVER"
-                        styleClass="chatScroll">
-
-                <content>
-                    <VBox fx:id="chatMessages" spacing="8" styleClass="chatMessages"/>
-                </content>
-            </ScrollPane>
-
-            <!-- input row -->
-            <HBox spacing="8" alignment="CENTER_LEFT">
-                <TextField fx:id="chatInput"
-                           promptText="Écris ici..."
-                           styleClass="chatInputField"
-                           onAction="#onChatSend"/>
-
-                <Button text="Envoyer"
-                        onAction="#onChatSend"
-                        styleClass="chatSendBtn"/>
-            </HBox>
+            <Button text="Déconnexion" styleClass="boBtnGhost"/>
         </VBox>
+    </left>
 
-        <!-- MASCOT BUTTON -->
-        <Button fx:id="btnMascot"
-                onAction="#onMascotClick"
-                styleClass="mascotBtn"/>
+    <!-- ===== CENTER CONTENT ===== -->
+    <center>
+        <VBox spacing="16" styleClass="boContent" BorderPane.alignment="CENTER">
 
-    </StackPane>
+            <Label text="Gestion des Activités" styleClass="boTitle"/>
 
-</StackPane>
+            <!-- Filters row -->
+            <HBox spacing="12" alignment="CENTER_LEFT" styleClass="boFilters">
+                <TextField fx:id="tfSearch" promptText="Rechercher par nom / lieu..." styleClass="boInput" />
+
+                <ComboBox fx:id="cbType" prefWidth="160" styleClass="boCombo"/>
+                <ComboBox fx:id="cbLieu" prefWidth="160" styleClass="boCombo"/>
+
+                <Button text="Reset" onAction="#onReset" styleClass="boBtnGhost"/>
+            </HBox>
+
+            <!-- Table card -->
+            <VBox spacing="10" styleClass="boCard">
+                <TableView fx:id="tableActivites" styleClass="boTable" prefHeight="420">
+                    <columns>
+                        <TableColumn fx:id="colId" text="ID" prefWidth="70"/>
+                        <TableColumn fx:id="colNom" text="Nom" prefWidth="240"/>
+                        <TableColumn fx:id="colLieu" text="Lieu" prefWidth="160"/>
+                        <TableColumn fx:id="colType" text="Type" prefWidth="160"/>
+                        <TableColumn fx:id="colPrix" text="Prix" prefWidth="120"/>
+                        <TableColumn fx:id="colDuree" text="Durée" prefWidth="110"/>
+                        <TableColumn fx:id="colRating" text="AI" prefWidth="80"/>
+                    </columns>
+                </TableView>
+
+                <!-- Action buttons -->
+                <HBox spacing="12" alignment="CENTER" styleClass="boActions">
+                    <Button text="Ajouter" onAction="#onAjouter" styleClass="boBtnGold"/>
+                    <Button text="Modifier" onAction="#onModifier" styleClass="boBtnDark"/>
+                    <Button text="Supprimer" onAction="#onSupprimer" styleClass="boBtnDanger"/>
+                    <Button text="Retour" onAction="#goFrontOffice" styleClass="boBtnGhost"/>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </center>
+
+    <padding>
+        <Insets top="0" right="0" bottom="0" left="0"/>
+    </padding>
+</BorderPane>

@@ -2,6 +2,7 @@ package edu.pidev.controllers;
 
 import edu.pidev.entities.Activite;
 import edu.pidev.services.ActiviteService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +50,7 @@ public class ModifierActiviteController {
                 return;
             }
 
-            double prix = Double.parseDouble(tfPrix.getText().trim());
+            double prix = Double.parseDouble(tfPrix.getText().trim().replace(",", "."));
             int duree = Integer.parseInt(tfDuree.getText().trim());
 
             activiteSelectionnee.setNom(tfNom.getText().trim());
@@ -64,7 +65,6 @@ public class ModifierActiviteController {
             lblMessage.setStyle("-fx-text-fill: #27ae60; -fx-font-weight: bold;");
             lblMessage.setText("✅ Activité mise à jour avec succès !");
 
-
         } catch (NumberFormatException e) {
             lblMessage.setStyle("-fx-text-fill: #e74c3c; -fx-font-weight: bold;");
             lblMessage.setText("❌ Prix/Durée doivent être numériques.");
@@ -76,33 +76,50 @@ public class ModifierActiviteController {
 
     @FXML
     private void retour(ActionEvent event) {
+        switchToBackOffice(event);
+    }
+
+    private void switchToBackOffice(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/affichage_activites_back.fxml"));
             Parent root = loader.load();
 
-            Scene scene = new Scene(root);
+            Stage stage = (Stage) tfNom.getScene().getWindow();
+            boolean wasMax = stage.isMaximized();
 
-            var css = getClass().getResource("/affichage.css");
+            Scene scene = stage.getScene();
+            if (scene == null) {
+                scene = new Scene(root);
+                stage.setScene(scene);
+            } else {
+                scene.setRoot(root);
+            }
+
+            // ✅ IMPORTANT: apply the RIGHT css after swapping root
+            scene.getStylesheets().clear();
+            var css = getClass().getResource("/back_admin.css"); // <-- change if needed (/css/back_admin.css)
             if (css != null) {
                 scene.getStylesheets().add(css.toExternalForm());
             } else {
-                System.out.println("❌ CSS not found: /affichage.css");
+                System.out.println("❌ CSS not found: /back_admin.css");
             }
 
-            Stage stage = (Stage) tfNom.getScene().getWindow();
-
-            boolean wasMax = stage.isMaximized();
-            stage.setMaximized(false);
-
-            stage.setScene(scene);
-            stage.setTitle("Affichage Activités");
-
-            root.applyCss();
-            root.layout();
-
-            stage.setMaximized(wasMax || true); // keep maximized
-            stage.centerOnScreen();
+            stage.setTitle("Back Office");
             stage.show();
+
+            // ✅ refresh layout (NO centerOnScreen)
+            Platform.runLater(() -> {
+                root.applyCss();
+                root.layout();
+
+                if (wasMax) {
+                    stage.setMaximized(false);
+                    stage.setMaximized(true);
+                } else {
+                    // if you always want fullscreen:
+                    stage.setMaximized(true);
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
