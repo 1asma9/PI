@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import tools.AlertHelper;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 public class UserAvisController implements Initializable {
 
@@ -241,6 +243,28 @@ public class UserAvisController implements Initializable {
             tableAvis.getScene().setRoot(root);
         } catch (IOException e) {
             AlertHelper.showError("Erreur", "Could not go to main menu: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    void ouvrirChatbot() {
+        try {
+            // Charger le widget chatbot
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatbot_widget.fxml"));
+            Parent chatbotWidget = loader.load();
+
+            // Configurer le type
+            ChatbotController controller = loader.getController();
+            controller.setChatbotType("avis");
+
+            // Afficher dans une nouvelle fenêtre
+            Stage stage = new Stage();
+            stage.setTitle("Assistant Avis");
+            stage.setScene(new Scene(chatbotWidget));
+            stage.show();
+
+        } catch (IOException e) {
+            AlertHelper.showError("Erreur", "Impossible d'ouvrir le chatbot : " + e.getMessage());
         }
     }
 }
