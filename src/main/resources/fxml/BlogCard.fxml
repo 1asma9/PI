@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER"
+      prefHeight="380.0"
+      prefWidth="300.0"
+      style="-fx-background-color: #fffaf3;
+             -fx-background-radius: 20;
+             -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 20, 0, 0, 6);"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.BlogCardController">
+
+    <children>
+
+        <!-- ================= IMAGE ================= -->
+        <ImageView fx:id="blogImage"
+                   fitHeight="180.0"
+                   fitWidth="300.0"
+                   preserveRatio="false"
+                   style="-fx-background-color: #e6d5c3;
+                          -fx-background-radius: 20 20 0 0;">
+
+            <image>
+                <Image url="@../img/default-blog.png"/>
+            </image>
+        </ImageView>
+
+        <!-- ================= CONTENT ================= -->
+        <VBox prefHeight="200.0"
+              prefWidth="300.0"
+              spacing="12">
+
+            <padding>
+                <Insets top="18" left="18" right="18" bottom="18"/>
+            </padding>
+
+            <children>
+
+                <!-- Title -->
+                <Text fx:id="blogTitre"
+                      text="Titre du Blog"
+                      wrappingWidth="260"
+                      fill="#4e3b2a"
+                      style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+
+                <!-- Extrait -->
+                <Text fx:id="blogExtrait"
+                      text="Extrait du blog..."
+                      wrappingWidth="260"
+                      fill="#7a6a5a"
+                      style="-fx-font-size: 12px;" />
+
+                <!-- Date & Status -->
+                <HBox spacing="10">
+
+                    <Label fx:id="blogDate"
+                           text="27 Dec 2025"
+                           textFill="#a1887f"
+                           style="-fx-font-size: 11px;" />
+
+                    <Label fx:id="blogStatus"
+                           text="● Publié"
+                           textFill="#4CAF50"
+                           style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <!-- Action Buttons -->
+                <HBox alignment="CENTER"
+                      spacing="10">
+
+                    <VBox.margin>
+                        <Insets top="8"/>
+                    </VBox.margin>
+
+                    <!-- Voir -->
+                    <Button fx:id="viewBtn"
+                            text="Voir"
+                            prefWidth="80"
+                            onAction="#viewBlog"
+                            style="-fx-background-color: #c8a27c;
+                                   -fx-text-fill: white;
+                                   -fx-background-radius: 20;
+                                   -fx-cursor: hand;" />
+
+                    <!-- Modifier -->
+                    <Button fx:id="editBtn"
+                            text="Modifier"
+                            prefWidth="80"
+                            onAction="#editBlog"
+                            style="-fx-background-color: transparent;
+                                   -fx-border-color: #c8a27c;
+                                   -fx-border-radius: 20;
+                                   -fx-text-fill: #6b4f3b;
+                                   -fx-cursor: hand;" />
+
+                    <!-- Supprimer -->
+                    <Button fx:id="deleteBtn"
+                            text="Supprimer"
+                            prefWidth="80"
+                            onAction="#deleteBlog"
+                            style="-fx-background-color: #a47148;
+                                   -fx-text-fill: white;
+                                   -fx-background-radius: 20;
+                                   -fx-cursor: hand;" />
+                </HBox>
+
+            </children>
+        </VBox>
+
+    </children>
+</VBox>

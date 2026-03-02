@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox spacing="15.0"
+      style="-fx-background-color: white; -fx-padding: 20px; -fx-background-radius: 8px; -fx-border-color: #eee; -fx-border-radius: 8px;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.FrontendCommentCardController">
+
+    <!-- Avatar -->
+    <ImageView fx:id="userAvatar" fitHeight="50.0" fitWidth="50.0">
+        <image>
+            <Image url="@../img/default-avatar.png"/>
+        </image>
+    </ImageView>
+
+    <!-- Comment Content -->
+    <VBox spacing="8.0" HBox.hgrow="ALWAYS">
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="10.0">
+            <Text fx:id="userName" text="User Name"
+                  style="-fx-fill: #333; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+            <Text fx:id="commentDate" text="2 hours ago"
+                  style="-fx-fill: #999; -fx-font-size: 12px;"/>
+        </HBox>
+
+        <!-- Content -->
+        <Text fx:id="commentText" text="This is a comment..."
+              wrappingWidth="600"
+              style="-fx-fill: #555; -fx-font-size: 14px;"/>
+
+        <!-- Actions -->
+        <HBox spacing="15.0" alignment="CENTER_LEFT">
+            <HBox spacing="5.0" alignment="CENTER_LEFT" onMouseClicked="#toggleLike"
+                  style="-fx-cursor: hand;">
+                <Text fx:id="likeIcon" text="♥" style="-fx-fill: #999; -fx-font-size: 16px;"/>
+                <Label fx:id="likesLabel" text="0" style="-fx-text-fill: #999; -fx-font-size: 12px;"/>
+            </HBox>
+
+            <Button fx:id="deleteBtn" text="Delete" onAction="#deleteComment"
+                    style="-fx-background-color: transparent; -fx-text-fill: #e74c3c; -fx-font-size: 11px; -fx-cursor: hand;"/>
+        </HBox>
+    </VBox>
+</HBox>

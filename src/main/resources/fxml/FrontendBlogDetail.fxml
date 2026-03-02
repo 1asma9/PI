@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+
+<?import javafx.scene.shape.Rectangle?>
+<ScrollPane fitToWidth="true" fitToHeight="true"
+            style="-fx-background-color: white;"
+            stylesheets="@../css/FrontendBlogStyle.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.connexion3a8.controllers.FrontendBlogDetailController">
+
+    <content>
+        <VBox style="-fx-background-color: white;">
+
+            <!-- ===== HERO SECTION WITH IMAGE ===== -->
+            <StackPane prefHeight="500.0">
+                <!-- Background Image -->
+                <ImageView fx:id="blogImage"
+                           fitHeight="500.0" fitWidth="1366.0"
+                           preserveRatio="false">
+                    <image>
+                        <Image url="@../img/default-blog.png"/>
+                    </image>
+                </ImageView>
+
+                <!-- Dark Overlay -->
+                <Pane style="-fx-background-color: rgba(0, 0, 0, 0.5);"/>
+
+                <HBox alignment="TOP_LEFT" StackPane.alignment="TOP_LEFT">
+                    <padding>
+                        <Insets top="25.0" left="35.0"/>
+                    </padding>
+                    <Button text="&lt; Back"
+                            onAction="#goBackToBlogList"
+                            styleClass="back-chip"/>
+                </HBox>
+
+                <!-- Title and Breadcrumb -->
+                <VBox alignment="BOTTOM_LEFT" spacing="15.0">
+                    <padding>
+                        <Insets bottom="50.0" left="100.0" right="100.0"/>
+                    </padding>
+
+                    <!-- Slug -->
+                    <HBox spacing="8.0">
+                        <Label fx:id="blogCategory"
+                               text="slug"
+                               textFill="white"
+                               style="-fx-font-size: 12px; -fx-font-family: 'Montserrat';">
+                        </Label>
+                    </HBox>
+
+                    <!-- Title -->
+                    <Text fx:id="blogTitle"
+                          text="Doors-Off Helicopter Tour Of Kauai: My Review &amp; Photos"
+                          wrappingWidth="1000"
+                          style="-fx-fill: white; -fx-font-size: 42px; -fx-font-weight: bold; -fx-font-family: 'Montserrat';">
+                    </Text>
+
+                    <!-- Meta Info -->
+                    <HBox spacing="15.0">
+                        <Label fx:id="blogAuthorName"
+                               text="by User"
+                               textFill="white"
+                               style="-fx-font-size: 13px; -fx-font-family: 'Montserrat';"/>
+                        <Label text="|" textFill="white"/>
+                        <Text fx:id="blogDate"
+                              text="February 5, 2026"
+                              style="-fx-fill: white; -fx-font-size: 13px; -fx-font-family: 'Montserrat';"/>
+                    </HBox>
+                </VBox>
+            </StackPane>
+
+            <!-- ===== MAIN CONTENT AREA ===== -->
+            <HBox spacing="40.0" alignment="TOP_CENTER" style="-fx-background-color: white;">
+                <padding>
+                    <Insets top="60.0" bottom="80.0" left="100.0" right="100.0"/>
+                </padding>
+
+                <!-- LEFT: Blog Content -->
+                <VBox spacing="25.0" prefWidth="700.0" HBox.hgrow="ALWAYS">
+
+                    <!-- Translation -->
+                    <HBox spacing="12.0" alignment="CENTER_LEFT">
+                        <Label text="Translate to:"
+                               style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #1f2937;"/>
+
+                        <ComboBox fx:id="languageComboBox" prefWidth="190.0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Français (FR)"/>
+                                    <String fx:value="English (EN)"/>
+                                    <String fx:value="Español (ES)"/>
+                                    <String fx:value="العربية (AR)"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <Button fx:id="translateBtn"
+                                text="Translate"
+                                onAction="#handleTranslate"
+                                style="-fx-background-color: #143a59; -fx-text-fill: white; -fx-background-radius: 20; -fx-cursor: hand;"/>
+
+                        <Button fx:id="resetBtn"
+                                text="Original"
+                                onAction="#resetTranslation"
+                                style="-fx-background-color: transparent; -fx-border-color: #143a59; -fx-border-radius: 20; -fx-text-fill: #143a59; -fx-cursor: hand;"/>
+                    </HBox>
+
+                    <!-- Excerpt -->
+                    <Text fx:id="blogExcerpt"
+                          text="The Na Pali coast on Kauai is probably the most beautiful coastline in the world..."
+                          wrappingWidth="700"
+                          style="-fx-fill: #555; -fx-font-size: 18px; -fx-font-style: italic; -fx-line-spacing: 5px; -fx-font-family: 'Georgia';">
+                    </Text>
+
+                    <Separator prefWidth="700"/>
+
+                    <!-- Main Content -->
+                    <Text fx:id="blogContent"
+                          text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+                          wrappingWidth="700"
+                          style="-fx-fill: #333; -fx-font-size: 16px; -fx-line-spacing: 8px; -fx-font-family: 'Georgia';">
+                    </Text>
+
+                </VBox>
+
+                <!-- RIGHT: Sidebar (Social Share, Author, etc.) -->
+                <VBox spacing="30.0" prefWidth="300.0">
+
+                    <!-- Share Section -->
+                    <VBox spacing="15.0"
+                          style="-fx-background-color: #f8f9fa; -fx-padding: 25px; -fx-background-radius: 8px;">
+                        <Label text="SHARE THIS POST"
+                               style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #333;"/>
+
+                        <HBox spacing="10.0">
+                            <Button text="📘 Facebook"
+                                    style="-fx-background-color: #3b5998; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
+                            <Button text="🐦 Twitter"
+                                    style="-fx-background-color: #1da1f2; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
+                        </HBox>
+
+                        <HBox spacing="10.0">
+                            <Button text="📌 Pinterest"
+                                    style="-fx-background-color: #bd081c; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
+                            <Button text="✉️ Email"
+                                    style="-fx-background-color: #666; -fx-text-fill: white; -fx-font-size: 11px; -fx-padding: 8px 15px; -fx-cursor: hand;"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- Author Info -->
+                    <VBox spacing="15.0"
+                          style="-fx-background-color: #f8f9fa; -fx-padding: 25px; -fx-background-radius: 8px;">
+                        <Label text="ABOUT THE AUTHOR"
+                               style="-fx-font-weight: bold; -fx-font-size: 12px; -fx-text-fill: #333;"/>
+
+                        <HBox spacing="15.0" alignment="CENTER_LEFT">
+                            <ImageView fitWidth="60.0" fitHeight="60.0">
+                                <image>
+                                    <Image url="@../img/author-avatar.png"/>
+                                </image>
+                            </ImageView>
+
+                            <VBox spacing="5.0">
+                                <Label text="David &amp; Intan"
+                                       style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                                <Text text="Travel bloggers sharing adventures around the world."
+                                      wrappingWidth="180"
+                                      style="-fx-fill: #666; -fx-font-size: 12px;"/>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+            </HBox>
+            <!-- Ajouter avant la section commentaires -->
+            <VBox spacing="20.0" style="-fx-background-color: white; -fx-padding: 30px; -fx-background-radius: 10px;">
+                <HBox alignment="CENTER_LEFT" spacing="12.0"
+                      style="-fx-background-color: #f5f8fb; -fx-padding: 12px 16px; -fx-background-radius: 10px;">
+                    <Label text="Audience Sentiment:"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1f2937;"/>
+                    <Label fx:id="sentimentLabel"
+                           text="Not analyzed yet"
+                           style="-fx-font-size: 14px; -fx-text-fill: #1f2937;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="sentimentBreakdownLabel"
+                           text=""
+                           style="-fx-font-size: 12px; -fx-text-fill: #6b7280;"/>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <Label text="Rate this blog:" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+
+                    <!-- Étoiles cliquables -->
+                    <HBox fx:id="ratingStarsInput" spacing="5.0">
+                        <Text fx:id="ratingStar1" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating1"/>
+                        <Text fx:id="ratingStar2" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating2"/>
+                        <Text fx:id="ratingStar3" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating3"/>
+                        <Text fx:id="ratingStar4" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating4"/>
+                        <Text fx:id="ratingStar5" text="★" style="-fx-fill: #ddd; -fx-font-size: 24px; -fx-cursor: hand;"
+                              onMouseClicked="#setRating5"/>
+                    </HBox>
+
+                    <Label fx:id="currentRatingLabel" text="0/5" style="-fx-text-fill: #666;"/>
+                </HBox>
+
+                <TextField fx:id="reviewUserNameInput" promptText="Your name"/>
+                <TextArea fx:id="reviewTextInput" promptText="Write your review (optional)" prefRowCount="3"/>
+                <Button text="Submit Rating" onAction="#submitRating" styleClass="btn-primary"/>
+            </VBox>
+
+            <!-- ===== COMMENTS SECTION ===== -->
+            <VBox spacing="30.0" style="-fx-background-color: #f8f9fa; -fx-padding: 60px 100px;">
+
+                <!-- Comments Header -->
+                <VBox spacing="10.0">
+                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                        <Text text="COMMENTS"
+                              style="-fx-fill: #333; -fx-font-size: 24px; -fx-font-weight: bold; -fx-font-family: 'Montserrat';"/>
+                        <Text fx:id="commentCount"
+                              text="(0)"
+                              style="-fx-fill: #999; -fx-font-size: 20px;"/>
+                    </HBox>
+                    <Rectangle width="60.0" height="3.0" style="-fx-fill: #FF6B6B;"/>
+                </VBox>
+
+                <!-- Comment Form -->
+                <VBox spacing="15.0"
+                      style="-fx-background-color: white; -fx-padding: 30px; -fx-background-radius: 8px;">
+
+                    <Label text="Leave a Comment"
+                           style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+
+                    <TextField fx:id="commentUserInput"
+                               promptText="Your Name *"
+                               style="-fx-font-size: 14px; -fx-padding: 12px; -fx-background-radius: 5px; -fx-border-color: #ddd; -fx-border-radius: 5px;"/>
+
+                    <TextField fx:id="commentImageInput"
+                               promptText="Image URL (optional)"
+                               style="-fx-font-size: 14px; -fx-padding: 12px; -fx-background-radius: 5px; -fx-border-color: #ddd; -fx-border-radius: 5px;"/>
+
+                    <TextArea fx:id="commentContentInput"
+                              promptText="Your Comment *"
+                              prefRowCount="5"
+                              wrapText="true"
+                              style="-fx-font-size: 14px; -fx-padding: 12px; -fx-background-radius: 5px; -fx-border-color: #ddd; -fx-border-radius: 5px;"/>
+
+                    <Button text="Post Comment"
+                            onAction="#submitComment"
+                            style="-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 12px 30px; -fx-background-radius: 5px; -fx-cursor: hand;"/>
+                </VBox>
+
+                <!-- Comments List -->
+                <VBox fx:id="commentsContainer" spacing="20.0">
+                    <!-- Comments will be loaded here dynamically -->
+                </VBox>
+
+            </VBox>
+
+        </VBox>
+    </content>
+</ScrollPane>
