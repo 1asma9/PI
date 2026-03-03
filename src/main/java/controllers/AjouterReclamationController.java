@@ -11,6 +11,7 @@ import services.ReclamationService;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import services.EmailService;
 
 public class AjouterReclamationController {
 
@@ -20,6 +21,7 @@ public class AjouterReclamationController {
     private TextArea txtDescription;
 
     private ReclamationService reclamationService = new ReclamationService();
+    private EmailService emailService = new EmailService();
     private int currentUserId = 1;
 
     @FXML
@@ -35,7 +37,11 @@ public class AjouterReclamationController {
         try {
             Reclamation r = new Reclamation(currentUserId, titre, desc);
             reclamationService.addEntity(r);
-            showAlert("Success", "Complaint added!");
+
+            // ✉️ ENVOYER L'EMAIL
+            emailService.envoyerEmailNouvelleReclamationHTML(titre, desc);
+
+            showAlert("Success", "Complaint added! Notification email sent.");
             annuler();
         } catch (SQLException e) {
             showAlert("Error", "Could not add complaint: " + e.getMessage());

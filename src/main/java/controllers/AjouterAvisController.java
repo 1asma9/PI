@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import services.EmailService;
 
 public class AjouterAvisController implements Initializable {
 
@@ -22,6 +23,7 @@ public class AjouterAvisController implements Initializable {
     private TextArea txtCommentaire;
 
     private AvisService avisService = new AvisService();
+    private EmailService emailService = new EmailService();
     private int currentUserId = 1;
 
     @Override
@@ -42,7 +44,11 @@ public class AjouterAvisController implements Initializable {
         try {
             Avis a = new Avis(currentUserId, note, comment);
             avisService.addEntity(a);
-            showAlert("Success", "Review added!");
+
+            // ✉️ ENVOYER L'EMAIL
+            emailService.envoyerEmailNouvelAvisHTML(note, comment);
+
+            showAlert("Success", "Review added! Notification email sent.");
             annuler();
         } catch (SQLException e) {
             showAlert("Error", "Could not add: " + e.getMessage());

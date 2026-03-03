@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import services.ChatbotService;
 import services.ReclamationService;
 import services.AvisService;
+import services.EmailService;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -34,6 +35,7 @@ public class ChatbotController implements Initializable {
 
     private ReclamationService reclamationService = new ReclamationService();
     private AvisService avisService = new AvisService();
+    private EmailService emailService = new EmailService();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -243,16 +245,24 @@ public class ChatbotController implements Initializable {
                 Reclamation r = new Reclamation(currentUserId, infos[0], infos[1]);
                 reclamationService.addEntity(r);
 
-                afficherMessageBot("✅ Parfait ! Votre réclamation a été créée avec succès.\n\n" +
-                        "Elle sera traitée dans les plus brefs délais. Vous pouvez consulter " +
-                        "son statut dans la liste des réclamations.");
+                // ✉️ ENVOYER EMAIL
+                emailService.envoyerEmailNouvelleReclamationHTML(infos[0], infos[1]);
+
+                afficherMessageBot(
+                        "✅ Parfait ! Votre réclamation a été créée avec succès et un email de notification a été envoyé.\n\n"
+                                +
+                                "Elle sera traitée dans les plus brefs délais. Vous pouvez consulter " +
+                                "son statut dans la liste des réclamations.");
 
             } else {
                 int note = Integer.parseInt(infos[0]);
                 Avis a = new Avis(currentUserId, note, infos[1]);
                 avisService.addEntity(a);
 
-                afficherMessageBot("✅ Merci beaucoup pour votre avis !\n\n" +
+                // ✉️ ENVOYER EMAIL
+                emailService.envoyerEmailNouvelAvisHTML(note, infos[1]);
+
+                afficherMessageBot("✅ Merci beaucoup pour votre avis ! Un email de notification a été envoyé.\n\n" +
                         "Votre retour est précieux et nous aide à améliorer nos services.");
             }
 

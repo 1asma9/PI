@@ -4,9 +4,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -109,6 +109,7 @@ public class UserAvisController implements Initializable {
         // Actions Column
         if (colActions != null) {
             colActions.setCellFactory(param -> new TableCell<>() {
+
                 private final Button btnEdit = new Button("✏");
                 private final Button btnDelete = new Button("🗑");
 
@@ -136,6 +137,7 @@ public class UserAvisController implements Initializable {
                         setGraphic(hbox);
                     }
                 }
+
             });
         }
     }
@@ -226,16 +228,6 @@ public class UserAvisController implements Initializable {
     }
 
     @FXML
-    void retourMenu(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/voyage/dashboard.fxml"));
-            tableAvis.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
-        }
-    }
-
-    @FXML
     void switchToReclamations() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/reclamations/mes_reclamations.fxml"));
@@ -278,6 +270,16 @@ public class UserAvisController implements Initializable {
             stage.show();
         } catch (IOException e) {
             AlertHelper.showError("Erreur", "Impossible d'ouvrir le chatbot : " + e.getMessage());
+        }
+    }
+
+    @FXML
+    void retourMenu(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/user_layout.fxml"));
+            tableAvis.getScene().setRoot(root);
+        } catch (IOException e) {
+            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
         }
     }
 }

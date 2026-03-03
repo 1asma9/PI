@@ -20,33 +20,7 @@ public class AdminLayoutController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Charger les réclamations par défaut (le dashboard a été supprimé)
         afficherAdminReclamations();
-    }
-
-    @FXML
-    void afficherDashboard() {
-        chargerPage("/voyage/dashboard.fxml");
-    }
-
-    @FXML
-    void afficherAjouter() {
-        chargerPage("/voyage/admin/ajouter.fxml");
-    }
-
-    @FXML
-    void afficherGererHebergements() {
-        chargerPage("/voyage/admin/gerer_hebergements.fxml");
-    }
-
-    @FXML
-    void afficherReservationsAdmin() {
-        chargerPage("/voyage/admin/reservations.fxml");
-    }
-
-    @FXML
-    void afficherUtilisateurs() {
-        chargerPage("/voyage/admin/utilisateurs.fxml");
     }
 
     @FXML

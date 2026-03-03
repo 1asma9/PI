@@ -25,21 +25,6 @@ public class UserLayoutController implements Initializable {
     }
 
     @FXML
-    void afficherDashboard() {
-        chargerPage("/voyage/dashboard.fxml");
-    }
-
-    @FXML
-    void afficherReserver() {
-        chargerPage("/voyage/reserver.fxml");
-    }
-
-    @FXML
-    void afficherChat() {
-        chargerPage("/voyage/chat.fxml");
-    }
-
-    @FXML
     void afficherMesReclamations() {
         chargerPage("/reclamations/mes_reclamations.fxml");
     }

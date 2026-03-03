@@ -5,9 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -94,6 +94,7 @@ public class UserReclamationsController implements Initializable {
 
         if (colDateReponse != null) {
             colDateReponse.setCellFactory(column -> new TableCell<Reclamation, Date>() {
+
                 @Override
                 protected void updateItem(Date date, boolean empty) {
                     super.updateItem(date, empty);
@@ -139,7 +140,9 @@ public class UserReclamationsController implements Initializable {
         }
 
         // Actions Column
-        if (colActions != null) {
+        if (colActions != null)
+
+        {
             colActions.setCellFactory(param -> new TableCell<>() {
                 private final Button btnEdit = new Button("✏");
                 private final Button btnDelete = new Button("🗑");
@@ -255,19 +258,6 @@ public class UserReclamationsController implements Initializable {
     }
 
     @FXML
-    void retourMenu(ActionEvent event) {
-        // With the new layout, we don't really need a retour button anymore
-        // But if needed, we can reload the dashboard
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/voyage/dashboard.fxml"));
-            Parent root = loader.load();
-            tableReclamations.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
-        }
-    }
-
-    @FXML
     void ouvrirChatbot() {
         try {
             // Charger le widget chatbot
@@ -286,6 +276,16 @@ public class UserReclamationsController implements Initializable {
 
         } catch (IOException e) {
             AlertHelper.showError("Erreur", "Impossible d'ouvrir le chatbot : " + e.getMessage());
+        }
+    }
+
+    @FXML
+    void retourMenu(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/user_layout.fxml"));
+            tableReclamations.getScene().setRoot(root);
+        } catch (IOException e) {
+            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
         }
     }
 }
