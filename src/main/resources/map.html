@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta charset="utf-8">
-    <title>Carte OpenStreetMap</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <meta charset="utf-8" />
+    <title>Carte</title>
+
+    <link rel="stylesheet" href="leaflet.css"/>
+
     <style>
         html, body { height: 100%; margin: 0; padding: 0; }
         #map { width: 100%; height: 100%; }
@@ -11,49 +13,52 @@
         .leaflet-tile { border: none !important; }
     </style>
 </head>
+
 <body>
 <div id="map"></div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
+<script src="leaflet.js"></script>
 
-    // ==============================
-    // INITIALISATION CARTE
-    // ==============================
-    let map = L.map('map', {
+<script>
+    if (typeof L === "undefined") {
+        document.body.innerHTML = "<h3 style='color:red;padding:20px'>Leaflet non chargé</h3>";
+        throw new Error("Leaflet non chargé");
+    }
+
+    const map = L.map('map', {
         zoomControl: true,
         fadeAnimation: false,
         markerZoomAnimation: false
     }).setView([36.8065, 10.1815], 6);
 
-    // CartoDB Voyager : bien plus stable dans JavaFX WebView que OSM standard
     const cartoLayer = L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+        {
             attribution: '&copy; OpenStreetMap &copy; CARTO',
             subdomains: 'abcd',
             maxZoom: 19
-        });
+        }
+    );
 
-    // OSM standard en fallback
     const osmLayer = L.tileLayer(
-        'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
             attribution: '&copy; OpenStreetMap contributors',
             maxZoom: 19
-        });
+        }
+    );
 
-    // Si CartoDB échoue → basculer sur OSM
     let cartoFailed = false;
-    cartoLayer.on('tileerror', function() {
+    cartoLayer.on('tileerror', function () {
         if (!cartoFailed) {
             cartoFailed = true;
-            map.removeLayer(cartoLayer);
+            try { map.removeLayer(cartoLayer); } catch(e){}
             osmLayer.addTo(map);
         }
     });
 
     cartoLayer.addTo(map);
 
-    // Forcer le redraw des tuiles après déplacement (corrige les zones grises)
     map.on('moveend zoomend', function () {
         map.eachLayer(function (layer) {
             if (layer instanceof L.TileLayer) {
@@ -64,125 +69,72 @@
 
     let markerStart, markerEnd, polyline;
 
-    let userLat = 36.8065;
-    let userLng = 10.1815;
+    const userLat = 36.8065;
+    const userLng = 10.1815;
 
-    markerStart = L.marker([userLat, userLng])
-        .addTo(map)
-        .bindPopup("Départ")
-        .openPopup();
+    markerStart = L.marker([userLat, userLng]).addTo(map).bindPopup("Départ").openPopup();
 
-    // ==============================
-    // FONCTION PRINCIPALE
-    // ==============================
-    window.setDestination = function(endLat, endLng, transportType) {
-        if(markerEnd) map.removeLayer(markerEnd);
-        if(polyline) map.removeLayer(polyline);
+    window.setDestination = function (endLat, endLng, transportType) {
 
-        markerEnd = L.marker([endLat, endLng])
-            .addTo(map)
-            .bindPopup("Arrivée");
+        if (markerEnd) map.removeLayer(markerEnd);
+        if (polyline)  map.removeLayer(polyline);
 
-        let bounds = L.latLngBounds([[userLat, userLng],[endLat, endLng]]);
-        map.fitBounds(bounds, {padding:[50,50]});
+        markerEnd = L.marker([endLat, endLng]).addTo(map).bindPopup("Arrivée");
 
-        console.log("Transport reçu:", transportType);
+        const bounds = L.latLngBounds([[userLat, userLng], [endLat, endLng]]);
+        map.fitBounds(bounds, { padding: [50, 50] });
 
-        // ==============================
-        // ✈️ AVION (ligne droite rouge)
-        // ==============================
-        if (transportType.toLowerCase() === "avion") {
-            polyline = L.polyline([[userLat, userLng],[endLat, endLng]], {
-                color: 'red',
-                dashArray: '6,6',
-                weight: 4
+        const t = (transportType || "").toLowerCase().trim();
+
+        if (t === "avion" || t.includes("vol")) {
+            polyline = L.polyline([[userLat, userLng], [endLat, endLng]], {
+                color: "red", dashArray: "6,6", weight: 4
             }).addTo(map);
-
-            const distance = map.distance(
-                L.latLng(userLat, userLng),
-                L.latLng(endLat, endLng)
-            ) / 1000;
-
-            const durationMin = ((distance / 900) * 60).toFixed(0);
-
-            if(window.javaConnector) {
-                window.javaConnector.sendRouteInfo(distance.toFixed(2), durationMin, "Avion");
+            const distanceKm = map.distance([userLat, userLng], [endLat, endLng]) / 1000;
+            const durationMin = ((distanceKm / 900) * 60).toFixed(0);
+            if (window.javaConnector && window.javaConnector.sendRouteInfo) {
+                window.javaConnector.sendRouteInfo(distanceKm.toFixed(2), durationMin, "Avion");
             }
             return;
         }
 
-        // ==============================
-        // 🚆 TRAIN (ligne droite verte)
-        // ==============================
-        if (transportType.toLowerCase() === "train") {
-            polyline = L.polyline([[userLat, userLng],[endLat, endLng]], {
-                color: 'green',
-                dashArray: '3,8',
-                weight: 4
+        if (t === "train") {
+            polyline = L.polyline([[userLat, userLng], [endLat, endLng]], {
+                color: "green", dashArray: "3,8", weight: 4
             }).addTo(map);
-
-            const distance = map.distance(
-                L.latLng(userLat, userLng),
-                L.latLng(endLat, endLng)
-            ) / 1000;
-
-            const durationMin = ((distance / 150) * 60).toFixed(0);
-
-            if(window.javaConnector) {
-                window.javaConnector.sendRouteInfo(distance.toFixed(2), durationMin, "Train");
+            const distanceKm = map.distance([userLat, userLng], [endLat, endLng]) / 1000;
+            const durationMin = ((distanceKm / 150) * 60).toFixed(0);
+            if (window.javaConnector && window.javaConnector.sendRouteInfo) {
+                window.javaConnector.sendRouteInfo(distanceKm.toFixed(2), durationMin, "Train");
             }
             return;
         }
 
-        // ==============================
-        // 🚗 🚲 🚶 OSRM (gratuit, sans clé)
-        // ==============================
-        let osrmProfile;
-        if (transportType.toLowerCase() === "voiture") {
-            osrmProfile = "driving";
-        } else if (transportType.toLowerCase() === "vélo") {
-            osrmProfile = "cycling";
-        } else if (transportType.toLowerCase() === "piéton") {
-            osrmProfile = "foot";
-        } else {
-            osrmProfile = "driving";
-        }
+        let osrmProfile = "driving";
+        if (t === "voiture") osrmProfile = "driving";
+        else if (t === "vélo" || t === "velo") osrmProfile = "cycling";
+        else if (t === "piéton" || t === "pieton") osrmProfile = "foot";
 
-        const osrmUrl = `https://router.project-osrm.org/route/v1/${osrmProfile}/`
-            + `${userLng},${userLat};${endLng},${endLat}`
-            + `?overview=full&geometries=geojson`;
+        const osrmUrl =
+            `https://router.project-osrm.org/route/v1/${osrmProfile}/${userLng},${userLat};${endLng},${endLat}?overview=full&geometries=geojson`;
 
         fetch(osrmUrl)
-            .then(response => response.json())
+            .then(r => r.json())
             .then(data => {
-                if (!data.routes || data.routes.length === 0) {
-                    alert("Aucune route trouvée !");
-                    return;
-                }
-
+                if (!data.routes || data.routes.length === 0) return;
                 const route = data.routes[0];
                 const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
-
-                polyline = L.polyline(coords, {
-                    color: 'blue',
-                    weight: 5
-                }).addTo(map);
-
-                map.fitBounds(polyline.getBounds(), {padding:[50,50]});
-
-                const distance = (route.distance / 1000).toFixed(2);
-                const duration = (route.duration / 60).toFixed(0);
-
-                if(window.javaConnector) {
-                    window.javaConnector.sendRouteInfo(distance, duration, transportType);
+                polyline = L.polyline(coords, { color: "blue", weight: 5 }).addTo(map);
+                map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
+                const distanceKm = (route.distance / 1000).toFixed(2);
+                const durationMin = (route.duration / 60).toFixed(0);
+                if (window.javaConnector && window.javaConnector.sendRouteInfo) {
+                    window.javaConnector.sendRouteInfo(distanceKm, durationMin, transportType || "Route");
                 }
             })
-            .catch(err => {
-                console.error("Erreur OSRM:", err);
-                alert("Erreur lors du calcul de la route");
-            });
-    }
-
+            .catch(err => console.error("Erreur OSRM:", err));
+    };
 </script>
+
 </body>
 </html>

@@ -85,7 +85,10 @@ public class AdminDestinationController {
                 }
             }
         });
-        navRetour.setOnAction(e -> openView("/app/main_layout_admin.fxml"));        colStatut.setCellValueFactory(new PropertyValueFactory<>("statut"));
+
+        navRetour.setOnAction(e -> openView("/app/main_layout_admin.fxml"));
+
+        colStatut.setCellValueFactory(new PropertyValueFactory<>("statut"));
         colSaison.setCellValueFactory(new PropertyValueFactory<>("meilleureSaison"));
         colLatitude.setCellValueFactory(new PropertyValueFactory<>("latitude"));
         colLongitude.setCellValueFactory(new PropertyValueFactory<>("longitude"));
@@ -103,6 +106,17 @@ public class AdminDestinationController {
         // ACTIONS BOUTONS
         // ==============================
 
+        btnAjouter.setOnAction(e -> openForm(null));
+
+        btnModifier.setOnAction(e -> {
+            Destination selected = tableDestinations.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                openForm(selected);
+            } else {
+                showAlert("Veuillez sélectionner une destination à modifier.");
+            }
+        });
+
         btnRetour.setOnAction(e -> {
             try {
                 System.out.println("Chemin: " + getClass().getResource("/main_layout_admin.fxml"));
@@ -116,13 +130,16 @@ public class AdminDestinationController {
                 showAlert("Erreur: " + ex.getMessage());
             }
         });
+
         btnSupprimer.setOnAction(e -> {
             Destination selected = tableDestinations.getSelectionModel().getSelectedItem();
             if (selected != null) {
                 service.deleteEntity(selected);
                 loadData();
                 applyFilter();
-            } else showAlert("Veuillez sélectionner une destination à supprimer.");
+            } else {
+                showAlert("Veuillez sélectionner une destination à supprimer.");
+            }
         });
 
         // ==============================
@@ -133,9 +150,7 @@ public class AdminDestinationController {
         navTransports.setOnAction(e -> openView("/AdminTransportView.fxml"));
         navImages.setOnAction(e -> openView("/AdminImageView.fxml"));
         navClient.setOnAction(e -> openView("/ClientDestinationListView.fxml"));
-        // dans initialize(), après les autres boutons
     }
-
     // ==============================
     // CHARGEMENT
     // ==============================

@@ -13,9 +13,8 @@ public class CommentaireService implements ICommentaire<Commentaire> {
     Connection cnx;
 
     public CommentaireService() {
-        MyConnection mc = MyConnection.getInstance();
+        cnx = MyConnection.getInstance().getCnx();
     }
-
     @Override
     public void ajouter(Commentaire c, int blogId) throws SQLException {
         // 🔥 NOUVEAU : Filtrer les bad words avant d'ajouter

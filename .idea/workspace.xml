@@ -5,40 +5,68 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ActiviteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesBackController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesFrontController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ModifierActiviteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ReservationFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/Activite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/ReservationActivite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/AiRatingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ReservationActiviteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainAffichageActivites.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainFx.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/CurrencyService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ReservationActiviteValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ValidationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/HebergementGalleryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites_back.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites_front.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ajout_activite.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/hebergement_gallery.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/back_admin.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/form_activite.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/activity_banner.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/banner.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/layers-2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/layers.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-icon-2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-shadow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/mascot.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/leaflet.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/leaflet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/modifier_activite.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reservation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reservation_form.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AdminAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminAvisController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AdminReclamationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminReclamationsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/AnalyticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/AnalyticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UserAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UserAvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UserReclamationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UserReclamationsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/BlogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/BlogService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/PersonneService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/PersonneService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/SmartRecommendationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/SmartRecommendationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tests/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tests/MainClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ActiviteController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesBackController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesFrontController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ModifierActiviteController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ReservationFormController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/Activite.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/ReservationActivite.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ReservationActiviteService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainAffichageActivites.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainFx.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/CurrencyService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ReservationActiviteValidator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ValidationException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDetailsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tools/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/EmailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/admin_reclamations.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/admin_reclamations.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MainLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MainLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/entities/Hebergement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/entities/Hebergement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/services/HebergementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/HebergementService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/FrontendBlogCard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/FrontendBlogCard.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/map.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +77,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="FxmlFile" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -67,15 +97,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;hebergement&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "hebergement",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ferja/OneDrive/Bureau/Gestion_Hebergemeny/src/main/resources",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "CSS"
+    ]
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ferja\OneDrive\Bureau\Gestion_Hebergemeny\src\main\resources" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="Gestion_Hebergemeny" />
@@ -101,5 +146,16 @@
       <updated>1772447940279</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java</url>
+          <line>120</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

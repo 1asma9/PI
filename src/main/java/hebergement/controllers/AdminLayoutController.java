@@ -45,6 +45,29 @@ public class AdminLayoutController {
         }
     }
 
+    public void loadPageWithCss(String fxmlPath, String cssPath, String title) {
+        try {
+            var url = getClass().getResource(fxmlPath);
+            if (url == null) {
+                System.out.println("❌ INTROUVABLE: " + fxmlPath);
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(url);
+            Parent page = loader.load();
+
+            if (cssPath != null) {
+                var css = getClass().getResource(cssPath);
+                if (css != null) page.getStylesheets().add(css.toExternalForm());
+            }
+
+            contentPane.getChildren().setAll(page);
+            pageTitle.setText(title);
+        } catch (Exception e) {
+            System.out.println("❌ ERREUR: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     public void goDashboard() {
         loadPage("/app/dashboard.fxml", "Dashboard");
@@ -81,6 +104,28 @@ public class AdminLayoutController {
     }
 
     @FXML
+    public void goBlogList() {
+        loadPage("/fxml/BlogList.fxml", "Gestion Blog");
+    }
+
+    @FXML
+    public void goBlogDashboard() {
+        loadPage("/fxml/Dashboard.fxml", "Dashboard Blog");
+    }
+
+    @FXML
+    public void goAdminReclamations() {
+        loadPage("/admin_reclamations.fxml", "Gestion Réclamations");
+    }
+
+
+
+    @FXML
+    public void goActiviteBack() {
+        loadPageWithCss("/affichage_activites_back.fxml", "/affichage_activites_back.css", "Gestion Activités");
+    }
+
+    @FXML
     public void goLogout() {
         try {
             MainLayoutController.setCurrentUser(null);
@@ -94,18 +139,8 @@ public class AdminLayoutController {
             e.printStackTrace();
         }
     }
-    @FXML
-    public void goBlogList() {
-        loadPage("/fxml/BlogList.fxml", "Gestion Blog");
+    public void loadPageWithRoot(Parent root) {
+        contentPane.getChildren().setAll(root);
+        pageTitle.setText("");
     }
-
-    @FXML
-    public void goBlogDashboard() {
-        loadPage("/fxml/Dashboard.fxml", "Dashboard Blog");
-    }
-    @FXML
-    public void goAdminReclamations() {
-        loadPage("/admin_reclamations.fxml", "Gestion Réclamations");
-    }
-
 }

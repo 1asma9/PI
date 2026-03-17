@@ -14,4 +14,5 @@ public class MainLayoutController {
     public static utilisateur getCurrentUser() {
         return currentUser;
     }
+
 }

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.pidev.controllers.ActiviteController"
+            fitToWidth="true"
+            pannable="true"
+            vbarPolicy="AS_NEEDED"
+            hbarPolicy="NEVER"
+            stylesheets="@form_activite.css">
+
+    <content>
+        <VBox spacing="22" styleClass="page">
+
+            <!-- ================= TOP BANNER (RECTANGLE) ================= -->
+            <StackPane styleClass="topBanner">
+                <VBox alignment="CENTER" spacing="6">
+                    <Label text="AJOUT D’UNE ACTIVITÉ"
+                           styleClass="bannerKicker"/>
+
+                    <Label text="Créez votre prochaine aventure"
+                           styleClass="bannerTitle"/>
+
+                    <Label text="Renseignez les informations essentielles pour proposer une expérience claire, attractive et prête à être réservée."
+                           wrapText="true"
+                           maxWidth="820"
+                           styleClass="bannerSub"/>
+                </VBox>
+            </StackPane>
+
+            <!-- SPACE BETWEEN -->
+            <Region prefHeight="12"/>
+
+            <!-- ================= MAIN CARD (FORM) ================= -->
+            <VBox spacing="18" styleClass="mainCard">
+
+                <!-- Section title -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Region styleClass="sectionBar"/>
+                    <Label text="Détails de l’activité" styleClass="sectionTitle"/>
+                </HBox>
+
+                <!-- Nom -->
+                <Label text="Nom de l'activité" styleClass="fieldLabel"/>
+                <TextField fx:id="tfNom"
+                           promptText="Ex : Kayak et exploration marine"
+                           styleClass="input"/>
+
+                <!-- Type -->
+                <Label text="Type d'activité" styleClass="fieldLabel"/>
+                <TextField fx:id="tfType"
+                           promptText="Ex : Aventure · Sport · Culture · Relaxation"
+                           styleClass="input"/>
+
+                <!-- Lieu -->
+                <Label text="Lieu" styleClass="fieldLabel"/>
+                <TextField fx:id="tfLieu"
+                           promptText="Ex : Tabarka · Tunis · Sousse · Djerba"
+                           styleClass="input"/>
+
+                <!-- Prix + Durée -->
+                <HBox spacing="18" alignment="CENTER_LEFT">
+                    <VBox spacing="6">
+                        <Label text="Prix (DT)" styleClass="fieldLabelInline"/>
+                        <TextField fx:id="tfPrix"
+                                   promptText="150"
+                                   styleClass="inputSmall"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="Durée (min)" styleClass="fieldLabelInline"/>
+                        <TextField fx:id="tfDuree"
+                                   promptText="300"
+                                   styleClass="inputSmall"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Description -->
+                <Label text="Description" styleClass="fieldLabel"/>
+                <TextArea fx:id="taDescription"
+                          promptText="Décrivez l’activité : expérience, inclus, horaires, etc."
+                          wrapText="true"
+                          prefRowCount="4"
+                          styleClass="inputArea"/>
+
+                <!-- Image URL -->
+                <Label text="Image (URL ou /images/...)" styleClass="fieldLabel"/>
+                <TextField fx:id="tfImageUrl"
+                           promptText="Ex : https://...jpg  ou  /images/activity_banner.jpg"
+                           styleClass="input"/>
+
+                <Label text="Astuce : mets une URL http(s) ou un chemin resource comme /images/banner.jpg"
+                       styleClass="hintLabel"/>
+
+                <!-- Preview block -->
+                <HBox spacing="14" alignment="CENTER_LEFT" styleClass="previewRow">
+                    <ImageView fx:id="imgPreview"
+                               fitWidth="180"
+                               fitHeight="110"
+                               preserveRatio="false"
+                               smooth="true"
+                               styleClass="previewImage"/>
+
+                    <VBox spacing="6">
+                        <Label text="Aperçu image" styleClass="previewTitle"/>
+                        <Label text="L’image s’affichera ici si le lien/chemin est valide."
+                               wrapText="true"
+                               maxWidth="520"
+                               styleClass="previewSub"/>
+                    </VBox>
+                </HBox>
+
+                <Separator styleClass="formSep"/>
+
+                <!-- Message -->
+                <Label fx:id="lblMessage"
+                       text=""
+                       styleClass="msgLabel"/>
+
+                <!-- Buttons -->
+                <HBox spacing="12" alignment="CENTER_RIGHT" styleClass="formActions">
+                    <Button text="Enregistrer"
+                            onAction="#ajouterActivite"
+                            styleClass="btnGold"/>
+
+                    <Button text="Vider"
+                            onAction="#viderChamps"
+                            styleClass="btnOutline"/>
+
+                    <Button text="⬅ Retour"
+                            onAction="#retourListe"
+                            styleClass="btnOutline"/>
+                </HBox>
+
+            </VBox>
+
+            <Region prefHeight="20"/>
+
+        </VBox>
+    </content>
+</ScrollPane>

@@ -31,16 +31,47 @@ public class ClientLayoutController {
     public void loadPage(String fxmlPath) {
         try {
             var url = getClass().getResource(fxmlPath);
+            System.out.println("🔎 loadPage url=" + url + " path=" + fxmlPath);
+
             if (url == null) {
                 System.out.println("❌ INTROUVABLE: " + fxmlPath);
                 return;
             }
-            Parent page = FXMLLoader.load(url);
+
+            FXMLLoader loader = new FXMLLoader(url);
+            Parent page = loader.load();
+            contentPane.getChildren().setAll(page);
+
+        } catch (Exception e) {
+            System.out.println("❌ ERREUR CHARGEMENT: " + fxmlPath);
+            e.printStackTrace();
+        }
+    }
+
+    public void loadPageWithCss(String fxmlPath, String cssPath) {
+        try {
+            var url = getClass().getResource(fxmlPath);
+            if (url == null) {
+                System.out.println("❌ INTROUVABLE: " + fxmlPath);
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(url);
+            Parent page = loader.load();
+
+            if (cssPath != null) {
+                var css = getClass().getResource(cssPath);
+                if (css != null) page.getStylesheets().add(css.toExternalForm());
+            }
+
             contentPane.getChildren().setAll(page);
         } catch (Exception e) {
             System.out.println("❌ ERREUR: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void loadPageWithRoot(Parent root) {
+        contentPane.getChildren().setAll(root);
     }
 
     @FXML
@@ -49,13 +80,51 @@ public class ClientLayoutController {
     }
 
     @FXML
-    public void goReservation() {
-        loadPage("/app/reservation.fxml");
+    public void goChat() {
+        loadPage("/app/chat.fxml");
     }
 
     @FXML
-    public void goChat() {
-        loadPage("/app/chat.fxml");
+    public void goFrontendBlog() {
+        loadPage("/fxml/FrontendBlogList.fxml");
+    }
+
+    @FXML
+    public void goRatingStars() {
+        // ✅ CORRIGÉ : était "/fxml/RatingStars.fxml"
+        loadPage("/user_avis.fxml");
+    }
+
+    @FXML
+    public void goMesReclamations() {
+        // ✅ CORRIGÉ : était "/mes_reclamations.fxml"
+        loadPage("/user_reclamations.fxml");
+    }
+
+    @FXML
+    public void goActiviteFront() {
+        loadPageWithCss("/affichage_activites_front.fxml", "/affichage.css");
+    }
+
+    @FXML
+    public void goAjoutActivite() {
+        loadPageWithCss("/ajout_activite.fxml", "/form_activite.css");
+    }
+
+    @FXML
+    public void goModifierActivite() {
+        loadPageWithCss("/modifier_activite.fxml", "/affichage.css");
+    }
+
+    @FXML
+    public void goReservation() {
+        // ✅ chemin corrigé
+        loadPage("/app/hebergement_gallery.fxml");
+    }
+    @FXML
+    public void goMonEspace() {
+        System.out.println("✅ CLICK Mon Espace");
+        loadPage("/app/MonEspace.fxml");  // ✅ nom EXACT comme dans resources
     }
 
     @FXML
@@ -71,21 +140,5 @@ public class ClientLayoutController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void loadPageWithRoot(Parent root) {
-        contentPane.getChildren().setAll(root);
-    }
-    @FXML
-    public void goFrontendBlog() {
-        loadPage("/fxml/FrontendBlogList.fxml");
-    }
-
-    @FXML
-    public void goRatingStars() {
-        loadPage("/fxml/RatingStars.fxml");
-    }
-    @FXML
-    public void goMesReclamations() {
-        loadPage("/mes_reclamations.fxml");
     }
 }

@@ -13,6 +13,10 @@ public class Hebergement {
     // ✅ NEW
     private Double latitude;
     private Double longitude;
+    private Integer idUser;
+
+    public Integer getIdUser() { return idUser; }
+    public void setIdUser(Integer idUser) { this.idUser = idUser; }
 
     public Hebergement() {}
 

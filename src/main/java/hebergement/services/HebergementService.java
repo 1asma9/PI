@@ -13,49 +13,40 @@ public class HebergementService implements Iservice<Hebergement> {
     private final Connection cnx = MyConnection.getInstance().getCnx();
 
     // ===== CREATE (PreparedStatement) =====
-    @Override
     public void addEntity(Hebergement h) throws SQLException {
 
         String sql =
-                "INSERT INTO hebergement(description, adresse, prix, type_id, image_path, latitude, longitude) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "INSERT INTO hebergement(id_user, description, adresse, prix, type_id, image_path, latitude, longitude) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(sql)) {
-            pst.setString(1, h.getDescription());
-            pst.setString(2, h.getAdresse());
-            pst.setDouble(3, h.getPrix());
+            // id_user
+            if (h.getIdUser() == null) pst.setNull(1, Types.INTEGER);
+            else pst.setInt(1, h.getIdUser());
 
-            if (h.getTypeId() == null) pst.setNull(4, Types.INTEGER);
-            else pst.setInt(4, h.getTypeId());
+            pst.setString(2, h.getDescription());
+            pst.setString(3, h.getAdresse());
+            pst.setDouble(4, h.getPrix());
 
-            pst.setString(5, h.getImagePath());
+            if (h.getTypeId() == null) pst.setNull(5, Types.INTEGER);
+            else pst.setInt(5, h.getTypeId());
 
-            if (h.getLatitude() == null) pst.setNull(6, Types.DOUBLE);
-            else pst.setDouble(6, h.getLatitude());
+            pst.setString(6, h.getImagePath());
 
-            if (h.getLongitude() == null) pst.setNull(7, Types.DOUBLE);
-            else pst.setDouble(7, h.getLongitude());
+            if (h.getLatitude() == null) pst.setNull(7, Types.DOUBLE);
+            else pst.setDouble(7, h.getLatitude());
+
+            if (h.getLongitude() == null) pst.setNull(8, Types.DOUBLE);
+            else pst.setDouble(8, h.getLongitude());
 
             pst.executeUpdate();
         }
     }
 
     // ===== CREATE (Statement) pédagogique =====
+    // ⚠️ conseillé: utiliser addEntity() avec PreparedStatement
     public void addEntityStatement(Hebergement h) throws SQLException {
-
-        String typeVal = (h.getTypeId() == null) ? "NULL" : h.getTypeId().toString();
-        String imgVal = (h.getImagePath() == null) ? "NULL" : ("'" + h.getImagePath() + "'");
-
-        String sql = "INSERT INTO hebergement(description, adresse, prix, type_id, image_path) VALUES ('"
-                + h.getDescription() + "', '"
-                + h.getAdresse() + "', "
-                + h.getPrix() + ", "
-                + typeVal + ", "
-                + imgVal + ")";
-
-        try (Statement st = cnx.createStatement()) {
-            st.executeUpdate(sql);
-        }
+        throw new UnsupportedOperationException("Utilise addEntity(Hebergement) avec PreparedStatement.");
     }
 
     // ===== UPDATE (PreparedStatement) =====
@@ -83,9 +74,11 @@ public class HebergementService implements Iservice<Hebergement> {
             else pst.setDouble(7, h.getLongitude());
 
             pst.setInt(8, id);
+
             pst.executeUpdate();
         }
     }
+
     // ===== DELETE =====
     @Override
     public void deleteEntity(Hebergement h) throws SQLException {
@@ -96,22 +89,32 @@ public class HebergementService implements Iservice<Hebergement> {
     }
 
     // ===== CREATE + RETURN ID =====
+    // ⚠️ inclu id_user aussi (sinon tu perds la relation)
     public int addEntityReturnId(Hebergement h) throws SQLException {
 
-        String sql = """
-            INSERT INTO hebergement(description, adresse, prix, type_id, image_path)
-            VALUES (?, ?, ?, ?, ?)
-        """;
+        String sql =
+                "INSERT INTO hebergement(id_user, description, adresse, prix, type_id, image_path, latitude, longitude) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement pst = cnx.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            pst.setString(1, h.getDescription());
-            pst.setString(2, h.getAdresse());
-            pst.setDouble(3, h.getPrix());
 
-            if (h.getTypeId() == null) pst.setNull(4, Types.INTEGER);
-            else pst.setInt(4, h.getTypeId());
+            if (h.getIdUser() == null) pst.setNull(1, Types.INTEGER);
+            else pst.setInt(1, h.getIdUser());
 
-            pst.setString(5, h.getImagePath());
+            pst.setString(2, h.getDescription());
+            pst.setString(3, h.getAdresse());
+            pst.setDouble(4, h.getPrix());
+
+            if (h.getTypeId() == null) pst.setNull(5, Types.INTEGER);
+            else pst.setInt(5, h.getTypeId());
+
+            pst.setString(6, h.getImagePath());
+
+            if (h.getLatitude() == null) pst.setNull(7, Types.DOUBLE);
+            else pst.setDouble(7, h.getLatitude());
+
+            if (h.getLongitude() == null) pst.setNull(8, Types.DOUBLE);
+            else pst.setDouble(8, h.getLongitude());
 
             pst.executeUpdate();
 
@@ -138,18 +141,7 @@ public class HebergementService implements Iservice<Hebergement> {
              ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
-                Hebergement h = new Hebergement();
-                h.setId(rs.getInt("id"));
-                h.setDescription(rs.getString("description"));
-                h.setAdresse(rs.getString("adresse"));
-                h.setPrix(rs.getDouble("prix"));
-                h.setTypeId((Integer) rs.getObject("type_id"));
-                h.setTypeLibelle(rs.getString("type_libelle"));
-                h.setImagePath(rs.getString("image_path"));
-
-                h.setLatitude((Double) rs.getObject("latitude"));
-                h.setLongitude((Double) rs.getObject("longitude"));
-
+                Hebergement h = mapRow(rs);
                 list.add(h);
             }
         }
@@ -157,4 +149,41 @@ public class HebergementService implements Iservice<Hebergement> {
         return list;
     }
 
+    // ===== READ BY USER (UNE SEULE FOIS ✅) =====
+    public List<Hebergement> getByUser(int idUser) throws SQLException {
+        List<Hebergement> list = new ArrayList<>();
+
+        String sql =
+                "SELECT h.*, t.libelle AS type_libelle " +
+                        "FROM hebergement h " +
+                        "LEFT JOIN type_hebergement t ON h.type_id = t.id " +
+                        "WHERE h.id_user = ? " +
+                        "ORDER BY h.id DESC";
+
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setInt(1, idUser);
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapRow(rs));
+                }
+            }
+        }
+        return list;
+    }
+
+    // ===== Mapper (évite duplication) =====
+    private Hebergement mapRow(ResultSet rs) throws SQLException {
+        Hebergement h = new Hebergement();
+        h.setId(rs.getInt("id"));
+        h.setDescription(rs.getString("description"));
+        h.setAdresse(rs.getString("adresse"));
+        h.setPrix(rs.getDouble("prix"));
+        h.setTypeId((Integer) rs.getObject("type_id"));
+        h.setTypeLibelle(rs.getString("type_libelle"));
+        h.setImagePath(rs.getString("image_path"));
+        h.setLatitude((Double) rs.getObject("latitude"));
+        h.setLongitude((Double) rs.getObject("longitude"));
+        h.setIdUser((Integer) rs.getObject("id_user"));
+        return h;
+    }
 }

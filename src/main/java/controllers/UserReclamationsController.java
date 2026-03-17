@@ -27,29 +27,17 @@ import javafx.scene.Scene;
 
 public class UserReclamationsController implements Initializable {
 
-    @FXML
-    private TableView<Reclamation> tableReclamations;
-    @FXML
-    private TableColumn<Reclamation, String> colTitre;
-    @FXML
-    private TableColumn<Reclamation, String> colDescription;
-    @FXML
-    private TableColumn<Reclamation, String> colStatut;
-    @FXML
-    private TableColumn<Reclamation, Date> colDate;
-    @FXML
-    private TableColumn<Reclamation, Date> colDateReponse;
-    @FXML
-    private TableColumn<Reclamation, Void> colActions;
-
-    @FXML
-    private TextField txtRecherche;
-    @FXML
-    private ComboBox<String> comboStatut;
-    @FXML
-    private Label lblPageTitle;
-    @FXML
-    private Button btnAdd;
+    @FXML private TableView<Reclamation> tableReclamations;
+    @FXML private TableColumn<Reclamation, String> colTitre;
+    @FXML private TableColumn<Reclamation, String> colDescription;
+    @FXML private TableColumn<Reclamation, String> colStatut;
+    @FXML private TableColumn<Reclamation, Date> colDate;
+    @FXML private TableColumn<Reclamation, Date> colDateReponse;
+    @FXML private TableColumn<Reclamation, Void> colActions;
+    @FXML private TextField txtRecherche;
+    @FXML private ComboBox<String> comboStatut;
+    @FXML private Label lblPageTitle;
+    @FXML private Button btnAdd;
 
     private ReclamationService reclamationService = new ReclamationService();
     private int currentUserId = tools.SessionManager.getCurrentUserId();
@@ -60,11 +48,8 @@ public class UserReclamationsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupTable();
-
-        // Initialiser les filtres
         comboStatut.setItems(FXCollections.observableArrayList("Tous", "En attente", "Traitée"));
         comboStatut.setValue("Tous");
-
         loadData();
     }
 
@@ -75,7 +60,6 @@ public class UserReclamationsController implements Initializable {
         colStatut.setCellValueFactory(new PropertyValueFactory<>("statut"));
         colDateReponse.setCellValueFactory(new PropertyValueFactory<>("dateReponse"));
 
-        // Date Formatting
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
         if (colDate != null) {
@@ -83,11 +67,8 @@ public class UserReclamationsController implements Initializable {
                 @Override
                 protected void updateItem(Date date, boolean empty) {
                     super.updateItem(date, empty);
-                    if (empty || date == null) {
-                        setText(null);
-                    } else {
-                        setText(dateFormat.format(date));
-                    }
+                    if (empty || date == null) setText(null);
+                    else setText(dateFormat.format(date));
                 }
             });
         }
@@ -97,17 +78,14 @@ public class UserReclamationsController implements Initializable {
                 @Override
                 protected void updateItem(Date date, boolean empty) {
                     super.updateItem(date, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else if (date == null) {
+                    if (empty) { setText(null); setGraphic(null); }
+                    else if (date == null) {
                         setText("En attente...");
                         setStyle("-fx-text-fill: #6a7a73; -fx-font-style: italic;");
                         setGraphic(null);
                     } else {
                         setText(dateFormat.format(date));
                         setStyle("-fx-text-fill: #0f2a2a; -fx-font-weight: bold;");
-                        // Simple check icon
                         Label icon = new Label("✓ ");
                         icon.setStyle("-fx-text-fill: #c9a24a;");
                         setGraphic(icon);
@@ -116,53 +94,38 @@ public class UserReclamationsController implements Initializable {
             });
         }
 
-        // Status Badge
         if (colStatut != null) {
             colStatut.setCellFactory(param -> new TableCell<>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setGraphic(null);
-                    } else {
+                    if (empty || item == null) { setGraphic(null); }
+                    else {
                         Label badge = new Label(item);
                         badge.getStyleClass().add("statusBadge");
-                        if (item.equals("En attente")) {
-                            badge.getStyleClass().add("status-En_attente");
-                        } else if (item.equals("Traitée") || item.equals("Traitee")) {
-                            badge.getStyleClass().add("status-Traitee");
-                        }
+                        if (item.equals("En attente")) badge.getStyleClass().add("status-En_attente");
+                        else if (item.equals("Traitée") || item.equals("Traitee")) badge.getStyleClass().add("status-Traitee");
                         setGraphic(badge);
                     }
                 }
             });
         }
 
-        // Actions Column
         if (colActions != null) {
             colActions.setCellFactory(param -> new TableCell<>() {
                 private final Button btnEdit = new Button("✏");
                 private final Button btnDelete = new Button("🗑");
-
                 {
                     btnEdit.getStyleClass().addAll("iconBtn", "btnEdit");
                     btnDelete.getStyleClass().addAll("iconBtn", "btnDelete");
-                    btnEdit.setOnAction(e -> {
-                        Reclamation rec = getTableView().getItems().get(getIndex());
-                        modifierReclamationSpecific(rec);
-                    });
-                    btnDelete.setOnAction(e -> {
-                        Reclamation rec = getTableView().getItems().get(getIndex());
-                        supprimerReclamationSpecific(rec);
-                    });
+                    btnEdit.setOnAction(e -> modifierReclamationSpecific(getTableView().getItems().get(getIndex())));
+                    btnDelete.setOnAction(e -> supprimerReclamationSpecific(getTableView().getItems().get(getIndex())));
                 }
-
                 @Override
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
+                    if (empty) { setGraphic(null); }
+                    else {
                         HBox hbox = new HBox(8, btnEdit, btnDelete);
                         hbox.setAlignment(javafx.geometry.Pos.CENTER);
                         setGraphic(hbox);
@@ -176,14 +139,9 @@ public class UserReclamationsController implements Initializable {
         try {
             List<Reclamation> list = reclamationService.getByUserId(currentUserId);
             listeComplete = FXCollections.observableArrayList(list);
-
-            // Configuration du filtrage
             listeFiltree = new FilteredList<>(listeComplete, p -> true);
-
-            // Configuration du tri
             SortedList<Reclamation> listeTrie = new SortedList<>(listeFiltree);
             listeTrie.comparatorProperty().bind(tableReclamations.comparatorProperty());
-
             tableReclamations.setItems(listeTrie);
         } catch (SQLException e) {
             AlertHelper.showError("Erreur", "Impossible de charger les réclamations : " + e.getMessage());
@@ -192,23 +150,15 @@ public class UserReclamationsController implements Initializable {
 
     @FXML
     void appliquerFiltres() {
-        if (listeFiltree == null)
-            return;
-
+        if (listeFiltree == null) return;
         listeFiltree.setPredicate(reclamation -> {
-            // Filtre par recherche (titre ou description)
             String recherche = txtRecherche.getText() == null ? "" : txtRecherche.getText().toLowerCase().trim();
             boolean matchRecherche = recherche.isEmpty()
                     || (reclamation.getTitre() != null && reclamation.getTitre().toLowerCase().contains(recherche))
-                    || (reclamation.getDescription() != null
-                            && reclamation.getDescription().toLowerCase().contains(recherche));
-
-            // Filtre par statut
+                    || (reclamation.getDescription() != null && reclamation.getDescription().toLowerCase().contains(recherche));
             String statutSelectionne = comboStatut.getValue();
-            boolean matchStatut = statutSelectionne == null
-                    || statutSelectionne.equals("Tous")
+            boolean matchStatut = statutSelectionne == null || statutSelectionne.equals("Tous")
                     || (reclamation.getStatut() != null && reclamation.getStatut().equals(statutSelectionne));
-
             return matchRecherche && matchStatut;
         });
     }
@@ -256,34 +206,27 @@ public class UserReclamationsController implements Initializable {
 
     @FXML
     void retourMenu(ActionEvent event) {
-        // With the new layout, we don't really need a retour button anymore
-        // But if needed, we can reload the dashboard
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/voyage/dashboard.fxml"));
-            Parent root = loader.load();
-            tableReclamations.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
+        // ✅ CORRIGÉ : utilise ClientLayoutController pour naviguer vers Destinations
+        hebergement.controllers.ClientLayoutController layout =
+                hebergement.controllers.ClientLayoutController.getInstance();
+        if (layout != null) {
+            layout.goDestination();
+        } else {
+            AlertHelper.showError("Erreur", "Layout introuvable.");
         }
     }
 
     @FXML
     void ouvrirChatbot() {
         try {
-            // Charger le widget chatbot
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/chatbot_widget.fxml"));
             Parent chatbotWidget = loader.load();
-
-            // Configurer le type
             ChatbotController controller = loader.getController();
             controller.setChatbotType("reclamation");
-
-            // Afficher dans une nouvelle fenêtre
             Stage stage = new Stage();
             stage.setTitle("Assistant Réclamations");
             stage.setScene(new Scene(chatbotWidget));
             stage.show();
-
         } catch (IOException e) {
             AlertHelper.showError("Erreur", "Impossible d'ouvrir le chatbot : " + e.getMessage());
         }

@@ -16,13 +16,13 @@ import java.util.ResourceBundle;
 
 public class AjouterAvisController implements Initializable {
 
-    @FXML
-    private ComboBox<Integer> comboNote;
-    @FXML
-    private TextArea txtCommentaire;
+    @FXML private ComboBox<Integer> comboNote;
+    @FXML private TextArea txtCommentaire;
 
     private AvisService avisService = new AvisService();
-    private int currentUserId = 1;
+
+    // ✅ CORRIGÉ : utilise la session au lieu de 1 codé en dur
+    private int currentUserId = tools.SessionManager.getCurrentUserId();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -34,34 +34,46 @@ public class AjouterAvisController implements Initializable {
         Integer note = comboNote.getValue();
         String comment = txtCommentaire.getText();
 
-        if (note == null || comment.isEmpty()) {
-            showAlert("Warning", "Please fill all fields");
+        if (note == null || comment == null || comment.isEmpty()) {
+            showAlert("Attention", "Veuillez remplir tous les champs");
             return;
         }
 
         try {
             Avis a = new Avis(currentUserId, note, comment);
             avisService.addEntity(a);
-            showAlert("Success", "Review added!");
-            annuler();
+            showAlert("Succès", "Avis ajouté avec succès !");
+            retourListe();
         } catch (SQLException e) {
-            showAlert("Error", "Could not add: " + e.getMessage());
+            showAlert("Erreur", "Impossible d'ajouter : " + e.getMessage());
         }
     }
 
     @FXML
     void annuler() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/user_avis.fxml"));
-            txtCommentaire.getScene().setRoot(root);
-        } catch (IOException e) {
-            showAlert("Error", "Could not return: " + e.getMessage());
-        }
+        retourListe();
     }
 
     @FXML
     void retourMenu() {
-        annuler();
+        // ✅ CORRIGÉ : retour via ClientLayoutController
+        hebergement.controllers.ClientLayoutController layout =
+                hebergement.controllers.ClientLayoutController.getInstance();
+        if (layout != null) {
+            layout.goDestination();
+        } else {
+            retourListe();
+        }
+    }
+
+    private void retourListe() {
+        // ✅ CORRIGÉ : retour direct via setRoot
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/user_avis.fxml"));
+            txtCommentaire.getScene().setRoot(root);
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible de retourner : " + e.getMessage());
+        }
     }
 
     private void showAlert(String title, String content) {

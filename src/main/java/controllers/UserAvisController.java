@@ -27,23 +27,14 @@ import javafx.scene.Scene;
 
 public class UserAvisController implements Initializable {
 
-    @FXML
-    private TableView<Avis> tableAvis;
-    @FXML
-    private TableColumn<Avis, Integer> colNote;
-    @FXML
-    private TableColumn<Avis, String> colCommentaire;
-    @FXML
-    private TableColumn<Avis, String> colReponse;
-    @FXML
-    private TableColumn<Avis, Date> colDateReponse;
-    @FXML
-    private TableColumn<Avis, Void> colActions;
-
-    @FXML
-    private TextField txtRecherche;
-    @FXML
-    private ComboBox<String> comboNote;
+    @FXML private TableView<Avis> tableAvis;
+    @FXML private TableColumn<Avis, Integer> colNote;
+    @FXML private TableColumn<Avis, String> colCommentaire;
+    @FXML private TableColumn<Avis, String> colReponse;
+    @FXML private TableColumn<Avis, Date> colDateReponse;
+    @FXML private TableColumn<Avis, Void> colActions;
+    @FXML private TextField txtRecherche;
+    @FXML private ComboBox<String> comboNote;
 
     private AvisService avisService = new AvisService();
     private int currentUserId = tools.SessionManager.getCurrentUserId();
@@ -55,23 +46,16 @@ public class UserAvisController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupTable();
-
-        // Initialiser les filtres
         comboNote.setItems(FXCollections.observableArrayList("Toutes", "5", "4", "3", "2", "1"));
         comboNote.setValue("Toutes");
-
-        // Ajouter des listeners pour les filtres
         txtRecherche.textProperty().addListener((observable, oldValue, newValue) -> appliquerFiltres());
         comboNote.valueProperty().addListener((observable, oldValue, newValue) -> appliquerFiltres());
-
         loadData();
     }
 
     public void setPublicView(boolean isPublic) {
         this.isPublicView = isPublic;
-        if (colActions != null) {
-            colActions.setVisible(!isPublic);
-        }
+        if (colActions != null) colActions.setVisible(!isPublic);
         loadData();
     }
 
@@ -88,10 +72,8 @@ public class UserAvisController implements Initializable {
                 @Override
                 protected void updateItem(Date date, boolean empty) {
                     super.updateItem(date, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else if (date == null) {
+                    if (empty) { setText(null); setGraphic(null); }
+                    else if (date == null) {
                         setText("En attente...");
                         setStyle("-fx-text-fill: #6a7a73; -fx-font-style: italic;");
                         setGraphic(null);
@@ -106,31 +88,21 @@ public class UserAvisController implements Initializable {
             });
         }
 
-        // Actions Column
         if (colActions != null) {
             colActions.setCellFactory(param -> new TableCell<>() {
                 private final Button btnEdit = new Button("✏");
                 private final Button btnDelete = new Button("🗑");
-
                 {
                     btnEdit.getStyleClass().addAll("iconBtn", "btnEdit");
                     btnDelete.getStyleClass().addAll("iconBtn", "btnDelete");
-                    btnEdit.setOnAction(e -> {
-                        Avis av = getTableView().getItems().get(getIndex());
-                        modifierAvisSpecific(av);
-                    });
-                    btnDelete.setOnAction(e -> {
-                        Avis av = getTableView().getItems().get(getIndex());
-                        supprimerAvisSpecific(av);
-                    });
+                    btnEdit.setOnAction(e -> modifierAvisSpecific(getTableView().getItems().get(getIndex())));
+                    btnDelete.setOnAction(e -> supprimerAvisSpecific(getTableView().getItems().get(getIndex())));
                 }
-
                 @Override
                 protected void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
+                    if (empty) { setGraphic(null); }
+                    else {
                         HBox hbox = new HBox(8, btnEdit, btnDelete);
                         hbox.setAlignment(javafx.geometry.Pos.CENTER);
                         setGraphic(hbox);
@@ -142,21 +114,11 @@ public class UserAvisController implements Initializable {
 
     private void loadData() {
         try {
-            List<Avis> list;
-            if (isPublicView) {
-                list = avisService.getAllEntities();
-            } else {
-                list = avisService.getByUserId(currentUserId);
-            }
+            List<Avis> list = isPublicView ? avisService.getAllEntities() : avisService.getByUserId(currentUserId);
             listeComplete = FXCollections.observableArrayList(list);
-
-            // Configuration du filtrage
             listeFiltree = new FilteredList<>(listeComplete, p -> true);
-
-            // Configuration du tri
             SortedList<Avis> listeTrie = new SortedList<>(listeFiltree);
             listeTrie.comparatorProperty().bind(tableAvis.comparatorProperty());
-
             tableAvis.setItems(listeTrie);
         } catch (SQLException e) {
             AlertHelper.showError("Erreur", "Impossible de charger les avis : " + e.getMessage());
@@ -165,21 +127,14 @@ public class UserAvisController implements Initializable {
 
     @FXML
     void appliquerFiltres() {
-        if (listeFiltree == null)
-            return;
-
+        if (listeFiltree == null) return;
         listeFiltree.setPredicate(avis -> {
-            // Filtre par recherche (commentaire)
             String recherche = txtRecherche.getText() == null ? "" : txtRecherche.getText().toLowerCase().trim();
             boolean matchRecherche = recherche.isEmpty()
                     || (avis.getCommentaire() != null && avis.getCommentaire().toLowerCase().contains(recherche));
-
-            // Filtre par note
             String noteSelectionnee = comboNote.getValue();
-            boolean matchNote = noteSelectionnee == null
-                    || noteSelectionnee.equals("Toutes")
+            boolean matchNote = noteSelectionnee == null || noteSelectionnee.equals("Toutes")
                     || String.valueOf(avis.getNote()).equals(noteSelectionnee);
-
             return matchRecherche && matchNote;
         });
     }
@@ -227,41 +182,13 @@ public class UserAvisController implements Initializable {
 
     @FXML
     void retourMenu(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/voyage/dashboard.fxml"));
-            tableAvis.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Impossible de retourner au menu : " + e.getMessage());
-        }
-    }
-
-    @FXML
-    void switchToReclamations() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/reclamations/mes_reclamations.fxml"));
-            tableAvis.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Could not switch: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    void switchToAdmin() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/admin_layout.fxml"));
-            tableAvis.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Could not switch to Admin: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    void goToMainMenu() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/main_menu.fxml"));
-            tableAvis.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Could not go to main menu: " + e.getMessage());
+        // ✅ CORRIGÉ : utilise ClientLayoutController pour naviguer vers Destinations
+        hebergement.controllers.ClientLayoutController layout =
+                hebergement.controllers.ClientLayoutController.getInstance();
+        if (layout != null) {
+            layout.goDestination();
+        } else {
+            AlertHelper.showError("Erreur", "Layout introuvable.");
         }
     }
 

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hebergement.controllers.HebergementGalleryController"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            styleClass="galleryRoot"
+            stylesheets="@/app/app.css">
+
+    <content>
+        <VBox spacing="0">
+
+            <!-- ===== HERO BANNER ===== -->
+            <StackPane styleClass="galleryHero">
+                <VBox alignment="CENTER" spacing="12" styleClass="galleryHeroContent">
+                    <Label text="🏝️ Nos Hébergements" styleClass="galleryHeroTitle"/>
+                    <Label text="Découvrez nos logements d'exception et réservez en quelques clics."
+                           styleClass="galleryHeroSub" wrapText="true"/>
+                </VBox>
+            </StackPane>
+
+            <!-- ===== BODY ===== -->
+            <VBox spacing="24" styleClass="galleryBody">
+                <padding>
+                    <Insets top="32" right="40" bottom="40" left="40"/>
+                </padding>
+
+                <!-- TITRE + COMPTEUR -->
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <Label text="Tous les hébergements" styleClass="gallerySectionTitle"/>
+                    <Label fx:id="lblCount" text="" styleClass="galleryBadge"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblStatus" text="" styleClass="galleryStatus"/>
+                </HBox>
+
+                <!-- CARDS GRID -->
+                <FlowPane fx:id="cardsPane"
+                          hgap="24" vgap="24"
+                          prefWrapLength="900"/>
+
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

@@ -14,47 +14,59 @@ import java.sql.SQLException;
 
 public class AjouterReclamationController {
 
-    @FXML
-    private TextField txtTitre;
-    @FXML
-    private TextArea txtDescription;
+    @FXML private TextField txtTitre;
+    @FXML private TextArea txtDescription;
 
     private ReclamationService reclamationService = new ReclamationService();
-    private int currentUserId = 1;
+
+    // ✅ CORRIGÉ : utilise la session au lieu de 1 codé en dur
+    private int currentUserId = tools.SessionManager.getCurrentUserId();
 
     @FXML
     void enregistrer() {
         String titre = txtTitre.getText();
         String desc = txtDescription.getText();
 
-        if (titre.isEmpty() || desc.isEmpty()) {
-            showAlert("Warning", "Please fill all fields");
+        if (titre == null || titre.isEmpty() || desc == null || desc.isEmpty()) {
+            showAlert("Attention", "Veuillez remplir tous les champs");
             return;
         }
 
         try {
             Reclamation r = new Reclamation(currentUserId, titre, desc);
             reclamationService.addEntity(r);
-            showAlert("Success", "Complaint added!");
-            annuler();
+            showAlert("Succès", "Réclamation ajoutée avec succès !");
+            retourListe();
         } catch (SQLException e) {
-            showAlert("Error", "Could not add complaint: " + e.getMessage());
+            showAlert("Erreur", "Impossible d'ajouter : " + e.getMessage());
         }
     }
 
     @FXML
     void annuler() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/user_reclamations.fxml"));
-            txtTitre.getScene().setRoot(root);
-        } catch (IOException e) {
-            showAlert("Error", "Could not return to list: " + e.getMessage());
-        }
+        retourListe();
     }
 
     @FXML
     void retourMenu() {
-        annuler();
+        // ✅ CORRIGÉ : retour via ClientLayoutController
+        hebergement.controllers.ClientLayoutController layout =
+                hebergement.controllers.ClientLayoutController.getInstance();
+        if (layout != null) {
+            layout.goDestination();
+        } else {
+            retourListe();
+        }
+    }
+
+    private void retourListe() {
+        // ✅ CORRIGÉ : retour direct via setRoot
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/user_reclamations.fxml"));
+            txtTitre.getScene().setRoot(root);
+        } catch (IOException e) {
+            showAlert("Erreur", "Impossible de retourner : " + e.getMessage());
+        }
     }
 
     private void showAlert(String title, String content) {

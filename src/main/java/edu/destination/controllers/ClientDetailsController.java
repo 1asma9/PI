@@ -895,24 +895,54 @@ public class ClientDetailsController {
     // CARTE
     // ==============================
     private void initMap() {
-        mapView   = new WebView();
+        mapView = new WebView();
         webEngine = mapView.getEngine();
-        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
-        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+
         webEngine.setJavaScriptEnabled(true);
-        URL url = getClass().getResource("/map.html");
-        if (url != null) webEngine.load(url.toExternalForm());
-        bridge = new JSBridge(lblDistance, lblDuration, lblTransport);
-        webEngine.getLoadWorker().stateProperty().addListener((obs, o, n) -> {
-            if (n == Worker.State.SUCCEEDED) {
-                JSObject window = (JSObject) webEngine.executeScript("window");
-                window.setMember("javaConnector", bridge);
-                Object exists = webEngine.executeScript("typeof setDestination === 'function'");
-                if ("true".equals(String.valueOf(exists)) && currentDestination != null && currentTransport != null)
-                    addRouteToMap(currentDestination, currentTransport);
+        webEngine.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+
+        // logs erreurs chargement
+        webEngine.getLoadWorker().exceptionProperty().addListener((obs, oldEx, ex) -> {
+            if (ex != null) {
+                System.out.println("❌ WebView load exception:");
+                ex.printStackTrace();
             }
         });
+
+        URL url = getClass().getResource("/map.html");
+        if (url == null) {
+            System.out.println("❌ map.html introuvable dans resources !");
+            return;
+        }
+
+        System.out.println("✅ map.html = " + url);
+        webEngine.load(url.toExternalForm());
+
+        bridge = new JSBridge(lblDistance, lblDuration, lblTransport);
+
+        webEngine.getLoadWorker().stateProperty().addListener((obs, o, n) -> {
+            if (n == Worker.State.SUCCEEDED) {
+                try {
+                    JSObject window = (JSObject) webEngine.executeScript("window");
+                    window.setMember("javaConnector", bridge);
+
+                    Object exists = webEngine.executeScript("typeof setDestination === 'function'");
+                    System.out.println("✅ setDestination exists? " + exists);
+
+                    if (currentDestination != null && currentTransport != null) {
+                        addRouteToMap(currentDestination, currentTransport);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         mapPane.setCenter(mapView);
+
+        // assure une taille
+        mapView.prefWidthProperty().bind(mapPane.widthProperty());
+        mapView.prefHeightProperty().bind(mapPane.heightProperty());
     }
 
     private void addRouteToMap(Destination d, Transport t) {

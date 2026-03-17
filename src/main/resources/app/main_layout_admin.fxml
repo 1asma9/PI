@@ -45,6 +45,7 @@
                     onAction="#goChat"
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
+
             <Button text="📝 Blog"
                     onAction="#goBlogList"
                     styleClass="nav-btn"
@@ -54,8 +55,14 @@
                     onAction="#goBlogDashboard"
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
+
             <Button text="🚨 Réclamations"
                     onAction="#goAdminReclamations"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="🎯 Activités"
+                    onAction="#goActiviteBack"
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
 
