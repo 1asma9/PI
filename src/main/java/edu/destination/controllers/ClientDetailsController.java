@@ -392,7 +392,7 @@ public class ClientDetailsController {
                         double pct = (double) current / total * 100.0;
                         Platform.runLater(() -> {
                             timeSlider.setValue(pct);
-                            lblVideoTime.setText(formatMs(current) + " / " + formatMs(total));
+                                lblVideoTime.setText(formatMs(current) + " / " + formatMs(total));
                         });
                     }
                 } catch (InterruptedException e) {
