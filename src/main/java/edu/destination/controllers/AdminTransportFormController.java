@@ -1,9 +1,9 @@
 package edu.destination.controllers;
 
-import edu.destination.entities.Destination;
 import edu.destination.entities.Transport;
-import edu.destination.services.DestinationService;
+import edu.destination.entities.Voyage;
 import edu.destination.services.TransportService;
+import edu.destination.services.VoyageService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -14,25 +14,21 @@ import java.util.List;
 public class AdminTransportFormController {
 
     @FXML private ComboBox<String> txtTypeTransport;
-    @FXML private ComboBox<Destination> comboDestination;
+    @FXML private ComboBox<Voyage> comboVoyage;  // ← Voyage au lieu de Destination
     @FXML private Button btnSave, btnCancel;
+    @FXML private Label errType, errVoyage;
 
-    @FXML private Label errType, errDestination;
-
-    private TransportService transportService = new TransportService();
-    private DestinationService destinationService = new DestinationService();
-
+    private final TransportService transportService = new TransportService();
+    private final VoyageService voyageService = new VoyageService();
     private Transport transport;
 
     public void setTransport(Transport transport) {
         this.transport = transport;
-
         if (transport != null) {
             txtTypeTransport.setValue(transport.getTypeTransport());
-
-            for (Destination d : comboDestination.getItems()) {
-                if (d.getIdDestination() == transport.getIdDestination()) {
-                    comboDestination.getSelectionModel().select(d);
+            for (Voyage v : comboVoyage.getItems()) {
+                if (v.getId() == transport.getVoyageId()) {
+                    comboVoyage.getSelectionModel().select(v);
                     break;
                 }
             }
@@ -41,13 +37,11 @@ public class AdminTransportFormController {
 
     @FXML
     private void initialize() {
-        // Choix fixes pour le type de transport
-        txtTypeTransport.getItems().addAll("Voiture", "Avion", "Train", "Vélo", "Piéton");
+        txtTypeTransport.getItems().addAll("Voiture", "Avion", "Train", "Bus");
         txtTypeTransport.setPromptText("Choisir un transport");
 
-        // Charger toutes les destinations
-        List<Destination> destinations = destinationService.getData();
-        comboDestination.getItems().addAll(destinations);
+        List<Voyage> voyages = voyageService.getData();
+        comboVoyage.getItems().addAll(voyages);
 
         btnSave.setOnAction(e -> save());
         btnCancel.setOnAction(e -> ((Stage) btnCancel.getScene().getWindow()).close());
@@ -62,13 +56,13 @@ public class AdminTransportFormController {
 
             transport.setTypeTransport(txtTypeTransport.getValue());
 
-            Destination selectedDest = comboDestination.getSelectionModel().getSelectedItem();
-            transport.setIdDestination(selectedDest.getIdDestination());
+            Voyage selectedVoyage = comboVoyage.getSelectionModel().getSelectedItem();
+            transport.setVoyageId(selectedVoyage.getId());
 
-            if (transport.getIdTransport() == 0)
+            if (transport.getId() == 0)
                 transportService.addEntity(transport);
             else
-                transportService.update(transport.getIdTransport(), transport);
+                transportService.update(transport.getId(), transport);
 
             ((Stage) btnSave.getScene().getWindow()).close();
 
@@ -80,30 +74,14 @@ public class AdminTransportFormController {
     private boolean validateFields() {
         boolean isValid = true;
 
-        // Type transport
         if (txtTypeTransport.getValue() == null || txtTypeTransport.getValue().isEmpty()) {
             setError(errType, "Veuillez choisir un type de transport");
             isValid = false;
         }
 
-        // Destination sélectionnée
-        Destination selectedDest = comboDestination.getSelectionModel().getSelectedItem();
-        if (selectedDest == null) {
-            setError(errDestination, "Veuillez choisir une destination");
+        if (comboVoyage.getSelectionModel().getSelectedItem() == null) {
+            setError(errVoyage, "Veuillez choisir un voyage");
             isValid = false;
-        } else {
-            // Vérifier qu'aucun autre transport n'a déjà cette destination
-            List<Transport> allTransports = transportService.getData();
-            for (Transport t : allTransports) {
-                boolean sameDestination = t.getIdDestination() == selectedDest.getIdDestination();
-                boolean differentTransport = transport == null || t.getIdTransport() != transport.getIdTransport();
-
-                if (sameDestination && differentTransport) {
-                    setError(errDestination, "Cette destination a déjà un transport");
-                    isValid = false;
-                    break;
-                }
-            }
         }
 
         return isValid;
@@ -114,9 +92,8 @@ public class AdminTransportFormController {
     }
 
     private void clearErrors() {
-        txtTypeTransport.setStyle("");
-        errType.setText("");
-        errDestination.setText("");
+        if (errType != null) errType.setText("");
+        if (errVoyage != null) errVoyage.setText("");
     }
 
     private void showAlert(String title, String msg) {
@@ -125,5 +102,14 @@ public class AdminTransportFormController {
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+    public void setVoyageId(int voyageId) {
+        for (Voyage v : comboVoyage.getItems()) {
+            if (v.getId() == voyageId) {
+                comboVoyage.getSelectionModel().select(v);
+                break;
+            }
+        }
+        comboVoyage.setDisable(true);
     }
 }

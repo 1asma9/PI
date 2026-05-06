@@ -5,68 +5,59 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ActiviteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesBackController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesFrontController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ModifierActiviteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ReservationFormController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/Activite.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/ReservationActivite.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/AiRatingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ReservationActiviteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainAffichageActivites.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainFx.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/CurrencyService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ReservationActiviteValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ValidationException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/HebergementGalleryController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites_back.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites_front.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/ajout_activite.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/app/hebergement_gallery.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/back_admin.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/form_activite.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/activity_banner.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/banner.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/layers-2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/layers.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-icon-2x.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-shadow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/images/mascot.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/leaflet.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/leaflet.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/modifier_activite.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/reservation.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/reservation_form.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminVoyageController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminVoyageDetailController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminVoyageFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/DestinationStatistiqueController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Voyage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/StripeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/VoyageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminVoyageForm.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminVoyageView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Adminvoyagedetail.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/DestinationStatistique.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UserAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UserAvisController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UserReclamationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UserReclamationsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/BlogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/BlogService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AdminLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminImageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminImageFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminImageFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportFormController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDetailsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MainLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MainLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/entities/Hebergement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/entities/Hebergement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/services/HebergementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/HebergementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Destination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Destination.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/entities/DestinationImage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Image.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Transport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Transport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/services/DestinationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/DestinationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/services/ImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/ImageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/services/TransportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/TransportService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/tests/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tests/MainClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/tools/SceneUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tools/SceneUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/services/utilisateur_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/services/utilisateur_service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/tools/PasswordUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/tools/PasswordUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AdminDestinationForm.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AdminDestinationForm.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AdminDestinationView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AdminDestinationView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AdminImageForm.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AdminImageForm.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AdminImageView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AdminImageView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AdminTransportForm.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AdminTransportForm.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/AdminTransportView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/AdminTransportView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ClientDestinationListView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ClientDestinationListView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/ClientDetailsView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/ClientDetailsView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/FrontendBlogCard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/FrontendBlogCard.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/videos/paris2.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/videos/paris3.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/videos/paris_converted.mp4" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,9 +67,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Class" />
         <option value="FxmlFile" />
-        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -97,25 +88,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "hebergement",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/ferja/OneDrive/Bureau/Gestion_Hebergemeny/src/main/resources",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;hebergement&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ferja/OneDrive/Bureau/Gestion_Hebergemeny/src/main/resources&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "CSS"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;CSS&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ferja\OneDrive\Bureau\Gestion_Hebergemeny\src\main\resources" />
@@ -136,6 +134,14 @@
       </method>
     </configuration>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.169" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.169" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -144,8 +150,13 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1772447940279</updated>
+      <workItem from="1776804726550" duration="73526000" />
+      <workItem from="1777923560135" duration="33557000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -154,6 +165,12 @@
           <url>file://$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java</url>
           <line>120</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportController.java</url>
+          <line>24</line>
+          <properties field="colVoyageId" class="edu.destination.controllers.AdminTransportController" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

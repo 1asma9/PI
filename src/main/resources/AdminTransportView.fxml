@@ -3,62 +3,40 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.destination.controllers.AdminTransportController"
-            stylesheets="@/app/app.css"
-            styleClass="root-dark">
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.destination.controllers.AdminTransportController"
+      stylesheets="@/app/transport.css"
+      styleClass="page" spacing="16">
 
-    <top>
-        <HBox styleClass="sidebar" spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
-            <Label text="VOYAGE" styleClass="brand"/>
-            <Button text="Dashboard" styleClass="nav-btn" fx:id="navDashboard"/>
-            <Button text="Destinations" styleClass="nav-btn" fx:id="navDestinations"/>
-            <Button text="Transports" styleClass="nav-btn nav-btn-active" fx:id="navTransports"/>
-            <Button text="Images" styleClass="nav-btn" fx:id="navImages"/>
-            <Button text="Espace Client" styleClass="nav-btn" fx:id="navClient"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            <Label text="© 2026" styleClass="pageSubtitle"/>
+    <Label text="Gestion des Transports" styleClass="pageTitle"/>
+
+    <VBox styleClass="glass-card-large" spacing="14">
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
+            <ComboBox fx:id="comboTypeTransport"
+                      promptText="Type de transport"
+                      prefWidth="200"/>
+            <TextField fx:id="searchVoyageId"
+                       promptText="ID Voyage..."
+                       prefWidth="180"
+                       styleClass="input-field"/>
+            <Button fx:id="btnReset" text="Reset" styleClass="btn-secondary"/>
         </HBox>
-    </top>
 
-    <center>
-        <VBox styleClass="page" spacing="16">
+        <!-- ✅ prefHeight réduit pour que les boutons soient visibles -->
+        <TableView fx:id="tableTransports" prefHeight="350" styleClass="table-modern">
+            <columns>
+                <TableColumn fx:id="colIdTransport" text="ID" prefWidth="70"/>
+                <TableColumn fx:id="colTypeTransport" text="Type" prefWidth="150"/>
+                <TableColumn fx:id="colVoyageId" text="Voyage ID" prefWidth="200"/>
+            </columns>
+        </TableView>
 
-            <Label text="Gestion des Transports" styleClass="pageTitle"/>
+        <HBox spacing="14" alignment="CENTER" style="-fx-padding: 10 0 10 0;">
+            <Button fx:id="btnAjouter" text="Ajouter" styleClass="btn-primary"/>
+            <Button fx:id="btnModifier" text="Modifier" styleClass="btn-warning"/>
+            <Button fx:id="btnSupprimer" text="Supprimer" styleClass="btn-danger"/>
+        </HBox>
+    </VBox>
 
-            <VBox styleClass="glass-card-large" spacing="14">
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
-
-                    <ComboBox fx:id="comboTypeTransport"
-                              promptText="Type de transport"
-                              prefWidth="200"/>
-
-                    <TextField fx:id="searchIdDestination"
-                               promptText="ID Destination..."
-                               prefWidth="180"
-                               styleClass="input-field"/>
-
-                    <Button fx:id="btnReset" text="Reset" styleClass="btn-secondary"/>
-
-                </HBox>
-
-                <TableView fx:id="tableTransports" prefHeight="520" styleClass="table-modern">
-                    <columns>
-                        <TableColumn fx:id="colIdTransport" text="ID"/>
-                        <TableColumn fx:id="colTypeTransport" text="Type"/>
-                        <TableColumn fx:id="colIdDestination" text="Destination"/>
-                    </columns>
-                </TableView>
-
-                <HBox spacing="14" alignment="CENTER">
-                    <Button fx:id="btnAjouter" text="Ajouter" styleClass="btn-primary"/>
-                    <Button fx:id="btnModifier" text="Modifier" styleClass="btn-warning"/>
-                    <Button fx:id="btnSupprimer" text="Supprimer" styleClass="btn-danger"/>
-                    <Button fx:id="btnRetour" text="Retour" styleClass="btn-secondary"/>
-                </HBox>
-            </VBox>
-
-        </VBox>
-    </center>
-</BorderPane>
+</VBox>

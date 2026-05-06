@@ -11,14 +11,19 @@ public final class SceneUtil {
 
     private SceneUtil() {}
 
-    // Appliquer le CSS global
+    // Appliquer le CSS global (app.css — pour les collègues)
     public static void applyCss(Scene scene) {
+        applyCss(scene, "/app/app.css");
+    }
+
+    // Appliquer un CSS spécifique
+    public static void applyCss(Scene scene, String cssPath) {
         scene.getStylesheets().clear();
-        var css = SceneUtil.class.getResource("/app/app.css");
+        var css = SceneUtil.class.getResource(cssPath);
         if (css != null) {
             scene.getStylesheets().add(css.toExternalForm());
         } else {
-            System.out.println("⚠ app.css introuvable dans resources !");
+            System.out.println("⚠ CSS introuvable : " + cssPath);
         }
     }
 
@@ -34,7 +39,7 @@ public final class SceneUtil {
     public static Parent load(String fxml) {
         try {
             FXMLLoader loader = new FXMLLoader(SceneUtil.class.getResource(fxml));
-            return loader.load(); // ✅ RETURN obligatoire
+            return loader.load();
         } catch (IOException e) {
             throw new RuntimeException("Erreur lors du chargement de : " + fxml, e);
         }

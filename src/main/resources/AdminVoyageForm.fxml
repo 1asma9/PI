@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="edu.destination.controllers.AdminVoyageFormController"
+           stylesheets="@/app/voyage.css"
+           styleClass="root-dark">
+
+    <VBox spacing="12" alignment="CENTER" maxWidth="520" styleClass="glass-card-large">
+
+        <Label text="Nouveau Voyage" styleClass="title-white"/>
+
+        <TextField fx:id="txtPointDepart" promptText="Point de départ" styleClass="form-field"/>
+        <Label fx:id="errPointDepart" styleClass="error-label"/>
+
+        <TextField fx:id="txtPointArrivee" promptText="Point d'arrivée" styleClass="form-field"/>
+        <Label fx:id="errPointArrivee" styleClass="error-label"/>
+
+        <TextField fx:id="txtPrix" promptText="Prix (€)" styleClass="form-field"/>
+        <Label fx:id="errPrix" styleClass="error-label"/>
+
+        <HBox spacing="10">
+            <DatePicker fx:id="dateDepart" promptText="Date de départ" styleClass="form-field" HBox.hgrow="ALWAYS"/>
+            <DatePicker fx:id="dateArrivee" promptText="Date d'arrivée" styleClass="form-field" HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label fx:id="errDateDepart" styleClass="error-label"/>
+            <Label fx:id="errDateArrivee" styleClass="error-label"/>
+        </HBox>
+
+        <ComboBox fx:id="comboDestination" promptText="Choisir Destination" styleClass="form-field"/>
+        <Label fx:id="errDestination" styleClass="error-label"/>
+
+        <CheckBox fx:id="chkPaid" text="Voyage payé" styleClass="checkbox-light"/>
+
+        <HBox spacing="14" alignment="CENTER">
+            <Button fx:id="btnSave" text="Enregistrer" styleClass="btn-primary"/>
+            <Button fx:id="btnCancel" text="Annuler" styleClass="btn-danger"/>
+        </HBox>
+
+    </VBox>
+</StackPane>

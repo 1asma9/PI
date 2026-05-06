@@ -1,93 +1,215 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="hebergement.controllers.MonEspaceController"
-            styleClass="content">
+            style="-fx-background-color:#f1f5f9;">
 
+    <!-- ═══════════════════════════════════════════════════
+         HEADER BANNER
+    ════════════════════════════════════════════════════ -->
     <top>
-        <VBox spacing="6" styleClass="content">
-            <Label text="Mon Espace" styleClass="h1"/>
-            <Label fx:id="lblUser" styleClass="muted"/>
-            <Label fx:id="lblProfil" styleClass="muted"/>
+        <VBox style="-fx-background-color:linear-gradient(from 0% 0% to 100% 100%, #b8622a, #e8a060);
+                     -fx-padding:0;">
+
+            <Pane style="-fx-background-color:rgba(255,255,255,0.07);-fx-pref-height:3;"/>
+
+            <HBox spacing="24" alignment="CENTER_LEFT"
+                  style="-fx-padding:32 48 32 48;">
+
+                <!-- Avatar -->
+                <StackPane>
+                    <Circle radius="54"
+                            style="-fx-fill:rgba(255,255,255,0.10);"/>
+                    <Circle radius="45"
+                            style="-fx-fill:rgba(255,255,255,0.20);
+                                   -fx-stroke:rgba(255,255,255,0.50);
+                                   -fx-stroke-width:2.5;"/>
+                    <Label fx:id="lblAvatar" text="?"
+                           style="-fx-text-fill:white;-fx-font-size:22px;-fx-font-weight:900;
+                                  -fx-font-family:Georgia;"/>
+                </StackPane>
+
+                <!-- Nom / email / badge -->
+                <VBox spacing="5">
+                    <Label fx:id="lblUser" text="—"
+                           style="-fx-text-fill:white;-fx-font-size:26px;-fx-font-weight:900;
+                                  -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.20),8,0,0,2);"/>
+                    <Label fx:id="lblProfil" text="—"
+                           style="-fx-text-fill:rgba(255,255,255,0.80);-fx-font-size:13px;"/>
+                    <HBox spacing="8" style="-fx-padding:4 0 0 0;">
+                        <Label fx:id="lblBadgeStatut" text="● Actif"
+                               style="-fx-background-color:rgba(255,255,255,0.18);
+                                      -fx-border-color:rgba(255,255,255,0.40);
+                                      -fx-border-radius:30;-fx-background-radius:30;-fx-border-width:1.5;
+                                      -fx-text-fill:white;-fx-font-size:11px;-fx-font-weight:800;
+                                      -fx-padding:4 16 4 16;"/>
+                    </HBox>
+                </VBox>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- Stat voyages -->
+                <VBox alignment="CENTER" spacing="2"
+                      style="-fx-background-color:rgba(255,255,255,0.15);
+                             -fx-background-radius:18;
+                             -fx-border-color:rgba(255,255,255,0.28);
+                             -fx-border-radius:18;-fx-border-width:1.5;
+                             -fx-padding:16 28 16 28;
+                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.10),10,0,0,2);">
+                    <Label fx:id="lblStatVoyages" text="0"
+                           style="-fx-text-fill:white;-fx-font-size:28px;-fx-font-weight:900;"/>
+                    <Label text="Voyages"
+                           style="-fx-text-fill:rgba(255,255,255,0.72);-fx-font-size:10px;-fx-font-weight:700;"/>
+                </VBox>
+
+            </HBox>
+
+            <Pane style="-fx-background-color:rgba(0,0,0,0.10);-fx-pref-height:2;"/>
         </VBox>
     </top>
 
+    <!-- ═══════════════════════════════════════════════════
+         CUSTOM TAB BAR + CONTENU
+    ════════════════════════════════════════════════════ -->
     <center>
-        <TabPane>
+        <VBox style="-fx-background-color:#f1f5f9;">
 
-            <Tab text="🏠 Hébergements" closable="false">
-                <VBox spacing="10" styleClass="content">
-                    <TableView fx:id="tvHebergements" VBox.vgrow="ALWAYS">
+            <!-- ── Custom tab bar ── -->
+            <HBox fx:id="tabBarBox" spacing="0" alignment="CENTER_LEFT"
+                  style="-fx-background-color:white;
+                         -fx-padding:0 32 0 32;
+                         -fx-border-color:transparent transparent #e2e8f0 transparent;
+                         -fx-border-width:0 0 2 0;
+                         -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.04),8,0,0,3);">
+                <!-- Boutons injectés par le controller -->
+            </HBox>
+
+            <!-- ── Panneaux de contenu ── -->
+            <StackPane VBox.vgrow="ALWAYS">
+
+                <!-- Hébergements -->
+                <VBox fx:id="paneHeb" spacing="14"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    <Label text="🏠  Mes hébergements"
+                           style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                    <TableView fx:id="tvHebergements" VBox.vgrow="ALWAYS"
+                               style="-fx-background-radius:14;-fx-border-radius:14;
+                                      -fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
                         <columns>
-                            <TableColumn fx:id="colHebId" text="ID" prefWidth="70"/>
-                            <TableColumn fx:id="colHebDesc" text="Description" prefWidth="240"/>
-                            <TableColumn fx:id="colHebAdresse" text="Adresse" prefWidth="240"/>
-                            <TableColumn fx:id="colHebPrix" text="Prix" prefWidth="100"/>
-                            <TableColumn fx:id="colHebType" text="Type" prefWidth="140"/>
+                            <TableColumn fx:id="colHebId"      text="ID"          prefWidth="60"/>
+                            <TableColumn fx:id="colHebDesc"    text="Description" prefWidth="260"/>
+                            <TableColumn fx:id="colHebAdresse" text="Adresse"     prefWidth="220"/>
+                            <TableColumn fx:id="colHebPrix"    text="Prix"        prefWidth="100"/>
+                            <TableColumn fx:id="colHebType"    text="Type"        prefWidth="130"/>
                         </columns>
+                        <placeholder><Label text="Aucun hébergement." style="-fx-text-fill:#94a3b8;-fx-font-size:13px;"/></placeholder>
                     </TableView>
-                    <Label fx:id="lblHebMsg" styleClass="muted"/>
+                    <Label fx:id="lblHebMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
                 </VBox>
-            </Tab>
 
-            <Tab text="📝 Mes Blogs" closable="false">
-                <VBox spacing="10" styleClass="content">
-                    <TableView fx:id="tvBlogs" VBox.vgrow="ALWAYS">
+                <!-- Blogs -->
+                <VBox fx:id="paneBlogs" spacing="14" visible="false" managed="false"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    <Label text="📝  Mes articles"
+                           style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                    <TableView fx:id="tvBlogs" VBox.vgrow="ALWAYS"
+                               style="-fx-background-radius:14;-fx-border-radius:14;
+                                      -fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
                         <columns>
-                            <TableColumn fx:id="colBlogId" text="ID" prefWidth="70"/>
-                            <TableColumn fx:id="colBlogTitre" text="Titre" prefWidth="320"/>
-                            <TableColumn fx:id="colBlogDate" text="Date" prefWidth="180"/>
+                            <TableColumn fx:id="colBlogId"    text="ID"    prefWidth="60"/>
+                            <TableColumn fx:id="colBlogTitre" text="Titre" prefWidth="380"/>
+                            <TableColumn fx:id="colBlogDate"  text="Date"  prefWidth="160"/>
                         </columns>
+                        <placeholder><Label text="Aucun article." style="-fx-text-fill:#94a3b8;-fx-font-size:13px;"/></placeholder>
                     </TableView>
-                    <Label fx:id="lblBlogMsg" styleClass="muted"/>
+                    <Label fx:id="lblBlogMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
                 </VBox>
-            </Tab>
 
-            <Tab text="🚨 Mes Réclamations" closable="false">
-                <VBox spacing="10" styleClass="content">
-                    <TableView fx:id="tvReclamations" VBox.vgrow="ALWAYS">
+                <!-- Réclamations -->
+                <VBox fx:id="paneRec" spacing="14" visible="false" managed="false"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    <Label text="🚨  Mes réclamations"
+                           style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                    <TableView fx:id="tvReclamations" VBox.vgrow="ALWAYS"
+                               style="-fx-background-radius:14;-fx-border-radius:14;
+                                      -fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
                         <columns>
-                            <TableColumn fx:id="colRecId" text="ID" prefWidth="70"/>
-                            <TableColumn fx:id="colRecSujet" text="Sujet" prefWidth="320"/>
-                            <TableColumn fx:id="colRecStatut" text="Statut" prefWidth="140"/>
-                            <TableColumn fx:id="colRecDate" text="Date" prefWidth="180"/>
+                            <TableColumn fx:id="colRecId"     text="ID"     prefWidth="60"/>
+                            <TableColumn fx:id="colRecSujet"  text="Sujet"  prefWidth="300"/>
+                            <TableColumn fx:id="colRecStatut" text="Statut" prefWidth="130"/>
+                            <TableColumn fx:id="colRecDate"   text="Date"   prefWidth="160"/>
                         </columns>
+                        <placeholder><Label text="Aucune réclamation." style="-fx-text-fill:#94a3b8;-fx-font-size:13px;"/></placeholder>
                     </TableView>
-                    <Label fx:id="lblRecMsg" styleClass="muted"/>
+                    <Label fx:id="lblRecMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
                 </VBox>
-            </Tab>
 
-            <Tab text="📅 Mes Réservations" closable="false">
-                <VBox spacing="10" styleClass="content">
-                    <TableView fx:id="tvReservations" VBox.vgrow="ALWAYS">
+                <!-- Réservations hébergement -->
+                <VBox fx:id="paneRes" spacing="14" visible="false" managed="false"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    <Label text="📅  Réservations hébergement"
+                           style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                    <TableView fx:id="tvReservations" VBox.vgrow="ALWAYS"
+                               style="-fx-background-radius:14;-fx-border-radius:14;
+                                      -fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
                         <columns>
-                            <TableColumn fx:id="colResId" text="ID" prefWidth="70"/>
+                            <TableColumn fx:id="colResId"    text="ID"    prefWidth="60"/>
                             <TableColumn fx:id="colResDebut" text="Début" prefWidth="140"/>
-                            <TableColumn fx:id="colResFin" text="Fin" prefWidth="140"/>
+                            <TableColumn fx:id="colResFin"   text="Fin"   prefWidth="140"/>
                             <TableColumn fx:id="colResTotal" text="Total" prefWidth="120"/>
                         </columns>
+                        <placeholder><Label text="Aucune réservation." style="-fx-text-fill:#94a3b8;-fx-font-size:13px;"/></placeholder>
                     </TableView>
-                    <Label fx:id="lblResMsg" styleClass="muted"/>
+                    <Label fx:id="lblResMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
                 </VBox>
-            </Tab>
 
-            <Tab text="🎯 Mes Activités" closable="false">
-                <VBox spacing="10" styleClass="content">
-                    <TableView fx:id="tvActivites" VBox.vgrow="ALWAYS">
+                <!-- Activités -->
+                <VBox fx:id="paneAct" spacing="14" visible="false" managed="false"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    <Label text="🎯  Mes activités"
+                           style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                    <TableView fx:id="tvActivites" VBox.vgrow="ALWAYS"
+                               style="-fx-background-radius:14;-fx-border-radius:14;
+                                      -fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
                         <columns>
-                            <TableColumn fx:id="colActId" text="ID" prefWidth="70"/>
-                            <TableColumn fx:id="colActNom" text="Nom" prefWidth="280"/>
-                            <TableColumn fx:id="colActType" text="Type" prefWidth="200"/>
+                            <TableColumn fx:id="colActId"   text="ID"   prefWidth="60"/>
+                            <TableColumn fx:id="colActNom"  text="Nom"  prefWidth="280"/>
+                            <TableColumn fx:id="colActType" text="Type" prefWidth="180"/>
                             <TableColumn fx:id="colActPrix" text="Prix" prefWidth="120"/>
                         </columns>
+                        <placeholder><Label text="Aucune activité." style="-fx-text-fill:#94a3b8;-fx-font-size:13px;"/></placeholder>
                     </TableView>
-                    <Label fx:id="lblActMsg" styleClass="muted"/>
+                    <Label fx:id="lblActMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
                 </VBox>
-            </Tab>
 
-        </TabPane>
+                <!-- Voyages -->
+                <VBox fx:id="paneVoy" visible="false" managed="false"
+                      style="-fx-background-color:#f1f5f9;">
+                    <HBox alignment="CENTER_LEFT" spacing="10"
+                          style="-fx-padding:28 36 16 36;">
+                        <Label text="✈️  Mes voyages réservés"
+                               style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                        <Label fx:id="lblVoyBadge"
+                               style="-fx-background-color:#fff7ed;
+                                      -fx-border-color:#fed7aa;-fx-border-radius:20;
+                                      -fx-background-radius:20;-fx-border-width:1.5;
+                                      -fx-text-fill:#c2410c;-fx-font-size:11px;-fx-font-weight:800;
+                                      -fx-padding:2 10 2 10;"/>
+                    </HBox>
+                    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                                style="-fx-background-color:transparent;-fx-background:transparent;
+                                       -fx-border-color:transparent;">
+                        <VBox fx:id="voyagesCardsContainer" spacing="16"
+                              style="-fx-padding:0 36 36 36;-fx-background-color:#f1f5f9;"/>
+                    </ScrollPane>
+                </VBox>
+
+            </StackPane>
+        </VBox>
     </center>
 </BorderPane>

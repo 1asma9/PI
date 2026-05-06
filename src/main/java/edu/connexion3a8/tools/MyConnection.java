@@ -12,7 +12,7 @@ public class MyConnection {
     private MyConnection() {
         try {
             cnx = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/hebergement",
+                    "jdbc:mysql://localhost:3307/voyage",
                     "root",
                     ""
             );

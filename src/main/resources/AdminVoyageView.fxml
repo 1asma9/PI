@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.destination.controllers.AdminVoyageController"
+      stylesheets="@/app/voyage.css"
+      styleClass="page" spacing="16">
+
+    <Label text="Gestion des Voyages" styleClass="pageTitle"/>
+
+    <VBox styleClass="glass-card-large" spacing="14">
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
+            <TextField fx:id="searchPointDepart"
+                       promptText="Rechercher par départ / arrivée..."
+                       prefWidth="280"
+                       styleClass="input-field"/>
+            <Button fx:id="btnReset" text="Reset" styleClass="btn-secondary"/>
+        </HBox>
+
+        <TableView fx:id="tableVoyages" prefHeight="350" styleClass="table-modern">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="70"/>
+                <TableColumn fx:id="colPointDepart" text="Départ" prefWidth="100"/>
+                <TableColumn fx:id="colPointArrivee" text="Arrivée" prefWidth="100"/>
+                <TableColumn fx:id="colDateDepart" text="Date départ" prefWidth="100"/>
+                <TableColumn fx:id="colDateArrivee" text="Date arrivée" prefWidth="100"/>
+                <TableColumn fx:id="colPrix" text="Prix" prefWidth="70"/>
+                <TableColumn fx:id="colDestinationId" text="Destination" prefWidth="80"/>
+                <TableColumn fx:id="colPaid" text="Payé" prefWidth="50"/>
+                <!-- ✅ Colonne Actions -->
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="200"/>
+            </columns>
+        </TableView>
+
+        <HBox spacing="14" alignment="CENTER" style="-fx-padding: 10 0 10 0;">
+            <Button fx:id="btnAjouter" text="Ajouter" styleClass="btn-primary"/>
+            <Button fx:id="btnModifier" text="Modifier" styleClass="btn-warning"/>
+            <Button fx:id="btnSupprimer" text="Supprimer" styleClass="btn-danger"/>
+        </HBox>
+    </VBox>
+
+</VBox>

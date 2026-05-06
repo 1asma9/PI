@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class MyConnection {
 
-    private final String url = "jdbc:mysql://localhost:3306/hebergement?useSSL=false&serverTimezone=UTC";
+    private final String url = "jdbc:mysql://localhost:3307/voyage?useSSL=false&serverTimezone=UTC";
     private final String login = "root";
     private final String pwd = "";
 
