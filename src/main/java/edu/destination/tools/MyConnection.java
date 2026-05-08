@@ -8,14 +8,14 @@ public class MyConnection {
     private static MyConnection instance;
     private Connection cnx;
 
-    private final String url = "jdbc:mysql://localhost:3307/voyage";
+    private final String url = "jdbc:mysql://localhost:3306/voyage-1?useSSL=false&serverTimezone=UTC";
     private final String login = "root";
     private final String pwd = "";
 
-    public MyConnection() {
+    private MyConnection() {
         try {
             cnx = DriverManager.getConnection(url, login, pwd);
-            System.out.println("Connexion établie");
+            System.out.println("Connexion établie (destination)");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

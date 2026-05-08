@@ -64,12 +64,13 @@ public class FrontendCommentCardController {
     @FXML
     public void toggleLike(MouseEvent event) {
         boolean newLikedState = !commentaire.isLiked();
+        int currentLikes = Math.max(0, commentaire.getLikesCount());
 
         if (newLikedState) {
-            commentaire.setLikesCount(commentaire.getLikesCount() + 1);
+            commentaire.setLikesCount(currentLikes + 1);
             likeIcon.setFill(Color.web("#FF6B6B"));
         } else {
-            commentaire.setLikesCount(commentaire.getLikesCount() - 1);
+            commentaire.setLikesCount(Math.max(0, currentLikes - 1));
             likeIcon.setFill(Color.web("#999999"));
         }
 

@@ -15,6 +15,7 @@ public class Blog {
     private LocalDateTime date_publication;
     private String extrait;
     private String slug;
+    private boolean publicationRequested;
 
     // Dans Blog.java, ajoutez :
     private double ratingAverage;
@@ -93,6 +94,7 @@ public class Blog {
     }
 
     public String getAuthor_nom() {return author_nom;}
+    public boolean isPublicationRequested() { return publicationRequested; }
 
     public void setId(int id) {
         this.id = id;
@@ -135,6 +137,7 @@ public class Blog {
     }
 
     public void setAuthor_nom(String author_nom) {this.author_nom = author_nom;}
+    public void setPublicationRequested(boolean publicationRequested) { this.publicationRequested = publicationRequested; }
 
     //--------Equals + HashCode + toString -------
 
@@ -142,12 +145,12 @@ public class Blog {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Blog blog = (Blog) o;
-        return getId() == blog.getId() && isStatus() == blog.isStatus() && Objects.equals(getTitre(), blog.getTitre()) && Objects.equals(getContenu(), blog.getContenu()) && Objects.equals(getImage_couverture(), blog.getImage_couverture()) && Objects.equals(getAuthor_id(), blog.getAuthor_id()) && Objects.equals(getDate_creation(), blog.getDate_creation()) && Objects.equals(getDate_publication(), blog.getDate_publication()) && Objects.equals(getExtrait(), blog.getExtrait()) && Objects.equals(getSlug(), blog.getSlug());
+        return getId() == blog.getId() && isStatus() == blog.isStatus() && isPublicationRequested() == blog.isPublicationRequested() && Objects.equals(getTitre(), blog.getTitre()) && Objects.equals(getContenu(), blog.getContenu()) && Objects.equals(getImage_couverture(), blog.getImage_couverture()) && Objects.equals(getAuthor_id(), blog.getAuthor_id()) && Objects.equals(getDate_creation(), blog.getDate_creation()) && Objects.equals(getDate_publication(), blog.getDate_publication()) && Objects.equals(getExtrait(), blog.getExtrait()) && Objects.equals(getSlug(), blog.getSlug());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTitre(), getContenu(), getImage_couverture(), getAuthor_id(), isStatus(), getDate_creation(), getDate_publication(), getExtrait(), getSlug());
+        return Objects.hash(getId(), getTitre(), getContenu(), getImage_couverture(), getAuthor_id(), isStatus(), isPublicationRequested(), getDate_creation(), getDate_publication(), getExtrait(), getSlug());
     }
 
     @Override
@@ -163,6 +166,7 @@ public class Blog {
                 ", date_publication=" + date_publication +
                 ", extrait='" + extrait + '\'' +
                 ", slug='" + slug + '\'' +
+                ", publicationRequested=" + publicationRequested +
                 '}';
     }
 }

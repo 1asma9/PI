@@ -9,7 +9,7 @@
 
 <Pane prefHeight="629.0"
       prefWidth="1084.0"
-      style="-fx-background-color: #f5efe6;"
+      style="-fx-background-color: #0b1220;"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="edu.connexion3a8.controllers.BlogDetailController">
@@ -32,15 +32,15 @@
                         <Button fx:id="backBtn"
                                 text="← Retour"
                                 onAction="#goBack"
-                                style="-fx-background-color: #e6d5c3;
+                                style="-fx-background-color: #182742;
                                        -fx-background-radius: 20;
-                                       -fx-text-fill: #6b4f3b;
+                                       -fx-text-fill: #c8d2e6;
                                        -fx-padding: 6 18;" />
                     </HBox>
 
                     <!-- ================= BLOG HEADER CARD ================= -->
                     <VBox spacing="18"
-                          style="-fx-background-color: #fffaf3;
+                          style="-fx-background-color: #131f36;
                                  -fx-background-radius: 20;
                                  -fx-padding: 30;
                                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 20, 0, 0, 5);">
@@ -49,12 +49,12 @@
                         <Text fx:id="blogTitle"
                               text="Titre du Blog"
                               wrappingWidth="990"
-                              fill="#4e3b2a"
+                              fill="#f3f7ff"
                               style="-fx-font-size: 28px; -fx-font-weight: bold;" />
 
                         <!-- Translation -->
                         <HBox spacing="12" alignment="CENTER_LEFT">
-                            <Label text="Traduire en :" textFill="#6b4f3b"/>
+                            <Label text="Traduire en :" textFill="#c8d2e6"/>
 
                             <ComboBox fx:id="languageComboBox"
                                       prefWidth="170"
@@ -72,7 +72,7 @@
                             <Button fx:id="translateBtn"
                                     text="Traduire"
                                     onAction="#handleTranslate"
-                                    style="-fx-background-color: #c8a27c;
+                                    style="-fx-background-color: #3b82f6;
                                            -fx-text-fill: white;
                                            -fx-background-radius: 20;" />
 
@@ -80,20 +80,20 @@
                                     text="Version originale"
                                     onAction="#resetTranslation"
                                     style="-fx-background-color: transparent;
-                                           -fx-border-color: #c8a27c;
+                                           -fx-border-color: #3b82f6;
                                            -fx-border-radius: 20;
-                                           -fx-text-fill: #6b4f3b;" />
+                                           -fx-text-fill: #c8d2e6;" />
                         </HBox>
 
                         <!-- Meta Info -->
                         <HBox spacing="25">
                             <Label fx:id="blogAuthor"
                                    text="Par Admin"
-                                   textFill="#7a6a5a"/>
+                                   textFill="#94a3b8"/>
 
                             <Label fx:id="blogDate"
                                    text="27 Déc 2025"
-                                   textFill="#7a6a5a"/>
+                                   textFill="#94a3b8"/>
 
                             <Label fx:id="blogStatus"
                                    text="● Publié"
@@ -111,19 +111,19 @@
                         <!-- Excerpt -->
                         <Text fx:id="blogExcerpt"
                               wrappingWidth="990"
-                              fill="#7a6a5a"
+                              fill="#94a3b8"
                               style="-fx-font-size: 16px; -fx-font-style: italic;" />
 
                         <!-- Content -->
                         <Text fx:id="blogContent"
                               wrappingWidth="990"
-                              fill="#4e3b2a"
+                              fill="#f3f7ff"
                               style="-fx-font-size: 15px;" />
                     </VBox>
 
                     <!-- ================= COMMENTS CARD ================= -->
                     <VBox spacing="20"
-                          style="-fx-background-color: #fffaf3;
+                          style="-fx-background-color: #131f36;
                                  -fx-background-radius: 20;
                                  -fx-padding: 30;
                                  -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 20, 0, 0, 5);">
@@ -131,11 +131,11 @@
                         <!-- Header -->
                         <HBox spacing="10">
                             <Text text="💬 Commentaires"
-                                  fill="#4e3b2a"
+                                  fill="#f3f7ff"
                                   style="-fx-font-size: 22px; -fx-font-weight: bold;" />
                             <Label fx:id="commentCountLabel"
                                    text="(0)"
-                                   textFill="#a1887f"/>
+                                   textFill="#94a3b8"/>
                         </HBox>
 
                         <Separator/>
@@ -144,7 +144,7 @@
                         <VBox spacing="15">
 
                             <Label text="Ajouter un commentaire"
-                                   textFill="#6b4f3b"
+                                   textFill="#c8d2e6"
                                    style="-fx-font-weight: bold;" />
 
                             <HBox spacing="15">
@@ -169,7 +169,7 @@
                                 <Button fx:id="submitCommentBtn"
                                         text="Publier"
                                         onAction="#submitComment"
-                                        style="-fx-background-color: #c8a27c;
+                                        style="-fx-background-color: #3b82f6;
                                                -fx-text-fill: white;
                                                -fx-background-radius: 20;
                                                -fx-padding: 6 18;" />
@@ -188,9 +188,9 @@
                               spacing="8"
                               visible="false">
                             <Text text="Aucun commentaire pour le moment"
-                                  fill="#a1887f"/>
+                                  fill="#94a3b8"/>
                             <Text text="Soyez le premier à commenter !"
-                                  fill="#a1887f"/>
+                                  fill="#94a3b8"/>
                         </VBox>
 
                     </VBox>

@@ -72,14 +72,15 @@ public class CommentCardController {
     public void toggleLike(MouseEvent event) {
         // Toggle liked state
         boolean newLikedState = !commentaire.isLiked();
+        int currentLikes = Math.max(0, commentaire.getLikesCount());
 
         if (newLikedState) {
             // Like
-            commentaire.setLikesCount(commentaire.getLikesCount() + 1);
+            commentaire.setLikesCount(currentLikes + 1);
             likeIcon.setFill(javafx.scene.paint.Color.web("#dc284c"));
         } else {
             // Unlike
-            commentaire.setLikesCount(commentaire.getLikesCount() - 1);
+            commentaire.setLikesCount(Math.max(0, currentLikes - 1));
             likeIcon.setFill(javafx.scene.paint.Color.web("#999999"));
         }
 

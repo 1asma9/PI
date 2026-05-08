@@ -10,7 +10,9 @@ public class AnalyticsService {
     private Connection cnx;
 
     public AnalyticsService() {
-        MyConnection mc = MyConnection.getInstance();    }
+        MyConnection mc = MyConnection.getInstance();
+        cnx = mc.getCnx();
+    }
 
     /**
      * Enregistrer une vue de blog

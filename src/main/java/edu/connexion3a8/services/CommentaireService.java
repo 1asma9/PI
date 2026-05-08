@@ -33,15 +33,14 @@ public class CommentaireService implements ICommentaire<Commentaire> {
         // Remplacer le contenu par la version filtrée
         c.setContenu(filteredContent);
 
-        String sql = "INSERT INTO commentaire (contenu, nomuser, img, likes_count, liked, blog_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO commentaire (contenu, nomuser, img, likes_count, blog_id) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement ps = cnx.prepareStatement(sql);
 
         ps.setString(1, c.getContenu());
         ps.setString(2, c.getNomuser());
         ps.setString(3, c.getImg());
         ps.setInt(4, c.getLikesCount());
-        ps.setBoolean(5, c.isLiked());
-        ps.setInt(6, blogId);
+        ps.setInt(5, blogId);
 
         ps.executeUpdate();
     }
@@ -89,7 +88,7 @@ public class CommentaireService implements ICommentaire<Commentaire> {
             c.setNomuser(rs.getString("nomuser"));
             c.setImg(rs.getString("img"));
             c.setLikesCount(rs.getInt("likes_count"));
-            c.setLiked(rs.getBoolean("liked"));
+            c.setLiked(false);
 
             list.add(c);
         }
@@ -115,7 +114,7 @@ public class CommentaireService implements ICommentaire<Commentaire> {
             c.setNomuser(rs.getString("nomuser"));
             c.setImg(rs.getString("img"));
             c.setLikesCount(rs.getInt("likes_count"));
-            c.setLiked(rs.getBoolean("liked"));
+            c.setLiked(false);
 
             return c;
         }
@@ -141,7 +140,7 @@ public class CommentaireService implements ICommentaire<Commentaire> {
             c.setNomuser(rs.getString("nomuser"));
             c.setImg(rs.getString("img"));
             c.setLikesCount(rs.getInt("likes_count"));
-            c.setLiked(rs.getBoolean("liked"));
+            c.setLiked(false);
             c.setBlogId(rs.getInt("blog_id"));
 
             list.add(c);
@@ -153,7 +152,7 @@ public class CommentaireService implements ICommentaire<Commentaire> {
     // ✅ Ajouter Like
     @Override
     public void ajouterLike(int id) throws SQLException {
-        String sql = "UPDATE commentaire SET likes_count = likes_count + 1, liked = true WHERE id=?";
+        String sql = "UPDATE commentaire SET likes_count = likes_count + 1 WHERE id=?";
         PreparedStatement ps = cnx.prepareStatement(sql);
         ps.setInt(1, id);
         ps.executeUpdate();
@@ -162,7 +161,7 @@ public class CommentaireService implements ICommentaire<Commentaire> {
     // ✅ Retirer Like
     @Override
     public void retirerLike(int id) throws SQLException {
-        String sql = "UPDATE commentaire SET likes_count = likes_count - 1, liked = false WHERE id=? AND likes_count > 0";
+        String sql = "UPDATE commentaire SET likes_count = likes_count - 1 WHERE id=? AND likes_count > 0";
         PreparedStatement ps = cnx.prepareStatement(sql);
         ps.setInt(1, id);
         ps.executeUpdate();
@@ -184,8 +183,11 @@ public class CommentaireService implements ICommentaire<Commentaire> {
 
             c.setId(rs.getInt("id"));
             c.setContenu(rs.getString("contenu"));
-            c.setNomuser(rs.getString("auteur"));
+            c.setNomuser(rs.getString("nomuser"));
             c.setBlogId(rs.getInt("blog_id"));  // adapte si ton champ s'appelle autrement
+            c.setLikesCount(rs.getInt("likes_count"));
+            c.setDate(rs.getString("date_creation"));
+            c.setLiked(false);
 
             return c;
         }
