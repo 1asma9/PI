@@ -210,3 +210,9 @@
 .back-chip:hover {
     -fx-background-color: rgba(255, 255, 255, 0.33);
 }
+
+/* Dark premium detail overrides */
+.root { -fx-background-color: #0b1220; }
+.back-chip { -fx-background-color: rgba(59,130,246,0.24); -fx-border-color: rgba(96,165,250,0.7); }
+.back-chip:hover { -fx-background-color: rgba(59,130,246,0.38); }
+

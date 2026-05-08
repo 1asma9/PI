@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hs_err_pid1284.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminAvisController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminLayoutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminMenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminReclamationsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/ChatbotController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/DashboardStatsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/MainLayoutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/MainMenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/ModifierAvisController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/ModifierReclamationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/StatisticsAdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/UserAvisController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/UserLayoutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/UserMenuController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/UserReclamationsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/blog/ModerationDashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/AuditLog.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/CommentEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/CommentReport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/ModerationAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/ModerationAnalysis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/ModerationDecision.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/Moderator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/PriorityLevel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/ReportReason.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/ReportStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/domain/UserRole.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/dto/ModerationDecisionCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/dto/ModerationDetailDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/dto/ModerationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/dto/ModerationKpi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/dto/ReportRowViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/repository/InMemoryModerationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/repository/JdbcModerationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/repository/ModerationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/service/MockModerationDashboardService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/service/ModerationDashboardService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/service/ModerationRules.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/blogmoderation/service/ModerationStateMachine.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminDestinationFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminImageController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminImageFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminVoyageController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminVoyageDetailController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminVoyageFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDetailsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/DestinationStatistiqueController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Destination.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Image.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Transport.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/entities/Voyage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/interfaces/IService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/DestinationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/ImageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/StripeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/TransportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/VoyageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tests/MainClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tests/MainFx.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tools/MyConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tools/SceneUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ActiviteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesBackController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/AffichageActivitesFrontController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ModifierActiviteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/controllers/ReservationFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/Activite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/entities/ReservationActivite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/AiRatingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/services/ReservationActiviteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainAffichageActivites.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tests/MainFx.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/CurrencyService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ReservationActiviteValidator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/validation/ValidationException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/Avis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/Reclamation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AddHebergementController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ChatController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/DashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/HebergementGalleryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MainFx.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MainLayoutController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ReservationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ReservationGalleryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ReservationsAdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ShowHebergementController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/entities/Disponibilite.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/entities/Hebergement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/entities/Reservation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/entities/TypeHebergement.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/interfaces/Iservice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/DisponibiliteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/HebergementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/PaymentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/ReservationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/TypeHebergementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/tests/MainClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/tools/LocalPaymentCallbackServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hebergement/tools/MyConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interfaces/IService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/entities/role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/entities/utilisateur.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/interfaces/utilisateur_interface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/services/EmailService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/services/EmailVianovaTemplate.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/services/utilisateur_service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/tools/PasswordUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/AddUserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/DeleteUserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/EditUserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/HomeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/LoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/UserManagementApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/navigation/SceneNavigator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/services/AvisService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/services/ChatbotService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/services/ReclamationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tools/AlertHelper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tools/EmailService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tools/LanguageManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tools/SessionManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminDestinationForm.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminDestinationView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminImageForm.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminImageView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminTransportForm.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminTransportView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminVoyageForm.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/AdminVoyageView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Adminvoyagedetail.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ClientDestinationListView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ClientDetailsView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/DestinationStatistique.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/admin_avis.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/admin_reclamations.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites_back.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/affichage_activites_front.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/ajout_activite.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/ModerationDashboard.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/ReservationGallery.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/add.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/add_user.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/admin-style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/app.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/chat.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/css/moderation-dashboard.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/dashboard.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/delete_user.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/destination.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/edit_user.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/hebergement_gallery.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/home.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/image.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/list.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/login.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/reservation.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/reservation_gallery.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/reservations.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/transport.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/app/voyage.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/back_admin.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/form_activite.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/activity_banner.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/banner.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/layers-2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/layers.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-icon-2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/marker-shadow.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/images/mascot.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/leaflet.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/leaflet.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/map.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/modifier_activite.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reservation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/reservation_form.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/sql/blog_alignment_voyage1.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/sql/blog_moderation_schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/user_ajouter_avis.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/user_ajouter_reclamation.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/user_avis.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/user_modifier_avis.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/user_modifier_reclamation.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/user_reclamations.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/videos/paris.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/DisponibiliteServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/HebergementServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ReservationServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/TypeHebergementServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/edu/connexion3a8/blogmoderation/MockModerationDashboardServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/edu/connexion3a8/blogmoderation/ModerationRulesTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/edu/connexion3a8/blogmoderation/ModerationStateMachineTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/0cc0dfef-aafa-4745-aabc-2c0e49347d35_download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/0e9d899b-89ae-4884-a6b8-f9424f23a739_images (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/125f0d95-53c3-42c8-ad34-47b1a962bc76_Attack on Titan.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/13710fc1-4b9a-486e-9adf-7c2005fe7350_Screenshot 2025-09-16 143044.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/18042e9f-50e7-4cca-945f-879bacf984a0_images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/18c079e0-a5e3-455b-aee0-cd3d4ac6f527_images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/302a1787-db50-4c20-a29c-83758c26fcbf_images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/4009c201-422c-467d-81d8-a84d7f749245_nuage-de-mots.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/474720ae-6185-4b75-99d0-b37ab5a3b416_download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/4bf778a6-6600-496b-bf76-ef304c533413_download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/50a9c394-e338-4a34-ac37-10b8f1ab2f9d_images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/51e1bfbf-54a1-4d7a-8f2d-43048a0bbf98_one-piece-4k-nawpic-5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/59c9a8b5-ff67-470f-b977-eb43217b85a9_Clbration athltes - Club 2024.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/5dc66c9f-c23e-4167-ad2b-bd222db771cd_download (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/5f8a5247-30fb-4e5e-a028-fdc784a95536_images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/62c09829-6df2-4c8f-bed3-aae525d4f70e_images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/7e9298a0-94a1-4084-9938-7c362b82ba04_61d38438-4351-429a-a847-a1d82f462b3e.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/8eaa0a15-d6ff-43a9-8c3b-fe8da7a329e0_download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/a7dde447-459b-480b-9430-8dd95ac903ac_457038905_2183562892029119_6524835709937129291_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/a939ddc2-598e-4696-a7f3-daeb158ac5c4_images.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/abc602e9-9b95-445f-9d57-d1afe28b9f38_download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/ca4635e5-e802-4619-affa-56b51fa5060a_11.6cbb5d0873b79fd92158e3f2b038fa11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/cd633482-732c-4b5a-8e62-ed1ae7f7f0c0_download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/cd7c0f90-10d3-4edf-9b56-7ee0f3522ee1_1241606.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/ce328d5c-64c6-4259-95e5-a1da416ad130_download.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/d2c0d84f-0183-48f6-8569-401aab2d411a_386593825_3205900036221974_5540974513813491044_n.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/d88f81c8-bb71-4c96-a6dc-2b88961a6933_images (1).jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/e3dd9198-c584-40b1-8b3d-6083bedb4e7d_Clbration athltes - Club 2024.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/uploads/ee2bbfb5-abe2-4ad7-9c3c-4a8cc43c7906_images.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/BlogListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/BlogListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/CommentCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/CommentCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/CommentaireItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/CommentaireItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/FrontendCommentCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/controllers/FrontendCommentCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/entities/Blog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/entities/Blog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/AnalyticsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/AnalyticsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/BlogService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/BlogService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/CommentaireService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/PersonneService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/PersonneService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/RatingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/RatingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/SmartRecommendationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/services/SmartRecommendationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tests/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tests/MainClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/css/FrontendBlogStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/css/FrontendBlogStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/BlogDetailView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/BlogDetailView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/BlogList.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/BlogList.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/fxml/FrontendBlogCard.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/fxml/FrontendBlogCard.fxml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Class" />
+        <option value="FxmlFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="3ANzhw6uRisV3kbYWaBvnyjsQkn" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.Gestion_Hebergement [clean].executor": "Run",
+    "Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "Merging Blog",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/ferja/OneDrive/Bureau/Gestion_Hebergemeny/src/main/resources",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "CSS"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ferja\OneDrive\Bureau\Gestion_Hebergemeny\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Gestion_Hebergemeny" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Gestion_Hebergemeny" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-js-predefined-d6986cc7102b-b598e85cdad2-JavaScript-IU-252.25557.131" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="" />
+      <created>1772447940279</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1772447940279</updated>
+      <workItem from="1776804726550" duration="73526000" />
+      <workItem from="1777923560135" duration="33557000" />
+      <workItem from="1778186103378" duration="20809000" />
+      <workItem from="1778280744865" duration="663000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java</url>
+          <line>120</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportController.java</url>
+          <line>24</line>
+          <properties field="colVoyageId" class="edu.destination.controllers.AdminTransportController" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

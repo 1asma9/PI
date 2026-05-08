@@ -48,14 +48,15 @@ public class CommentaireItemController {
     @FXML
     private void handleLike() {
         try {
+            int currentLikes = Math.max(0, commentaire.getLikesCount());
             if (commentaire.isLiked()) {
                 service.retirerLike(commentaire.getId());
                 commentaire.setLiked(false);
-                commentaire.setLikesCount(commentaire.getLikesCount() - 1);
+                commentaire.setLikesCount(Math.max(0, currentLikes - 1));
             } else {
                 service.ajouterLike(commentaire.getId());
                 commentaire.setLiked(true);
-                commentaire.setLikesCount(commentaire.getLikesCount() + 1);
+                commentaire.setLikesCount(currentLikes + 1);
             }
 
             likesCountLabel.setText(String.valueOf(commentaire.getLikesCount()));

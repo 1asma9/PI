@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.pidev.controllers.AffichageActivitesBackController"
+            stylesheets="@back_admin.css"
+            styleClass="boRoot">
+
+    <!-- ===== TOP BAR ===== -->
+    <top>
+        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="boTopBar">
+            <Label text="VOYAGE" styleClass="boBrand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button text="Front (Client)"
+                    onAction="#goFrontOffice"
+                    styleClass="boBtnGhost"/>
+        </HBox>
+    </top>
+
+    <!-- ===== LEFT SIDEBAR ===== -->
+    <left>
+        <VBox spacing="14" styleClass="boSidebar">
+            <Label text="Dashboard" styleClass="boSideItem"/>
+            <Label text="Réservations" styleClass="boSideItem"/>
+            <Label text="Hébergements" styleClass="boSideItem"/>
+
+            <Separator />
+
+            <Label text="Activités" styleClass="boSideItemActive"/>
+            <Label text="Chat" styleClass="boSideItem"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button text="Déconnexion" styleClass="boBtnGhost"/>
+        </VBox>
+    </left>
+
+    <!-- ===== CENTER CONTENT ===== -->
+    <center>
+        <VBox spacing="16" styleClass="boContent" BorderPane.alignment="CENTER">
+
+            <Label text="Gestion des Activités" styleClass="boTitle"/>
+
+            <!-- Filters row -->
+            <HBox spacing="12" alignment="CENTER_LEFT" styleClass="boFilters">
+                <TextField fx:id="tfSearch"
+                           promptText="Rechercher par nom / lieu..."
+                           styleClass="boInput"/>
+
+                <ComboBox fx:id="cbType" prefWidth="160" styleClass="boCombo"/>
+                <ComboBox fx:id="cbLieu" prefWidth="160" styleClass="boCombo"/>
+
+                <Button text="Reset"
+                        onAction="#onReset"
+                        styleClass="boBtnGhost"/>
+            </HBox>
+
+            <!-- Table card -->
+            <VBox spacing="10" styleClass="boCard">
+                <TableView fx:id="tableActivites"
+                           styleClass="boTable"
+                           prefHeight="420">
+
+                    <columns>
+                        <TableColumn fx:id="colId" text="ID" prefWidth="70"/>
+                        <TableColumn fx:id="colNom" text="Nom" prefWidth="240"/>
+                        <TableColumn fx:id="colLieu" text="Lieu" prefWidth="160"/>
+                        <TableColumn fx:id="colType" text="Type" prefWidth="160"/>
+                        <TableColumn fx:id="colPrix" text="Prix" prefWidth="120"/>
+                        <TableColumn fx:id="colDuree" text="Durée" prefWidth="110"/>
+                        <TableColumn fx:id="colRating" text="AI" prefWidth="80"/>
+                    </columns>
+
+                </TableView>
+
+                <!-- Action buttons -->
+                <HBox spacing="12" alignment="CENTER" styleClass="boActions">
+                    <Button text="Ajouter"
+                            onAction="#onAjouter"
+                            styleClass="boBtnGold"/>
+
+                    <Button text="Modifier"
+                            onAction="#onModifier"
+                            styleClass="boBtnDark"/>
+
+                    <Button text="Supprimer"
+                            onAction="#onSupprimer"
+                            styleClass="boBtnDanger"/>
+
+                    <Button text="Retour"
+                            onAction="#goFrontOffice"
+                            styleClass="boBtnGhost"/>
+                </HBox>
+            </VBox>
+
+        </VBox>
+    </center>
+
+    <padding>
+        <Insets top="0" right="0" bottom="0" left="0"/>
+    </padding>
+
+</BorderPane>

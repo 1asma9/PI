@@ -11,7 +11,8 @@ public class SmartRecommendationService {
     private Connection cnx;
 
     public SmartRecommendationService() {
-        cnx = new MyConnection().getCnx();
+        MyConnection mc = MyConnection.getInstance();
+        cnx = mc.getCnx();
     }
 
     /**

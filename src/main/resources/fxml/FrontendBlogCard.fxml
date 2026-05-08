@@ -43,7 +43,7 @@
 
                 <HBox spacing="8" alignment="CENTER_LEFT">
                     <HBox fx:id="starsContainer" spacing="2">
-                        <Text text="*****" style="-fx-fill: #FFD700; -fx-font-size: 14px;"/>
+                        <Text text="***" style="-fx-fill: #FFD700; -fx-font-size: 14px;"/>
                     </HBox>
                     <Label fx:id="ratingLabel" text="4.5" styleClass="rating-number"/>
                     <Label fx:id="reviewCountLabel" text="(23)" styleClass="rating-count"/>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.blog.ModerationDashboardController"
+            stylesheets="@css/moderation-dashboard.css"
+            styleClass="moderation-root">
+    <top>
+        <VBox spacing="10" styleClass="header-panel">
+            <padding>
+                <Insets top="12" right="12" bottom="8" left="12"/>
+            </padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Signalements des commentaires + Analyse" styleClass="title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Rafraichir" onAction="#refresh" styleClass="btn-secondary"/>
+                <Button text="Exporter CSV" styleClass="btn-secondary"/>
+            </HBox>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <TextField fx:id="searchField" promptText="Recherche auteur/contenu..." HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="statusFilter" promptText="Statut"/>
+                <ComboBox fx:id="priorityFilter" promptText="Priorite"/>
+                <ComboBox fx:id="reasonFilter" promptText="Motif"/>
+                <DatePicker fx:id="fromDate"/>
+                <DatePicker fx:id="toDate"/>
+                <CheckBox fx:id="onlyPendingCheck" text="Seulement non traites"/>
+            </HBox>
+            <HBox spacing="10">
+                <VBox styleClass="kpi-card"><Label text="Temps moyen"/><Label fx:id="kpiAvgTime" styleClass="kpi-value"/></VBox>
+                <VBox styleClass="kpi-card"><Label text="Taux approuves"/><Label fx:id="kpiApprovalRate" styleClass="kpi-value"/></VBox>
+                <VBox styleClass="kpi-card"><Label text="En attente"/><Label fx:id="kpiPending" styleClass="kpi-value"/></VBox>
+                <VBox styleClass="kpi-card"><Label text="Precision IA"/><Label fx:id="kpiAiPrecision" styleClass="kpi-value"/></VBox>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.68">
+            <items>
+                <VBox spacing="8" styleClass="left-panel">
+                    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                    <HBox spacing="8">
+                        <Button text="Approuver" onAction="#approveSelected" styleClass="btn-approve"/>
+                        <Button text="Masquer" onAction="#hideSelected" styleClass="btn-hide"/>
+                        <Button text="Supprimer" onAction="#deleteSelected" styleClass="btn-delete"/>
+                        <Button text="Escalader" onAction="#escalateSelected" styleClass="btn-escalate"/>
+                    </HBox>
+                    <TableView fx:id="reportsTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colReportId" text="ID signalement" prefWidth="90"/>
+                            <TableColumn fx:id="colCommentId" text="ID commentaire" prefWidth="100"/>
+                            <TableColumn fx:id="colAuthor" text="Auteur" prefWidth="90"/>
+                            <TableColumn fx:id="colPreview" text="Contenu" prefWidth="230"/>
+                            <TableColumn fx:id="colReportCount" text="#Signalements" prefWidth="90"/>
+                            <TableColumn fx:id="colReason" text="Motif" prefWidth="95"/>
+                            <TableColumn fx:id="colToxicity" text="Toxicite" prefWidth="75"/>
+                            <TableColumn fx:id="colPriority" text="Priorite" prefWidth="80"/>
+                            <TableColumn fx:id="colStatus" text="Statut" prefWidth="95"/>
+                            <TableColumn fx:id="colUpdated" text="MAJ" prefWidth="120"/>
+                            <TableColumn fx:id="colModerator" text="Assigne" prefWidth="95"/>
+                        </columns>
+                    </TableView>
+                    <Pagination fx:id="pagination" maxPageIndicatorCount="8"/>
+                </VBox>
+
+                <VBox spacing="8" styleClass="detail-panel">
+                    <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                    <Label fx:id="detailHeader" text="Details signalement" styleClass="detail-title"/>
+                    <TitledPane text="Commentaire" expanded="true">
+                        <content>
+                            <Label fx:id="detailContent" wrapText="true"/>
+                        </content>
+                    </TitledPane>
+                    <TitledPane text="Analyse IA" expanded="true">
+                        <content>
+                            <Label fx:id="detailAnalysis" wrapText="true"/>
+                        </content>
+                    </TitledPane>
+                    <TitledPane text="Historique" expanded="false">
+                        <content>
+                            <ScrollPane fitToWidth="true" prefHeight="140">
+                                <content>
+                                    <Label fx:id="detailHistory" wrapText="true"/>
+                                </content>
+                            </ScrollPane>
+                        </content>
+                    </TitledPane>
+                    <HBox spacing="8">
+                        <ComboBox fx:id="assignCombo" promptText="Reassigner a..." HBox.hgrow="ALWAYS"/>
+                        <Button text="Reassigner" onAction="#reassignSelected" styleClass="btn-secondary"/>
+                    </HBox>
+                    <TextArea fx:id="reasonArea" promptText="Raison moderation (obligatoire pour masquer/supprimer/escalader)" prefRowCount="3"/>
+                    <TextArea fx:id="noteArea" promptText="Note interne" prefRowCount="3"/>
+                    <Button text="Ajouter note" onAction="#addInternalNote" styleClass="btn-secondary"/>
+                </VBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

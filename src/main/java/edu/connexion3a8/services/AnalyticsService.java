@@ -10,7 +10,8 @@ public class AnalyticsService {
     private Connection cnx;
 
     public AnalyticsService() {
-        cnx = new MyConnection().getCnx();
+        MyConnection mc = MyConnection.getInstance();
+        cnx = mc.getCnx();
     }
 
     /**

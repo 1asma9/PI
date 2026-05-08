@@ -6,25 +6,30 @@ import java.sql.SQLException;
 
 public class MyConnection {
 
-    private final String URL = "jdbc:mysql://localhost:3306/pi";
-    private final String LOGIN = "root";
-    private final String PWD = "";
-
-    private Connection cnx;
     private static MyConnection instance;
+    private Connection cnx;
 
-    public MyConnection() {
+    private MyConnection() {
         try {
-            cnx = DriverManager.getConnection(URL, LOGIN, PWD);
-            System.out.println("Connexion établie!");
+            String host = System.getenv().getOrDefault("DB_HOST", "localhost");
+            String port = System.getenv().getOrDefault("DB_PORT", "3306");
+            String dbName = System.getenv().getOrDefault("DB_NAME", "voyage-1");
+            String user = System.getenv().getOrDefault("DB_USER", "root");
+            String password = System.getenv().getOrDefault("DB_PASSWORD", "");
+
+            String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + dbName
+                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+            cnx = DriverManager.getConnection(jdbcUrl, user, password);
+            System.out.println("Connexion etablie: " + jdbcUrl);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 
     public static MyConnection getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new MyConnection();
+        }
         return instance;
     }
 

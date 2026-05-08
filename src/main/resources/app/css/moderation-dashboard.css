@@ -1,0 +1,122 @@
+.root {
+    -bg-page: #0b1220;
+    -bg-sidebar: #0f172a;
+    -bg-header: #111b31;
+    -bg-card: #131f36;
+    -bg-card-elevated: #182742;
+
+    -text-primary: #f3f7ff;
+    -text-secondary: #c8d2e6;
+    -text-muted: #94a3b8;
+    -text-inverse: #0b1220;
+
+    -brand-primary: #3b82f6;
+    -brand-primary-hover: #2563eb;
+    -brand-primary-active: #1d4ed8;
+    -accent: #22d3ee;
+    -accent-2: #a78bfa;
+
+    -success: #22c55e;
+    -warning: #f59e0b;
+    -error: #ef4444;
+    -info: #38bdf8;
+
+    -border-default: #243552;
+    -border-strong: #334a6e;
+    -divider: #1f2d47;
+
+    -hover-bg: #1a2a45;
+    -active-bg: #223658;
+    -focus-ring: #60a5fa;
+
+    /* charts */
+    -chart-1: #60a5fa;
+    -chart-2: #34d399;
+    -chart-3: #fbbf24;
+    -chart-4: #f87171;
+    -chart-5: #a78bfa;
+    -chart-6: #22d3ee;
+}
+
+.root.light {
+    -bg-page: #f3f6fb;
+    -bg-sidebar: #ffffff;
+    -bg-header: #ffffff;
+    -bg-card: #ffffff;
+    -bg-card-elevated: #f8fbff;
+    -text-primary: #0f172a;
+    -text-secondary: #334155;
+    -text-muted: #64748b;
+    -text-inverse: #ffffff;
+    -brand-primary: #2563eb;
+    -brand-primary-hover: #1d4ed8;
+    -brand-primary-active: #1e40af;
+    -accent: #0891b2;
+    -accent-2: #7c3aed;
+    -success: #16a34a;
+    -warning: #d97706;
+    -error: #dc2626;
+    -info: #0284c7;
+    -border-default: #d7e1ef;
+    -border-strong: #c3d0e4;
+    -divider: #e2e8f0;
+    -hover-bg: #eef4ff;
+    -active-bg: #e1ecff;
+    -focus-ring: #2563eb;
+    -chart-1: #2563eb;
+    -chart-2: #059669;
+    -chart-3: #d97706;
+    -chart-4: #dc2626;
+    -chart-5: #7c3aed;
+    -chart-6: #0891b2;
+}
+
+.moderation-root { -fx-background-color: -bg-page; }
+
+.header-panel, .left-panel, .detail-panel {
+    -fx-background-color: -bg-card;
+    -fx-border-color: -border-default;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.title { -fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: -text-primary; }
+
+.kpi-card {
+    -fx-padding: 8 10 8 10;
+    -fx-background-color: -bg-card-elevated;
+    -fx-background-radius: 8;
+    -fx-border-color: -border-default;
+    -fx-border-radius: 8;
+}
+
+.kpi-value { -fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: -accent; }
+.detail-title { -fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: -text-primary; }
+.label { -fx-text-fill: -text-secondary; }
+.button { -fx-cursor: hand; }
+
+.combo-box, .text-field, .text-area, .date-picker {
+    -fx-background-color: -bg-card-elevated;
+    -fx-text-fill: -text-primary;
+    -fx-prompt-text-fill: -text-muted;
+    -fx-border-color: -border-default;
+}
+
+.btn-secondary { -fx-background-color: -bg-card-elevated; -fx-text-fill: -text-secondary; }
+.btn-secondary:hover { -fx-background-color: -hover-bg; }
+.btn-approve { -fx-background-color: -success; -fx-text-fill: -text-inverse; }
+.btn-hide { -fx-background-color: -warning; -fx-text-fill: -text-inverse; }
+.btn-delete { -fx-background-color: -error; -fx-text-fill: -text-inverse; }
+.btn-escalate { -fx-background-color: -accent-2; -fx-text-fill: -text-inverse; }
+
+.table-view {
+    -fx-background-color: -bg-card;
+    -fx-border-color: -border-default;
+    -fx-table-cell-border-color: transparent;
+}
+.table-view .column-header-background { -fx-background-color: -bg-card-elevated; }
+.table-view .column-header .label { -fx-text-fill: -text-secondary; -fx-font-weight: bold; }
+.table-row-cell { -fx-background-color: -bg-card; }
+.table-row-cell:odd { -fx-background-color: -bg-card-elevated; }
+.table-row-cell:selected { -fx-background-color: -active-bg; }
+.table-cell { -fx-text-fill: -text-secondary; }

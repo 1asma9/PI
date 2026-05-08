@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.ReservationGalleryController"
+            fitToWidth="true"
+            pannable="true"
+            vbarPolicy="AS_NEEDED" hbarPolicy="NEVER"
+            styleClass="scroll">
+
+    <content>
+        <VBox spacing="18" styleClass="pageContent">
+            <Label text="Choisir un Hébergement" styleClass="h1"/>
+
+            <FlowPane fx:id="cardsWrap"
+                      hgap="18" vgap="18"
+                      prefWrapLength="1100"
+                      styleClass="cardsWrap"/>
+        </VBox>
+    </content>
+</ScrollPane>

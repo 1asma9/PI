@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="700.0" 
+            styleClass="page"
+            stylesheets="@style.css"
+            xmlns="http://javafx.com/javafx/17" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.ModifierAvisController">
+   
+   <!-- Top Bar -->
+   <top>
+      <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
+         <Button text="← Retour" styleClass="btnOutline" onAction="#annuler" />
+         <Label text="MODIFIER MON AVIS" styleClass="pageTitle" />
+      </HBox>
+   </top>
+   
+   <!-- Center Content -->
+   <center>
+      <VBox styleClass="pageContent" alignment="CENTER">
+         
+         <!-- Card formulaire -->
+         <VBox styleClass="card" spacing="20" maxWidth="500" alignment="CENTER_LEFT">
+            
+            <Label text="Mettre à jour mon expérience" styleClass="cardTitle" />
+            
+            <VBox spacing="8">
+               <Label text="Note (/5) :" styleClass="metaText" />
+               <ComboBox fx:id="comboNote" promptText="Choisir une note" prefWidth="150" />
+            </VBox>
+            
+            <VBox spacing="8">
+               <Label text="Votre commentaire :" styleClass="metaText" />
+               <TextArea fx:id="txtCommentaire" 
+                         promptText="Racontez votre expérience..." 
+                         prefHeight="150" 
+                         wrapText="true" />
+            </VBox>
+            
+            <HBox spacing="15" alignment="CENTER">
+               <Button fx:id="btnSave" 
+                       text="Enregistrer" 
+                       styleClass="btnGold"
+                       prefWidth="150"
+                       onAction="#enregistrer" />
+               
+               <Button fx:id="btnCancel" 
+                       text="Annuler" 
+                       styleClass="btnOutline"
+                       prefWidth="150"
+                       onAction="#annuler" />
+            </HBox>
+            
+         </VBox>
+         
+      </VBox>
+   </center>
+   
+</BorderPane>
