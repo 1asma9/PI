@@ -1,0 +1,209 @@
+/* ================= PAGE ================= */
+.formPage {
+    -fx-background-color: linear-gradient(to bottom right, #f6f1e7, #e9dfd2);
+}
+
+.page {
+    -fx-padding: 28;
+    -fx-background-color: #f6f1e7;
+}
+
+.formScroll,
+.formScroll > .viewport {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.formOuter {
+    -fx-padding: 40 20 60 20;
+}
+
+/* ================= TOP BANNER (LONGER) ================= */
+.topBanner {
+    -fx-background-color: linear-gradient(to right, #0f2a2a, #1f4b4b);
+    -fx-background-radius: 20;
+
+    /* 🔥 LONGER HEIGHT */
+    -fx-min-height: 220px;
+    -fx-pref-height: 260px;
+    -fx-max-height: 320px;
+
+    -fx-padding: 48 44;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.bannerKicker {
+    -fx-text-fill: #c9a24a;
+    -fx-font-size: 13px;
+    -fx-font-weight: 900;
+    -fx-letter-spacing: 2px;
+}
+
+.bannerTitle {
+    -fx-text-fill: white;
+    -fx-font-size: 34px;
+    -fx-font-weight: 900;
+    -fx-padding: 8 0 6 0;
+}
+
+.bannerSub {
+    -fx-text-fill: rgba(255,255,255,0.88);
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-max-width: 520px;
+}
+
+/* ================= MAIN CARD ================= */
+.mainCard {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-padding: 28 32 34 32;
+
+    /* ✨ Card overlap */
+    -fx-translate-y: -50;
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(0,0,0,0.22),
+            26,
+            0,
+            0,
+            12
+    );
+}
+
+/* ================= SECTION ================= */
+.sectionTitle {
+    -fx-text-fill: #8b7a66;
+    -fx-font-size: 13px;
+    -fx-font-weight: 900;
+    -fx-letter-spacing: 0.8px;
+}
+
+.sectionBar {
+    -fx-background-color: #c9a24a;
+    -fx-pref-width: 64;
+    -fx-pref-height: 4;
+    -fx-background-radius: 3;
+}
+
+/* ================= FIELDS ================= */
+.fieldLabel {
+    -fx-font-size: 14px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
+}
+
+.input,
+.inputSmall,
+.inputArea {
+    -fx-background-color: #fbf7f1;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d9cdbf;
+    -fx-padding: 12 14;
+    -fx-font-size: 14px;
+}
+
+.inputSmall {
+    -fx-pref-width: 180px;
+}
+
+.text-field:focused,
+.text-area:focused {
+    -fx-border-color: #c9a24a;
+    -fx-effect: dropshadow(gaussian, rgba(201,162,74,0.28), 10, 0, 0, 0);
+}
+
+.inputArea .content {
+    -fx-background-color: #fbf7f1;
+    -fx-background-radius: 12;
+}
+
+.hintLabel {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+
+/* ================= PREVIEW ================= */
+.previewRow {
+    -fx-background-color: rgba(15,42,42,0.03);
+    -fx-border-color: rgba(15,42,42,0.10);
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 12;
+}
+
+.previewImage {
+    -fx-background-color: white;
+    -fx-border-color: #e6e0d6;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 6;
+}
+
+.previewTitle {
+    -fx-font-size: 13px;
+    -fx-font-weight: 900;
+    -fx-text-fill: #0f2a2a;
+}
+
+.previewSub {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #6f7d7d;
+}
+
+/* ================= BUTTONS ================= */
+.btnGold {
+    -fx-background-color: #c9a24a;
+    -fx-text-fill: white;
+    -fx-font-weight: 900;
+    -fx-font-size: 14px;
+    -fx-background-radius: 30;
+    -fx-padding: 14 36;
+    -fx-cursor: hand;
+}
+
+.btnGold:hover {
+    -fx-background-color: #b8933f;
+}
+
+.btnOutline {
+    -fx-background-color: transparent;
+    -fx-text-fill: #0f2a2a;
+    -fx-font-weight: 900;
+    -fx-font-size: 14px;
+    -fx-border-color: rgba(15,42,42,0.28);
+    -fx-border-width: 2;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-padding: 12 30;
+    -fx-cursor: hand;
+}
+
+.btnOutline:hover {
+    -fx-background-color: rgba(15,42,42,0.06);
+    -fx-border-color: #0f2a2a;
+}
+
+/* ================= MESSAGES ================= */
+.msgLabel {
+    -fx-font-weight: 900;
+    -fx-text-fill: #137333;
+}
+
+.errorLabel {
+    -fx-text-fill: #c0392b;
+    -fx-font-weight: 700;
+}
+
+/* ================= TOOLTIP ================= */
+.tooltip {
+    -fx-background-color: #0f2a2a;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8;
+    -fx-padding: 8;
+}

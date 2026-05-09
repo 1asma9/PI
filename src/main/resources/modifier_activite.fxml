@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.pidev.controllers.ModifierActiviteController"
+            fitToWidth="true"
+            pannable="true"
+            vbarPolicy="AS_NEEDED"
+            hbarPolicy="NEVER"
+            stylesheets="@form_activite.css">
+
+    <content>
+        <VBox spacing="22" styleClass="page">
+
+            <!-- ===== TOP BANNER ===== -->
+            <StackPane styleClass="topBanner">
+                <VBox alignment="CENTER" spacing="6">
+                    <Label text="METTEZ À JOUR VOTRE AVENTURE" styleClass="bannerTitle"/>
+                    <Label text="Modifiez les informations de l’activité et gardez votre catalogue à jour."
+                           wrapText="true"
+                           maxWidth="820"
+                           styleClass="bannerSub"/>
+                </VBox>
+            </StackPane>
+
+            <Region prefHeight="12"/>
+
+            <!-- ===== MAIN CARD ===== -->
+            <VBox spacing="18" styleClass="mainCard">
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Region styleClass="sectionBar"/>
+                    <Label text="Détails de l’activité" styleClass="sectionTitle"/>
+                </HBox>
+
+                <!-- hidden id -->
+                <TextField fx:id="tfId" visible="false" managed="false"/>
+
+                <Label text="Nom de l'activité" styleClass="fieldLabel"/>
+                <TextField fx:id="tfNom" styleClass="input"/>
+
+                <Label text="Type d'activité" styleClass="fieldLabel"/>
+                <TextField fx:id="tfType" styleClass="input"/>
+
+                <Label text="Lieu" styleClass="fieldLabel"/>
+                <TextField fx:id="tfLieu" styleClass="input"/>
+
+                <HBox spacing="18" alignment="CENTER_LEFT">
+                    <VBox spacing="6">
+                        <Label text="Prix (DT)" styleClass="fieldLabelInline"/>
+                        <TextField fx:id="tfPrix" styleClass="inputSmall"/>
+                    </VBox>
+
+                    <VBox spacing="6">
+                        <Label text="Durée (min)" styleClass="fieldLabelInline"/>
+                        <TextField fx:id="tfDuree" styleClass="inputSmall"/>
+                    </VBox>
+                </HBox>
+
+                <Label text="Description" styleClass="fieldLabel"/>
+                <TextArea fx:id="taDescription"
+                          wrapText="true"
+                          prefRowCount="4"
+                          styleClass="inputArea"/>
+
+                <Separator styleClass="formSep"/>
+
+                <Label fx:id="lblMessage" text="" styleClass="msgLabel"/>
+
+                <HBox spacing="12" alignment="CENTER_RIGHT" styleClass="formActions">
+                    <Button text="✓ Mettre à jour"
+                            onAction="#mettreAJour"
+                            styleClass="btnGold"/>
+
+                    <Button text="⬅ Retour à la liste"
+                            onAction="#retour"
+                            styleClass="btnOutline"/>
+                </HBox>
+
+            </VBox>
+
+            <Region prefHeight="20"/>
+        </VBox>
+    </content>
+</ScrollPane>
