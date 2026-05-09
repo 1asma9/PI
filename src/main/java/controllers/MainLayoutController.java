@@ -68,12 +68,12 @@ public class MainLayoutController implements Initializable {
 
     @FXML
     void afficherMesReclamations() {
-        chargerPage("/reclamations/mes_reclamations.fxml");
+        chargerPage("/user_reclamations.fxml");
     }
 
     @FXML
     void afficherMesAvis() {
-        chargerPage("/avis/mes_avis.fxml");
+        chargerPage("/user_avis.fxml");
     }
 
     @FXML
@@ -129,21 +129,21 @@ public class MainLayoutController implements Initializable {
     void afficherAdminReclamations() {
         if (!isAdmin)
             return;
-        chargerPage("/reclamations/admin_reclamations.fxml");
+        chargerPage("/admin_reclamations.fxml");
     }
 
     @FXML
     void afficherAdminAvis() {
         if (!isAdmin)
             return;
-        chargerPage("/avis/admin_avis.fxml");
+        chargerPage("/admin_avis.fxml");
     }
 
     @FXML
     void afficherStatistiques() {
         if (!isAdmin)
             return;
-        chargerPage("/statistiques/dashboard_stats.fxml");
+        chargerPage("/statistics_admin.fxml");
     }
 
     // ===== AUTRES =====

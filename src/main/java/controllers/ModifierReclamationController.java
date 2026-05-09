@@ -1,6 +1,7 @@
 package controllers;
 
 import entities.Reclamation;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,8 @@ public class ModifierReclamationController implements Initializable {
     @FXML
     private TextField txtTitre;
     @FXML
+    private ComboBox<String> comboCategorie;
+    @FXML
     private TextArea txtDescription;
     @FXML
     private Button btnSave;
@@ -32,6 +35,9 @@ public class ModifierReclamationController implements Initializable {
     // Variables pour stocker les valeurs initiales
     private String titreInitial;
     private String descriptionInitiale;
+    private String categorieInitiale;
+    private java.util.Map<Integer, String> categoriesMap = new java.util.HashMap<>();
+    private services.AvisService avisService = new services.AvisService();
 
     public void setReclamation(Reclamation reclamation) {
         this.reclamation = reclamation;
@@ -39,14 +45,20 @@ public class ModifierReclamationController implements Initializable {
         // Sauvegarder les valeurs initiales
         titreInitial = reclamation.getTitre() == null ? "" : reclamation.getTitre();
         descriptionInitiale = reclamation.getDescription() == null ? "" : reclamation.getDescription();
+        categorieInitiale = categoriesMap.get(reclamation.getTypeId());
 
         // Remplir les champs
         txtTitre.setText(titreInitial);
         txtDescription.setText(descriptionInitiale);
+        comboCategorie.setValue(categorieInitiale);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            categoriesMap = avisService.getAllTypes();
+            comboCategorie.setItems(FXCollections.observableArrayList(categoriesMap.values()));
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML
@@ -54,6 +66,7 @@ public class ModifierReclamationController implements Initializable {
         // Récupérer les nouvelles valeurs
         String nouveauTitre = txtTitre.getText().trim();
         String nouvelleDescription = txtDescription.getText().trim();
+        String nouvelleCategorie = comboCategorie.getValue();
 
         // 1. VALIDATION : Champs vides
         if (nouveauTitre.isEmpty()) {
@@ -84,8 +97,9 @@ public class ModifierReclamationController implements Initializable {
         // 3. VALIDATION : Détecter si des modifications ont été faites
         boolean titreModifie = !nouveauTitre.equals(titreInitial);
         boolean descriptionModifiee = !nouvelleDescription.equals(descriptionInitiale);
+        boolean categorieModifiee = (nouvelleCategorie != null && !nouvelleCategorie.equals(categorieInitiale));
 
-        if (!titreModifie && !descriptionModifiee) {
+        if (!titreModifie && !descriptionModifiee && !categorieModifiee) {
             AlertHelper.showInfo("Aucune modification",
                     "Vous n'avez effectué aucune modification.\n\nLes données sont identiques aux valeurs d'origine.");
             return;
@@ -120,6 +134,13 @@ public class ModifierReclamationController implements Initializable {
                 // Mettre à jour l'objet
                 reclamation.setTitre(nouveauTitre);
                 reclamation.setDescription(nouvelleDescription);
+                
+                // Trouver l'ID de la nouvelle catégorie
+                int typeId = categoriesMap.entrySet().stream()
+                        .filter(entry -> entry.getValue().equals(nouvelleCategorie))
+                        .map(java.util.Map.Entry::getKey)
+                        .findFirst().orElse(reclamation.getTypeId());
+                reclamation.setTypeId(typeId);
 
                 // Sauvegarder en base de données
                 reclamationService.updateEntity(reclamation);
@@ -142,7 +163,7 @@ public class ModifierReclamationController implements Initializable {
         String titreActuel = txtTitre.getText().trim();
         String descriptionActuelle = txtDescription.getText().trim();
 
-        if (!titreActuel.equals(titreInitial) || !descriptionActuelle.equals(descriptionInitiale)) {
+        if (!titreActuel.equals(titreInitial) || !descriptionActuelle.equals(descriptionInitiale) || (comboCategorie.getValue() != null && !comboCategorie.getValue().equals(categorieInitiale))) {
             if (AlertHelper.showConfirmation("Modifications non sauvegardées",
                     "Vous avez des modifications non sauvegardées.\n\nÊtes-vous sûr de vouloir quitter sans enregistrer ?")) {
                 goBackToList();
@@ -159,10 +180,21 @@ public class ModifierReclamationController implements Initializable {
 
     private void goBackToList() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/user_reclamations.fxml"));
-            btnSave.getScene().setRoot(root);
-        } catch (IOException e) {
-            AlertHelper.showError("Erreur", "Impossible de retourner à la liste : " + e.getMessage());
+            hebergement.controllers.ClientLayoutController layout =
+                hebergement.controllers.ClientLayoutController.getInstance();
+            if (layout != null) {
+                layout.goMonEspace();
+            } else {
+                javafx.scene.Node anyNode = null;
+                if (anyNode == null) try { anyNode = btnSave; } catch (Exception e2) {}
+                if (anyNode == null) try { anyNode = txtTitre; } catch (Exception e2) {}
+                if (anyNode != null && anyNode.getScene() != null) {
+                    Parent root = FXMLLoader.load(getClass().getResource("/app/MonEspace.fxml"));
+                    anyNode.getScene().setRoot(root);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -1,187 +1,227 @@
 package services;
 
+import entities.Avis;
+import interfaces.IService;
+import tools.EmailService;
+import tools.MyConnection;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import entities.Avis;
-import interfaces.IService;
-import tools.MyConnection;
-import tools.EmailService;
 
 public class AvisService implements IService<Avis> {
 
+    private int getDefaultTypeAvisId() {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return 1;
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery("SELECT id FROM typeavis LIMIT 1")) {
+            if (rs.next()) return rs.getInt("id");
+        } catch (SQLException e) {
+            System.err.println("Erreur getDefaultTypeAvisId: " + e.getMessage());
+        }
+        return 1;
+    }
+
     @Override
     public void addEntity(Avis avis) throws SQLException {
-        String requete = "INSERT INTO avis (user_id, note, commentaire) VALUES (?, ?, ?)";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
-            ps.setInt(1, avis.getUserId());
-            ps.setInt(2, avis.getNote());
-            ps.setString(3, avis.getCommentaire());
-            ps.executeUpdate();
-            System.out.println("Review added");
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) {
+            System.out.println("❌ Base de données inaccessible.");
+            return;
+        }
 
-            // Send email notification to admin
+        int typeId = avis.getTypeId() > 0 ? avis.getTypeId() : getDefaultTypeAvisId();
+        String requete = "INSERT INTO avis (user_id, type_id, nb_etoiles, contenu, statut, date_avis) VALUES (?, ?, ?, ?, ?, NOW())";
+        try (PreparedStatement ps = connection.prepareStatement(requete)) {
+            ps.setInt(1, avis.getUserId());
+            ps.setInt(2, typeId);
+            ps.setInt(3, avis.getNote());
+            ps.setString(4, avis.getCommentaire());
+            ps.setString(5, "En attente");
+            ps.executeUpdate();
+            System.out.println("✅ Avis ajouté !");
+
+            // Email à l'admin
             EmailService.sendReviewNotificationToAdmin(
-                    avis.getNote(),
-                    avis.getCommentaire(),
-                    "user@test.com" // Placeholder for current session email
+                avis.getNote(),
+                avis.getCommentaire(),
+                tools.SessionManager.getEmail() != null ? tools.SessionManager.getEmail() : "admin@vianova.tn"
             );
         }
     }
 
     @Override
     public void deleteEntity(int id) throws SQLException {
-        String requete = "DELETE FROM avis WHERE id = ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return;
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM avis WHERE id = ?")) {
             ps.setInt(1, id);
             ps.executeUpdate();
-            System.out.println("Review deleted");
+            System.out.println("✅ Avis supprimé");
         }
     }
 
     @Override
     public void updateEntity(Avis avis) throws SQLException {
-        String requete = "UPDATE avis SET note = ?, commentaire = ? WHERE id = ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return;
+        try (PreparedStatement ps = connection.prepareStatement(
+                "UPDATE avis SET nb_etoiles = ?, contenu = ? WHERE id = ?")) {
             ps.setInt(1, avis.getNote());
             ps.setString(2, avis.getCommentaire());
             ps.setInt(3, avis.getId());
             ps.executeUpdate();
-            System.out.println("Review updated");
+            System.out.println("✅ Avis modifié");
         }
     }
 
     @Override
     public List<Avis> getAllEntities() throws SQLException {
         List<Avis> avisList = new ArrayList<>();
-        String requete = "SELECT * FROM avis";
-        try (Statement st = MyConnection.getInstance().getCnx().createStatement();
-                ResultSet rs = st.executeQuery(requete)) {
-            while (rs.next()) {
-                avisList.add(mapResultSetToAvis(rs));
-            }
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return avisList;
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM avis ORDER BY date_avis DESC")) {
+            while (rs.next()) avisList.add(mapResultSetToAvis(rs));
         }
         return avisList;
     }
 
     public List<Avis> getByUserId(int userId) throws SQLException {
         List<Avis> avisList = new ArrayList<>();
-        String requete = "SELECT * FROM avis WHERE user_id = ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return avisList;
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM avis WHERE user_id = ? ORDER BY date_avis DESC")) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    avisList.add(mapResultSetToAvis(rs));
-                }
+                while (rs.next()) avisList.add(mapResultSetToAvis(rs));
             }
         }
         return avisList;
     }
 
     public void repondreAvis(int id, String reponse) throws SQLException {
-        String requete = "UPDATE avis SET reponse_admin = ?, date_reponse = CURRENT_TIMESTAMP WHERE id = ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return;
+        try (PreparedStatement ps = connection.prepareStatement("UPDATE avis SET reponse = ?, date_reponse = NOW() WHERE id = ?")) {
             ps.setString(1, reponse);
             ps.setInt(2, id);
             ps.executeUpdate();
-            System.out.println("Response added to review");
-        }
-    }
+            System.out.println("✅ Réponse à l'avis ajoutée");
 
-    // Search by comment
-    public List<Avis> searchAvis(String keyword) throws SQLException {
-        List<Avis> avisList = new ArrayList<>();
-        String requete = "SELECT * FROM avis WHERE commentaire LIKE ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
-            ps.setString(1, "%" + keyword + "%");
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    avisList.add(mapResultSetToAvis(rs));
+            // Email à l'utilisateur
+            String q = "SELECT u.email FROM avis a JOIN users u ON a.user_id = u.id WHERE a.id = ?";
+            try (PreparedStatement psEmail = connection.prepareStatement(q)) {
+                psEmail.setInt(1, id);
+                try (ResultSet rs = psEmail.executeQuery()) {
+                    if (rs.next()) {
+                        EmailService.sendResponseNotificationToUser(
+                            rs.getString("email"),
+                            "Votre avis",
+                            reponse
+                        );
+                    }
                 }
+            } catch (SQLException e) {
+                System.err.println("Email non envoyé: " + e.getMessage());
             }
         }
-        return avisList;
     }
 
-    // Sort by rating
-    public List<Avis> getAvisSortedByNote(boolean descending) throws SQLException {
-        List<Avis> avisList = new ArrayList<>();
-        String order = descending ? "DESC" : "ASC";
-        String requete = "SELECT * FROM avis ORDER BY note " + order;
-        try (Statement st = MyConnection.getInstance().getCnx().createStatement();
-                ResultSet rs = st.executeQuery(requete)) {
-            while (rs.next()) {
-                avisList.add(mapResultSetToAvis(rs));
-            }
-        }
-        return avisList;
-    }
-
-    // Filter by rating
     public List<Avis> getAvisByNote(int note) throws SQLException {
         List<Avis> avisList = new ArrayList<>();
-        String requete = "SELECT * FROM avis WHERE note = ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return avisList;
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM avis WHERE nb_etoiles = ?")) {
             ps.setInt(1, note);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    avisList.add(mapResultSetToAvis(rs));
-                }
+                while (rs.next()) avisList.add(mapResultSetToAvis(rs));
             }
         }
         return avisList;
     }
 
-    // Get reviews with rating >= X
-    public List<Avis> getAvisWithMinNote(int minNote) throws SQLException {
+    public List<Avis> getAvisSortedByNote(boolean desc) throws SQLException {
         List<Avis> avisList = new ArrayList<>();
-        String requete = "SELECT * FROM avis WHERE note >= ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
-            ps.setInt(1, minNote);
+        String order = desc ? "DESC" : "ASC";
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return avisList;
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM avis ORDER BY nb_etoiles " + order)) {
+            while (rs.next()) avisList.add(mapResultSetToAvis(rs));
+        }
+        return avisList;
+    }
+
+    public List<Avis> searchAvis(String keyword) throws SQLException {
+        List<Avis> avisList = new ArrayList<>();
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return avisList;
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM avis WHERE contenu LIKE ?")) {
+            ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    avisList.add(mapResultSetToAvis(rs));
-                }
+                while (rs.next()) avisList.add(mapResultSetToAvis(rs));
             }
         }
         return avisList;
     }
 
-    // Get average rating
     public double getAverageRating() throws SQLException {
-        String requete = "SELECT AVG(note) as moyenne FROM avis";
-        try (Statement st = MyConnection.getInstance().getCnx().createStatement();
-                ResultSet rs = st.executeQuery(requete)) {
-            if (rs.next()) {
-                return rs.getDouble("moyenne");
-            }
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return 0.0;
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery("SELECT AVG(nb_etoiles) as moyenne FROM avis")) {
+            if (rs.next()) return rs.getDouble("moyenne");
         }
         return 0.0;
     }
 
-    // Get count by rating
     public int getCountByNote(int note) throws SQLException {
-        String requete = "SELECT COUNT(*) as total FROM avis WHERE note = ?";
-        try (PreparedStatement ps = MyConnection.getInstance().getCnx().prepareStatement(requete)) {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return 0;
+        try (PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) as total FROM avis WHERE nb_etoiles = ?")) {
             ps.setInt(1, note);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("total");
-                }
+                if (rs.next()) return rs.getInt("total");
             }
         }
         return 0;
+    }
+
+    public int getTotalCount() throws SQLException {
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return 0;
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery("SELECT COUNT(*) as total FROM avis")) {
+            if (rs.next()) return rs.getInt("total");
+        }
+        return 0;
+    }
+
+    public java.util.Map<Integer, String> getAllTypes() throws SQLException {
+        java.util.Map<Integer, String> types = new java.util.HashMap<>();
+        String q = "SELECT id, nom FROM typeavis";
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) return types;
+        try (Statement st = connection.createStatement();
+             ResultSet rs = st.executeQuery(q)) {
+            while (rs.next()) types.put(rs.getInt("id"), rs.getString("nom"));
+        }
+        return types;
     }
 
     private Avis mapResultSetToAvis(ResultSet rs) throws SQLException {
         Avis a = new Avis();
         a.setId(rs.getInt("id"));
         a.setUserId(rs.getInt("user_id"));
-        a.setNote(rs.getInt("note"));
-        a.setCommentaire(rs.getString("commentaire"));
-        a.setDateCreation(rs.getTimestamp("date_creation"));
-        a.setReponseAdmin(rs.getString("reponse_admin"));
-        a.setDateReponse(rs.getTimestamp("date_reponse"));
+        try { a.setTypeId(rs.getInt("type_id")); } catch (Exception e) {}
+        a.setNote(rs.getInt("nb_etoiles"));         // nb_etoiles en DB → note en Java
+        a.setCommentaire(rs.getString("contenu"));   // contenu en DB → commentaire en Java
+        a.setDateCreation(rs.getTimestamp("date_avis")); // date_avis en DB → dateCreation en Java
+        try { a.setReponseAdmin(rs.getString("reponse")); } catch (SQLException e) {}
+        try { a.setDateReponse(rs.getTimestamp("date_reponse")); } catch (SQLException e) {}
+        try { a.setStatut(rs.getString("statut")); } catch (SQLException e) {}
         return a;
     }
 }

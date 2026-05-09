@@ -130,23 +130,54 @@
                     <Label fx:id="lblBlogMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
                 </VBox>
 
-                <!-- Réclamations -->
-                <VBox fx:id="paneRec" spacing="14" visible="false" managed="false"
+                <!-- Feedbacks (Avis + Réclamations) -->
+                <VBox fx:id="paneFeed" spacing="14" visible="false" managed="false"
                       style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
-                    <Label text="🚨  Mes réclamations"
-                           style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
-                    <TableView fx:id="tvReclamations" VBox.vgrow="ALWAYS"
-                               style="-fx-background-radius:14;-fx-border-radius:14;
-                                      -fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
-                        <columns>
-                            <TableColumn fx:id="colRecId"     text="ID"     prefWidth="60"/>
-                            <TableColumn fx:id="colRecSujet"  text="Sujet"  prefWidth="300"/>
-                            <TableColumn fx:id="colRecStatut" text="Statut" prefWidth="130"/>
-                            <TableColumn fx:id="colRecDate"   text="Date"   prefWidth="160"/>
-                        </columns>
-                        <placeholder><Label text="Aucune réclamation." style="-fx-text-fill:#94a3b8;-fx-font-size:13px;"/></placeholder>
-                    </TableView>
-                    <Label fx:id="lblRecMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
+                    
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <Label text="💬  Mes Feedbacks"
+                               style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="+ Donner un avis" onAction="#gotoAjouterAvis"
+                                style="-fx-background-color:#f97316; -fx-text-fill:white; -fx-font-weight:700; -fx-background-radius:10; -fx-padding:8 16; -fx-cursor:hand;"/>
+                        <Button text="+ Déposer une réclamation" onAction="#gotoAjouterReclamation"
+                                style="-fx-background-color:#e2e8f0; -fx-text-fill:#1e293b; -fx-font-weight:700; -fx-background-radius:10; -fx-padding:8 16; -fx-cursor:hand;"/>
+                    </HBox>
+
+                    <TabPane styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS"
+                             style="-fx-background-color:transparent;">
+                        <tabs>
+                            <Tab text="⭐ Mes Avis">
+                                <VBox spacing="10" style="-fx-padding:15 0 0 0;">
+                                    <TableView fx:id="tvAvis" VBox.vgrow="ALWAYS"
+                                               style="-fx-background-radius:14;-fx-border-radius:14;-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
+                                        <columns>
+                                            <TableColumn fx:id="colAvisNote"    text="Note"  prefWidth="80"/>
+                                            <TableColumn fx:id="colAvisComm"    text="Commentaire" prefWidth="350"/>
+                                            <TableColumn fx:id="colAvisStatut"  text="Statut" prefWidth="120"/>
+                                            <TableColumn fx:id="colAvisActions" text="Actions" prefWidth="120"/>
+                                        </columns>
+                                        <placeholder><Label text="Aucun avis." style="-fx-text-fill:#94a3b8;"/></placeholder>
+                                    </TableView>
+                                </VBox>
+                            </Tab>
+                            <Tab text="🚨 Mes Réclamations">
+                                <VBox spacing="10" style="-fx-padding:15 0 0 0;">
+                                    <TableView fx:id="tvReclamations" VBox.vgrow="ALWAYS"
+                                               style="-fx-background-radius:14;-fx-border-radius:14;-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
+                                        <columns>
+                                             <TableColumn fx:id="colRecPriorite" text="Priorité" prefWidth="100"/>
+                                             <TableColumn fx:id="colRecSujet"    text="Sujet"    prefWidth="260"/>
+                                             <TableColumn fx:id="colRecStatut"   text="Statut"   prefWidth="120"/>
+                                             <TableColumn fx:id="colRecDate"     text="Date"     prefWidth="150"/>
+                                             <TableColumn fx:id="colRecActions"  text="Actions"  prefWidth="120"/>
+                                        </columns>
+                                        <placeholder><Label text="Aucune réclamation." style="-fx-text-fill:#94a3b8;"/></placeholder>
+                                    </TableView>
+                                </VBox>
+                            </Tab>
+                        </tabs>
+                    </TabPane>
                 </VBox>
 
                 <!-- Réservations hébergement -->

@@ -27,6 +27,11 @@
             <Label text="Mettre à jour mon expérience" styleClass="cardTitle" />
             
             <VBox spacing="8">
+               <Label text="Catégorie :" styleClass="metaText" />
+               <ComboBox fx:id="comboCategorie" promptText="Choisir une catégorie" prefWidth="250" />
+            </VBox>
+            
+            <VBox spacing="8">
                <Label text="Note (/5) :" styleClass="metaText" />
                <ComboBox fx:id="comboNote" promptText="Choisir une note" prefWidth="150" />
             </VBox>

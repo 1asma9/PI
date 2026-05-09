@@ -1,59 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" 
-            styleClass="page"
+<BorderPane prefHeight="680.0" prefWidth="780.0"
             stylesheets="@style.css"
-            xmlns="http://javafx.com/javafx/17" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="controllers.AjouterAvisController">
-   
-   <!-- Top Bar -->
-   <top>
-      <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
-         <Button text="← Retour" styleClass="btnOutline" onAction="#annuler" />
-         <Label text="DONNER UN AVIS" styleClass="pageTitle" />
-      </HBox>
-   </top>
-   
-   <!-- Center Content -->
-   <center>
-      <VBox styleClass="pageContent" alignment="CENTER">
-         
-         <!-- Card formulaire -->
-         <VBox styleClass="card" spacing="20" maxWidth="500" alignment="CENTER_LEFT">
-            
-            <Label text="Votre avis compte" styleClass="cardTitle" />
-            
-            <VBox spacing="8">
-               <Label text="Note (/5) :" styleClass="metaText" />
-               <ComboBox fx:id="comboNote" promptText="Choisir une note" prefWidth="150" />
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.AjouterAvisController"
+            style="-fx-background-color:#f8f4ef;">
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-background-color:linear-gradient(to right,#0f2a2a,#1a3a3a); -fx-padding:20 32;">
+            <Button text="← Retour" onAction="#annuler"
+                    style="-fx-background-color:rgba(255,255,255,0.15); -fx-text-fill:white; -fx-background-radius:20; -fx-padding:7 18; -fx-cursor:hand; -fx-font-weight:700;"/>
+            <Label text="⭐  DONNER UN AVIS"
+                   style="-fx-text-fill:white; -fx-font-size:20px; -fx-font-weight:900; -fx-letter-spacing:1;"/>
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color:transparent; -fx-background:transparent; -fx-border-color:transparent;">
+            <VBox alignment="TOP_CENTER" spacing="0" style="-fx-padding:40 0;">
+
+                <VBox maxWidth="580" spacing="28"
+                      style="-fx-background-color:white; -fx-background-radius:24; -fx-border-radius:24; -fx-border-color:#e6ddd0; -fx-border-width:1.5; -fx-padding:36 40; -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.08),20,0,0,6);">
+
+                    <!-- Titre card -->
+                    <VBox spacing="6">
+                        <Label text="Votre avis compte ✨"
+                               style="-fx-font-size:22px; -fx-font-weight:900; -fx-text-fill:#0f2a2a;"/>
+                        <Label text="Partagez votre expérience avec la communauté ViaNoVa"
+                               style="-fx-font-size:13px; -fx-text-fill:#8a7a6a;"/>
+                    </VBox>
+
+                    <!-- Séparateur -->
+                    <Separator style="-fx-background-color:#e6ddd0;"/>
+
+                    <!-- Catégorie -->
+                    <VBox spacing="8">
+                        <Label text="CATÉGORIE"
+                               style="-fx-font-size:11px; -fx-font-weight:800; -fx-text-fill:#6a7a73; -fx-letter-spacing:1;"/>
+                        <ComboBox fx:id="comboCategorie"
+                                  promptText="Choisir une catégorie"
+                                  prefWidth="500" prefHeight="44"
+                                  style="-fx-background-color:#fbf7f1; -fx-border-color:#d9cdbf; -fx-border-radius:12; -fx-background-radius:12; -fx-font-size:14px;"/>
+                        <Label fx:id="errCategorie" text=""
+                               style="-fx-text-fill:#e53e3e; -fx-font-size:11px; -fx-font-weight:700;"/>
+                    </VBox>
+
+                    <!-- Note avec étoiles visuelles -->
+                    <VBox spacing="10">
+                        <Label text="NOTE (/5)"
+                               style="-fx-font-size:11px; -fx-font-weight:800; -fx-text-fill:#6a7a73; -fx-letter-spacing:1;"/>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Button fx:id="star1" text="★" onAction="#selectNote"
+                                    style="-fx-background-color:transparent; -fx-text-fill:#d9cdbf; -fx-font-size:32px; -fx-cursor:hand; -fx-padding:0;"/>
+                            <Button fx:id="star2" text="★" onAction="#selectNote"
+                                    style="-fx-background-color:transparent; -fx-text-fill:#d9cdbf; -fx-font-size:32px; -fx-cursor:hand; -fx-padding:0;"/>
+                            <Button fx:id="star3" text="★" onAction="#selectNote"
+                                    style="-fx-background-color:transparent; -fx-text-fill:#d9cdbf; -fx-font-size:32px; -fx-cursor:hand; -fx-padding:0;"/>
+                            <Button fx:id="star4" text="★" onAction="#selectNote"
+                                    style="-fx-background-color:transparent; -fx-text-fill:#d9cdbf; -fx-font-size:32px; -fx-cursor:hand; -fx-padding:0;"/>
+                            <Button fx:id="star5" text="★" onAction="#selectNote"
+                                    style="-fx-background-color:transparent; -fx-text-fill:#d9cdbf; -fx-font-size:32px; -fx-cursor:hand; -fx-padding:0;"/>
+                            <Label fx:id="lblNoteValeur" text="Cliquez sur une étoile"
+                                   style="-fx-font-size:13px; -fx-text-fill:#8a7a6a; -fx-padding:0 0 0 12;"/>
+                        </HBox>
+                        <Label fx:id="errNote" text=""
+                               style="-fx-text-fill:#e53e3e; -fx-font-size:11px; -fx-font-weight:700;"/>
+                    </VBox>
+
+                    <!-- Commentaire -->
+                    <VBox spacing="8">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="COMMENTAIRE"
+                                   style="-fx-font-size:11px; -fx-font-weight:800; -fx-text-fill:#6a7a73; -fx-letter-spacing:1;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblCharCount" text="0 / 500"
+                                   style="-fx-font-size:11px; -fx-text-fill:#b0a090;"/>
+                        </HBox>
+                        <TextArea fx:id="txtCommentaire"
+                                  promptText="Racontez votre expérience en détail..."
+                                  prefHeight="140" wrapText="true"
+                                  style="-fx-background-color:#fbf7f1; -fx-border-color:#d9cdbf; -fx-border-radius:12; -fx-background-radius:12; -fx-font-size:14px; -fx-padding:12;"/>
+                        <Label fx:id="errCommentaire" text=""
+                               style="-fx-text-fill:#e53e3e; -fx-font-size:11px; -fx-font-weight:700;"/>
+                    </VBox>
+
+                    <!-- Message résultat -->
+                    <Label fx:id="lblResultat" text=""
+                           style="-fx-font-size:13px;" wrapText="true"/>
+
+                    <!-- Boutons -->
+                    <HBox spacing="14" alignment="CENTER">
+                        <Button text="🚀  Publier mon avis" onAction="#enregistrer"
+                                prefWidth="220" prefHeight="46"
+                                style="-fx-background-color:#c9a24a; -fx-text-fill:white; -fx-font-weight:800; -fx-font-size:14px; -fx-background-radius:23; -fx-cursor:hand; -fx-effect:dropshadow(gaussian,rgba(201,162,74,0.4),12,0,0,4);"/>
+                        <Button text="✕  Annuler" onAction="#annuler"
+                                prefWidth="140" prefHeight="46"
+                                style="-fx-background-color:white; -fx-text-fill:#0f2a2a; -fx-font-weight:700; -fx-font-size:13px; -fx-background-radius:23; -fx-border-color:#d9cdbf; -fx-border-width:1.5; -fx-cursor:hand;"/>
+                    </HBox>
+                </VBox>
             </VBox>
-            
-            <VBox spacing="8">
-               <Label text="Votre commentaire :" styleClass="metaText" />
-               <TextArea fx:id="txtCommentaire" 
-                         promptText="Racontez votre expérience..." 
-                         prefHeight="150" 
-                         wrapText="true" />
-            </VBox>
-            
-            <HBox spacing="15" alignment="CENTER">
-               <Button text="Enregistrer" 
-                       styleClass="btnGold"
-                       prefWidth="150"
-                       onAction="#enregistrer" />
-               
-               <Button text="Annuler" 
-                       styleClass="btnOutline"
-                       prefWidth="150"
-                       onAction="#annuler" />
-            </HBox>
-            
-         </VBox>
-         
-      </VBox>
-   </center>
-   
+        </ScrollPane>
+    </center>
 </BorderPane>

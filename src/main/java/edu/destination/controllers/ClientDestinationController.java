@@ -81,8 +81,10 @@ public class ClientDestinationController {
         computePopularityScoresAsync(allDestinations);
 
         // ✅ Compteur destinations
-        if (lblTotalDest != null)
-            lblTotalDest.setText(allDestinations.size() + "+");
+        if (lblTotalDest != null) {
+            int count = (allDestinations != null) ? allDestinations.size() : 0;
+            lblTotalDest.setText(count + "+");
+        }
 
         // ✅ Hero image depuis Unsplash
         if (heroImageView != null) {
@@ -170,6 +172,7 @@ public class ClientDestinationController {
     // POPULARITÉ
     // ============================================================
     private void computePopularityScoresAsync(List<Destination> destinations) {
+        if (destinations == null || destinations.isEmpty()) return;
         List<Destination> actives = destinations.stream()
                 .filter(Destination::getStatut)
                 .collect(Collectors.toList());
@@ -327,8 +330,8 @@ public class ClientDestinationController {
     // ==============================
     private void renderDestinations(List<Destination> list) {
         flowDestinations.getChildren().clear();
-        if (list.isEmpty()) {
-            Label l = new Label("Aucune destination trouvee");
+        if (list == null || list.isEmpty()) {
+            Label l = new Label("Aucune destination trouvee (Verifiez la base de donnees)");
             l.setStyle("-fx-font-size:16px;-fx-text-fill:#888;-fx-padding:40;");
             flowDestinations.getChildren().add(l);
             return;

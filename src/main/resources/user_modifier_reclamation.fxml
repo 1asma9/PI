@@ -32,6 +32,11 @@
             </VBox>
             
             <VBox spacing="8">
+               <Label text="Catégorie :" styleClass="metaText" />
+               <ComboBox fx:id="comboCategorie" promptText="Choisir une catégorie" prefWidth="250" />
+            </VBox>
+            
+            <VBox spacing="8">
                <Label text="Description :" styleClass="metaText" />
                <TextArea fx:id="txtDescription" 
                          promptText="Décrivez votre réclamation en détail..." 

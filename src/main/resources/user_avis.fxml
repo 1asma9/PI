@@ -15,7 +15,8 @@
          <VBox>
             <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
                <Button text="← Retour" styleClass="btnOutline" onAction="#retourMenu" />
-               <Label text="MES AVIS" styleClass="pageTitle" />
+                <Label text="⭐  AVIS DES VOYAGEURS" styleClass="pageTitle"
+                       style="-fx-text-fill: #c9a24a; -fx-font-size: 20px; -fx-font-weight: 900;"/>
                <Region HBox.hgrow="ALWAYS" />
                <Button fx:id="btnAdd" text="+ Donner un avis" styleClass="btnGold" onAction="#ajouterAvis" />
             </HBox>
@@ -56,13 +57,20 @@
              </HBox>
              
              <!-- Table -->
-            <TableView fx:id="tableAvis" styleClass="table-view" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tableAvis" styleClass="table-view" VBox.vgrow="ALWAYS"
+                       style="-fx-background-color: white;
+                              -fx-background-radius: 16;
+                              -fx-border-radius: 16;
+                              -fx-border-color: #e6ddd0;
+                              -fx-border-width: 1.5;
+                              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 4, 4);">
                <columns>
-                  <TableColumn fx:id="colNote" text="Note /5" prefWidth="100" />
-                  <TableColumn fx:id="colCommentaire" text="Commentaire" prefWidth="400" />
-                   <TableColumn fx:id="colReponse" text="Réponse Admin" prefWidth="250" />
-                   <TableColumn fx:id="colDateReponse" text="Date réponse" prefWidth="150" />
-                   <TableColumn fx:id="colActions" text="Actions" prefWidth="100" />
+                  <TableColumn fx:id="colNote"        text="⭐ Note /5"       prefWidth="100"
+                               style="-fx-alignment: CENTER;"/>
+                  <TableColumn fx:id="colCommentaire" text="Commentaire"       prefWidth="350"/>
+                   <TableColumn fx:id="colReponse"     text="Réponse Admin"     prefWidth="230"/>
+                   <TableColumn fx:id="colDateReponse" text="Date réponse"      prefWidth="130"/>
+                   <TableColumn fx:id="colActions"     text="Actions"           prefWidth="120"/>
                </columns>
             </TableView>
             

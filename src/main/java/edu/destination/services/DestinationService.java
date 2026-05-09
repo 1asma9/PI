@@ -17,7 +17,12 @@ public class DestinationService implements IService<Destination> {
                 "(nom, pays, description, statut, meilleure_saison, latitude, longitude, nb_visites, video_path, nb_likes) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(sql);
+        Connection connection = MyConnection.getInstance().getCnx();
+        if (connection == null) {
+            System.out.println("❌ Erreur : Connexion à la base de données impossible.");
+            return;
+        }
+        PreparedStatement pst = connection.prepareStatement(sql);
         pst.setString(1, destination.getNom());
         pst.setString(2, destination.getPays());
         pst.setString(3, destination.getDescription());
@@ -43,7 +48,9 @@ public class DestinationService implements IService<Destination> {
     public void deleteEntity(Destination destination) {
         String sql = "DELETE FROM destination WHERE id=?";
         try {
-            PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(sql);
+            Connection connection = MyConnection.getInstance().getCnx();
+            if (connection == null) return;
+            PreparedStatement pst = connection.prepareStatement(sql);
             pst.setInt(1, destination.getId());
             pst.executeUpdate();
             System.out.println("Destination supprimée");
@@ -60,7 +67,9 @@ public class DestinationService implements IService<Destination> {
                 "latitude=?, longitude=?, nb_visites=?, video_path=?, nb_likes=? " +
                 "WHERE id=?";
         try {
-            PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(sql);
+            Connection connection = MyConnection.getInstance().getCnx();
+            if (connection == null) return;
+            PreparedStatement pst = connection.prepareStatement(sql);
             pst.setString(1, destination.getNom());
             pst.setString(2, destination.getPays());
             pst.setString(3, destination.getDescription());
@@ -85,7 +94,12 @@ public class DestinationService implements IService<Destination> {
         List<Destination> list = new ArrayList<>();
         String sql = "SELECT * FROM destination";
         try {
-            Statement st = MyConnection.getInstance().getCnx().createStatement();
+            Connection connection = MyConnection.getInstance().getCnx();
+            if (connection == null) {
+                System.out.println("❌ Impossible de récupérer les données : Connexion null");
+                return list;
+            }
+            Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
                 Destination d = new Destination();
@@ -125,7 +139,9 @@ public class DestinationService implements IService<Destination> {
     public Destination getById(int id) {
         String sql = "SELECT * FROM destination WHERE id=?";
         try {
-            PreparedStatement pst = MyConnection.getInstance().getCnx().prepareStatement(sql);
+            Connection connection = MyConnection.getInstance().getCnx();
+            if (connection == null) return null;
+            PreparedStatement pst = connection.prepareStatement(sql);
             pst.setInt(1, id);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {

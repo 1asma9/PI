@@ -4,7 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="" />
+    <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/MainLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/MainLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ModifierAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ModifierAvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ModifierReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ModifierReclamationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/services/DestinationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/DestinationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Avis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Avis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Reclamation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Reclamation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/AvisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/AvisService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/services/ReclamationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ReclamationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tools/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/SessionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/user_ajouter_avis.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_ajouter_avis.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/user_ajouter_reclamation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_ajouter_reclamation.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/user_avis.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_avis.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/user_modifier_avis.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_modifier_avis.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/user_modifier_reclamation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_modifier_reclamation.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,14 +41,19 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Class" />
         <option value="FxmlFile" />
-        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JavaAutoRunManager">
+    <enabled-run-configurations>
+      <run-configuration type="MavenRunConfiguration" name="Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run]" />
+    </enabled-run-configurations>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -30,23 +63,37 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="3ANzhw6uRisV3kbYWaBvnyjsQkn" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.MainFx.executor": "Run",
     "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.Gestion_Hebergement [clean].executor": "Run",
     "Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "main1",
+    "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/ferja/OneDrive/Bureau/Gestion_Hebergemeny/src/main/resources",
+    "last_opened_file_path": "C:/Users/rayen/IdeaProjects/pi_final",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2"
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
     "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
@@ -60,19 +107,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="MainFx" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="hebergement.controllers.MainFx" />
-      <module name="Gestion_Hebergement" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="hebergement.controllers.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="Gestion_Hebergemeny" />
       <method v="2">
@@ -86,11 +120,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.MainFx" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -100,8 +129,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1772447940279</updated>
+      <workItem from="1776804726550" duration="73526000" />
+      <workItem from="1777923560135" duration="33557000" />
+      <workItem from="1778186103378" duration="20809000" />
+      <workItem from="1778280744865" duration="663000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -110,6 +146,12 @@
           <url>file://$PROJECT_DIR$/src/main/java/edu/pidev/services/ActiviteService.java</url>
           <line>120</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-field">
+          <url>file://$PROJECT_DIR$/src/main/java/edu/destination/controllers/AdminTransportController.java</url>
+          <line>24</line>
+          <properties field="colVoyageId" class="edu.destination.controllers.AdminTransportController" />
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

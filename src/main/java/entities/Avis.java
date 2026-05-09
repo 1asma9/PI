@@ -10,6 +10,8 @@ public class Avis {
     private Date dateCreation;
     private String reponseAdmin;
     private Date dateReponse;
+    private String statut;
+    private int typeId;
 
     public Avis() {
     }
@@ -83,9 +85,25 @@ public class Avis {
         this.dateReponse = dateReponse;
     }
 
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
     @Override
     public String toString() {
         return "Avis{id=" + id + ", note=" + note + ", commentaire='" + commentaire + "', dateReponse=" + dateReponse
-                + "}";
+                + ", statut='" + statut + "'}";
     }
 }

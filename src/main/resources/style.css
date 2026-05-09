@@ -503,3 +503,45 @@
 .chart-vertical-grid-lines {
     -fx-stroke: rgba(15, 42, 42, 0.06);
 }
+/* -- Fix TextArea texte visible -- */
+.text-area {
+    -fx-text-fill: #1a1a1a !important;
+    -fx-background-color: #fbf7f1 !important;
+    -fx-font-size: 14px;
+}
+
+.text-area .content {
+    -fx-background-color: #fbf7f1 !important;
+    -fx-text-fill: #1a1a1a !important;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: #fbf7f1 !important;
+}
+
+.text-area .scroll-pane .viewport {
+    -fx-background-color: #fbf7f1 !important;
+}
+
+/* -- Fix ComboBox texte visible -- */
+.combo-box .list-cell {
+    -fx-text-fill: #1a1a1a !important;
+    -fx-background-color: transparent !important;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-text-fill: #1a1a1a !important;
+    -fx-background-color: white !important;
+    -fx-padding: 8 14;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #fff3e0 !important;
+    -fx-text-fill: #c9a24a !important;
+}
+
+/* -- Fix TextField texte visible -- */
+.text-field {
+    -fx-text-fill: #1a1a1a !important;
+    -fx-background-color: #fbf7f1 !important;
+}

@@ -95,11 +95,6 @@ public class ClientLayoutController {
         loadPage("/user_avis.fxml");
     }
 
-    @FXML
-    public void goMesReclamations() {
-        // ✅ CORRIGÉ : était "/mes_reclamations.fxml"
-        loadPage("/user_reclamations.fxml");
-    }
 
     @FXML
     public void goActiviteFront() {
@@ -125,6 +120,11 @@ public class ClientLayoutController {
     public void goMonEspace() {
         System.out.println("✅ CLICK Mon Espace");
         loadPage("/app/MonEspace.fxml");  // ✅ nom EXACT comme dans resources
+    }
+
+    @FXML
+    public void goAvisPublics() {
+        loadPage("/avis_publics.fxml");
     }
 
     @FXML

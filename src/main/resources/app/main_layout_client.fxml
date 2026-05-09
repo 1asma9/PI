@@ -28,13 +28,10 @@
                     onAction="#goFrontendBlog"
                     styleClass="nav-btn"/>
 
-            <Button text="⭐ Ratings"
-                    onAction="#goRatingStars"
+            <Button text="⭐ Avis"
+                    onAction="#goAvisPublics"
                     styleClass="nav-btn"/>
 
-            <Button text="🚨 Mes Réclamations"
-                    onAction="#goMesReclamations"
-                    styleClass="nav-btn"/>
 
             <Button text="🎯 Activités"
                     onAction="#goActiviteFront"
