@@ -9,83 +9,92 @@
 <Pane fx:id="content_area"
       prefHeight="629.0"
       prefWidth="1084.0"
-      style="-fx-background-color: #f5efe6;"
+      style="-fx-background-color: #0b1220;"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="edu.connexion3a8.controllers.BlogListController">
 
     <children>
 
-        <!-- ================= HEADER ================= -->
-        <HBox alignment="CENTER_LEFT"
-              layoutX="30.0"
-              layoutY="25.0"
-              spacing="20">
+        <VBox layoutX="30.0" layoutY="25.0" spacing="18.0" prefWidth="1024.0">
 
-            <Text text="Liste des Blogs"
-                  fill="#6b4f3b"
-                  style="-fx-font-size: 26px; -fx-font-weight: bold;" />
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <Text text="Liste des articles"
+                      fill="#f3f7ff"
+                      style="-fx-font-size: 28px; -fx-font-weight: bold;" />
 
-            <Region HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS"/>
 
-            <TextField fx:id="blogSearchInput"
-                       prefWidth="250"
-                       promptText="Rechercher..."
-                       style="-fx-background-color: white;
-                              -fx-background-radius: 20;
-                              -fx-border-radius: 20;
-                              -fx-border-color: #d2b48c;
-                              -fx-padding: 6 15;" />
+                <TextField fx:id="blogSearchInput"
+                           prefWidth="280"
+                           promptText="Rechercher un article..."
+                           style="-fx-background-color: rgba(24,39,66,0.95);
+                                  -fx-text-fill: white;
+                                  -fx-background-radius: 18;
+                                  -fx-border-radius: 18;
+                                  -fx-padding: 8 18;" />
 
-            <ComboBox fx:id="sortComboBox"
-                      prefWidth="150"
-                      promptText="Trier par"
-                      style="-fx-background-radius: 20;
-                             -fx-border-radius: 20;" />
+                <ComboBox fx:id="sortComboBox"
+                          prefWidth="160"
+                          promptText="Trier par"
+                          style="-fx-background-radius: 18;
+                                 -fx-border-radius: 18;
+                                 -fx-background-color: rgba(24,39,66,0.95);
+                                 -fx-text-fill: white;" />
 
-            <Button fx:id="addBlogBtn"
-                    text="+ Ajouter"
-                    onMouseClicked="#openAddBlogForm"
-                    style="-fx-background-color: #c8a27c;
-                           -fx-text-fill: white;
-                           -fx-background-radius: 20;
-                           -fx-padding: 6 18;" />
+                <ComboBox fx:id="statusFilterComboBox"
+                          prefWidth="170"
+                          promptText="Statut"
+                          style="-fx-background-radius: 18;
+                                 -fx-border-radius: 18;
+                                 -fx-background-color: rgba(24,39,66,0.95);
+                                 -fx-text-fill: white;" />
 
-            <!-- APRÈS (ajouter juste après) -->
-            <Button text="📊 Dashboard" onAction="#showDashboard"
-                    style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-padding: 10px 25px; -fx-background-radius: 8px; -fx-cursor: hand; -fx-font-weight: bold;">
-                <HBox.margin>
-                    <Insets left="15.0"/>
-                </HBox.margin>
-            </Button>
-        </HBox>
+                <Button fx:id="addBlogBtn"
+                        text="+ Ajouter"
+                        onAction="#openAddBlogForm"
+                        style="-fx-background-color: #3b82f6;
+                               -fx-text-fill: white;
+                               -fx-background-radius: 24;
+                               -fx-padding: 8 26;
+                               -fx-font-weight: bold;" />
 
-        <!-- ================= BLOG GRID ================= -->
-        <ScrollPane layoutX="30.0"
-                    layoutY="110.0"
-                    prefHeight="480.0"
-                    prefWidth="1024.0"
-                    style="-fx-background-color: transparent;">
+            </HBox>
 
-            <content>
-                <GridPane fx:id="BlogListContainer"
-                          alignment="TOP_LEFT"
-                          hgap="20.0"
-                          vgap="20.0">
+            <HBox spacing="14.0">
+                <VBox spacing="4" style="-fx-background-color: rgba(19,31,54,0.95); -fx-padding: 18; -fx-background-radius: 16;" HBox.hgrow="ALWAYS">
+                    <Text text="Total articles" style="-fx-fill: rgba(200,210,230,0.9); -fx-font-size: 12;"/>
+                    <Text fx:id="totalStatsLabel" text="0" style="-fx-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                </VBox>
+                <VBox spacing="4" style="-fx-background-color: rgba(19,31,54,0.95); -fx-padding: 18; -fx-background-radius: 16;" HBox.hgrow="ALWAYS">
+                    <Text text="Articles publiés" style="-fx-fill: rgba(200,210,230,0.9); -fx-font-size: 12;"/>
+                    <Text fx:id="publishedStatsLabel" text="0" style="-fx-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                </VBox>
+                <VBox spacing="4" style="-fx-background-color: rgba(19,31,54,0.95); -fx-padding: 18; -fx-background-radius: 16;" HBox.hgrow="ALWAYS">
+                    <Text text="Articles en brouillon" style="-fx-fill: rgba(200,210,230,0.9); -fx-font-size: 12;"/>
+                    <Text fx:id="draftStatsLabel" text="0" style="-fx-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                </VBox>
+                <VBox spacing="4" style="-fx-background-color: rgba(19,31,54,0.95); -fx-padding: 18; -fx-background-radius: 16;" HBox.hgrow="ALWAYS">
+                    <Text text="En attente" style="-fx-fill: rgba(200,210,230,0.9); -fx-font-size: 12;"/>
+                    <Text fx:id="viewsStatsLabel" text="0" style="-fx-fill: white; -fx-font-size: 22; -fx-font-weight: bold;"/>
+                </VBox>
+            </HBox>
 
-                    <padding>
-                        <Insets bottom="20" left="20" right="20" top="20"/>
-                    </padding>
-
-                    <columnConstraints>
-                        <ColumnConstraints prefWidth="300"/>
-                        <ColumnConstraints prefWidth="300"/>
-                        <ColumnConstraints prefWidth="300"/>
-                    </columnConstraints>
-
-                </GridPane>
-            </content>
-        </ScrollPane>
+            <TableView fx:id="blogTable"
+                       prefHeight="520.0"
+                       VBox.vgrow="ALWAYS"
+                       style="-fx-background-color: transparent; -fx-border-color: transparent;">
+                <columns>
+                    <TableColumn fx:id="imageColumn" text="IMAGE" prefWidth="110"/>
+                    <TableColumn fx:id="titleColumn" text="TITRE" prefWidth="250"/>
+                    <TableColumn fx:id="authorColumn" text="AUTEUR" prefWidth="130"/>
+                    <TableColumn fx:id="categoryColumn" text="CATÉGORIE" prefWidth="130"/>
+                    <TableColumn fx:id="dateColumn" text="DATE" prefWidth="120"/>
+                    <TableColumn fx:id="statusColumn" text="STATUT" prefWidth="120"/>
+                    <TableColumn fx:id="actionsColumn" text="ACTIONS" prefWidth="180"/>
+                </columns>
+            </TableView>
+        </VBox>
 
         <!-- ================= ADD / EDIT MODAL ================= -->
         <HBox fx:id="blogFormModal"
@@ -99,7 +108,7 @@
 
                 <Pane prefHeight="550"
                       prefWidth="600"
-                      style="-fx-background-color: #fffaf3;
+                      style="-fx-background-color: #131f36;
                              -fx-background-radius: 20;
                              -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 20, 0, 0, 6);">
 
@@ -109,7 +118,7 @@
                         <HBox alignment="CENTER_LEFT"
                               prefHeight="60"
                               prefWidth="600"
-                              style="-fx-background-color: #c8a27c;
+                              style="-fx-background-color: #3b82f6;
                                      -fx-background-radius: 20 20 0 0;">
 
                             <padding>
@@ -190,15 +199,15 @@
                               spacing="20">
 
                             <Button text="Annuler"
-                                    onMouseClicked="#closeBlogFormModal"
+                                    onAction="#closeBlogFormModal"
                                     style="-fx-background-color: transparent;
-                                           -fx-border-color: #c8a27c;
+                                           -fx-border-color: #3b82f6;
                                            -fx-border-radius: 20;
-                                           -fx-text-fill: #6b4f3b;" />
+                                           -fx-text-fill: #c8d2e6;" />
 
                             <Button text="Enregistrer"
-                                    onMouseClicked="#saveBlog"
-                                    style="-fx-background-color: #c8a27c;
+                                    onAction="#saveBlog"
+                                    style="-fx-background-color: #3b82f6;
                                            -fx-text-fill: white;
                                            -fx-background-radius: 20;" />
                         </HBox>
@@ -221,7 +230,7 @@
 
                 <Pane prefHeight="220"
                       prefWidth="400"
-                      style="-fx-background-color: #fffaf3;
+                      style="-fx-background-color: #131f36;
                              -fx-background-radius: 20;">
 
                     <children>
@@ -234,21 +243,21 @@
                             <Text text="Voulez-vous vraiment supprimer ce blog ?"
                                   wrappingWidth="320"
                                   textAlignment="CENTER"
-                                  fill="#6b4f3b"
+                                  fill="#c8d2e6"
                                   style="-fx-font-size: 14px;" />
 
                             <HBox spacing="20">
 
                                 <Button text="Annuler"
-                                        onMouseClicked="#closeDeleteConfirmModal"
+                                        onAction="#closeDeleteConfirmModal"
                                         style="-fx-background-color: transparent;
-                                               -fx-border-color: #c8a27c;
+                                               -fx-border-color: #3b82f6;
                                                -fx-border-radius: 20;
-                                               -fx-text-fill: #6b4f3b;" />
+                                               -fx-text-fill: #c8d2e6;" />
 
                                 <Button text="Supprimer"
-                                        onMouseClicked="#confirmDelete"
-                                        style="-fx-background-color: #a47148;
+                                        onAction="#confirmDelete"
+                                        style="-fx-background-color: #ef4444;
                                                -fx-text-fill: white;
                                                -fx-background-radius: 20;" />
                             </HBox>

@@ -1,6 +1,6 @@
 package org.example.PI_Gestion_des_utilisateurs.services;
 
-import tools.MyConnection;
+import hebergement.tools.MyConnection;
 import org.example.PI_Gestion_des_utilisateurs.entities.utilisateur;
 import org.example.PI_Gestion_des_utilisateurs.tools.PasswordUtil;
 

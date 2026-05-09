@@ -1,113 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controllers.AdminLayoutController"            styleClass="root">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="700.0" prefWidth="1200.0" stylesheets="@admin-style.css"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.AdminLayoutController"
+            styleClass="dashboard-root">
 
     <left>
-        <VBox fx:id="sidebar" spacing="12" styleClass="sidebar">
-            <Label text="VOYAGE" styleClass="brand"/>
+        <VBox fx:id="sidebar" prefWidth="220.0" minWidth="220.0" maxWidth="220.0" spacing="10.0" styleClass="sidebar">
+            <padding>
+                <Insets top="20.0" right="16.0" bottom="20.0" left="16.0"/>
+            </padding>
 
-            <Button text="🏠 Dashboard"
-                    onAction="#goDashboard"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <StackPane prefWidth="32.0" prefHeight="32.0" styleClass="brand-logo">
+                    <Label text="V" styleClass="brand-logo-text"/>
+                </StackPane>
+                <Label text="Vianova" styleClass="brand-text"/>
+            </HBox>
 
-            <Button text="📅 Réservations"
-                    onAction="#goReservationsAdmin"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <Label text="MAIN MENU" styleClass="menu-label"/>
 
-            <Button text="🏨 Hébergements"
-                    onAction="#goList"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <Button text="🏠  Dashboard" onAction="#goDashboard" maxWidth="Infinity" styleClass="nav-button"/>
 
-            <Button text="➕ Ajouter"
-                    onAction="#goAdd"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
-
-            <Button text="👥 Utilisateurs"
-                    onAction="#goUtilisateurs"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
-
-            <!-- Dropdown Gestion Destination -->
-            <VBox spacing="4">
+            <VBox spacing="6.0">
                 <Button fx:id="btnToggleDestination"
-                        text="🌍 Gestion Destination ▼"
+                        text="🌍  Gestion Destination ▼"
                         onAction="#toggleDestinationMenu"
-                        styleClass="nav-btn"
-                        maxWidth="Infinity"/>
-                <VBox fx:id="destinationSubMenu" spacing="4"
-                      style="-fx-padding: 0 0 0 15;"
-                      visible="true" managed="true">
-                    <Button text="📍 Destinations"
-                            onAction="#goDestination"
-                            styleClass="nav-btn"
-                            maxWidth="Infinity"/>
-                    <Button text="✈️ Voyages"
-                            onAction="#goVoyage"
-                            styleClass="nav-btn"
-                            maxWidth="Infinity"/>
-                    <Button text="🚌 Transports"
-                            onAction="#goTransport"
-                            styleClass="nav-btn"
-                            maxWidth="Infinity"/>
-                    <Button text="🖼️ Images"
-                            onAction="#goImage"
-                            styleClass="nav-btn"
-                            maxWidth="Infinity"/>
+                        maxWidth="Infinity"
+                        styleClass="nav-button"/>
+                <VBox fx:id="destinationSubMenu" spacing="4.0" managed="true" visible="true">
+                    <padding>
+                        <Insets left="16.0"/>
+                    </padding>
+                    <Button text="Destinations" onAction="#goDestination" maxWidth="Infinity" styleClass="nav-button"/>
+                    <Button text="Voyages" onAction="#goVoyage" maxWidth="Infinity" styleClass="nav-button"/>
+                    <Button text="Transports" onAction="#goTransport" maxWidth="Infinity" styleClass="nav-button"/>
+                    <Button text="Images" onAction="#goImage" maxWidth="Infinity" styleClass="nav-button"/>
                 </VBox>
             </VBox>
 
-            <Button text="💬 Chat"
-                    onAction="#goChat"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <VBox spacing="6.0">
+                <Button text="🏨  Gestion Hébergement ▾" maxWidth="Infinity" styleClass="nav-button"/>
+                <Button text="Liste hébergements" onAction="#goList" maxWidth="Infinity" styleClass="nav-button"/>
+                <Button text="Réservations" onAction="#goReservationsAdmin" maxWidth="Infinity" styleClass="nav-button"/>
+            </VBox>
 
-            <Button text="📝 Blog"
-                    onAction="#goBlogList"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <Button text="🎯  Gestion Activité" onAction="#goActiviteBack" maxWidth="Infinity" styleClass="nav-button"/>
 
-            <Button text="📊 Dashboard Blog"
-                    onAction="#goBlogDashboard"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <VBox spacing="6.0">
+                <Button text="💬  Avis &amp; Réclamations ▾" maxWidth="Infinity" styleClass="nav-button"/>
+                <Button text="Avis" onAction="#afficherAdminAvis" maxWidth="Infinity" styleClass="nav-button"/>
+                <Button text="Réclamations" onAction="#goAdminReclamations" maxWidth="Infinity" styleClass="nav-button"/>
+            </VBox>
 
-            <Button text="🚨 Réclamations"
-                    onAction="#goAdminReclamations"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <VBox spacing="6.0">
+                <Button fx:id="btnToggleBlog"
+                        text="📝  Gestion Blog ▼"
+                        maxWidth="Infinity"
+                        styleClass="nav-button"
+                        onAction="#toggleBlogMenu"/>
+                <VBox fx:id="blogSubMenu" spacing="4.0" managed="true" visible="true">
+                    <padding>
+                        <Insets left="16.0"/>
+                    </padding>
+                    <Button text="Liste blogs" onAction="#goBlogList" maxWidth="Infinity" styleClass="nav-button"/>
+                    <Button text="Signalements commentaires" onAction="#goBlogCommentReports" maxWidth="Infinity" styleClass="nav-button"/>
+                    <Button text="Analyses" onAction="#goBlogAnalyses" maxWidth="Infinity" styleClass="nav-button"/>
+                </VBox>
+            </VBox>
 
-            <Button text="🎯 Activités"
-                    onAction="#goActiviteBack"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <Button text="💬  Chat" onAction="#goChat" maxWidth="Infinity" styleClass="nav-button"/>
+            <Button text="👥  Utilisateurs" onAction="#goUtilisateurs" maxWidth="Infinity" styleClass="nav-button"/>
+            <Button text="➕  Ajouter Hébergement" onAction="#goAdd" maxWidth="Infinity" styleClass="nav-button"/>
 
             <Region VBox.vgrow="ALWAYS"/>
-            <Button text="🚪 Déconnexion"
-                    onAction="#goLogout"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
-            <Label fx:id="connectedLabel" text="Admin" styleClass="pill"/>
-            <Label text="© 2026" styleClass="muted"/>
+            <Button text="🚪  Déconnexion" onAction="#goLogout" maxWidth="Infinity" styleClass="nav-button"/>
+            <Label fx:id="connectedLabel" text="Admin" styleClass="user-role"/>
         </VBox>
     </left>
 
-    <top>
-        <HBox styleClass="header" spacing="10">
-            <Label fx:id="pageTitle" text="Dashboard" styleClass="title"/>
-            <Region HBox.hgrow="ALWAYS"/>
-        </HBox>
-    </top>
-
     <center>
-        <StackPane fx:id="contentArea" styleClass="content"/>
-    </center>
+        <StackPane fx:id="contentArea">
+            <children>
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="center-scroll">
+                    <content>
+                        <VBox spacing="18.0" styleClass="center-content">
+                            <padding>
+                                <Insets top="24.0" right="26.0" bottom="24.0" left="26.0"/>
+                            </padding>
 
+                            <HBox alignment="CENTER_LEFT" spacing="16.0">
+                                <VBox spacing="4.0">
+                                    <Label fx:id="pageTitle" text="Vianova Dashboard" styleClass="header-title"/>
+                                    <Label text="Bienvenue ! Gérez votre plateforme touristique." styleClass="header-subtitle"/>
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+
+                                <TextField promptText="Rechercher..." prefWidth="250.0" styleClass="search-field"/>
+
+                                <StackPane styleClass="notif-wrapper">
+                                    <Label text="🔔" styleClass="notif-icon"/>
+                                    <Label text="3" styleClass="notif-badge" StackPane.alignment="TOP_RIGHT"/>
+                                </StackPane>
+
+                                <HBox spacing="10.0" alignment="CENTER_LEFT" styleClass="user-chip">
+                                    <StackPane styleClass="avatar-circle">
+                                        <Label text="A" styleClass="avatar-text"/>
+                                    </StackPane>
+                                    <VBox spacing="2.0">
+                                        <Label text="Admin Vianova" styleClass="user-name"/>
+                                        <Label text="Super Admin" styleClass="user-role"/>
+                                    </VBox>
+                                </HBox>
+                            </HBox>
+
+                            <Label text="Tableau de bord  &gt;  Articles" styleClass="breadcrumb"/>
+
+                            <VBox spacing="4.0">
+                                <Label text="Gestion des articles" styleClass="page-title"/>
+                                <Label text="Suivez et modérez la publication des articles du blog." styleClass="page-subtitle"/>
+                            </VBox>
+
+                            <HBox spacing="14.0">
+                                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card" spacing="8.0">
+                                    <Label text="Total articles" styleClass="stat-label"/>
+                                    <Label text="32" styleClass="stat-value"/>
+                                </VBox>
+                                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card" spacing="8.0">
+                                    <Label text="Articles publiés" styleClass="stat-label"/>
+                                    <Label text="31" styleClass="stat-value"/>
+                                </VBox>
+                                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card" spacing="8.0">
+                                    <Label text="Articles en brouillon" styleClass="stat-label"/>
+                                    <Label text="1" styleClass="stat-value"/>
+                                </VBox>
+                                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card" spacing="8.0">
+                                    <Label text="Vues totales" styleClass="stat-label"/>
+                                    <Label text="24" styleClass="stat-value"/>
+                                </VBox>
+                            </HBox>
+
+                            <VBox spacing="14.0" styleClass="table-card">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label text="Liste des articles" styleClass="section-title"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Label text="32 résultats" styleClass="results-badge"/>
+                                </HBox>
+
+                                <HBox spacing="10.0" alignment="CENTER_LEFT">
+                                    <TextField promptText="Rechercher un article..." HBox.hgrow="ALWAYS" styleClass="search-field"/>
+                                    <Button text="Filtrer ▼" styleClass="filter-button"/>
+                                    <Button text="Rechercher" styleClass="search-button"/>
+                                </HBox>
+
+                                <Separator/>
+
+                                <TableView fx:id="articleTable" styleClass="table-view">
+                                    <columns>
+                                        <TableColumn fx:id="imageColumn" text="IMAGE" prefWidth="110.0"/>
+                                        <TableColumn fx:id="titleColumn" text="TITRE" prefWidth="300.0"/>
+                                        <TableColumn fx:id="authorColumn" text="AUTEUR" prefWidth="120.0"/>
+                                        <TableColumn fx:id="categoryColumn" text="CATÉGORIE" prefWidth="130.0"/>
+                                        <TableColumn fx:id="dateColumn" text="DATE" prefWidth="110.0"/>
+                                        <TableColumn fx:id="statusColumn" text="STATUT" prefWidth="120.0"/>
+                                        <TableColumn fx:id="actionsColumn" text="ACTIONS" prefWidth="170.0"/>
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </children>
+        </StackPane>
+    </center>
 </BorderPane>

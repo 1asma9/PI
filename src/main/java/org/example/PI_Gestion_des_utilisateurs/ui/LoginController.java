@@ -1,6 +1,7 @@
 package org.example.PI_Gestion_des_utilisateurs.ui;
 
 import hebergement.controllers.MainLayoutController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,9 @@ import java.util.Optional;
 
 public class LoginController {
 
+    // DEV MODE ONLY: bypass authentication and open admin dashboard directly.
+    private static final boolean DEV_MODE_BYPASS_LOGIN = true;
+
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
@@ -23,6 +27,11 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+        if (DEV_MODE_BYPASS_LOGIN) {
+            Platform.runLater(() -> openDashboard("/app/main_layout_client.fxml"));
+            return;
+        }
+
         emailField.requestFocus();
         loginButton.disableProperty().bind(
                 emailField.textProperty().isEmpty()
@@ -32,8 +41,6 @@ public class LoginController {
 
     @FXML
     private void onLogin() {
-        System.out.println("🔵 onLogin() appelé");
-
         String email = emailField.getText() == null ? "" : emailField.getText().trim();
         String password = passwordField.getText() == null ? "" : passwordField.getText();
 
@@ -48,23 +55,14 @@ public class LoginController {
         }
 
         Optional<utilisateur> userOpt = service.rechercherutilisateurParEmail(email);
-        System.out.println("🔵 userOpt: " + userOpt);
-        if (userOpt.isEmpty()) {
+        if (!userOpt.isPresent()) {
             showInlineError("Email ou mot de passe incorrect");
             return;
         }
 
         utilisateur user = userOpt.get();
-        System.out.println("🔵 user: " + user.getEmail() + " role: " + user.getRoleName());
+        boolean passwordValid = PasswordUtil.verifyPassword(password, user.getPassword());
 
-        boolean passwordValid;
-        if (PasswordUtil.isHashedPassword(user.getPassword())) {
-            passwordValid = PasswordUtil.verifyPassword(password, user.getPassword());
-        } else {
-            passwordValid = password.equals(user.getPassword());
-        }
-
-        System.out.println("🔵 passwordValid: " + passwordValid);
         if (!passwordValid) {
             showInlineError("Email ou mot de passe incorrect");
             return;
@@ -75,30 +73,11 @@ public class LoginController {
 
         try {
             String role = user.getRoleName();
-            System.out.println("🔵 role: " + role);
 
-            String layoutPath;
-            if (role == null) {
-                showInlineError("Role non defini");
-                return;
-            } else if ("ROLE_ADMIN".equals(role)) {
-                layoutPath = "/app/main_layout_admin.fxml";
-            } else {
-                layoutPath = "/app/main_layout_client.fxml";
-            }
-
-            System.out.println("🔵 chargement layout: " + layoutPath);
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(layoutPath));
-            Scene scene = new Scene(loader.load(), 1200, 700);
-            scene.getStylesheets().add(getClass().getResource("/app/app.css").toExternalForm());
-
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.setTitle("Voyage & Découverte");
-            stage.setScene(scene);
-            stage.show();
-
-            System.out.println("✅ Navigation réussie vers: " + layoutPath);
+            String layoutPath = "ROLE_ADMIN".equals(role)
+                    ? "/app/main_layout_admin.fxml"
+                    : "/app/main_layout_client.fxml";
+            openDashboard(layoutPath);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -158,5 +137,21 @@ public class LoginController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void openDashboard(String layoutPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(layoutPath));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            scene.getStylesheets().add(getClass().getResource("/app/app.css").toExternalForm());
+
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setTitle("Voyage & Découverte");
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showPopupError("Erreur", "Impossible d'ouvrir l'accueil: " + e.getMessage());
+        }
     }
 }
