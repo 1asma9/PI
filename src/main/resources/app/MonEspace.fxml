@@ -130,54 +130,91 @@
                     <Label fx:id="lblBlogMsg" style="-fx-text-fill:#94a3b8;-fx-font-size:12px;"/>
                 </VBox>
 
-                <!-- Feedbacks (Avis + Réclamations) -->
-                <VBox fx:id="paneFeed" spacing="14" visible="false" managed="false"
-                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
-                    
-                    <HBox alignment="CENTER_LEFT" spacing="20">
+                <!-- ══════════════════════════════════════════
+                     MES FEEDBACKS — Avis + Réclamations
+                ════════════════════════════════════════════ -->
+                <VBox fx:id="paneRec" spacing="20" visible="false" managed="false"
+                      style="-fx-padding:28 36 28 36; -fx-background-color:#f1f5f9;">
+
+                    <!-- Titre + Boutons -->
+                    <HBox alignment="CENTER_LEFT" spacing="14">
                         <Label text="💬  Mes Feedbacks"
-                               style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                               style="-fx-font-size:18px; -fx-font-weight:800; -fx-text-fill:#1e293b;"/>
                         <Region HBox.hgrow="ALWAYS"/>
-                        <Button text="+ Donner un avis" onAction="#gotoAjouterAvis"
-                                style="-fx-background-color:#f97316; -fx-text-fill:white; -fx-font-weight:700; -fx-background-radius:10; -fx-padding:8 16; -fx-cursor:hand;"/>
-                        <Button text="+ Déposer une réclamation" onAction="#gotoAjouterReclamation"
-                                style="-fx-background-color:#e2e8f0; -fx-text-fill:#1e293b; -fx-font-weight:700; -fx-background-radius:10; -fx-padding:8 16; -fx-cursor:hand;"/>
+                        <Button fx:id="btnNouvelAvis" text="⭐ + Nouvel avis"
+                                onAction="#ajouterAvis"
+                                style="-fx-background-color:#c9a24a; -fx-text-fill:white; -fx-font-weight:700; -fx-background-radius:20; -fx-padding:8 18; -fx-cursor:hand;"/>
+                        <Button fx:id="btnNouvelleRec" text="📝 + Nouvelle réclamation"
+                                onAction="#ajouterReclamation"
+                                style="-fx-background-color:#0f2a2a; -fx-text-fill:white; -fx-font-weight:700; -fx-background-radius:20; -fx-padding:8 18; -fx-cursor:hand;"/>
                     </HBox>
 
-                    <TabPane styleClass="floating" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS"
-                             style="-fx-background-color:transparent;">
-                        <tabs>
-                            <Tab text="⭐ Mes Avis">
-                                <VBox spacing="10" style="-fx-padding:15 0 0 0;">
-                                    <TableView fx:id="tvAvis" VBox.vgrow="ALWAYS"
-                                               style="-fx-background-radius:14;-fx-border-radius:14;-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
-                                        <columns>
-                                            <TableColumn fx:id="colAvisNote"    text="Note"  prefWidth="80"/>
-                                            <TableColumn fx:id="colAvisComm"    text="Commentaire" prefWidth="350"/>
-                                            <TableColumn fx:id="colAvisStatut"  text="Statut" prefWidth="120"/>
-                                            <TableColumn fx:id="colAvisActions" text="Actions" prefWidth="120"/>
-                                        </columns>
-                                        <placeholder><Label text="Aucun avis." style="-fx-text-fill:#94a3b8;"/></placeholder>
-                                    </TableView>
-                                </VBox>
-                            </Tab>
-                            <Tab text="🚨 Mes Réclamations">
-                                <VBox spacing="10" style="-fx-padding:15 0 0 0;">
-                                    <TableView fx:id="tvReclamations" VBox.vgrow="ALWAYS"
-                                               style="-fx-background-radius:14;-fx-border-radius:14;-fx-border-color:#e2e8f0;-fx-border-width:1.5;-fx-background-color:white;">
-                                        <columns>
-                                             <TableColumn fx:id="colRecPriorite" text="Priorité" prefWidth="100"/>
-                                             <TableColumn fx:id="colRecSujet"    text="Sujet"    prefWidth="260"/>
-                                             <TableColumn fx:id="colRecStatut"   text="Statut"   prefWidth="120"/>
-                                             <TableColumn fx:id="colRecDate"     text="Date"     prefWidth="150"/>
-                                             <TableColumn fx:id="colRecActions"  text="Actions"  prefWidth="120"/>
-                                        </columns>
-                                        <placeholder><Label text="Aucune réclamation." style="-fx-text-fill:#94a3b8;"/></placeholder>
-                                    </TableView>
-                                </VBox>
-                            </Tab>
-                        </tabs>
-                    </TabPane>
+                    <!-- Onglets Avis / Réclamations -->
+                    <HBox fx:id="feedbackTabBar" spacing="0">
+                        <Button fx:id="btnTabAvis" text="⭐ Mes Avis"
+                                onAction="#showTabAvis"
+                                style="-fx-background-color:#c9a24a; -fx-text-fill:white; -fx-font-weight:800; -fx-font-size:13px; -fx-padding:9 22; -fx-background-radius:10 10 0 0; -fx-cursor:hand;"/>
+                        <Button fx:id="btnTabRecl" text="📝 Mes Réclamations"
+                                onAction="#showTabRecl"
+                                style="-fx-background-color:#e2e8f0; -fx-text-fill:#64748b; -fx-font-weight:700; -fx-font-size:13px; -fx-padding:9 22; -fx-background-radius:10 10 0 0; -fx-cursor:hand;"/>
+                    </HBox>
+
+                    <!-- TABLE AVIS -->
+                    <VBox fx:id="panelAvisInner" spacing="10">
+                        <TableView fx:id="tvAvis" VBox.vgrow="ALWAYS" prefHeight="280"
+                                   style="-fx-background-color:white; -fx-background-radius:14; -fx-border-radius:14; -fx-border-color:#e2e8f0; -fx-border-width:1.5;">
+                            <columns>
+                                <TableColumn fx:id="colAvisNote"        text="⭐ Note"       prefWidth="100"/>
+                                <TableColumn fx:id="colAvisCategorie"   text="Catégorie"     prefWidth="140"/>
+                                <TableColumn fx:id="colAvisCommentaire" text="Commentaire"   prefWidth="280"/>
+                                <TableColumn fx:id="colAvisStatut"      text="Statut"        prefWidth="110"/>
+                                <TableColumn fx:id="colAvisDate"        text="Date"          prefWidth="120"/>
+                                <TableColumn fx:id="colAvisActions"     text="Actions"       prefWidth="140"/>
+                            </columns>
+                            <placeholder>
+                                <Label text="Vous n'avez encore partagé aucun avis."
+                                       style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                            </placeholder>
+                        </TableView>
+                        <HBox alignment="CENTER" spacing="8">
+                            <Button fx:id="btnPrevAvis" text="‹" onAction="#pagePrevAvis"
+                                    style="-fx-background-color:white; -fx-border-color:#c9a24a; -fx-border-width:1.5; -fx-border-radius:8; -fx-background-radius:8; -fx-min-width:32; -fx-min-height:32; -fx-font-weight:900; -fx-cursor:hand;"/>
+                            <Label fx:id="lblPageAvis" text="Page 1/1"
+                                   style="-fx-font-size:12px; -fx-font-weight:700; -fx-text-fill:#64748b;"/>
+                            <Button fx:id="btnNextAvis" text="›" onAction="#pageNextAvis"
+                                    style="-fx-background-color:white; -fx-border-color:#c9a24a; -fx-border-width:1.5; -fx-border-radius:8; -fx-background-radius:8; -fx-min-width:32; -fx-min-height:32; -fx-font-weight:900; -fx-cursor:hand;"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- TABLE RÉCLAMATIONS -->
+                    <VBox fx:id="panelReclInner" spacing="10" visible="false" managed="false">
+                        <TableView fx:id="tvReclamations" VBox.vgrow="ALWAYS" prefHeight="280"
+                                   style="-fx-background-color:white; -fx-background-radius:14; -fx-border-radius:14; -fx-border-color:#e2e8f0; -fx-border-width:1.5;">
+                            <columns>
+                                <TableColumn fx:id="colRecId"        text="ID"          prefWidth="60"/>
+                                <TableColumn fx:id="colRecSujet"     text="Titre"       prefWidth="200"/>
+                                <TableColumn fx:id="colRecCategorie" text="Catégorie"   prefWidth="130"/>
+                                <TableColumn fx:id="colRecPriorite"  text="Priorité"    prefWidth="100"/>
+                                <TableColumn fx:id="colRecStatut"    text="Statut"      prefWidth="110"/>
+                                <TableColumn fx:id="colRecDate"      text="Date"        prefWidth="120"/>
+                                <TableColumn fx:id="colRecActions"   text="Actions"     prefWidth="130"/>
+                            </columns>
+                            <placeholder>
+                                <Label text="Aucune réclamation pour le moment."
+                                       style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                            </placeholder>
+                        </TableView>
+                        <HBox alignment="CENTER" spacing="8">
+                            <Button fx:id="btnPrevRecl" text="‹" onAction="#pagePrevRecl"
+                                    style="-fx-background-color:white; -fx-border-color:#0f2a2a; -fx-border-width:1.5; -fx-border-radius:8; -fx-background-radius:8; -fx-min-width:32; -fx-min-height:32; -fx-font-weight:900; -fx-cursor:hand;"/>
+                            <Label fx:id="lblPageRecl" text="Page 1/1"
+                                   style="-fx-font-size:12px; -fx-font-weight:700; -fx-text-fill:#64748b;"/>
+                            <Button fx:id="btnNextRecl" text="›" onAction="#pageNextRecl"
+                                    style="-fx-background-color:white; -fx-border-color:#0f2a2a; -fx-border-width:1.5; -fx-border-radius:8; -fx-background-radius:8; -fx-min-width:32; -fx-min-height:32; -fx-font-weight:900; -fx-cursor:hand;"/>
+                        </HBox>
+                        <Label fx:id="lblRecMsg" style="-fx-text-fill:#94a3b8; -fx-font-size:12px;"/>
+                    </VBox>
+
                 </VBox>
 
                 <!-- Réservations hébergement -->

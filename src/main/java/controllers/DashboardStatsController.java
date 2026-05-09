@@ -292,14 +292,14 @@ public class DashboardStatsController implements Initializable {
     private HBox creerLigneTopUser(int rank, int userId, int actions) {
         HBox row = new HBox(15);
         row.setAlignment(Pos.CENTER_LEFT);
-        row.setStyle("-fx-background-color: #faf6ef; -fx-background-radius: 12; -fx-padding: 12;");
+        row.setStyle("-fx-background-color: #374151; -fx-background-radius: 12; -fx-padding: 12;");
         Label lblRank = new Label(rank == 1 ? "🥇" : rank == 2 ? "🥈" : rank == 3 ? "🥉" : "👤");
         lblRank.setStyle("-fx-font-size: 24px;");
         VBox userInfo = new VBox(3);
         Label lblUser = new Label("Utilisateur #" + userId);
-        lblUser.setStyle("-fx-font-size: 14px; -fx-font-weight: 900; -fx-text-fill: #0f2a2a;");
+        lblUser.setStyle("-fx-font-size: 14px; -fx-font-weight: 900; -fx-text-fill: white;");
         Label lblActions = new Label(actions + " actions");
-        lblActions.setStyle("-fx-font-size: 12px; -fx-text-fill: #6a7a73;");
+        lblActions.setStyle("-fx-font-size: 12px; -fx-text-fill: #9ca3af;");
         userInfo.getChildren().addAll(lblUser, lblActions);
         row.getChildren().addAll(lblRank, userInfo);
         return row;
@@ -400,29 +400,29 @@ public class DashboardStatsController implements Initializable {
     private void ajouterRapportDansHistorique(File fichier) {
         HBox card = new HBox(15);
         card.setAlignment(Pos.CENTER_LEFT);
-        card.getStyleClass().add("pdfCard");
-        card.setPrefHeight(80);
+        card.setStyle("-fx-background-color:#374151; -fx-background-radius:10; -fx-padding:10;");
+        card.setPrefHeight(60);
 
         Label icone = new Label("📄");
-        icone.getStyleClass().add("pdfIcon");
-        VBox info = new VBox(5);
+        icone.setStyle("-fx-font-size:24px;");
+        VBox info = new VBox(2);
         HBox.setHgrow(info, Priority.ALWAYS);
         Label nom = new Label(fichier.getName());
-        nom.getStyleClass().add("pdfNom");
+        nom.setStyle("-fx-text-fill:white; -fx-font-weight:bold; -fx-font-size:13px;");
         String dateStr = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(fichier.lastModified()));
         Label lblDate = new Label("Créé le " + dateStr);
-        lblDate.getStyleClass().add("pdfDate");
+        lblDate.setStyle("-fx-text-fill:#9ca3af; -fx-font-size:11px;");
         Label lblTaille = new Label("Taille : " + String.format("%.2f KB", fichier.length() / 1024.0));
-        lblTaille.getStyleClass().add("pdfTaille");
+        lblTaille.setStyle("-fx-text-fill:#9ca3af; -fx-font-size:11px;");
         info.getChildren().addAll(nom, lblDate, lblTaille);
 
         HBox btns = new HBox(8);
         btns.setAlignment(Pos.CENTER_RIGHT);
         Button btnVoir = new Button("👁 Voir");
-        btnVoir.getStyleClass().add("btnGold");
+        btnVoir.setStyle("-fx-background-color:#1d4ed8; -fx-text-fill:white; -fx-background-radius:6; -fx-padding:6 12; -fx-cursor:hand; -fx-font-size:12px;");
         btnVoir.setOnAction(e -> ouvrirPDF(fichier));
         Button btnDel = new Button("🗑");
-        btnDel.getStyleClass().addAll("btnDelete");
+        btnDel.setStyle("-fx-background-color:#dc2626; -fx-text-fill:white; -fx-background-radius:6; -fx-padding:6 12; -fx-cursor:hand; -fx-font-size:12px;");
         btnDel.setOnAction(e -> supprimerRapport(fichier, card));
         btns.getChildren().addAll(btnVoir, btnDel);
 

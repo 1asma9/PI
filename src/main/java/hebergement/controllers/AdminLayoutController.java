@@ -208,4 +208,52 @@ public class AdminLayoutController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    public void goGestionAvis() {
+        try {
+            javafx.scene.Parent root = javafx.fxml.FXMLLoader.load(getClass().getResource("/admin_avis.fxml"));
+            if (contentPane != null) {
+                contentPane.getChildren().setAll(root);
+            } else {
+                javafx.scene.Node any = pageTitle != null ? pageTitle : null;
+                if (any == null) return;
+                any.getScene().setRoot(root);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goGestionReclamations() {
+        try {
+            javafx.scene.Parent root = javafx.fxml.FXMLLoader.load(getClass().getResource("/admin_reclamations.fxml"));
+            if (contentPane != null) {
+                contentPane.getChildren().setAll(root);
+            } else {
+                javafx.scene.Node any = pageTitle != null ? pageTitle : null;
+                if (any == null) return;
+                any.getScene().setRoot(root);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void goStatistiques() {
+        try {
+            javafx.scene.Parent root = javafx.fxml.FXMLLoader.load(getClass().getResource("/statistiques/dashboard_stats.fxml"));
+            if (contentPane != null) {
+                contentPane.getChildren().setAll(root);
+            } else {
+                javafx.scene.Node any = pageTitle != null ? pageTitle : null;
+                if (any == null) return;
+                any.getScene().setRoot(root);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

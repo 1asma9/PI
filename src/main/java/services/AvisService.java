@@ -104,7 +104,7 @@ public class AvisService implements IService<Avis> {
     public void repondreAvis(int id, String reponse) throws SQLException {
         Connection connection = MyConnection.getInstance().getCnx();
         if (connection == null) return;
-        try (PreparedStatement ps = connection.prepareStatement("UPDATE avis SET reponse = ?, date_reponse = NOW() WHERE id = ?")) {
+        try (PreparedStatement ps = connection.prepareStatement("UPDATE avis SET reponse = ? WHERE id = ?")) {
             ps.setString(1, reponse);
             ps.setInt(2, id);
             ps.executeUpdate();

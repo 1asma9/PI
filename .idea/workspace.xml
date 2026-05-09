@@ -5,33 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1eadd7ba-4f9e-4570-9296-8ee9ac603371" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AdminAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminAvisController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AdminReclamationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AdminReclamationsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterAvisController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/AjouterReclamationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/MainLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/MainLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ModifierAvisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ModifierAvisController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ModifierReclamationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ModifierReclamationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/controllers/ClientDestinationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/services/DestinationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/services/DestinationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/connexion3a8/tools/MyConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/edu/destination/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/destination/tools/MyConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Avis.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Avis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Reclamation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Reclamation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/ClientLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/pidev/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/AdminLayoutController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/controllers/MonEspaceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/services/HebergementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/HebergementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/services/TypeHebergementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/services/TypeHebergementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/tests/MainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/tests/MainClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hebergement/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hebergement/tools/MyConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/PI_Gestion_des_utilisateurs/ui/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/services/AvisService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/AvisService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/services/ReclamationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/services/ReclamationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/MyConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/tools/SessionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tools/SessionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/admin_avis.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/admin_avis.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/admin_reclamations.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/admin_reclamations.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/MonEspace.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_client.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/user_ajouter_avis.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_ajouter_avis.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/user_ajouter_reclamation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_ajouter_reclamation.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/user_avis.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_avis.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/user_modifier_avis.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_modifier_avis.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/user_modifier_reclamation.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/user_modifier_reclamation.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/app/main_layout_admin.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,11 +47,6 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="JavaAutoRunManager">
-    <enabled-run-configurations>
-      <run-configuration type="MavenRunConfiguration" name="Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run]" />
-    </enabled-run-configurations>
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -70,37 +62,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Maven.Gestion_Hebergement [clean].executor": "Run",
-    "Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main1",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/rayen/IdeaProjects/pi_final",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.Gestion_Hebergement [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Gestion_Hebergement [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main1&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/rayen/IdeaProjects/pi_final&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
-      "CSS"
+  &quot;keyToStringList&quot;: {
+    &quot;com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File&quot;: [
+      &quot;CSS&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ferja\OneDrive\Bureau\Gestion_Hebergemeny\src\main\resources" />

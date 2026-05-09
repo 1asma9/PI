@@ -1,15 +1,16 @@
 package tools;
 
 public class SessionManager {
-    private static int currentUserId = 1;
-    private static String username = "Rayen Hafian";
-    private static String email = "rayenhafian72@gmail.com";
+    private static int currentUserId = -1;
+    private static String username = "";
+    private static String email = "";
     private static boolean isAdmin = false;
 
     public static void login(int userId, String user, boolean admin) {
         currentUserId = userId;
         username = user;
         isAdmin = admin;
+        System.out.println("✅ Session sauvegardée : userId=" + userId + ", user=" + user);
     }
 
     public static void login(int userId, String user, String userEmail, boolean admin) {
@@ -17,6 +18,7 @@ public class SessionManager {
         username = user;
         email = userEmail;
         isAdmin = admin;
+        System.out.println("✅ Session sauvegardée : userId=" + userId + ", user=" + user);
     }
 
     public static void logout() {

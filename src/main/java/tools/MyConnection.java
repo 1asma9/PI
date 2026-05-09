@@ -5,33 +5,23 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyConnection {
-    private String url3309 = "jdbc:mysql://127.0.0.1:3309/voyage-1?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private String url3306 = "jdbc:mysql://127.0.0.1:3306/voyage-1?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private String url3307 = "jdbc:mysql://127.0.0.1:3307/voyage-1?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    private String login = "root";
-    private String pwd = "";
+
+    // ✅ Même base que Symfony : voyage sur port 3309
+    private static final String URL   = "jdbc:mysql://127.0.0.1:3309/voyage?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
+    private static final String LOGIN = "root";
+    private static final String PWD   = "";
+
     private Connection cnx;
     private static MyConnection instance;
 
     private MyConnection() {
-        connect();
-    }
-
-    private void connect() {
-        // Essayer port 3309 en premier (XAMPP configuré sur 3309)
-        String[] urls = { url3309, url3306, url3307 };
-        int[] ports = { 3309, 3306, 3307 };
-        for (int i = 0; i < urls.length; i++) {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                cnx = DriverManager.getConnection(urls[i], login, pwd);
-                System.out.println("✅ Connexion établie sur port " + ports[i] + " — voyage-1 !");
-                return;
-            } catch (Exception e) {
-                System.out.println("⚠️ Port " + ports[i] + " échoué...");
-            }
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            cnx = DriverManager.getConnection(URL, LOGIN, PWD);
+            System.out.println("✅ Connecté à voyage (port 3309) !");
+        } catch (Exception e) {
+            System.out.println("❌ Connexion échouée : " + e.getMessage());
         }
-        System.out.println("❌ Connexion impossible à voyage-1.");
     }
 
     public static MyConnection getInstance() {
@@ -44,10 +34,13 @@ public class MyConnection {
     public Connection getCnx() {
         try {
             if (cnx == null || cnx.isClosed()) {
-                connect();
+                instance = null;
+                instance = new MyConnection();
+                return instance.cnx;
             }
         } catch (SQLException e) {
-            connect();
+            instance = null;
+            instance = new MyConnection();
         }
         return cnx;
     }

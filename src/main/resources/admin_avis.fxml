@@ -1,62 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" 
-            styleClass="page"
+<BorderPane prefHeight="760.0" prefWidth="1200.0"
             stylesheets="@style.css"
-            xmlns="http://javafx.com/javafx/17" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="controllers.AdminAvisController">
-   
-   <!-- Top Bar -->
-   <top>
-      <HBox styleClass="topBar" alignment="CENTER_LEFT" spacing="15">
-         <Button text="← Retour Menu" styleClass="btnOutline" onAction="#retourMenu" />
-         <Label text="GESTION DES AVIS" styleClass="pageTitle" />
-         <Region HBox.hgrow="ALWAYS" />
-      </HBox>
-   </top>
-   
-   <!-- Center Content -->
-   <center>
-      <VBox styleClass="pageContent" spacing="20">
-         
-         <!-- Filters and Search -->
-         <HBox spacing="15" alignment="CENTER_LEFT">
-             <TextField fx:id="txtSearch" promptText="Rechercher (Commentaire...)" prefWidth="300" />
-             <ComboBox fx:id="comboFilter" promptText="Filtrer par note" prefWidth="150" />
-             <Button text="Réinitialiser" styleClass="btnOutline" onAction="#clearSearch" />
-         </HBox>
-         
-         <!-- Table -->
-         <TableView fx:id="tableAvis" styleClass="table-view" VBox.vgrow="ALWAYS">
-            <columns>
-               <TableColumn fx:id="colId" text="ID" prefWidth="60" />
-               <TableColumn fx:id="colUser" text="User ID" prefWidth="80" />
-               <TableColumn fx:id="colNote" text="Note /5" prefWidth="100" />
-               <TableColumn fx:id="colCommentaire" text="Commentaire" prefWidth="400" />
-                <TableColumn fx:id="colReponse" text="Réponse Admin" prefWidth="300" />
-                <TableColumn fx:id="colDateReponse" text="Date réponse" prefWidth="150" />
-            </columns>
-         </TableView>
-         
-         <!-- Response Area -->
-         <VBox styleClass="card" spacing="15">
-            <Label text="RÉPONDRE À L'AVIS SÉLECTIONNÉ" styleClass="cardTitle" />
-            <TextArea fx:id="txtReponse" 
-                      promptText="Saisissez votre réponse ici..." 
-                      prefHeight="100" 
-                      wrapText="true" />
-            <HBox alignment="CENTER_RIGHT">
-               <Button fx:id="btnSubmit" 
-                       text="Mettre à jour la réponse" 
-                       styleClass="btnGreen" 
-                       onAction="#validerReponse" />
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.AdminAvisController"
+            style="-fx-background-color:#111827;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="0"
+              style="-fx-background-color:#1f2937; -fx-min-height:64; -fx-border-color:transparent transparent #374151 transparent; -fx-border-width:0 0 1 0;">
+            <HBox alignment="CENTER" style="-fx-min-width:220; -fx-max-width:220; -fx-padding:0 24; -fx-background-color:#111827;">
+                <Label text="✈ VOYAGE" style="-fx-text-fill:#f59e0b; -fx-font-size:18px; -fx-font-weight:900;"/>
             </HBox>
-         </VBox>
-         
-      </VBox>
-   </center>
-   
+            <HBox alignment="CENTER_LEFT" spacing="4" style="-fx-padding:0 16;" HBox.hgrow="ALWAYS">
+                <Button text="📋  Réclamations" onAction="#retourMenu"
+                        style="-fx-background-color:transparent; -fx-text-fill:#9ca3af; -fx-font-weight:600; -fx-font-size:13px; -fx-background-radius:8; -fx-padding:8 18; -fx-cursor:hand;"/>
+                <Button text="⭐  Gestion Avis" onAction="#retourMenu"
+                        style="-fx-background-color:#f59e0b; -fx-text-fill:white; -fx-font-weight:700; -fx-font-size:13px; -fx-background-radius:8; -fx-padding:8 18; -fx-cursor:hand;"/>
+                <Button text="📊  Statistiques" onAction="#afficherStatistiques"
+                        style="-fx-background-color:transparent; -fx-text-fill:#9ca3af; -fx-font-weight:600; -fx-font-size:13px; -fx-background-radius:8; -fx-padding:8 18; -fx-cursor:hand;"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding:0 20;">
+                <Button text="🚪 Déconnexion" onAction="#deconnexion"
+                        style="-fx-background-color:#dc2626; -fx-text-fill:white; -fx-font-size:12px; -fx-font-weight:700; -fx-background-radius:8; -fx-padding:7 14; -fx-cursor:hand;"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color:#111827; -fx-background:transparent; -fx-border-color:transparent;"
+                    pannable="true">
+            <VBox style="-fx-background-color:#111827; -fx-padding:24 28;">
+            <VBox spacing="4" style="-fx-padding:0 0 20 0;">
+                <Label text="Gestion des Avis" style="-fx-text-fill:white; -fx-font-size:24px; -fx-font-weight:900;"/>
+                <Label text="Consultez, modérez et répondez aux avis des clients"
+                       style="-fx-text-fill:#6b7280; -fx-font-size:13px;"/>
+            </VBox>
+
+            <!-- Filtres -->
+            <HBox spacing="12" alignment="CENTER_LEFT"
+                  style="-fx-background-color:#1f2937; -fx-padding:16 20; -fx-background-radius:12; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;">
+                <TextField fx:id="txtSearch"
+                           promptText="● Rechercher..."
+                           prefWidth="380" prefHeight="40"
+                           style="-fx-background-color:#374151; -fx-text-fill:white; -fx-prompt-text-fill:#6b7280; -fx-background-radius:10; -fx-border-color:#4b5563; -fx-border-radius:10; -fx-padding:0 14; -fx-font-size:13px;"/>
+                <ComboBox fx:id="comboFilter" prefWidth="160" prefHeight="40"
+                          promptText="Tous les statuts"
+                          style="-fx-background-color:#374151; -fx-border-color:#4b5563; -fx-border-radius:10; -fx-background-radius:10;"/>
+                <ComboBox fx:id="comboNoteFilter" prefWidth="150" prefHeight="40"
+                          promptText="Toutes notes"
+                          style="-fx-background-color:#374151; -fx-border-color:#4b5563; -fx-border-radius:10; -fx-background-radius:10;"/>
+                <ComboBox fx:id="comboTri" prefWidth="150" prefHeight="40"
+                          promptText="Trier par..."
+                          style="-fx-background-color:#374151; -fx-border-color:#4b5563; -fx-border-radius:10; -fx-background-radius:10;"/>
+                <Button text="↻" onAction="#clearSearch"
+                        style="-fx-background-color:#374151; -fx-text-fill:#9ca3af; -fx-background-radius:10; -fx-padding:8 14; -fx-cursor:hand; -fx-font-size:16px;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblCount" text="0 avis" style="-fx-text-fill:#6b7280; -fx-font-size:13px;"/>
+            </HBox>
+
+            <!-- TABLE -->
+            <TableView fx:id="tableAvis" VBox.vgrow="ALWAYS"
+                       style="-fx-background-color:#1f2937; -fx-background-radius:16; -fx-border-radius:16; -fx-border-color:#374151; -fx-border-width:1;">
+                <columns>
+                    <TableColumn fx:id="colId"           text="#ID"           prefWidth="70"/>
+                    <TableColumn fx:id="colUser"         text="UTILISATEUR"   prefWidth="130"/>
+                    <TableColumn fx:id="colCategorie"    text="CATÉGORIE"     prefWidth="140"/>
+                    <TableColumn fx:id="colNote"         text="NOTE ↕"        prefWidth="120"/>
+                    <TableColumn fx:id="colCommentaire"  text="CONTENU"       prefWidth="220"/>
+                    <TableColumn fx:id="colDate"         text="DATE ↕"        prefWidth="100"/>
+                    <TableColumn fx:id="colStatut"       text="STATUT"        prefWidth="120"/>
+                    <TableColumn fx:id="colSentiment"    text="SENTIMENT IA"  prefWidth="120"/>
+                    <TableColumn fx:id="colReponse"      text="RÉPONSE ADMIN" prefWidth="160"/>
+                    <TableColumn fx:id="colActions"      text="ACTIONS"       prefWidth="140"/>
+                </columns>
+                <placeholder>
+                    <Label text="Aucun avis trouvé." style="-fx-text-fill:#6b7280; -fx-font-size:14px;"/>
+                </placeholder>
+            </TableView>
+
+            <!-- Pagination -->
+            <HBox fx:id="paginationBox" alignment="CENTER_RIGHT" spacing="8" style="-fx-padding:14 0 0 0;">
+                <Label fx:id="lblPageInfo" text="Page 1 sur 1 — 0 avis" style="-fx-text-fill:#6b7280; -fx-font-size:13px;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnPrev" text="◀" onAction="#pagePrecedente"
+                        style="-fx-background-color:#374151; -fx-text-fill:#d1d5db; -fx-background-radius:8; -fx-padding:6 14; -fx-cursor:hand;"/>
+                <Button fx:id="btnNext" text="▶" onAction="#pageSuivante"
+                        style="-fx-background-color:#374151; -fx-text-fill:#d1d5db; -fx-background-radius:8; -fx-padding:6 14; -fx-cursor:hand;"/>
+            </HBox>
+
+            <!-- Réponse -->
+            <VBox spacing="10"
+                  style="-fx-background-color:#1f2937; -fx-padding:20; -fx-background-radius:12; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;">
+                <Label text="RÉPONDRE À L'AVIS SÉLECTIONNÉ"
+                       style="-fx-text-fill:#f59e0b; -fx-font-size:12px; -fx-font-weight:800; -fx-letter-spacing:1;"/>
+                <TextArea fx:id="txtReponse"
+                          promptText="Saisissez votre réponse ici..."
+                          prefHeight="80" wrapText="true"
+                          style="-fx-background-color:#374151; -fx-text-fill:white; -fx-prompt-text-fill:#6b7280; -fx-background-radius:10; -fx-border-color:#4b5563; -fx-border-radius:10; -fx-padding:10;"/>
+                <HBox alignment="CENTER_RIGHT" spacing="10">
+                    <Button text="✓ Valider l'avis" onAction="#validerAvis"
+                            style="-fx-background-color:#16a34a; -fx-text-fill:white; -fx-font-weight:800; -fx-background-radius:10; -fx-padding:8 18; -fx-cursor:hand;"/>
+                    <Button text="✗ Rejeter l'avis" onAction="#rejeterAvis"
+                            style="-fx-background-color:#dc2626; -fx-text-fill:white; -fx-font-weight:800; -fx-background-radius:10; -fx-padding:8 18; -fx-cursor:hand;"/>
+                    <Button text="💬 Envoyer réponse" onAction="#validerReponse"
+                            style="-fx-background-color:#f59e0b; -fx-text-fill:white; -fx-font-weight:800; -fx-background-radius:10; -fx-padding:8 18; -fx-cursor:hand;"/>
+                </HBox>
+            </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
 </BorderPane>

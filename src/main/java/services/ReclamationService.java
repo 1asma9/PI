@@ -103,6 +103,7 @@ public class ReclamationService implements IService<Reclamation> {
         String requete = "SELECT * FROM reclamation WHERE user_id = ? ORDER BY date_creation DESC";
         Connection connection = MyConnection.getInstance().getCnx();
         if (connection == null) return reclamations;
+        System.out.println("🔍 Chargement réclamations pour user_id=" + userId);
         try (PreparedStatement ps = connection.prepareStatement(requete)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -111,11 +112,12 @@ public class ReclamationService implements IService<Reclamation> {
                 }
             }
         }
+        System.out.println("✅ " + reclamations.size() + " réclamation(s) trouvée(s) pour user_id=" + userId);
         return reclamations;
     }
 
     public void repondreReclamation(int id, String reponse) throws SQLException {
-        String requete = "UPDATE reclamation SET reponse = ?, statut = 'Résolue', date_reponse = CURRENT_TIMESTAMP WHERE id = ?";
+        String requete = "UPDATE reclamation SET reponse = ?, statut = 'Résolue' WHERE id = ?";
         Connection connection = MyConnection.getInstance().getCnx();
         if (connection == null) return;
         try (PreparedStatement ps = connection.prepareStatement(requete)) {

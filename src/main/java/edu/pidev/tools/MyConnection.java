@@ -6,9 +6,10 @@ import java.sql.SQLException;
 
 public class MyConnection {
 
-    private final String url = "jdbc:mysql://localhost:3307/voyage-1?useSSL=false&serverTimezone=UTC";
-    private final String login = "root";
-    private final String pwd = "";
+    // ✅ Même base que Symfony : voyage sur port 3309
+    private static final String URL   = "jdbc:mysql://127.0.0.1:3309/voyage?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
+    private static final String LOGIN = "root";
+    private static final String PWD   = "";
 
     private Connection cnx;
     private static MyConnection instance;
@@ -16,12 +17,10 @@ public class MyConnection {
     private MyConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            cnx = DriverManager.getConnection(url, login, pwd);
-            System.out.println("✅ Connection établie");
-        } catch (ClassNotFoundException e) {
-            System.out.println("❌ Driver MySQL introuvable.");
-        } catch (SQLException e) {
-            System.out.println("❌ Erreur connexion: " + e.getMessage());
+            cnx = DriverManager.getConnection(URL, LOGIN, PWD);
+            System.out.println("✅ Connecté à voyage (port 3309) !");
+        } catch (Exception e) {
+            System.out.println("❌ Connexion échouée : " + e.getMessage());
         }
     }
 
@@ -35,11 +34,13 @@ public class MyConnection {
     public Connection getCnx() {
         try {
             if (cnx == null || cnx.isClosed()) {
-                cnx = DriverManager.getConnection(url, login, pwd);
-                System.out.println("Reconnexion établie!");
+                instance = null;
+                instance = new MyConnection();
+                return instance.cnx;
             }
         } catch (SQLException e) {
-            System.out.println("Erreur reconnexion: " + e.getMessage());
+            instance = null;
+            instance = new MyConnection();
         }
         return cnx;
     }

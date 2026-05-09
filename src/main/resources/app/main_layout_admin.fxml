@@ -10,7 +10,12 @@
             styleClass="root">
 
     <left>
-        <VBox fx:id="sidebar" spacing="12" styleClass="sidebar">
+        <ScrollPane fitToWidth="true"
+                    style="-fx-background-color:transparent; -fx-background:#1e293b; -fx-border-color:transparent;"
+                    vbarPolicy="AS_NEEDED"
+                    hbarPolicy="NEVER"
+                    pannable="true">
+            <VBox fx:id="sidebar" spacing="12" styleClass="sidebar">
             <Label text="VOYAGE" styleClass="brand"/>
 
             <Button text="🏠 Dashboard"
@@ -86,8 +91,25 @@
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
 
-            <Button text="🚨 Réclamations"
-                    onAction="#goAdminReclamations"
+            <!-- Séparateur -->
+            <Separator style="-fx-background-color:rgba(255,255,255,0.08); -fx-padding:4 0;"/>
+
+            <!-- Section Avis & Réclamations -->
+            <Label text="💬 Avis &amp; Réclamations"
+                   style="-fx-text-fill:#9ca3af; -fx-font-size:11px; -fx-font-weight:800; -fx-letter-spacing:1; -fx-padding:8 20 4 20;"/>
+
+            <Button text="⭐  Gestion Avis"
+                    onAction="#goGestionAvis"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="📋  Réclamations"
+                    onAction="#goGestionReclamations"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="📊  Statistiques"
+                    onAction="#goStatistiques"
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
 
@@ -103,7 +125,8 @@
                     maxWidth="Infinity"/>
             <Label fx:id="connectedLabel" text="Admin" styleClass="pill"/>
             <Label text="© 2026" styleClass="muted"/>
-        </VBox>
+            </VBox>
+        </ScrollPane>
     </left>
 
     <top>

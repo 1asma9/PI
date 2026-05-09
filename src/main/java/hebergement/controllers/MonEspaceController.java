@@ -46,9 +46,37 @@ public class MonEspaceController {
     @FXML private TableColumn<Object,String> colBlogId, colBlogTitre, colBlogDate;
     @FXML private Label lblBlogMsg;
 
-    @FXML private TableView<Object>          tvReclamations;
-    @FXML private TableColumn<Object,String> colRecId, colRecSujet, colRecStatut, colRecDate;
-    @FXML private Label lblRecMsg;
+    // ── Feedbacks ──────────────────────────────────────────
+    @FXML private VBox panelAvisInner;
+    @FXML private VBox panelReclInner;
+    @FXML private Button btnTabAvis;
+    @FXML private Button btnTabRecl;
+    @FXML private Button btnNouvelAvis;
+    @FXML private Button btnNouvelleRec;
+
+    @FXML private TableView<entities.Avis>               tvAvis;
+    @FXML private TableColumn<entities.Avis, Integer>    colAvisNote;
+    @FXML private TableColumn<entities.Avis, String>     colAvisCategorie;
+    @FXML private TableColumn<entities.Avis, String>     colAvisCommentaire;
+    @FXML private TableColumn<entities.Avis, String>     colAvisStatut;
+    @FXML private TableColumn<entities.Avis, java.util.Date> colAvisDate;
+    @FXML private TableColumn<entities.Avis, Void>       colAvisActions;
+    @FXML private Label  lblPageAvis;
+    @FXML private Button btnPrevAvis;
+    @FXML private Button btnNextAvis;
+
+    @FXML private TableView<entities.Reclamation>           tvReclamations;
+    @FXML private TableColumn<entities.Reclamation, Integer> colRecId;
+    @FXML private TableColumn<entities.Reclamation, String>  colRecSujet;
+    @FXML private TableColumn<entities.Reclamation, String>  colRecCategorie;
+    @FXML private TableColumn<entities.Reclamation, String>  colRecPriorite;
+    @FXML private TableColumn<entities.Reclamation, String>  colRecStatut;
+    @FXML private TableColumn<entities.Reclamation, Object>  colRecDate;
+    @FXML private TableColumn<entities.Reclamation, Void>    colRecActions;
+    @FXML private Label  lblRecMsg;
+    @FXML private Label  lblPageRecl;
+    @FXML private Button btnPrevRecl;
+    @FXML private Button btnNextRecl;
 
     @FXML private TableView<Object>          tvReservations;
     @FXML private TableColumn<Object,String> colResId, colResDebut, colResFin, colResTotal;
@@ -70,9 +98,20 @@ public class MonEspaceController {
     private static boolean openVoyagesTab = false;
     public static void requestOpenVoyagesTab() { openVoyagesTab = true; }
 
+    private static boolean openFeedbacksTab = false;
+    public static void requestOpenFeedbacksTab() { openFeedbacksTab = true; }
+
     private VBox[]   panes;
     private Button[] tabBtns;
     private int      activeTab = 0;
+
+    // ── Pagination Feedbacks ───────────────────────────────
+    private java.util.List<entities.Avis> listeAvis = new java.util.ArrayList<>();
+    private java.util.List<entities.Reclamation> listeReclamations = new java.util.ArrayList<>();
+    private static final int PAGE_SIZE = 5;
+    private int pageAvis = 1;
+    private int pageRecl = 1;
+    private java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
 
     // ══════════════════════════════════════════════════════
     @FXML
@@ -92,6 +131,9 @@ public class MonEspaceController {
         if (openVoyagesTab) {
             selectTab(5);
             openVoyagesTab = false;
+        } else if (openFeedbacksTab) {
+            selectTab(2);
+            openFeedbacksTab = false;
         }
     }
 
@@ -118,7 +160,7 @@ public class MonEspaceController {
         tabBarBox.getChildren().clear();
         panes = new VBox[]{ paneHeb, paneBlogs, paneRec, paneRes, paneAct, paneVoy };
         String[][] tabs = {
-                {"🏠","Hébergements"}, {"📝","Mes Blogs"}, {"🚨","Réclamations"},
+                {"🏠","Hébergements"}, {"📝","Mes Blogs"}, {"💬","Mes Feedbacks"},
                 {"📅","Réservations"}, {"🎯","Activités"}, {"✈️","Mes Voyages"}
         };
         tabBtns = new Button[tabs.length];
@@ -144,10 +186,35 @@ public class MonEspaceController {
                 panes[i].setManaged(i == idx);
             }
         }
-        // ✅ Charger les cartes réservations quand on clique sur onglet "Réservations" (idx=3)
-        if (idx == 3) {
-            loadReservationsCards(MainLayoutController.getCurrentUser());
+        if (idx == 3) loadReservationsCards(MainLayoutController.getCurrentUser());
+        if (idx == 2) {
+            setupTableAvis();
+            setupTableReclamations();
+            chargerAvis();
+            chargerReclamations();
+            showTabAvis();
         }
+    }
+
+    // ══════════════════════════════════════════════════════
+    // ONGLETS FEEDBACKS
+    // ══════════════════════════════════════════════════════
+    @FXML public void showTabAvis() {
+        if (panelAvisInner != null) { panelAvisInner.setVisible(true);  panelAvisInner.setManaged(true);  }
+        if (panelReclInner != null) { panelReclInner.setVisible(false); panelReclInner.setManaged(false); }
+        String activeStyle = "-fx-background-color:#c9a24a;-fx-text-fill:white;-fx-font-weight:800;-fx-font-size:13px;-fx-padding:9 22;-fx-background-radius:10 10 0 0;-fx-cursor:hand;";
+        String inactStyle  = "-fx-background-color:#e2e8f0;-fx-text-fill:#64748b;-fx-font-weight:700;-fx-font-size:13px;-fx-padding:9 22;-fx-background-radius:10 10 0 0;-fx-cursor:hand;";
+        if (btnTabAvis != null) btnTabAvis.setStyle(activeStyle);
+        if (btnTabRecl != null) btnTabRecl.setStyle(inactStyle);
+    }
+
+    @FXML public void showTabRecl() {
+        if (panelAvisInner != null) { panelAvisInner.setVisible(false); panelAvisInner.setManaged(false); }
+        if (panelReclInner != null) { panelReclInner.setVisible(true);  panelReclInner.setManaged(true);  }
+        String activeStyle = "-fx-background-color:#0f2a2a;-fx-text-fill:white;-fx-font-weight:800;-fx-font-size:13px;-fx-padding:9 22;-fx-background-radius:10 10 0 0;-fx-cursor:hand;";
+        String inactStyle  = "-fx-background-color:#e2e8f0;-fx-text-fill:#64748b;-fx-font-weight:700;-fx-font-size:13px;-fx-padding:9 22;-fx-background-radius:10 10 0 0;-fx-cursor:hand;";
+        if (btnTabRecl != null) btnTabRecl.setStyle(activeStyle);
+        if (btnTabAvis != null) btnTabAvis.setStyle(inactStyle);
     }
 
     private String tabStyle(boolean active) {
@@ -168,6 +235,404 @@ public class MonEspaceController {
                 "-fx-text-fill:#374151;-fx-font-size:13px;-fx-font-weight:600;" +
                 "-fx-padding:14 18 14 18;-fx-cursor:hand;-fx-background-radius:0;";
     }
+
+    // ══════════════════════════════════════════════════════
+    // SETUP TABLES
+    // ══════════════════════════════════════════════════════
+    private void setupTableAvis() {
+        if (tvAvis == null) return;
+
+        // Style table
+        tvAvis.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 16;" +
+            "-fx-border-radius: 16;" +
+            "-fx-border-color: #e2e8f0;" +
+            "-fx-border-width: 1.5;" +
+            "-fx-font-size: 13px;"
+        );
+        tvAvis.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // ── Note avec étoiles dorées ──
+        colAvisNote.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("note"));
+        colAvisNote.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Avis, Integer>() {
+            @Override protected void updateItem(Integer note, boolean empty) {
+                super.updateItem(note, empty);
+                setStyle("-fx-background-color: white; -fx-alignment: CENTER-LEFT;");
+                if (empty || note == null) { setGraphic(null); setText(null); return; }
+                javafx.scene.layout.HBox box = new javafx.scene.layout.HBox(2);
+                box.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                for (int i = 1; i <= 5; i++) {
+                    Label s = new Label(i <= note ? "★" : "☆");
+                    s.setStyle("-fx-text-fill:" + (i <= note ? "#c9a24a" : "#d1d5db") + "; -fx-font-size:16px;");
+                    box.getChildren().add(s);
+                }
+                Label num = new Label("  " + note + "/5");
+                num.setStyle("-fx-text-fill:#6b7280; -fx-font-size:12px; -fx-font-weight:600;");
+                box.getChildren().add(num);
+                setGraphic(box); setText(null);
+            }
+        });
+
+        // ── Catégorie ──
+        if (colAvisCategorie != null) {
+            colAvisCategorie.setCellValueFactory(c -> {
+                // Récupérer le nom du type depuis typeavis
+                try {
+                    int typeId = c.getValue().getTypeId();
+                    if (typeId > 0) {
+                        String q = "SELECT nom FROM typeavis WHERE id = ?";
+                        try (java.sql.PreparedStatement ps = tools.MyConnection.getInstance().getCnx().prepareStatement(q)) {
+                            ps.setInt(1, typeId);
+                            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                                if (rs.next()) return new javafx.beans.property.SimpleStringProperty(rs.getString("nom"));
+                            }
+                        }
+                    }
+                } catch (Exception e) {}
+                return new javafx.beans.property.SimpleStringProperty("—");
+            });
+            colAvisCategorie.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Avis, String>() {
+                @Override protected void updateItem(String val, boolean empty) {
+                    super.updateItem(val, empty);
+                    setStyle("-fx-background-color: white;");
+                    if (empty || val == null) { setText("—"); setStyle("-fx-background-color:white; -fx-text-fill:#9ca3af;"); return; }
+                    Label badge = new Label(val);
+                    badge.setStyle("-fx-background-color:#f0f9ff; -fx-text-fill:#0369a1; -fx-border-color:#bae6fd; -fx-border-width:1; -fx-padding:3 10; -fx-background-radius:999; -fx-border-radius:999; -fx-font-size:11px; -fx-font-weight:700;");
+                    setGraphic(badge); setText(null);
+                }
+            });
+        }
+
+        // ── Commentaire ──
+        colAvisCommentaire.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("commentaire"));
+        colAvisCommentaire.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Avis, String>() {
+            @Override protected void updateItem(String val, boolean empty) {
+                super.updateItem(val, empty);
+                setStyle("-fx-background-color: white;");
+                if (empty || val == null) { setText(null); return; }
+                String truncated = val.length() > 50 ? val.substring(0, 50) + "..." : val;
+                setText(truncated);
+                setStyle("-fx-background-color:white; -fx-text-fill:#374151; -fx-font-size:13px;");
+            }
+        });
+
+        // ── Statut badge ──
+        colAvisStatut.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("statut"));
+        colAvisStatut.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Avis, String>() {
+            @Override protected void updateItem(String val, boolean empty) {
+                super.updateItem(val, empty);
+                setStyle("-fx-background-color: white; -fx-alignment: CENTER;");
+                if (empty || val == null) { setGraphic(null); return; }
+                Label badge = new Label(val);
+                if ("Validé".equals(val))
+                    badge.setStyle("-fx-background-color:#dcfce7;-fx-text-fill:#166534;-fx-border-color:#bbf7d0;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                else if ("Rejeté".equals(val))
+                    badge.setStyle("-fx-background-color:#fee2e2;-fx-text-fill:#991b1b;-fx-border-color:#fecaca;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                else
+                    badge.setStyle("-fx-background-color:#fef9c3;-fx-text-fill:#854d0e;-fx-border-color:#fde047;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                setGraphic(badge); setText(null);
+            }
+        });
+
+        // ── Date ──
+        colAvisDate.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("dateCreation"));
+        colAvisDate.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Avis, java.util.Date>() {
+            @Override protected void updateItem(java.util.Date d, boolean empty) {
+                super.updateItem(d, empty);
+                setStyle("-fx-background-color: white; -fx-text-fill: #6b7280; -fx-alignment: CENTER;");
+                setText(empty || d == null ? "—" : sdf.format(d));
+            }
+        });
+
+        // ── Actions ──
+        colAvisActions.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Avis, Void>() {
+            final Button btnView = new Button("👁");
+            final Button btnEdit = new Button("✏️");
+            final Button btnDel  = new Button("🗑");
+            final javafx.scene.layout.HBox box = new javafx.scene.layout.HBox(6, btnView, btnEdit, btnDel);
+            {
+                btnView.setStyle("-fx-background-color:#eff6ff;-fx-text-fill:#1d4ed8;-fx-background-radius:8;-fx-border-color:#bfdbfe;-fx-border-width:1;-fx-padding:5 12;-fx-cursor:hand;-fx-font-size:13px;");
+                btnEdit.setStyle("-fx-background-color:#fef9c3;-fx-text-fill:#854d0e;-fx-background-radius:8;-fx-border-color:#fde047;-fx-border-width:1;-fx-padding:5 12;-fx-cursor:hand;-fx-font-size:13px;");
+                btnDel.setStyle("-fx-background-color:#fef2f2;-fx-text-fill:#dc2626;-fx-background-radius:8;-fx-border-color:#fecaca;-fx-border-width:1;-fx-padding:5 12;-fx-cursor:hand;-fx-font-size:13px;");
+                box.setAlignment(javafx.geometry.Pos.CENTER);
+                btnView.setOnAction(e -> {
+                    entities.Avis a = getTableView().getItems().get(getIndex());
+                    tools.AlertHelper.showInfo("Détails de l'avis",
+                        "⭐ Note: " + a.getNote() + "/5\n" +
+                        "📋 Statut: " + a.getStatut() + "\n\n" +
+                        "💬 Commentaire:\n" + a.getCommentaire() +
+                        (a.getReponseAdmin() != null && !a.getReponseAdmin().isEmpty()
+                            ? "\n\n✅ Réponse admin:\n" + a.getReponseAdmin() : ""));
+                });
+                btnEdit.setOnAction(e -> {
+                    entities.Avis a = getTableView().getItems().get(getIndex());
+                    try {
+                        javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/user_modifier_avis.fxml"));
+                        javafx.scene.Parent root = loader.load();
+                        controllers.ModifierAvisController ctrl = loader.getController();
+                        ctrl.setAvis(a);
+                        if (hebergement.controllers.ClientLayoutController.getInstance() != null) {
+                            hebergement.controllers.ClientLayoutController.getInstance().loadPageWithRoot(root);
+                        } else {
+                            getTableView().getScene().setRoot(root);
+                        }
+                    } catch (Exception ex) {
+                        tools.AlertHelper.showError("Erreur", "Impossible d'ouvrir l'édition : " + ex.getMessage());
+                    }
+                });
+                btnDel.setOnAction(e -> {
+                    entities.Avis a = getTableView().getItems().get(getIndex());
+                    if (tools.AlertHelper.showConfirmation("Supprimer", "Supprimer cet avis ?")) {
+                        try { new services.AvisService().deleteEntity(a.getId()); chargerAvis(); }
+                        catch (Exception ex) { tools.AlertHelper.showError("Erreur", ex.getMessage()); }
+                    }
+                });
+            }
+            @Override protected void updateItem(Void v, boolean empty) {
+                super.updateItem(v, empty);
+                setStyle("-fx-background-color: white; -fx-alignment: CENTER;");
+                setGraphic(empty ? null : box);
+            }
+        });
+    }
+
+    private void setupTableReclamations() {
+        if (tvReclamations == null) return;
+
+        tvReclamations.setStyle(
+            "-fx-background-color: white;" +
+            "-fx-background-radius: 16;" +
+            "-fx-border-radius: 16;" +
+            "-fx-border-color: #e2e8f0;" +
+            "-fx-border-width: 1.5;" +
+            "-fx-font-size: 13px;"
+        );
+        tvReclamations.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        // ── ID ──
+        colRecId.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("id"));
+        colRecId.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Reclamation, Integer>() {
+            @Override protected void updateItem(Integer v, boolean empty) {
+                super.updateItem(v, empty);
+                setStyle("-fx-background-color:white; -fx-text-fill:#9ca3af; -fx-font-size:12px; -fx-alignment:CENTER;");
+                setText(empty || v == null ? null : "#" + v);
+            }
+        });
+
+        // ── Titre ──
+        colRecSujet.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("titre"));
+        colRecSujet.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Reclamation, String>() {
+            @Override protected void updateItem(String val, boolean empty) {
+                super.updateItem(val, empty);
+                setStyle("-fx-background-color:white; -fx-text-fill:#111827; -fx-font-weight:700; -fx-font-size:13px;");
+                setText(empty || val == null ? null : val.length() > 40 ? val.substring(0,40)+"..." : val);
+            }
+        });
+
+        // ── Catégorie ──
+        if (colRecCategorie != null) {
+            colRecCategorie.setCellValueFactory(c -> {
+                try {
+                    entities.Reclamation r = (entities.Reclamation) c.getValue();
+                    int typeId = r.getTypeId();
+                    if (typeId > 0) {
+                        String q = "SELECT nom FROM typeavis WHERE id = ?";
+                        try (java.sql.PreparedStatement ps = tools.MyConnection.getInstance().getCnx().prepareStatement(q)) {
+                            ps.setInt(1, typeId);
+                            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                                if (rs.next()) return new javafx.beans.property.SimpleStringProperty(rs.getString("nom"));
+                            }
+                        }
+                    }
+                } catch (Exception e) {}
+                return new javafx.beans.property.SimpleStringProperty("—");
+            });
+            colRecCategorie.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Reclamation, String>() {
+                @Override protected void updateItem(String val, boolean empty) {
+                    super.updateItem(val, empty);
+                    setStyle("-fx-background-color:white; -fx-alignment:CENTER;");
+                    if (empty || val == null || "—".equals(val)) { setText("—"); setStyle("-fx-background-color:white;-fx-text-fill:#9ca3af;"); return; }
+                    Label badge = new Label(val);
+                    badge.setStyle("-fx-background-color:#f0f9ff;-fx-text-fill:#0369a1;-fx-border-color:#bae6fd;-fx-border-width:1;-fx-padding:3 10;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:700;");
+                    setGraphic(badge); setText(null);
+                }
+            });
+        }
+
+        // ── Priorité ──
+        if (colRecPriorite != null) {
+            colRecPriorite.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("priorite"));
+            colRecPriorite.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Reclamation, String>() {
+                @Override protected void updateItem(String val, boolean empty) {
+                    super.updateItem(val, empty);
+                    setStyle("-fx-background-color:white; -fx-alignment:CENTER;");
+                    if (empty || val == null) { setGraphic(null); return; }
+                    Label badge = new Label(val);
+                    if ("Urgente".equals(val))
+                        badge.setStyle("-fx-background-color:#fef2f2;-fx-text-fill:#be123c;-fx-border-color:#fecdd3;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                    else if ("Haute".equals(val))
+                        badge.setStyle("-fx-background-color:#fff7ed;-fx-text-fill:#c2410c;-fx-border-color:#fed7aa;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                    else if ("Moyenne".equals(val))
+                        badge.setStyle("-fx-background-color:#eff6ff;-fx-text-fill:#1d4ed8;-fx-border-color:#bfdbfe;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                    else
+                        badge.setStyle("-fx-background-color:#f0fdf4;-fx-text-fill:#166534;-fx-border-color:#bbf7d0;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                    setGraphic(badge); setText(null);
+                }
+            });
+        }
+
+        // ── Statut ──
+        colRecStatut.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("statut"));
+        colRecStatut.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Reclamation, String>() {
+            @Override protected void updateItem(String val, boolean empty) {
+                super.updateItem(val, empty);
+                setStyle("-fx-background-color:white; -fx-alignment:CENTER;");
+                if (empty || val == null) { setGraphic(null); return; }
+                Label badge = new Label(val);
+                if ("Résolue".equals(val) || "Traitée".equals(val))
+                    badge.setStyle("-fx-background-color:#dcfce7;-fx-text-fill:#166534;-fx-border-color:#bbf7d0;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                else if ("Rejetée".equals(val))
+                    badge.setStyle("-fx-background-color:#fee2e2;-fx-text-fill:#991b1b;-fx-border-color:#fecaca;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                else
+                    badge.setStyle("-fx-background-color:#fef9c3;-fx-text-fill:#854d0e;-fx-border-color:#fde047;-fx-border-width:1;-fx-padding:4 12;-fx-background-radius:999;-fx-border-radius:999;-fx-font-size:11px;-fx-font-weight:900;");
+                setGraphic(badge); setText(null);
+            }
+        });
+
+        // ── Date ──
+        colRecDate.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("dateCreation"));
+        colRecDate.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Reclamation, Object>() {
+            @Override protected void updateItem(Object d, boolean empty) {
+                super.updateItem(d, empty);
+                setStyle("-fx-background-color:white; -fx-text-fill:#6b7280; -fx-alignment:CENTER;");
+                setText(empty || d == null ? "—" : sdf.format(d));
+            }
+        });
+
+        // ── Actions ──
+        if (colRecActions != null) {
+            colRecActions.setCellFactory(col -> new javafx.scene.control.TableCell<entities.Reclamation, Void>() {
+                final Button btnView = new Button("👁");
+                final Button btnEdit = new Button("✏️");
+                final Button btnDel  = new Button("🗑");
+                final javafx.scene.layout.HBox box = new javafx.scene.layout.HBox(6, btnView, btnEdit, btnDel);
+                {
+                    btnView.setStyle("-fx-background-color:#eff6ff;-fx-text-fill:#1d4ed8;-fx-background-radius:8;-fx-border-color:#bfdbfe;-fx-border-width:1;-fx-padding:5 12;-fx-cursor:hand;-fx-font-size:13px;");
+                    btnEdit.setStyle("-fx-background-color:#fef9c3;-fx-text-fill:#854d0e;-fx-background-radius:8;-fx-border-color:#fde047;-fx-border-width:1;-fx-padding:5 12;-fx-cursor:hand;-fx-font-size:13px;");
+                    btnDel.setStyle("-fx-background-color:#fef2f2;-fx-text-fill:#dc2626;-fx-background-radius:8;-fx-border-color:#fecaca;-fx-border-width:1;-fx-padding:5 12;-fx-cursor:hand;-fx-font-size:13px;");
+                    box.setAlignment(javafx.geometry.Pos.CENTER);
+                    btnView.setOnAction(e -> {
+                        entities.Reclamation r = (entities.Reclamation) getTableView().getItems().get(getIndex());
+                        tools.AlertHelper.showInfo("Détails réclamation",
+                            "📌 Titre: " + r.getTitre() + "\n" +
+                            "🎯 Priorité: " + r.getPriorite() + "\n" +
+                            "📋 Statut: " + r.getStatut() + "\n\n" +
+                            "📝 Description:\n" + r.getDescription() +
+                            (r.getReponseAdmin() != null && !r.getReponseAdmin().isEmpty()
+                                ? "\n\n✅ Réponse admin:\n" + r.getReponseAdmin() : ""));
+                    });
+                    btnEdit.setOnAction(e -> {
+                        entities.Reclamation r = (entities.Reclamation) getTableView().getItems().get(getIndex());
+                        try {
+                            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/user_modifier_reclamation.fxml"));
+                            javafx.scene.Parent root = loader.load();
+                            controllers.ModifierReclamationController ctrl = loader.getController();
+                            ctrl.setReclamation(r);
+                            if (hebergement.controllers.ClientLayoutController.getInstance() != null) {
+                                hebergement.controllers.ClientLayoutController.getInstance().loadPageWithRoot(root);
+                            } else {
+                                getTableView().getScene().setRoot(root);
+                            }
+                        } catch (Exception ex) {
+                            tools.AlertHelper.showError("Erreur", "Impossible d'ouvrir l'édition : " + ex.getMessage());
+                        }
+                    });
+                    btnDel.setOnAction(e -> {
+                        entities.Reclamation r = (entities.Reclamation) getTableView().getItems().get(getIndex());
+                        if (tools.AlertHelper.showConfirmation("Supprimer", "Supprimer cette réclamation ?")) {
+                            try { new services.ReclamationService().deleteEntity(r.getId()); chargerReclamations(); }
+                            catch (Exception ex) { tools.AlertHelper.showError("Erreur", ex.getMessage()); }
+                        }
+                    });
+                }
+                @Override protected void updateItem(Void v, boolean empty) {
+                    super.updateItem(v, empty);
+                    setStyle("-fx-background-color:white; -fx-alignment:CENTER;");
+                    setGraphic(empty ? null : box);
+                }
+            });
+        }
+    }
+
+    // ══════════════════════════════════════════════════════
+    // FEEDBACKS : Avis + Réclamations
+    // ══════════════════════════════════════════════════════
+    private void chargerAvis() {
+        try {
+            int userId = tools.SessionManager.getCurrentUserId();
+            listeAvis = new services.AvisService().getByUserId(userId);
+            System.out.println("✅ Avis chargés pour userId=" + userId + " : " + listeAvis.size());
+            pageAvis = 1;
+            afficherPageAvis();
+        } catch (java.sql.SQLException e) {
+            System.err.println("Erreur avis: " + e.getMessage());
+        }
+    }
+
+    private void chargerReclamations() {
+        try {
+            int userId = tools.SessionManager.getCurrentUserId();
+            listeReclamations = new services.ReclamationService().getByUserId(userId);
+            System.out.println("✅ Réclamations chargées pour userId=" + userId + " : " + listeReclamations.size());
+            pageRecl = 1;
+            afficherPageRecl();
+        } catch (java.sql.SQLException e) {
+            System.err.println("Erreur réclamations: " + e.getMessage());
+        }
+    }
+
+    private void afficherPageAvis() {
+        if (tvAvis == null) return;
+        int total = listeAvis.size(), totalPages = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
+        int from = (pageAvis - 1) * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, total);
+        tvAvis.setItems(javafx.collections.FXCollections.observableArrayList(listeAvis.subList(from, to)));
+        if (lblPageAvis != null) lblPageAvis.setText("Page " + pageAvis + "/" + totalPages);
+        if (btnPrevAvis != null) btnPrevAvis.setDisable(pageAvis <= 1);
+        if (btnNextAvis != null) btnNextAvis.setDisable(pageAvis >= totalPages);
+    }
+
+    private void afficherPageRecl() {
+        if (tvReclamations == null) return;
+        int total = listeReclamations.size(), totalPages = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
+        int from = (pageRecl - 1) * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, total);
+        tvReclamations.setItems(javafx.collections.FXCollections.observableArrayList(listeReclamations.subList(from, to)));
+        if (lblPageRecl != null) lblPageRecl.setText("Page " + pageRecl + "/" + totalPages);
+        if (btnPrevRecl != null) btnPrevRecl.setDisable(pageRecl <= 1);
+        if (btnNextRecl != null) btnNextRecl.setDisable(pageRecl >= totalPages);
+    }
+
+    @FXML void pagePrevAvis() { if (pageAvis > 1) { pageAvis--; afficherPageAvis(); } }
+    @FXML void pageNextAvis() { int tp = Math.max(1,(int)Math.ceil((double)listeAvis.size()/PAGE_SIZE)); if (pageAvis < tp) { pageAvis++; afficherPageAvis(); } }
+    @FXML void pagePrevRecl() { if (pageRecl > 1) { pageRecl--; afficherPageRecl(); } }
+    @FXML void pageNextRecl() { int tp = Math.max(1,(int)Math.ceil((double)listeReclamations.size()/PAGE_SIZE)); if (pageRecl < tp) { pageRecl++; afficherPageRecl(); } }
+
+    @FXML void ajouterAvis() {
+        if (ClientLayoutController.getInstance() != null) {
+            ClientLayoutController.getInstance().loadPage("/user_ajouter_avis.fxml");
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir l'interface, layout introuvable.");
+        }
+    }
+
+    @FXML void ajouterReclamation() {
+        if (ClientLayoutController.getInstance() != null) {
+            ClientLayoutController.getInstance().loadPage("/user_ajouter_reclamation.fxml");
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir l'interface, layout introuvable.");
+        }
+    }
+
 
     // ══════════════════════════════════════════════════════
     // ✅ RÉSERVATIONS HÉBERGEMENT EN CARTES (comme les voyages)
@@ -692,6 +1157,23 @@ public class MonEspaceController {
             scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
             popup.setScene(scene); popup.show();
         });
+    }
+
+    // ══════════════════════════════════════════════════════
+    // NAVIGATION
+    // ══════════════════════════════════════════════════════
+    @FXML
+    public void gotoAjouterAvis() {
+        if (ClientLayoutController.getInstance() != null) {
+            ClientLayoutController.getInstance().loadPage("/user_avis.fxml");
+        }
+    }
+
+    @FXML
+    public void gotoAjouterReclamation() {
+        if (ClientLayoutController.getInstance() != null) {
+            ClientLayoutController.getInstance().loadPage("/user_ajouter_reclamation.fxml");
+        }
     }
 
     // ══════════════════════════════════════════════════════

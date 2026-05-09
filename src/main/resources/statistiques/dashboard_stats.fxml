@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefHeight="760.0" prefWidth="1200.0"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.DashboardStatsController"
+            style="-fx-background-color:#111827;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="0"
+              style="-fx-background-color:#1f2937; -fx-min-height:64; -fx-border-color:transparent transparent #374151 transparent; -fx-border-width:0 0 1 0;">
+            <HBox alignment="CENTER" style="-fx-min-width:220; -fx-max-width:220; -fx-padding:0 24; -fx-background-color:#111827;">
+                <Label text="✈ VOYAGE" style="-fx-text-fill:#f59e0b; -fx-font-size:18px; -fx-font-weight:900;"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="4" style="-fx-padding:0 16;" HBox.hgrow="ALWAYS">
+                <Button text="📋  Réclamations" onAction="#retourMenu"
+                        style="-fx-background-color:transparent; -fx-text-fill:#9ca3af; -fx-font-weight:600; -fx-font-size:13px; -fx-background-radius:8; -fx-padding:8 18; -fx-cursor:hand;"/>
+                <Button text="⭐  Gestion Avis" onAction="#retourMenu"
+                        style="-fx-background-color:transparent; -fx-text-fill:#9ca3af; -fx-font-weight:600; -fx-font-size:13px; -fx-background-radius:8; -fx-padding:8 18; -fx-cursor:hand;"/>
+                <Button text="📊  Statistiques" 
+                        style="-fx-background-color:#f59e0b; -fx-text-fill:white; -fx-font-weight:700; -fx-font-size:13px; -fx-background-radius:8; -fx-padding:8 18; -fx-cursor:hand;"/>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding:0 20;">
+                <Button text="↻ Actualiser" onAction="#actualiser"
+                        style="-fx-background-color:#374151; -fx-text-fill:#d1d5db; -fx-font-size:12px; -fx-background-radius:8; -fx-padding:7 14; -fx-cursor:hand;"/>
+                <Button text="📄 Exporter PDF" onAction="#genererRapportPDF"
+                        style="-fx-background-color:#10b981; -fx-text-fill:white; -fx-font-size:12px; -fx-font-weight:700; -fx-background-radius:8; -fx-padding:7 14; -fx-cursor:hand;"/>
+            </HBox>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color:#111827; -fx-background:transparent; -fx-border-color:transparent;" pannable="true">
+            <VBox style="-fx-background-color:#111827; -fx-padding:24 28;" spacing="20">
+                <!-- Page Title -->
+                <VBox spacing="4">
+                    <Label text="Dashboard &amp; Statistiques" style="-fx-text-fill:white; -fx-font-size:24px; -fx-font-weight:900;"/>
+                    <Label text="Analyse globale des réclamations et des avis" style="-fx-text-fill:#9ca3af; -fx-font-size:13px;"/>
+                </VBox>
+
+                <!-- KPI Cards Row -->
+                <HBox spacing="16">
+                    <!-- KPI 1 -->
+                    <VBox style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" HBox.hgrow="ALWAYS" prefWidth="200">
+                        <Label text="RÉCLAMATIONS TOTALES" style="-fx-text-fill:#9ca3af; -fx-font-size:11px; -fx-font-weight:800; -fx-letter-spacing:1;"/>
+                        <Label fx:id="lblTotalReclamations" text="0" style="-fx-text-fill:white; -fx-font-size:32px; -fx-font-weight:900; -fx-padding:8 0;"/>
+                        <Label fx:id="lblEvolutionReclamations" text="-" style="-fx-text-fill:#4ade80; -fx-font-size:12px; -fx-font-weight:700;"/>
+                    </VBox>
+                    <!-- KPI 2 -->
+                    <VBox style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" HBox.hgrow="ALWAYS" prefWidth="200">
+                        <Label text="RÉCLAMATIONS EN ATTENTE" style="-fx-text-fill:#9ca3af; -fx-font-size:11px; -fx-font-weight:800; -fx-letter-spacing:1;"/>
+                        <Label fx:id="lblEnAttente" text="0" style="-fx-text-fill:#fbbf24; -fx-font-size:32px; -fx-font-weight:900; -fx-padding:8 0;"/>
+                        <Label fx:id="lblPourcentageAttente" text="-" style="-fx-text-fill:#9ca3af; -fx-font-size:12px;"/>
+                    </VBox>
+                    <!-- KPI 3 -->
+                    <VBox style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" HBox.hgrow="ALWAYS" prefWidth="200">
+                        <Label text="RÉCLAMATIONS TRAITÉES" style="-fx-text-fill:#9ca3af; -fx-font-size:11px; -fx-font-weight:800; -fx-letter-spacing:1;"/>
+                        <Label fx:id="lblTraitees" text="0" style="-fx-text-fill:#4ade80; -fx-font-size:32px; -fx-font-weight:900; -fx-padding:8 0;"/>
+                        <Label fx:id="lblTauxTraitement" text="-" style="-fx-text-fill:#9ca3af; -fx-font-size:12px;"/>
+                    </VBox>
+                    <!-- KPI 4 -->
+                    <VBox style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" HBox.hgrow="ALWAYS" prefWidth="200">
+                        <Label text="NOTE MOYENNE DES AVIS" style="-fx-text-fill:#9ca3af; -fx-font-size:11px; -fx-font-weight:800; -fx-letter-spacing:1;"/>
+                        <Label fx:id="lblNoteMoyenne" text="0/5" style="-fx-text-fill:#f59e0b; -fx-font-size:32px; -fx-font-weight:900; -fx-padding:8 0;"/>
+                        <Label fx:id="lblTotalAvis" text="-" style="-fx-text-fill:#9ca3af; -fx-font-size:12px;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Charts Row 1 -->
+                <HBox spacing="16">
+                    <VBox style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" HBox.hgrow="ALWAYS">
+                        <Label text="TENDANCE SUR 7 JOURS" style="-fx-text-fill:#9ca3af; -fx-font-size:12px; -fx-font-weight:800; -fx-letter-spacing:1; -fx-margin-bottom:10;"/>
+                        <LineChart fx:id="lineChartEvolution" prefHeight="260">
+                            <xAxis><CategoryAxis side="BOTTOM" tickLabelFill="#9ca3af"/></xAxis>
+                            <yAxis><NumberAxis side="LEFT" tickLabelFill="#9ca3af"/></yAxis>
+                        </LineChart>
+                    </VBox>
+                    <VBox style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" prefWidth="400">
+                        <Label text="STATUTS DES RÉCLAMATIONS" style="-fx-text-fill:#9ca3af; -fx-font-size:12px; -fx-font-weight:800; -fx-letter-spacing:1; -fx-margin-bottom:10;"/>
+                        <PieChart fx:id="pieChartStatuts" prefHeight="260" legendVisible="true" labelsVisible="false"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Charts Row 2 -->
+                <HBox spacing="16">
+                    <VBox style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" HBox.hgrow="ALWAYS">
+                        <Label text="RÉPARTITION DES NOTES" style="-fx-text-fill:#9ca3af; -fx-font-size:12px; -fx-font-weight:800; -fx-letter-spacing:1; -fx-margin-bottom:10;"/>
+                        <BarChart fx:id="barChartNotes" prefHeight="260">
+                            <xAxis><CategoryAxis side="BOTTOM" tickLabelFill="#9ca3af"/></xAxis>
+                            <yAxis><NumberAxis side="LEFT" tickLabelFill="#9ca3af"/></yAxis>
+                        </BarChart>
+                    </VBox>
+                    <VBox spacing="10" style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" prefWidth="400">
+                        <Label text="UTILISATEURS LES PLUS ACTIFS" style="-fx-text-fill:#9ca3af; -fx-font-size:12px; -fx-font-weight:800; -fx-letter-spacing:1; -fx-margin-bottom:10;"/>
+                        <VBox fx:id="containerTopUsers" spacing="8" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Reports & Extra info -->
+                <HBox spacing="16">
+                    <VBox spacing="10" style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" HBox.hgrow="ALWAYS">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="HISTORIQUE DES RAPPORTS" style="-fx-text-fill:#9ca3af; -fx-font-size:12px; -fx-font-weight:800; -fx-letter-spacing:1;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblNombreRapports" text="0" style="-fx-text-fill:#6b7280; -fx-font-size:12px;"/>
+                        </HBox>
+                        <VBox fx:id="containerHistoriquePDF" spacing="8"/>
+                        <VBox fx:id="messageAucunRapport" alignment="CENTER" prefHeight="60">
+                            <Label text="Aucun rapport généré." style="-fx-text-fill:#6b7280;"/>
+                        </VBox>
+                    </VBox>
+                    <VBox spacing="20" style="-fx-background-color:#1f2937; -fx-background-radius:12; -fx-padding:20; -fx-border-color:#374151; -fx-border-width:1; -fx-border-radius:12;" prefWidth="400">
+                        <Label text="AUTRES INDICATEURS" style="-fx-text-fill:#9ca3af; -fx-font-size:12px; -fx-font-weight:800; -fx-letter-spacing:1;"/>
+                        <HBox spacing="20">
+                            <VBox HBox.hgrow="ALWAYS">
+                                <Label text="Temps de rép. moyen" style="-fx-text-fill:#6b7280; -fx-font-size:11px;"/>
+                                <Label fx:id="lblTempsReponse" text="—" style="-fx-text-fill:white; -fx-font-size:18px; -fx-font-weight:700;"/>
+                            </VBox>
+                            <VBox HBox.hgrow="ALWAYS">
+                                <Label text="Taux de satisfaction" style="-fx-text-fill:#6b7280; -fx-font-size:11px;"/>
+                                <Label fx:id="lblTauxSatisfaction" text="—" style="-fx-text-fill:#4ade80; -fx-font-size:18px; -fx-font-weight:700;"/>
+                            </VBox>
+                        </HBox>
+                        <HBox spacing="20">
+                            <VBox HBox.hgrow="ALWAYS">
+                                <Label text="Utilisateurs actifs" style="-fx-text-fill:#6b7280; -fx-font-size:11px;"/>
+                                <Label fx:id="lblUsersActifs" text="—" style="-fx-text-fill:white; -fx-font-size:18px; -fx-font-weight:700;"/>
+                            </VBox>
+                            <VBox HBox.hgrow="ALWAYS">
+                                <Label text="Total Résolues" style="-fx-text-fill:#6b7280; -fx-font-size:11px;"/>
+                                <Label fx:id="lblResolues" text="—" style="-fx-text-fill:#3b82f6; -fx-font-size:18px; -fx-font-weight:700;"/>
+                            </VBox>
+                        </HBox>
+                        <Label fx:id="lblReclamationsMois" visible="false" managed="false"/>
+                        <Label fx:id="lblAvisMois" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

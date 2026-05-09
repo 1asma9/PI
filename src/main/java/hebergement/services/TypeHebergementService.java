@@ -30,8 +30,7 @@ public class TypeHebergementService implements Iservice<TypeHebergement> {
 
     @Override
     public void update(int id, TypeHebergement t) throws SQLException {
-        PreparedStatement pst =
-                cnx.prepareStatement("UPDATE type_hebergement SET libelle=? WHERE id=?");
+        PreparedStatement pst = cnx.prepareStatement("UPDATE type_hebergement SET libelle=? WHERE id=?");
         pst.setString(1, t.getLibelle());
         pst.setInt(2, id);
         pst.executeUpdate();
@@ -39,8 +38,7 @@ public class TypeHebergementService implements Iservice<TypeHebergement> {
 
     @Override
     public void deleteEntity(TypeHebergement t) throws SQLException {
-        PreparedStatement pst =
-                cnx.prepareStatement("DELETE FROM type_hebergement WHERE id=?");
+        PreparedStatement pst = cnx.prepareStatement("DELETE FROM type_hebergement WHERE id=?");
         pst.setInt(1, t.getId());
         pst.executeUpdate();
     }
@@ -51,7 +49,7 @@ public class TypeHebergementService implements Iservice<TypeHebergement> {
         String sql = "SELECT * FROM type_hebergement ORDER BY id DESC";
 
         try (Statement st = cnx.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+                ResultSet rs = st.executeQuery(sql)) {
 
             while (rs.next()) {
                 list.add(new TypeHebergement(rs.getInt("id"), rs.getString("libelle")));
@@ -67,11 +65,11 @@ public class TypeHebergementService implements Iservice<TypeHebergement> {
             pst.setString(1, libelle);
 
             try (ResultSet rs = pst.executeQuery()) {
-                if (rs.next()) return rs.getInt("id");
+                if (rs.next())
+                    return rs.getInt("id");
             }
         }
         return null;
     }
-
 
 }

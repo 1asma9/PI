@@ -17,8 +17,8 @@ import java.util.List;
 public class MainClass {
 
     public static void main(String[] args) {
-        System.out.println("HASH: " + org.example.PI_Gestion_des_utilisateurs.tools.PasswordUtil.hashPassword("admin123"));
-
+        System.out.println(
+                "HASH: " + org.example.PI_Gestion_des_utilisateurs.tools.PasswordUtil.hashPassword("admin123"));
 
         try {
             if (!createTablesIfNotExists()) {
@@ -52,7 +52,8 @@ public class MainClass {
             List<Hebergement> hebergements = hs.getData();
             System.out.println("LIST HEBERGEMENTS = " + hebergements);
 
-            if (hebergements.isEmpty()) return;
+            if (hebergements.isEmpty())
+                return;
 
             int lastHebId = hebergements.get(hebergements.size() - 1).getId();
 
@@ -67,8 +68,7 @@ public class MainClass {
                     lastHebId,
                     LocalDate.now(),
                     LocalDate.now().plusDays(7),
-                    true
-            );
+                    true);
 
             ds.addEntity(dispo);
 
@@ -83,12 +83,10 @@ public class MainClass {
                         lastHebId,
                         LocalDate.now().plusDays(1),
                         LocalDate.now().plusDays(10),
-                        false
-                );
+                        false);
                 ds.update(lastDispoId, d2);
 
                 System.out.println("Après UPDATE DISPO = " + ds.getByHebergement(lastHebId));
-
 
                 // Delete dispo
                 Disponibilite toDelete = new Disponibilite();
@@ -150,7 +148,8 @@ public class MainClass {
                 """;
 
         Connection cnx = MyConnection.getInstance().getCnx();
-        if (cnx == null) return false;
+        if (cnx == null)
+            return false;
 
         try (Statement st = cnx.createStatement()) {
             st.execute(sqlType);
@@ -167,8 +166,9 @@ public class MainClass {
     private static boolean isTypeTableEmpty() {
         String sql = "SELECT COUNT(*) AS c FROM type_hebergement";
         try (Statement st = MyConnection.getInstance().getCnx().createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            if (rs.next()) return rs.getInt("c") == 0;
+                ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next())
+                return rs.getInt("c") == 0;
         } catch (Exception e) {
             e.printStackTrace();
         }

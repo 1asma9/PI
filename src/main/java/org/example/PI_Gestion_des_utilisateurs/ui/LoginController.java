@@ -71,6 +71,14 @@ public class LoginController {
         // ✅ Stocker utilisateur
         MainLayoutController.setCurrentUser(user);
 
+        // ✅ Sauvegarder dans SessionManager pour MonEspaceController et autres
+        int userId    = user.getId();
+        String prenom = user.getPrenom() != null ? user.getPrenom() : "";
+        String nom    = user.getNom()    != null ? user.getNom()    : "";
+        String email2 = user.getEmail()  != null ? user.getEmail()  : "";
+        tools.SessionManager.login(userId, prenom + " " + nom, email2, "ROLE_ADMIN".equals(user.getRoleName()));
+        System.out.println("✅ Login OK : " + prenom + " " + nom + " → userId=" + userId + " | role=" + user.getRoleName());
+
         try {
             String role = user.getRoleName();
 
@@ -83,6 +91,7 @@ public class LoginController {
             e.printStackTrace();
             showPopupError("Erreur", "Impossible d'ouvrir l'accueil: " + e.getMessage());
         }
+
     }
 
     @FXML

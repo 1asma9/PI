@@ -187,6 +187,9 @@ public class AjouterAvisController implements Initializable {
 
     private void retourListe() {
         try {
+            // Demander l'ouverture de l'onglet Feedbacks
+            hebergement.controllers.MonEspaceController.requestOpenFeedbacksTab();
+
             hebergement.controllers.ClientLayoutController layout =
                 hebergement.controllers.ClientLayoutController.getInstance();
             if (layout != null) {

@@ -1,56 +1,47 @@
 package hebergement.tools;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MyConnection {
-    private static MyConnection instance;
 
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/voyage?useSSL=false&serverTimezone=UTC&zeroDateTimeBehavior=CONVERT_TO_NULL";
-
+    // ✅ Même base que Symfony : voyage sur port 3309
+    private static final String URL   = "jdbc:mysql://127.0.0.1:3309/voyage?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
     private static final String LOGIN = "root";
-    private static final String PWD = "";
+    private static final String PWD   = "";
 
     private Connection cnx;
-
-    public static MyConnection getInstance() {
-        if (instance == null) instance = new MyConnection();
-        return instance;
-    }
+    private static MyConnection instance;
 
     private MyConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             cnx = DriverManager.getConnection(URL, LOGIN, PWD);
-            System.out.println("Connexion etablie!");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Driver MySQL introuvable.");
-        } catch (SQLException e) {
-            System.out.println("Erreur connexion: " + e.getMessage());
+            System.out.println("✅ Connecté à voyage (port 3309) !");
+        } catch (Exception e) {
+            System.out.println("❌ Connexion échouée : " + e.getMessage());
         }
+    }
+
+    public static MyConnection getInstance() {
+        if (instance == null) {
+            instance = new MyConnection();
+        }
+        return instance;
     }
 
     public Connection getCnx() {
         try {
             if (cnx == null || cnx.isClosed()) {
-                cnx = DriverManager.getConnection(URL, LOGIN, PWD);
-                System.out.println("Reconnexion établie!");
+                instance = null;
+                instance = new MyConnection();
+                return instance.cnx;
             }
         } catch (SQLException e) {
-            System.out.println("Erreur reconnexion: " + e.getMessage());
+            instance = null;
+            instance = new MyConnection();
         }
         return cnx;
-    }
-
-    public void close() {
-        try {
-            if (cnx != null && !cnx.isClosed()) {
-                cnx.close();
-                System.out.println("Connexion fermée.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
