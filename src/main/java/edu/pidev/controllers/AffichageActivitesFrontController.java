@@ -243,7 +243,8 @@ public class AffichageActivitesFrontController {
 
         if (chatOpen && chatMessages != null && chatMessages.getChildren().isEmpty()) {
             botSay("Salut 👋 Moi c’est NAVI 🤖");
-            botSay("Parle-moi un peu de ton plan : où tu veux aller, ton budget, et le style que tu préfères (calme ou adrénaline ? mer, nature ou ville ?)");        }
+            botSay("Parle-moi un peu de ton plan : où tu veux aller, ton budget, et le style que tu préfères (calme ou adrénaline ? mer, nature ou ville ?)");
+        }
     }
 
     @FXML
