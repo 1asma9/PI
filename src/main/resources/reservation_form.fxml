@@ -9,98 +9,115 @@
             fx:controller="edu.pidev.controllers.ReservationFormController"
             fitToWidth="true" pannable="true"
             stylesheets="@reservation.css"
-            vbarPolicy="NEVER" hbarPolicy="NEVER"
-            styleClass="boRoot">
+            vbarPolicy="NEVER" hbarPolicy="NEVER">
 
     <content>
-        <VBox spacing="18" styleClass="boRoot">
-            <padding>
-                <Insets top="0" right="0" bottom="0" left="0"/>
-            </padding>
+        <VBox fx:id="pageContent" spacing="18" styleClass="page">
 
-            <!-- ✅ TOP BAR -->
-            <HBox styleClass="boTopBar" alignment="CENTER_LEFT" spacing="14">
-                <Label text="🌿 Réservation" styleClass="boBrand"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Button text="⬅ Retour aux activités" onAction="#onBack" styleClass="boBtnDark"/>
-            </HBox>
+            <!-- ✅ HERO TITLE BLOCK -->
+            <StackPane styleClass="heroHeader">
+                <VBox styleClass="heroSection" alignment="CENTER" spacing="14">
+
+                    <Label text="DÉTAILS DE L’ACTIVITÉ" styleClass="heroKicker"/>
+
+                    <Label fx:id="lblActivite"
+                           text="Activité : Safari"
+                           styleClass="heroTitle"/>
+
+                    <HBox alignment="CENTER">
+                        <Region styleClass="heroLine"/>
+                    </HBox>
+
+                    <Label text="Une expérience immersive mêlant culture, découverte et moments uniques pour vivre pleinement la destination."
+                           styleClass="heroSubtitle"
+                           wrapText="true"
+                           maxWidth="600"/>
+
+                </VBox>
+            </StackPane>
 
             <!-- ✅ BODY -->
-            <HBox spacing="22" styleClass="boContent">
+            <VBox spacing="18" styleClass="pageBody">
+                <padding>
+                    <Insets top="28" right="28" bottom="28" left="28"/>
+                </padding>
 
-                <!-- ===== FORM CARD ===== -->
-                <VBox spacing="14" styleClass="boCard" prefWidth="380">
+                <!-- ✅ AI PANEL (FR + GOLD LINE) -->
+                <VBox fx:id="aiPanel"
+                      spacing="10"
+                      styleClass="aiPanel"
+                      maxWidth="420">
 
-                    <Label fx:id="lblMode" text="Ajouter une réservation" styleClass="boTitle"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <VBox spacing="6">
+                            <Label text="🤖 Conseils IA" styleClass="aiTitle"/>
+                            <!-- ✅ Ligne dorée -->
+                            <Region styleClass="aiGoldLine"/>
+                            <Label text="À quoi s’attendre pour cette activité"
+                                   styleClass="aiSubTitle"/>
+                        </VBox>
 
-                    <!-- AI PANEL -->
-                    <VBox fx:id="aiPanel" spacing="8" styleClass="boCard">
-                        <HBox spacing="10" alignment="CENTER_LEFT">
-                            <VBox spacing="4">
-                                <Label text="🤖 Conseils IA" styleClass="boBrand"/>
-                                <Label text="À quoi s'attendre pour cette activité" style="-fx-font-size:11px; -fx-text-fill:#777;"/>
-                            </VBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="Générer"
-                                    onAction="#onGenerateWhatToExpect"
-                                    styleClass="boBtnGold"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <Button text="Générer"
+                                onAction="#onGenerateWhatToExpect"
+                                styleClass="aiBtn"/>
+                    </HBox>
+
+                    <Label fx:id="aiExpectText"
+                           text="Cliquez sur “Générer” pour obtenir des conseils IA adaptés à cette activité."
+                           wrapText="true"
+                           styleClass="aiText"/>
+                </VBox>
+
+                <!-- ✅ 2 COLONNES : FORM + LISTE -->
+                <HBox spacing="18">
+
+                    <!-- FORM -->
+                    <VBox spacing="12" styleClass="cardForm" prefWidth="380">
+                        <Label fx:id="lblMode" text="Ajouter une réservation" styleClass="sectionTitle"/>
+
+                        <Label text="Date de réservation" styleClass="fieldLabel"/>
+                        <DatePicker fx:id="dpDate"/>
+
+                        <Label text="Nombre de personnes" styleClass="fieldLabel"/>
+                        <TextField fx:id="tfNombre" promptText="Ex : 2"/>
+
+                        <!-- ✅ NEW: Total + Remise (métier) -->
+                        <Label fx:id="lblTotal" text="Total : -" styleClass="totalLabel"/>
+                        <Label fx:id="lblRemise" text="" styleClass="remiseLabel"/>
+
+                        <Label text="Statut" styleClass="fieldLabel"/>
+                        <ComboBox fx:id="cbStatut"/>
+
+                        <Label fx:id="lblError" text="" styleClass="errorLabel" visible="false"/>
+
+                        <HBox spacing="10">
+                            <Button fx:id="btnSave" text="Ajouter" onAction="#onSave" styleClass="btnPrimary"/>
+                            <Button text="Vider" onAction="#onClear" styleClass="btnSecondary"/>
                         </HBox>
-                        <Label fx:id="aiExpectText"
-                               text="Cliquez sur « Générer » pour obtenir des conseils IA."
-                               wrapText="true"
-                               style="-fx-font-size:12.5px; -fx-text-fill:#444;"/>
+
+                        <Separator/>
+
+                        <Button text="⬅ Retour aux activités" onAction="#onBack" styleClass="btnSecondary"/>
                     </VBox>
 
-                    <Separator styleClass="boActions"/>
+                    <!-- LISTE -->
+                    <VBox spacing="12" HBox.hgrow="ALWAYS">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Liste des réservations" styleClass="sectionTitle"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                        </HBox>
 
-                    <!-- ACTIVITÉ -->
-                    <Label fx:id="lblActivite"
-                           text="Activité : —"
-                           style="-fx-font-size:14px; -fx-font-weight:700; -fx-text-fill:#173b3b;"/>
+                        <FlowPane fx:id="reservationsContainer"
+                                  hgap="16" vgap="16"
+                                  prefWrapLength="900"
+                                  styleClass="cardsWrap"/>
+                    </VBox>
 
-                    <!-- DATE -->
-                    <Label text="Date de réservation" style="-fx-font-size:12px; -fx-font-weight:600; -fx-text-fill:#555;"/>
-                    <DatePicker fx:id="dpDate" styleClass="boInput" maxWidth="Infinity"/>
+                </HBox>
+            </VBox>
 
-                    <!-- NOMBRE -->
-                    <Label text="Nombre de personnes" style="-fx-font-size:12px; -fx-font-weight:600; -fx-text-fill:#555;"/>
-                    <TextField fx:id="tfNombre" promptText="Ex : 2" styleClass="boInput"/>
-
-                    <!-- TOTAL + REMISE -->
-                    <Label fx:id="lblTotal" text="Total : -"
-                           style="-fx-font-size:15px; -fx-font-weight:800; -fx-text-fill:#173b3b;"/>
-                    <Label fx:id="lblRemise" text=""
-                           style="-fx-font-size:12.5px; -fx-font-weight:600; -fx-text-fill:#c9a24a;"/>
-
-                    <!-- STATUT -->
-                    <Label text="Statut" style="-fx-font-size:12px; -fx-font-weight:600; -fx-text-fill:#555;"/>
-                    <ComboBox fx:id="cbStatut" styleClass="boCombo" maxWidth="Infinity"/>
-
-                    <!-- ERROR -->
-                    <Label fx:id="lblError" text=""
-                           style="-fx-font-size:12px; -fx-font-weight:600; -fx-text-fill:#e05b5b;"
-                           visible="false"/>
-
-                    <!-- ACTIONS -->
-                    <HBox spacing="10" styleClass="boActions">
-                        <Button fx:id="btnSave" text="Ajouter" onAction="#onSave" styleClass="boBtnGold"/>
-                        <Button text="Vider" onAction="#onClear" styleClass="boBtnGhost"/>
-                    </HBox>
-
-                </VBox>
-
-                <!-- ===== LISTE RÉSERVATIONS ===== -->
-                <VBox spacing="12" HBox.hgrow="ALWAYS">
-                    <HBox alignment="CENTER_LEFT">
-                        <Label text="Liste des réservations" styleClass="boTitle"/>
-                    </HBox>
-
-                    <FlowPane fx:id="reservationsContainer"
-                              hgap="16" vgap="16"
-                              prefWrapLength="900"/>
-                </VBox>
-
-            </HBox>
         </VBox>
     </content>
 </ScrollPane>

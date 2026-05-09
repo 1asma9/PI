@@ -243,7 +243,7 @@ public class AffichageActivitesFrontController {
 
         if (chatOpen && chatMessages != null && chatMessages.getChildren().isEmpty()) {
             botSay("Salut 👋 Moi c’est NAVI 🤖");
-            botSay("Dis-moi : lieu + budget + style (calme/adrénaline, mer/nature/ville).");
+            botSay("Parle-moi un peu de ton plan : où tu veux aller, ton budget, et le style que tu préfères (calme ou adrénaline ? mer, nature ou ville ?)");
         }
     }
 
@@ -438,8 +438,19 @@ public class AffichageActivitesFrontController {
         Label star = new Label("★");
         star.getStyleClass().add("tripCardStar");
 
-        Label rating = new Label("4.8");
+// ✅ dynamic rating from DB (ai_rating)
+        double r = (a.getAiRating() != null) ? a.getAiRating() : 4.0; // fallback if null
+        Label rating = new Label(String.format("%.1f", r));
         rating.getStyleClass().add("tripCardRating");
+
+// ✅ optional: style by score (nice UX)
+        if (r >= 4.5) {
+            rating.setStyle("-fx-text-fill: #E0A800;"); // gold
+        } else if (r >= 4.0) {
+            rating.setStyle("-fx-text-fill: #1f7a1f;"); // green
+        } else {
+            rating.setStyle("-fx-text-fill: #6C757D;"); // gray
+        }
 
         HBox ratingBox = new HBox(6, star, rating);
         ratingBox.setAlignment(Pos.CENTER_RIGHT);
@@ -484,7 +495,7 @@ public class AffichageActivitesFrontController {
         VBox priceBox = new VBox(2, price, per);
         priceBox.setAlignment(Pos.CENTER_LEFT);
 
-        Button book = new Button("Book Now  >");
+        Button book = new Button("Réserver  >");
         book.getStyleClass().add("tripBookBtn");
         book.setOnAction(e -> openReservationForm(a.getIdActivite(), a.getNom()));
 
@@ -534,10 +545,9 @@ public class AffichageActivitesFrontController {
 
     @FXML
     private void goBackOffice() {
-        switchScene("/affichage_activites_back.fxml");
-    }
+        switchScene("/affichage_activites_back.fxml", "/back_admin.css");    }
 
-    private void switchScene(String fxml) {
+    private void switchScene(String fxml, String cssPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
@@ -553,8 +563,12 @@ public class AffichageActivitesFrontController {
             }
 
             scene.getStylesheets().clear();
-            var css = getClass().getResource("/affichage.css");
-            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            if (cssPath != null) {
+                var css = getClass().getResource(cssPath);
+                if (css != null) scene.getStylesheets().add(css.toExternalForm());
+                else System.out.println("❌ CSS introuvable: " + cssPath);
+            }
 
             stage.show();
 
@@ -567,10 +581,9 @@ public class AffichageActivitesFrontController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Erreur: " + e.getMessage()).showAndWait();
         }
     }
-
     // ===================== HELPERS =====================
     private void showWarn(String msg) {
         Alert err = new Alert(Alert.AlertType.WARNING);

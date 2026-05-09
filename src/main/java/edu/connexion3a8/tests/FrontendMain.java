@@ -1,5 +1,4 @@
-package main;
-
+package edu.connexion3a8.tests;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

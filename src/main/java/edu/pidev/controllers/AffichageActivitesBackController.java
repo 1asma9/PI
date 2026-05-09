@@ -2,14 +2,15 @@ package edu.pidev.controllers;
 
 import edu.pidev.entities.Activite;
 import edu.pidev.services.ActiviteService;
-import hebergement.controllers.AdminLayoutController;
 import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 public class AffichageActivitesBackController {
 
@@ -27,11 +28,13 @@ public class AffichageActivitesBackController {
     @FXML private ComboBox<String> cbLieu;
 
     private final ActiviteService service = new ActiviteService();
+
     private final ObservableList<Activite> master = FXCollections.observableArrayList();
     private FilteredList<Activite> filtered;
 
     @FXML
     public void initialize() {
+
         colId.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getIdActivite()).asObject());
         colNom.setCellValueFactory(d -> new SimpleStringProperty(safe(d.getValue().getNom())));
         colLieu.setCellValueFactory(d -> new SimpleStringProperty(safe(d.getValue().getLieu())));
@@ -39,11 +42,13 @@ public class AffichageActivitesBackController {
         colPrix.setCellValueFactory(d -> new SimpleDoubleProperty(d.getValue().getPrix()).asObject());
         colDuree.setCellValueFactory(d -> new SimpleIntegerProperty(d.getValue().getDuree()).asObject());
 
+        // ai_rating (si tu as getAiRating dans Activite)
         colRating.setCellValueFactory(d -> {
             try { return new SimpleDoubleProperty(d.getValue().getAiRating()).asObject(); }
             catch (Exception e) { return new SimpleDoubleProperty(0.0).asObject(); }
         });
 
+        // formatters
         colPrix.setCellFactory(c -> new TableCell<>() {
             @Override protected void updateItem(Double item, boolean empty) {
                 super.updateItem(item, empty);
@@ -76,13 +81,17 @@ public class AffichageActivitesBackController {
     private void fillCombos() {
         cbType.getItems().clear();
         cbLieu.getItems().clear();
+
         cbType.getItems().add("Tous");
         cbLieu.getItems().add("Tous");
 
         master.stream().map(a -> safe(a.getType())).distinct().sorted()
-                .filter(s -> !s.isEmpty()).forEach(cbType.getItems()::add);
+                .filter(s -> !s.equals("-"))
+                .forEach(cbType.getItems()::add);
+
         master.stream().map(a -> safe(a.getLieu())).distinct().sorted()
-                .filter(s -> !s.isEmpty()).forEach(cbLieu.getItems()::add);
+                .filter(s -> !s.equals("-"))
+                .forEach(cbLieu.getItems()::add);
 
         cbType.setValue("Tous");
         cbLieu.setValue("Tous");
@@ -95,11 +104,14 @@ public class AffichageActivitesBackController {
 
         filtered.setPredicate(a -> {
             if (a == null) return false;
+
             boolean okText = q.isBlank()
                     || safe(a.getNom()).toLowerCase().contains(q)
                     || safe(a.getLieu()).toLowerCase().contains(q);
+
             boolean okType = type.equalsIgnoreCase("Tous") || safe(a.getType()).equalsIgnoreCase(type);
             boolean okLieu = lieu.equalsIgnoreCase("Tous") || safe(a.getLieu()).equalsIgnoreCase(lieu);
+
             return okText && okType && okLieu;
         });
     }
@@ -114,22 +126,16 @@ public class AffichageActivitesBackController {
 
     @FXML
     private void onAjouter() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ajout_activite.fxml"));
-            Parent root = loader.load();
-            var css = getClass().getResource("/form_activite.css");
-            if (css != null) root.getStylesheets().add(css.toExternalForm());
-            AdminLayoutController.getInstance().loadPageWithRoot(root);
-        } catch (Exception e) {
-            e.printStackTrace();
-            error("Ajout impossible", e.getMessage());
-        }
+        switchScene("/ajout_activite.fxml", "/form_activite.css");
     }
 
     @FXML
     private void onModifier() {
         Activite selected = tableActivites.getSelectionModel().getSelectedItem();
-        if (selected == null) { warn("Sélection requise", "Choisis une activité à modifier."); return; }
+        if (selected == null) {
+            warn("Sélection requise", "Choisis une activité à modifier.");
+            return;
+        }
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/modifier_activite.fxml"));
@@ -138,10 +144,18 @@ public class AffichageActivitesBackController {
             ModifierActiviteController c = loader.getController();
             c.setActivite(selected);
 
-            var css = getClass().getResource("/form_activite.css");
-            if (css != null) root.getStylesheets().add(css.toExternalForm());
+            Stage stage = (Stage) tableActivites.getScene().getWindow();
+            Scene scene = stage.getScene();
+            if (scene == null) scene = new Scene(root);
+            else scene.setRoot(root);
 
-            AdminLayoutController.getInstance().loadPageWithRoot(root);
+            scene.getStylesheets().clear();
+            var css = getClass().getResource("/affichage.css");
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            stage.setScene(scene);
+            stage.show();
+
         } catch (Exception e) {
             e.printStackTrace();
             error("Modification impossible", e.getMessage());
@@ -151,7 +165,10 @@ public class AffichageActivitesBackController {
     @FXML
     private void onSupprimer() {
         Activite selected = tableActivites.getSelectionModel().getSelectedItem();
-        if (selected == null) { warn("Sélection requise", "Choisis une activité à supprimer."); return; }
+        if (selected == null) {
+            warn("Sélection requise", "Choisis une activité à supprimer.");
+            return;
+        }
 
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
         c.setTitle("Confirmation");
@@ -169,23 +186,46 @@ public class AffichageActivitesBackController {
 
     @FXML
     private void goFrontOffice() {
+        switchScene("/affichage_activites_front.fxml", "/affichage.css");
+    }
+
+    private void switchScene(String fxml, String cssPath) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/affichage_activites_front.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
-            var css = getClass().getResource("/affichage.css");
-            if (css != null) root.getStylesheets().add(css.toExternalForm());
-            AdminLayoutController.getInstance().loadPageWithRoot(root);
-        } catch (Exception e) { e.printStackTrace(); }
+
+            Stage stage = (Stage) tableActivites.getScene().getWindow();
+            Scene scene = stage.getScene();
+            if (scene == null) scene = new Scene(root);
+            else scene.setRoot(root);
+
+            scene.getStylesheets().clear();
+            var css = getClass().getResource(cssPath);
+            if (css != null) scene.getStylesheets().add(css.toExternalForm());
+
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            error("FXML load failed", String.valueOf(e));
+        }
     }
 
     private void warn(String h, String m) {
         Alert a = new Alert(Alert.AlertType.WARNING);
-        a.setTitle("Attention"); a.setHeaderText(h); a.setContentText(m); a.showAndWait();
+        a.setTitle("Attention");
+        a.setHeaderText(h);
+        a.setContentText(m);
+        a.showAndWait();
     }
 
     private void error(String h, String m) {
         Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setTitle("Erreur"); a.setHeaderText(h); a.setContentText(m); a.showAndWait();
+        a.setTitle("Erreur");
+        a.setHeaderText(h);
+        a.setContentText(m);
+        a.showAndWait();
     }
 
     private String safe(String s) {
