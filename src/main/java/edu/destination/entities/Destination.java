@@ -1,11 +1,10 @@
 package edu.destination.entities;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class Destination {
 
-    private int idDestination;
+    private int id;
     private String nom;
     private String pays;
     private String description;
@@ -14,19 +13,15 @@ public class Destination {
     private double latitude;
     private double longitude;
     private int nbVisites;
-    private double prix;
-    private LocalDate dateDepart;
-    private LocalDate dateArrivee;
-    private String videoPath; // ← URL MP4 (locale ou web directe)
+    private String videoPath;
+    private int nbLikes;
 
-    // Constructeur vide
     public Destination() {}
 
-    // Constructeur sans id (pour ajout)
     public Destination(String nom, String pays, String description,
                        boolean statut, String meilleureSaison,
                        double latitude, double longitude, int nbVisites,
-                       double prix, LocalDate dateDepart, LocalDate dateArrivee) {
+                       String videoPath, int nbLikes) {
         this.nom = nom;
         this.pays = pays;
         this.description = description;
@@ -35,17 +30,15 @@ public class Destination {
         this.latitude = latitude;
         this.longitude = longitude;
         this.nbVisites = nbVisites;
-        this.prix = prix;
-        this.dateDepart = dateDepart;
-        this.dateArrivee = dateArrivee;
+        this.videoPath = videoPath;
+        this.nbLikes = nbLikes;
     }
 
-    // Constructeur complet
-    public Destination(int idDestination, String nom, String pays, String description,
+    public Destination(int id, String nom, String pays, String description,
                        boolean statut, String meilleureSaison,
                        double latitude, double longitude, int nbVisites,
-                       double prix, LocalDate dateDepart, LocalDate dateArrivee) {
-        this.idDestination = idDestination;
+                       String videoPath, int nbLikes) {
+        this.id = id;
         this.nom = nom;
         this.pays = pays;
         this.description = description;
@@ -54,68 +47,36 @@ public class Destination {
         this.latitude = latitude;
         this.longitude = longitude;
         this.nbVisites = nbVisites;
-        this.prix = prix;
-        this.dateDepart = dateDepart;
-        this.dateArrivee = dateArrivee;
+        this.videoPath = videoPath;
+        this.nbLikes = nbLikes;
     }
 
-    // Getters & Setters
-    public int getIdDestination() { return idDestination; }
-    public void setIdDestination(int idDestination) { this.idDestination = idDestination; }
-
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
-
     public String getPays() { return pays; }
     public void setPays(String pays) { this.pays = pays; }
-
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
     public boolean getStatut() { return statut; }
     public void setStatut(boolean statut) { this.statut = statut; }
-
     public String getMeilleureSaison() { return meilleureSaison; }
     public void setMeilleureSaison(String meilleureSaison) { this.meilleureSaison = meilleureSaison; }
-
     public double getLatitude() { return latitude; }
     public void setLatitude(double latitude) { this.latitude = latitude; }
-
     public double getLongitude() { return longitude; }
     public void setLongitude(double longitude) { this.longitude = longitude; }
-
     public int getNbVisites() { return nbVisites; }
     public void setNbVisites(int nbVisites) { this.nbVisites = nbVisites; }
-
-    public double getPrix() { return prix; }
-    public void setPrix(double prix) { this.prix = prix; }
-
-    public LocalDate getDateDepart() { return dateDepart; }
-    public void setDateDepart(LocalDate dateDepart) { this.dateDepart = dateDepart; }
-
-    public LocalDate getDateArrivee() { return dateArrivee; }
-    public void setDateArrivee(LocalDate dateArrivee) { this.dateArrivee = dateArrivee; }
-
     public String getVideoPath() { return videoPath; }
     public void setVideoPath(String videoPath) { this.videoPath = videoPath; }
+    public int getNbLikes() { return nbLikes; }
+    public void setNbLikes(int nbLikes) { this.nbLikes = nbLikes; }
 
     @Override
     public String toString() {
-        return "Destination{" +
-                "idDestination=" + idDestination +
-                ", nom='" + nom + '\'' +
-                ", pays='" + pays + '\'' +
-                ", description='" + description + '\'' +
-                ", statut=" + statut +
-                ", meilleureSaison='" + meilleureSaison + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", nbVisites=" + nbVisites +
-                ", prix=" + prix +
-                ", dateDepart=" + dateDepart +
-                ", dateArrivee=" + dateArrivee +
-                ", videoPath='" + videoPath + '\'' +
-                '}';
+        return "Destination{id=" + id + ", nom='" + nom + "', pays='" + pays + "'}";
     }
 
     @Override
@@ -123,11 +84,11 @@ public class Destination {
         if (this == o) return true;
         if (!(o instanceof Destination)) return false;
         Destination that = (Destination) o;
-        return idDestination == that.idDestination;
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idDestination);
+        return Objects.hash(id);
     }
 }

@@ -1,69 +1,47 @@
 package edu.destination.entities;
 
+
 import java.util.Objects;
 
 public class Transport {
 
-    private int idTransport;
+    private int id;
     private String typeTransport;
-    private int idDestination; // clé étrangère
+    private int voyageId; // clé étrangère vers voyage
 
     public Transport() {}
 
-    public Transport(String typeTransport, int idDestination) {
+    public Transport(String typeTransport, int voyageId) {
         this.typeTransport = typeTransport;
-        this.idDestination = idDestination;
+        this.voyageId = voyageId;
     }
 
-    public Transport(int idTransport, String typeTransport, int idDestination) {
-        this.idTransport = idTransport;
+    public Transport(int id, String typeTransport, int voyageId) {
+        this.id = id;
         this.typeTransport = typeTransport;
-        this.idDestination = idDestination;
+        this.voyageId = voyageId;
     }
 
-    public int getIdTransport() {
-        return idTransport;
-    }
-
-    public void setIdTransport(int idTransport) {
-        this.idTransport = idTransport;
-    }
-
-    public String getTypeTransport() {
-        return typeTransport;
-    }
-
-    public void setTypeTransport(String typeTransport) {
-        this.typeTransport = typeTransport;
-    }
-
-
-
-    public int getIdDestination() {
-        return idDestination;
-    }
-
-    public void setIdDestination(int idDestination) {
-        this.idDestination = idDestination;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+    public String getTypeTransport() { return typeTransport; }
+    public void setTypeTransport(String typeTransport) { this.typeTransport = typeTransport; }
+    public int getVoyageId() { return voyageId; }
+    public void setVoyageId(int voyageId) { this.voyageId = voyageId; }
 
     @Override
     public String toString() {
-        return "Transport{" +
-                "idTransport=" + idTransport +
-                ", typeTransport='" + typeTransport + '\'' +
-                ", idDestination=" + idDestination +
-                '}';
+        return "Transport{id=" + id + ", typeTransport='" + typeTransport + "', voyageId=" + voyageId + "}";
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Transport transport)) return false;
-        return idTransport == transport.idTransport  && idDestination == transport.idDestination && Objects.equals(typeTransport, transport.typeTransport);
+        if (!(o instanceof Transport t)) return false;
+        return id == t.id && voyageId == t.voyageId && Objects.equals(typeTransport, t.typeTransport);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idTransport, typeTransport,  idDestination);
+        return Objects.hash(id, typeTransport, voyageId);
     }
 }

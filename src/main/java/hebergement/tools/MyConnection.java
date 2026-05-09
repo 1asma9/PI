@@ -8,7 +8,7 @@ public class MyConnection {
     private static MyConnection instance;
 
     private static final String URL =
-            "jdbc:mysql://localhost:3306/hebergement?useSSL=false&serverTimezone=UTC";
+            "jdbc:mysql://localhost:3307/voyage?useSSL=false&serverTimezone=UTC";
 
     private static final String LOGIN = "root";
     private static final String PWD = "";

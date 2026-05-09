@@ -4,8 +4,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="hebergement.controllers.AdminLayoutController"
-            styleClass="root">
+            fx:controller="controllers.AdminLayoutController"            styleClass="root">
 
     <left>
         <VBox fx:id="sidebar" spacing="12" styleClass="sidebar">
@@ -36,10 +35,34 @@
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
 
-            <Button text="🌍 Destinations"
-                    onAction="#goDestination"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <!-- Dropdown Gestion Destination -->
+            <VBox spacing="4">
+                <Button fx:id="btnToggleDestination"
+                        text="🌍 Gestion Destination ▼"
+                        onAction="#toggleDestinationMenu"
+                        styleClass="nav-btn"
+                        maxWidth="Infinity"/>
+                <VBox fx:id="destinationSubMenu" spacing="4"
+                      style="-fx-padding: 0 0 0 15;"
+                      visible="true" managed="true">
+                    <Button text="📍 Destinations"
+                            onAction="#goDestination"
+                            styleClass="nav-btn"
+                            maxWidth="Infinity"/>
+                    <Button text="✈️ Voyages"
+                            onAction="#goVoyage"
+                            styleClass="nav-btn"
+                            maxWidth="Infinity"/>
+                    <Button text="🚌 Transports"
+                            onAction="#goTransport"
+                            styleClass="nav-btn"
+                            maxWidth="Infinity"/>
+                    <Button text="🖼️ Images"
+                            onAction="#goImage"
+                            styleClass="nav-btn"
+                            maxWidth="Infinity"/>
+                </VBox>
+            </VBox>
 
             <Button text="💬 Chat"
                     onAction="#goChat"
@@ -84,7 +107,7 @@
     </top>
 
     <center>
-        <StackPane fx:id="contentPane" styleClass="content"/>
+        <StackPane fx:id="contentArea" styleClass="content"/>
     </center>
 
 </BorderPane>

@@ -77,9 +77,15 @@ public class LoginController {
             String role = user.getRoleName();
             System.out.println("🔵 role: " + role);
 
-            String layoutPath = "CLIENT".equals(role)
-                    ? "/app/main_layout_client.fxml"
-                    : "/app/main_layout_admin.fxml";
+            String layoutPath;
+            if (role == null) {
+                showInlineError("Role non defini");
+                return;
+            } else if ("ROLE_ADMIN".equals(role)) {
+                layoutPath = "/app/main_layout_admin.fxml";
+            } else {
+                layoutPath = "/app/main_layout_client.fxml";
+            }
 
             System.out.println("🔵 chargement layout: " + layoutPath);
 

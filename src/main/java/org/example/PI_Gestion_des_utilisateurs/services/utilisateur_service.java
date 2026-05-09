@@ -1,6 +1,6 @@
 package org.example.PI_Gestion_des_utilisateurs.services;
 
-import hebergement.tools.MyConnection;
+import tools.MyConnection;
 import org.example.PI_Gestion_des_utilisateurs.entities.utilisateur;
 import org.example.PI_Gestion_des_utilisateurs.tools.PasswordUtil;
 
@@ -29,52 +29,52 @@ public class utilisateur_service {
             "INSERT INTO users (nom, prenom, email, password_hash, telephone) VALUES (?, ?, ?, ?, ?)";
 
     private static final String SQL_SELECT_USERS_WITH_ROLES =
-            "SELECT u.id_user, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
+            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
                     "r.name AS role_name, r.description AS role_description " +
                     "FROM users u " +
-                    "LEFT JOIN user_role ur ON ur.user_id = u.id_user " +
+                    "LEFT JOIN users_role ur ON ur.users_id = u.id " +
                     "LEFT JOIN role r ON r.id = ur.role_id " +
-                    "ORDER BY u.id_user";
+                    "ORDER BY u.id";
 
     private static final String SQL_SELECT_USER_BY_EMAIL =
-            "SELECT u.id_user, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
+            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
                     "r.name AS role_name, r.description AS role_description " +
                     "FROM users u " +
-                    "LEFT JOIN user_role ur ON ur.user_id = u.id_user " +
+                    "LEFT JOIN users_role ur ON ur.users_id = u.id " +
                     "LEFT JOIN role r ON r.id = ur.role_id " +
                     "WHERE u.email=? LIMIT 1";
 
     private static final String SQL_SELECT_USER_BY_ID =
-            "SELECT u.id_user, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
+            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
                     "r.name AS role_name, r.description AS role_description " +
                     "FROM users u " +
-                    "LEFT JOIN user_role ur ON ur.user_id = u.id_user " +
+                    "LEFT JOIN users_role ur ON ur.users_id = u.id " +
                     "LEFT JOIN role r ON r.id = ur.role_id " +
-                    "WHERE u.id_user=? LIMIT 1";
+                    "WHERE u.id=? LIMIT 1";
 
     private static final String SQL_COUNT_USER_BY_EMAIL =
             "SELECT COUNT(*) FROM users WHERE email=?";
 
     private static final String SQL_UPDATE_USER =
-            "UPDATE users SET nom=?, prenom=?, email=?, password_hash=?, telephone=? WHERE id_user=?";
+            "UPDATE users SET nom=?, prenom=?, email=?, password_hash=?, telephone=? WHERE id=?";
 
     private static final String SQL_DELETE_USER_ROLES =
-            "DELETE FROM user_role WHERE user_id=?";
+            "DELETE FROM users_role WHERE users_id=?";
 
     private static final String SQL_DELETE_USER =
-            "DELETE FROM users WHERE id_user=?";
+            "DELETE FROM users WHERE id=?";
 
     private static final String SQL_ASSOCIER_ROLE =
-            "INSERT INTO user_role (user_id, role_id) VALUES (?, ?)";
+            "INSERT INTO users_role (users_id, role_id) VALUES (?, ?)";
 
     private static final String SQL_UPDATE_PASSWORD =
-            "UPDATE users SET password_hash=? WHERE id_user=?";
+            "UPDATE users SET password_hash=? WHERE id=?";
 
     // =============== MAPPING ===============
 
     private utilisateur mapUtilisateur(ResultSet rs, boolean avecRoles) throws SQLException {
         utilisateur u = new utilisateur();
-        u.setId(rs.getInt("id_user"));
+        u.setId(rs.getInt("id"));
         u.setNom(rs.getString("nom"));
         u.setPrenom(rs.getString("prenom"));
         u.setEmail(rs.getString("email"));
@@ -142,7 +142,6 @@ public class utilisateur_service {
         }
 
         try (PreparedStatement ps = getCnx().prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
-
             ps.setString(1, u.getNom().trim());
             ps.setString(2, u.getPrenom().trim());
             ps.setString(3, u.getEmail().trim());
@@ -255,7 +254,7 @@ public class utilisateur_service {
     public boolean associerRoleAutilisateur(int userId, int roleId) {
         if (userId <= 0 || roleId <= 0) return false;
 
-        try (PreparedStatement del = getCnx().prepareStatement("DELETE FROM user_role WHERE user_id=?")) {
+        try (PreparedStatement del = getCnx().prepareStatement("DELETE FROM users_role WHERE users_id=?")) {
             del.setInt(1, userId);
             del.executeUpdate();
         } catch (SQLException e) {

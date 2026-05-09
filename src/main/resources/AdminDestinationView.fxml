@@ -3,79 +3,49 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.destination.controllers.AdminDestinationController"
-            stylesheets="@/app/app.css"
-            styleClass="root-dark">
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.destination.controllers.AdminDestinationController"
+      styleClass="page" spacing="16"
+      stylesheets="@/app/destination.css">
 
-    <top>
-        <HBox styleClass="sidebar" spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
-            <Label text="VOYAGE" styleClass="brand"/>
-            <Button text="Dashboard" styleClass="nav-btn" fx:id="navDashboard"/>
-            <Button text="Destinations" styleClass="nav-btn nav-btn-active" fx:id="navDestinations"/>
-            <Button text="Transports" styleClass="nav-btn" fx:id="navTransports"/>
-            <Button text="Images" styleClass="nav-btn" fx:id="navImages"/>
-            <Button text="Espace Client" styleClass="nav-btn" fx:id="navClient"/>
+    <Label text="Gestion des Destinations" styleClass="pageTitle"/>
 
-            <!-- ✅ Nouveau bouton Retour en haut -->
-            <Button text="⬅ Retour" styleClass="nav-btn" fx:id="navRetour"/>
-
-            <Region HBox.hgrow="ALWAYS"/>
-            <Label text="© 2026" styleClass="pageSubtitle"/>
+    <VBox styleClass="glass-card-large" spacing="14">
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
+            <TextField fx:id="searchPays"
+                       promptText="Rechercher par nom / pays..."
+                       prefWidth="250" styleClass="input-field"/>
+            <ComboBox fx:id="comboStatut" prefWidth="150"/>
+            <ComboBox fx:id="comboSaison" prefWidth="180"/>
+            <Button fx:id="btnReset" text="Reset" styleClass="btn-secondary"/>
         </HBox>
-    </top>
 
-    <center>
-        <VBox styleClass="page" spacing="16">
+        <TableView fx:id="tableDestinations" prefHeight="350" styleClass="table-modern">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" prefWidth="70"/>
+                <TableColumn fx:id="colNom" text="Nom" prefWidth="100"/>
+                <TableColumn fx:id="colPays" text="Pays" prefWidth="80"/>
+                <TableColumn fx:id="colDescription" text="Description" prefWidth="160"/>
+                <TableColumn fx:id="colStatut" text="Statut" prefWidth="60"/>
+                <TableColumn fx:id="colSaison" text="Saison" prefWidth="80"/>
+                <TableColumn fx:id="colLatitude" text="Lat" prefWidth="60"/>
+                <TableColumn fx:id="colLongitude" text="Long" prefWidth="60"/>
+                <TableColumn fx:id="colNbVisites" text="Visites" prefWidth="55"/>
+                <TableColumn fx:id="colNbLikes" text="Likes" prefWidth="50"/>
+                <TableColumn fx:id="colVideoPath" text="Video" prefWidth="50"/>
+                <!-- ✅ Colonne Actions -->
+                <TableColumn fx:id="colActions" text="Actions" prefWidth="160"/>
+            </columns>
+        </TableView>
 
-            <Label text="Gestion des Destinations" styleClass="pageTitle"/>
+        <HBox spacing="14" alignment="CENTER" style="-fx-padding: 10 0 10 0;">
+            <Button fx:id="btnAjouter" text="Ajouter" styleClass="btn-primary"/>
+            <Button fx:id="btnModifier" text="Modifier" styleClass="btn-warning"/>
+            <Button fx:id="btnSupprimer" text="Supprimer" styleClass="btn-danger"/>
+            <Button text="📊 Statistiques"
+                    onAction="#openStatistiques"
+                    styleClass="btn-secondary"/>        </HBox>
+    </VBox>
 
-            <VBox styleClass="glass-card-large" spacing="14">
-                <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10 20 10 20;">
-
-                    <TextField fx:id="searchPays"
-                               promptText="Rechercher par nom / pays..."
-                               prefWidth="250" styleClass="input-field"/>
-
-                    <ComboBox fx:id="comboStatut" prefWidth="150"/>
-                    <ComboBox fx:id="comboSaison" prefWidth="180"/>
-
-                    <DatePicker fx:id="dateDepart"
-                                promptText="Date de depart"
-                                prefWidth="160"/>
-
-                    <Button fx:id="btnReset" text="Reset" styleClass="btn-secondary"/>
-
-                </HBox>
-
-                <TableView fx:id="tableDestinations" prefHeight="520" styleClass="table-modern">
-                    <columns>
-                        <TableColumn fx:id="colId" text="ID"/>
-                        <TableColumn fx:id="colNom" text="Nom"/>
-                        <TableColumn fx:id="colPays" text="Pays"/>
-                        <TableColumn fx:id="colDescription" text="Description"/>
-                        <TableColumn fx:id="colStatut" text="Statut"/>
-                        <TableColumn fx:id="colSaison" text="Saison"/>
-                        <TableColumn fx:id="colLatitude" text="Lat"/>
-                        <TableColumn fx:id="colLongitude" text="Long"/>
-                        <TableColumn fx:id="colNbVisites" text="Visites"/>
-                        <TableColumn fx:id="colPrix" text="Prix"/>
-                        <TableColumn fx:id="colDateDepart" text="Depart"/>
-                        <TableColumn fx:id="colDateArrivee" text="Arrivee"/>
-                        <TableColumn fx:id="colVideoPath" text="Video"/>
-                    </columns>
-                </TableView>
-
-                <HBox spacing="14" alignment="CENTER">
-                    <Button fx:id="btnAjouter" text="Ajouter" styleClass="btn-primary"/>
-                    <Button fx:id="btnModifier" text="Modifier" styleClass="btn-warning"/>
-                    <Button fx:id="btnSupprimer" text="Supprimer" styleClass="btn-danger"/>
-                    <Button fx:id="btnRetour" text="Retour" styleClass="btn-secondary"/>
-                </HBox>
-            </VBox>
-
-        </VBox>
-    </center>
-
-</BorderPane>
+</VBox>
