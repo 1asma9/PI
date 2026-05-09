@@ -7,7 +7,11 @@ public class MyConnection {
     private static MyConnection instance;
 
     private static final String URL =
+<<<<<<< Updated upstream
             "jdbc:mysql://localhost:3306/voyage-1?useSSL=false&serverTimezone=UTC";
+=======
+            "jdbc:mysql://localhost:3306/voyage?useSSL=false&serverTimezone=UTC&zeroDateTimeBehavior=CONVERT_TO_NULL";
+>>>>>>> Stashed changes
 
     private static final String LOGIN = "root";
     private static final String PWD = "";

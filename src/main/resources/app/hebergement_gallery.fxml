@@ -8,39 +8,182 @@
             fx:controller="hebergement.controllers.HebergementGalleryController"
             fitToWidth="true"
             hbarPolicy="NEVER"
-            styleClass="galleryRoot"
-            stylesheets="@/app/app.css">
+            style="-fx-background: #f9f9f9; -fx-background-color: #f9f9f9;">
 
     <content>
-        <VBox spacing="0">
+        <VBox spacing="0"
+              style="-fx-background-color: #f9f9f9;">
 
-            <!-- ===== HERO BANNER ===== -->
-            <StackPane styleClass="galleryHero">
-                <VBox alignment="CENTER" spacing="12" styleClass="galleryHeroContent">
-                    <Label text="🏝️ Nos Hébergements" styleClass="galleryHeroTitle"/>
-                    <Label text="Découvrez nos logements d'exception et réservez en quelques clics."
-                           styleClass="galleryHeroSub" wrapText="true"/>
+            <!-- HERO BANNER -->
+            <StackPane style="-fx-background-color: #2c3e50;
+                              -fx-min-height: 200px;
+                              -fx-pref-height: 200px;">
+                <VBox alignment="CENTER" spacing="8">
+                    <Label text="Nos Hébergements"
+                           style="-fx-font-size: 32px;
+                                  -fx-font-weight: 800;
+                                  -fx-text-fill: white;
+                                  -fx-font-family: 'Segoe UI';"/>
+                    <Label fx:id="lblCount"
+                           text="0 hébergement(s) trouvé(s)"
+                           style="-fx-font-size: 15px;
+                                  -fx-text-fill: rgba(255,255,255,0.8);"/>
                 </VBox>
             </StackPane>
 
-            <!-- ===== BODY ===== -->
-            <VBox spacing="24" styleClass="galleryBody">
-                <padding>
-                    <Insets top="32" right="40" bottom="40" left="40"/>
-                </padding>
+            <!-- FILTRES -->
+            <VBox style="-fx-background-color: #f9f9f9;
+                         -fx-padding: 24 40 18 40;
+                         -fx-border-color: #eee;
+                         -fx-border-width: 0 0 1 0;">
 
-                <!-- TITRE + COMPTEUR -->
-                <HBox alignment="CENTER_LEFT" spacing="12">
-                    <Label text="Tous les hébergements" styleClass="gallerySectionTitle"/>
-                    <Label fx:id="lblCount" text="" styleClass="galleryBadge"/>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="lblStatus" text="" styleClass="galleryStatus"/>
+                <!-- Ligne 1 -->
+                <HBox spacing="14" alignment="CENTER_LEFT">
+
+                    <VBox spacing="5">
+                        <Label text="Rechercher"
+                               style="-fx-font-size: 13px;
+                                      -fx-font-weight: 600;
+                                      -fx-text-fill: #333;"/>
+                        <TextField fx:id="tfSearch"
+                                   promptText="Description..."
+                                   prefWidth="200"
+                                   style="-fx-background-color: white;
+                                          -fx-border-color: #ddd;
+                                          -fx-border-radius: 6;
+                                          -fx-background-radius: 6;
+                                          -fx-padding: 9 12;
+                                          -fx-font-size: 14px;"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text="Type"
+                               style="-fx-font-size: 13px;
+                                      -fx-font-weight: 600;
+                                      -fx-text-fill: #333;"/>
+                        <ComboBox fx:id="cbType"
+                                  prefWidth="160"
+                                  style="-fx-background-color: white;
+                                         -fx-border-color: #ddd;
+                                         -fx-border-radius: 6;
+                                         -fx-background-radius: 6;
+                                         -fx-font-size: 14px;"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text="Prix min (TND)"
+                               style="-fx-font-size: 13px;
+                                      -fx-font-weight: 600;
+                                      -fx-text-fill: #333;"/>
+                        <TextField fx:id="tfPrixMin"
+                                   promptText="0"
+                                   prefWidth="110"
+                                   style="-fx-background-color: white;
+                                          -fx-border-color: #ddd;
+                                          -fx-border-radius: 6;
+                                          -fx-background-radius: 6;
+                                          -fx-padding: 9 12;
+                                          -fx-font-size: 14px;"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text="Prix max (TND)"
+                               style="-fx-font-size: 13px;
+                                      -fx-font-weight: 600;
+                                      -fx-text-fill: #333;"/>
+                        <TextField fx:id="tfPrixMax"
+                                   promptText="9999"
+                                   prefWidth="110"
+                                   style="-fx-background-color: white;
+                                          -fx-border-color: #ddd;
+                                          -fx-border-radius: 6;
+                                          -fx-background-radius: 6;
+                                          -fx-padding: 9 12;
+                                          -fx-font-size: 14px;"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text="Trier par"
+                               style="-fx-font-size: 13px;
+                                      -fx-font-weight: 600;
+                                      -fx-text-fill: #333;"/>
+                        <ComboBox fx:id="cbTri"
+                                  prefWidth="160"
+                                  style="-fx-background-color: white;
+                                         -fx-border-color: #ddd;
+                                         -fx-border-radius: 6;
+                                         -fx-background-radius: 6;
+                                         -fx-font-size: 14px;"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text=" " style="-fx-font-size: 13px;"/>
+                        <Button text="🔍"
+                                onAction="#filterData"
+                                style="-fx-background-color: #f75959;
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 15px;
+                                       -fx-font-weight: 600;
+                                       -fx-background-radius: 6;
+                                       -fx-padding: 9 18;
+                                       -fx-cursor: hand;"/>
+                    </VBox>
+
                 </HBox>
 
-                <!-- CARDS GRID -->
+                <!-- Ligne 2 : Dates + Reset -->
+                <HBox spacing="14" alignment="CENTER_LEFT"
+                      style="-fx-padding: 12 0 0 0;">
+
+                    <VBox spacing="5">
+                        <Label text="Disponible du"
+                               style="-fx-font-size: 13px;
+                                      -fx-font-weight: 600;
+                                      -fx-text-fill: #333;"/>
+                        <DatePicker fx:id="dpDebut"
+                                    prefWidth="200"
+                                    style="-fx-font-size: 14px;"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text="Au"
+                               style="-fx-font-size: 13px;
+                                      -fx-font-weight: 600;
+                                      -fx-text-fill: #333;"/>
+                        <DatePicker fx:id="dpFin"
+                                    prefWidth="200"
+                                    style="-fx-font-size: 14px;"/>
+                    </VBox>
+
+                    <VBox spacing="5">
+                        <Label text=" " style="-fx-font-size: 13px;"/>
+                        <Button text="✕ Réinitialiser"
+                                onAction="#resetFilters"
+                                style="-fx-background-color: #6e6e6e;
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 13px;
+                                       -fx-font-weight: 600;
+                                       -fx-background-radius: 6;
+                                       -fx-padding: 9 18;
+                                       -fx-cursor: hand;"/>
+                    </VBox>
+
+                </HBox>
+            </VBox>
+
+            <!-- CARDS GRID -->
+            <VBox style="-fx-background-color: #f9f9f9;
+                         -fx-padding: 30 40 40 40;">
+
+                <Label fx:id="lblStatus"
+                       text=""
+                       style="-fx-font-size: 13px;
+                              -fx-text-fill: #999;
+                              -fx-padding: 0 0 16 0;"/>
+
                 <FlowPane fx:id="cardsPane"
-                          hgap="24" vgap="24"
-                          prefWrapLength="900"/>
+                          hgap="24" vgap="30"
+                          prefWrapLength="1000"/>
 
             </VBox>
         </VBox>

@@ -60,7 +60,7 @@ public class ReservationService implements Iservice<Reservation> {
     }
 
     // =========================================================
-    // 3) ADD avec PreparedStatement
+    // ADD avec PreparedStatement
     // =========================================================
     @Override
     public void addEntity(Reservation r) throws SQLException {
@@ -87,7 +87,7 @@ public class ReservationService implements Iservice<Reservation> {
     }
 
     // =========================================================
-    // 4) ADD avec Statement
+    // ADD avec Statement
     // =========================================================
     public void addEntityStatement(Reservation r) throws SQLException {
 
@@ -113,7 +113,7 @@ public class ReservationService implements Iservice<Reservation> {
     }
 
     // =========================================================
-    // 5) UPDATE
+    // UPDATE
     // =========================================================
     @Override
     public void update(int id, Reservation r) throws SQLException {
@@ -142,7 +142,7 @@ public class ReservationService implements Iservice<Reservation> {
     }
 
     // =========================================================
-    // 6) DELETE
+    // DELETE
     // =========================================================
     @Override
     public void deleteEntity(Reservation r) throws SQLException {
@@ -156,7 +156,7 @@ public class ReservationService implements Iservice<Reservation> {
     }
 
     // =========================================================
-    // 7) READ ALL
+    // READ ALL
     // =========================================================
     @Override
     public List<Reservation> getData() throws SQLException {
@@ -175,7 +175,7 @@ public class ReservationService implements Iservice<Reservation> {
     }
 
     // =========================================================
-    // 8) READ by Hebergement
+    // READ by Hebergement
     // =========================================================
     public List<Reservation> getByHebergement(int hebergementId) throws SQLException {
 
@@ -195,7 +195,33 @@ public class ReservationService implements Iservice<Reservation> {
     }
 
     // =========================================================
-    // 9) Update statut seulement
+    // ✅ NOUVEAU : READ by Email utilisateur connecté
+    // =========================================================
+    public List<Reservation> getByUserEmail(String email) {
+
+        List<Reservation> list = new ArrayList<>();
+
+        if (email == null || email.isBlank()) return list;
+
+        String sql = "SELECT * FROM reservation WHERE client_email = ? ORDER BY id DESC";
+
+        try (PreparedStatement pst = cnx.prepareStatement(sql)) {
+            pst.setString(1, email);
+
+            try (ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    list.add(map(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur getByUserEmail : " + e.getMessage());
+        }
+
+        return list;
+    }
+
+    // =========================================================
+    // Update statut seulement
     // =========================================================
     public void updateStatus(int id, String statut) throws SQLException {
         String sql = "UPDATE reservation SET statut=? WHERE id=?";
@@ -223,6 +249,7 @@ public class ReservationService implements Iservice<Reservation> {
         r.setStatut(rs.getString("statut"));
         return r;
     }
+
     public int addEntityReturnId(Reservation r) throws SQLException {
 
         String sql = """
@@ -250,5 +277,4 @@ public class ReservationService implements Iservice<Reservation> {
         }
         return -1;
     }
-
 }

@@ -2,108 +2,230 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.web.WebView?>
+<?import javafx.geometry.Insets?>
 
 <VBox spacing="14"
       xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="hebergement.controllers.ShowHebergementController">
+      fx:controller="hebergement.controllers.ShowHebergementController"
+      style="-fx-background-color: #0d1117; -fx-padding: 24;">
 
-    <Label text="Gérer (Hébergement + Disponibilités)" styleClass="h1"/>
+    <!-- Titre -->
+    <Label text="Gérer (Hébergement + Disponibilités)"
+           style="-fx-font-size: 26px;
+                  -fx-font-weight: 700;
+                  -fx-text-fill: white;
+                  -fx-font-family: 'Segoe UI';"/>
 
-    <SplitPane dividerPositions="0.60" prefHeight="600">
+    <SplitPane dividerPositions="0.60"
+               prefHeight="600"
+               style="-fx-background-color: transparent;
+                      -fx-border-color: transparent;
+                      -fx-padding: 0;">
 
-        <!-- Hébergements -->
-        <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
-            <Label text="Hébergements" styleClass="title"/>
+        <!-- ===== GAUCHE : Hébergements ===== -->
+        <VBox spacing="12"
+              style="-fx-background-color: #131a2a;
+                     -fx-background-radius: 16;
+                     -fx-padding: 20;">
 
+            <Label text="Hébergements"
+                   style="-fx-font-size: 14px;
+                          -fx-font-weight: 700;
+                          -fx-text-fill: #8a9bbf;
+                          -fx-font-family: 'Segoe UI';"/>
+
+            <!-- Filtres -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <TextField fx:id="tfSearch"
                            promptText="Rechercher (description, adresse)..."
-                           styleClass="field"
-                           HBox.hgrow="ALWAYS"/>
+                           HBox.hgrow="ALWAYS"
+                           style="-fx-background-color: #1a2238;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-radius: 10;
+                                  -fx-background-radius: 10;
+                                  -fx-text-fill: #cdd5e0;
+                                  -fx-prompt-text-fill: #5a6a8a;
+                                  -fx-padding: 8 14;
+                                  -fx-font-size: 13px;"/>
+
                 <ComboBox fx:id="cbTypeFilter"
                           promptText="Type"
-                          prefWidth="180"/>
+                          prefWidth="140"
+                          style="-fx-background-color: #1a2238;
+                                 -fx-border-color: #2a3558;
+                                 -fx-border-radius: 10;
+                                 -fx-background-radius: 10;
+                                 -fx-font-size: 13px;"/>
+
                 <TextField fx:id="tfMinPrix"
                            promptText="Prix min"
-                           styleClass="field"
-                           prefWidth="110"/>
+                           prefWidth="90"
+                           style="-fx-background-color: #1a2238;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-radius: 10;
+                                  -fx-background-radius: 10;
+                                  -fx-text-fill: #cdd5e0;
+                                  -fx-prompt-text-fill: #5a6a8a;
+                                  -fx-padding: 8 14;
+                                  -fx-font-size: 13px;"/>
+
                 <TextField fx:id="tfMaxPrix"
                            promptText="Prix max"
-                           styleClass="field"
-                           prefWidth="110"/>
+                           prefWidth="90"
+                           style="-fx-background-color: #1a2238;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-radius: 10;
+                                  -fx-background-radius: 10;
+                                  -fx-text-fill: #cdd5e0;
+                                  -fx-prompt-text-fill: #5a6a8a;
+                                  -fx-padding: 8 14;
+                                  -fx-font-size: 13px;"/>
+
                 <Button text="Réinitialiser"
                         onAction="#resetFilters"
-                        styleClass="btnOutline"/>
+                        style="-fx-background-color: transparent;
+                               -fx-border-color: #5a6a8a;
+                               -fx-border-radius: 20;
+                               -fx-background-radius: 20;
+                               -fx-text-fill: #cdd5e0;
+                               -fx-font-size: 12px;
+                               -fx-padding: 7 14;
+                               -fx-cursor: hand;"/>
+
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="Export Excel"
+
+                <Button text="⬇ Export Excel"
                         onAction="#exportHebExcel"
-                        styleClass="btnGold"/>
-                <Button text="Export PDF"
+                        style="-fx-background-color: transparent;
+                               -fx-border-color: #5a6a8a;
+                               -fx-border-radius: 20;
+                               -fx-background-radius: 20;
+                               -fx-text-fill: #cdd5e0;
+                               -fx-font-size: 12px;
+                               -fx-padding: 7 14;
+                               -fx-cursor: hand;"/>
+
+                <Button text="⬇ Export PDF"
                         onAction="#exportHebPdf"
-                        styleClass="btnOutline"/>
+                        style="-fx-background-color: transparent;
+                               -fx-border-color: #5a6a8a;
+                               -fx-border-radius: 20;
+                               -fx-background-radius: 20;
+                               -fx-text-fill: #cdd5e0;
+                               -fx-font-size: 12px;
+                               -fx-padding: 7 14;
+                               -fx-cursor: hand;"/>
             </HBox>
 
-            <TableView fx:id="tableHeb" VBox.vgrow="ALWAYS">
+            <!-- TableView Hébergements -->
+            <TableView fx:id="tableHeb"
+                       VBox.vgrow="ALWAYS"
+                       style="-fx-background-color: #131a2a;
+                              -fx-border-color: #1e2a40;
+                              -fx-border-radius: 10;
+                              -fx-background-radius: 10;
+                              -fx-table-cell-border-color: #1e2a40;">
                 <columns>
                     <TableColumn fx:id="imgCol"
                                  text="Image"
-                                 prefWidth="90"/>
+                                 prefWidth="90"
+                                 style="-fx-alignment: CENTER;"/>
                     <TableColumn fx:id="descCol"
                                  text="Description"
-                                 prefWidth="240"/>
+                                 prefWidth="220"/>
                     <TableColumn fx:id="adrCol"
                                  text="Adresse"
-                                 prefWidth="190"/>
+                                 prefWidth="170"/>
                     <TableColumn fx:id="prixCol"
                                  text="Prix"
-                                 prefWidth="110"/>
+                                 prefWidth="100"/>
                     <TableColumn fx:id="actionsCol"
                                  text="Actions"
-                                 prefWidth="180"/>
+                                 prefWidth="160"/>
                 </columns>
+                <placeholder>
+                    <Label text="Aucun hébergement trouvé."
+                           style="-fx-text-fill: #5a6a8a; -fx-font-size: 13px;"/>
+                </placeholder>
             </TableView>
 
-            <Label fx:id="lblHebInfo" styleClass="muted"/>
+            <Label fx:id="lblHebInfo"
+                   style="-fx-font-size: 12px; -fx-text-fill: #6a7a9a;"/>
         </VBox>
 
-        <!-- Disponibilités + Localisation -->
-        <VBox spacing="14" VBox.vgrow="ALWAYS">
+        <!-- ===== DROITE : Disponibilités + Localisation ===== -->
+        <VBox spacing="14"
+              style="-fx-background-color: transparent; -fx-padding: 0 0 0 4;">
 
             <!-- Disponibilités -->
-            <VBox spacing="10" styleClass="card" VBox.vgrow="ALWAYS">
-                <Label text="Disponibilités" styleClass="title"/>
+            <VBox spacing="10"
+                  VBox.vgrow="ALWAYS"
+                  style="-fx-background-color: #131a2a;
+                         -fx-background-radius: 16;
+                         -fx-padding: 20;">
 
-                <TableView fx:id="tableDispo" VBox.vgrow="ALWAYS">
+                <Label text="Disponibilités"
+                       style="-fx-font-size: 14px;
+                              -fx-font-weight: 700;
+                              -fx-text-fill: #8a9bbf;
+                              -fx-font-family: 'Segoe UI';"/>
+
+                <TableView fx:id="tableDispo"
+                           VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #131a2a;
+                                  -fx-border-color: #1e2a40;
+                                  -fx-border-radius: 10;
+                                  -fx-background-radius: 10;
+                                  -fx-table-cell-border-color: #1e2a40;">
                     <columns>
                         <TableColumn fx:id="dispoIdCol"
                                      text="ID"
-                                     prefWidth="70"/>
+                                     prefWidth="55"/>
                         <TableColumn fx:id="debutCol"
                                      text="Début"
-                                     prefWidth="120"/>
+                                     prefWidth="110"/>
                         <TableColumn fx:id="finCol"
                                      text="Fin"
-                                     prefWidth="120"/>
+                                     prefWidth="110"/>
                         <TableColumn fx:id="disponibleCol"
                                      text="Disponible"
-                                     prefWidth="110"/>
+                                     prefWidth="100"/>
                         <TableColumn fx:id="dispoActionsCol"
                                      text="Actions"
-                                     prefWidth="180"/>
+                                     prefWidth="160"/>
                     </columns>
+                    <placeholder>
+                        <Label text="Sélectionne un hébergement."
+                               style="-fx-text-fill: #5a6a8a; -fx-font-size: 13px;"/>
+                    </placeholder>
                 </TableView>
 
-                <Label fx:id="lblDispoInfo" styleClass="muted"/>
+                <Label fx:id="lblDispoInfo"
+                       style="-fx-font-size: 12px; -fx-text-fill: #6a7a9a;"/>
             </VBox>
 
             <!-- Localisation -->
-            <VBox spacing="10" styleClass="card">
-                <Label text="Localisation" styleClass="title"/>
+            <VBox spacing="10"
+                  style="-fx-background-color: #131a2a;
+                         -fx-background-radius: 16;
+                         -fx-padding: 20;">
+
+                <Label text="Localisation"
+                       style="-fx-font-size: 14px;
+                              -fx-font-weight: 700;
+                              -fx-text-fill: #8a9bbf;
+                              -fx-font-family: 'Segoe UI';"/>
+
                 <Label fx:id="lblMapInfo"
-                       styleClass="muted"
-                       text="Sélectionne un hébergement pour voir sa position."/>
-                <StackPane prefHeight="300" minHeight="300">
+                       text="Sélectionne un hébergement pour voir sa position."
+                       style="-fx-font-size: 12px; -fx-text-fill: #5a6a8a;"/>
+
+                <StackPane prefHeight="300" minHeight="300"
+                           style="-fx-background-radius: 12;
+                                  -fx-border-radius: 12;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-width: 1;">
                     <WebView fx:id="mapViewHeb"
                              prefHeight="300"
                              minHeight="300"/>

@@ -33,7 +33,7 @@ public class LocalPaymentCallbackServer {
                 port = p;
 
                 server.createContext("/success", ex -> handleSuccess(ex, rs, ps));
-                server.createContext("/cancel", ex -> respond(ex, 200, "Paiement annulé. Vous pouvez fermer cette page."));
+                server.createContext("/cancel",  ex -> handleCancel(ex, rs, ps));
 
                 server.setExecutor(null);
                 server.start();
@@ -51,6 +51,7 @@ public class LocalPaymentCallbackServer {
         throw new IOException("Aucun port libre pour le serveur callback.", last);
     }
 
+    // ✅ SUCCESS
     private void handleSuccess(HttpExchange ex, ReservationService rs, PaymentService ps) throws IOException {
         try {
             URI uri = ex.getRequestURI();
@@ -71,13 +72,54 @@ public class LocalPaymentCallbackServer {
             String reservationIdStr = session.getMetadata().get("reservation_id");
             int reservationId = Integer.parseInt(reservationIdStr);
 
-            rs.updateStatus(reservationId, "CONFIRME");
+            rs.updateStatus(reservationId, "confirmee");
 
-            respond(ex, 200, "✅ Paiement OK. Réservation #" + reservationId + " confirmée. Vous pouvez fermer cette page.");
+            System.out.println("✅ Réservation #" + reservationId + " confirmée !");
+
+            respond(ex, 200,
+                    "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>" +
+                            "<h2 style='color:green'>✅ Paiement réussi !</h2>" +
+                            "<p>Réservation #" + reservationId + " confirmée.</p>" +
+                            "<p>Vous pouvez fermer cette page.</p>" +
+                            "</body></html>"
+            );
 
         } catch (Exception e) {
             e.printStackTrace();
             respond(ex, 500, "Erreur serveur paiement: " + e.getMessage());
+        }
+    }
+
+    // ❌ CANCEL
+    private void handleCancel(HttpExchange ex, ReservationService rs, PaymentService ps) throws IOException {
+        try {
+            URI uri = ex.getRequestURI();
+            String sessionId = getQueryParam(uri.getQuery(), "session_id");
+
+            if (sessionId != null) {
+                try {
+                    var session = ps.retrieveSession(sessionId);
+                    String reservationIdStr = session.getMetadata().get("reservation_id");
+                    if (reservationIdStr != null) {
+                        int reservationId = Integer.parseInt(reservationIdStr);
+                        rs.updateStatus(reservationId, "annulee");
+                        System.out.println("❌ Réservation #" + reservationId + " annulée.");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Erreur cancel: " + e.getMessage());
+                }
+            }
+
+            respond(ex, 200,
+                    "<html><body style='font-family:sans-serif;text-align:center;padding:40px'>" +
+                            "<h2 style='color:red'>❌ Paiement annulé.</h2>" +
+                            "<p>Vous pouvez fermer cette page.</p>" +
+                            "</body></html>"
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            respond(ex, 500, "Erreur serveur cancel: " + e.getMessage());
         }
     }
 
@@ -92,6 +134,7 @@ public class LocalPaymentCallbackServer {
 
     private static void respond(HttpExchange ex, int code, String body) throws IOException {
         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
+        ex.getResponseHeaders().set("Content-Type", "text/html; charset=UTF-8");
         ex.sendResponseHeaders(code, bytes.length);
         try (OutputStream os = ex.getResponseBody()) {
             os.write(bytes);

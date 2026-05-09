@@ -3,6 +3,7 @@ package edu.destination.services;
 import com.stripe.Stripe;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import edu.destination.tools.MyConnection;
 
 public class StripeService {
 

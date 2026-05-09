@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< Updated upstream
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -19,6 +20,13 @@
             xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="controllers.AdminLayoutController"
             styleClass="dashboard-root">
+=======
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.AdminLayoutController"
+            stylesheets="@/app/app.css"
+            styleClass="root">
+>>>>>>> Stashed changes
 
     <left>
         <VBox fx:id="sidebar" prefWidth="220.0" minWidth="220.0" maxWidth="220.0" spacing="10.0" styleClass="sidebar">
@@ -35,9 +43,33 @@
 
             <Label text="MAIN MENU" styleClass="menu-label"/>
 
+<<<<<<< Updated upstream
             <Button text="🏠  Dashboard" onAction="#goDashboard" maxWidth="Infinity" styleClass="nav-button"/>
 
             <VBox spacing="6.0">
+=======
+            <Button text="🏨 Hébergements"
+                    onAction="#goGestionHebergement"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="➕ Ajouter"
+                    onAction="#goAdd"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="🛏 Chambres"
+                    onAction="#goToChambres"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <Button text="👥 Utilisateurs"
+                    onAction="#goUtilisateurs"
+                    styleClass="nav-btn"
+                    maxWidth="Infinity"/>
+
+            <VBox spacing="4">
+>>>>>>> Stashed changes
                 <Button fx:id="btnToggleDestination"
                         text="🌍  Gestion Destination ▼"
                         onAction="#toggleDestinationMenu"
@@ -95,6 +127,7 @@
     </left>
 
     <center>
+<<<<<<< Updated upstream
         <StackPane fx:id="contentArea">
             <children>
                 <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="center-scroll">
@@ -103,6 +136,11 @@
                             <padding>
                                 <Insets top="24.0" right="26.0" bottom="24.0" left="26.0"/>
                             </padding>
+=======
+        <!-- ✅ fx:id doit correspondre au controller : contentPane -->
+        <StackPane fx:id="contentPane" styleClass="content"/>
+    </center>
+>>>>>>> Stashed changes
 
                             <HBox alignment="CENTER_LEFT" spacing="16.0">
                                 <VBox spacing="4.0">

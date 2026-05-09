@@ -30,3 +30,131 @@
 .pageSubtitle, .muted { -fx-font-size: 13px; -fx-text-fill: #6b7280; }
 .scroll-pane { -fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent; }
 .scroll-pane > .viewport { -fx-background-color: transparent; }
+/* ===== TableView dark ===== */
+.table-view .column-header-background {
+    -fx-background-color: #1a2238;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #8a9bbf;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+.table-row-cell {
+    -fx-background-color: #131a2a;
+    -fx-border-color: #1e2a40;
+    -fx-text-fill: #cdd5e0;
+}
+.table-row-cell:odd  { -fx-background-color: #141c2e; }
+.table-row-cell:hover { -fx-background-color: #1a2238; }
+.table-row-cell:selected { -fx-background-color: #1e2d50; }
+.table-view .table-cell {
+    -fx-text-fill: #cdd5e0;
+    -fx-font-size: 13px;
+    -fx-border-color: #1e2a40;
+}
+
+/* ===== Boutons actions tableau ===== */
+.iconBtn {
+    -fx-background-radius: 8;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+    -fx-padding: 4 10;
+    -fx-border-width: 0;
+}
+.btnEdit   { -fx-background-color:#1a2e4a; -fx-text-fill:#5ab4f8; }
+.btnDelete { -fx-background-color:#3a1e1e; -fx-text-fill:#e05a5a; }
+
+/* ===== SplitPane ===== */
+.split-pane { -fx-background-color: transparent; }
+.split-pane > .split-pane-divider {
+    -fx-background-color: #2a3558;
+    -fx-padding: 0 1;
+}
+/* ===== DatePicker dark fix ===== */
+.date-picker .arrow-button {
+    -fx-background-color: #12122a;
+    -fx-border-color: #2a2a4a;
+}
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #e2e8f0;
+}
+.date-picker-popup {
+    -fx-background-color: #1a1a2e;
+    -fx-border-color: #2a2a4a;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+.date-picker-popup > * > .spinner {
+    -fx-background-color: #12122a;
+    -fx-border-color: #2a2a4a;
+}
+.date-picker-popup > * > .spinner > .button {
+    -fx-background-color: transparent;
+}
+.date-picker-popup > * > .spinner > .label {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-weight: 700;
+}
+.date-picker-popup > * > .day-name-cell {
+    -fx-text-fill: #6c63ff;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+}
+.date-picker-popup > * > .day-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e2e8f0;
+}
+.date-picker-popup > * > .day-cell:hover {
+    -fx-background-color: rgba(108,99,255,0.2);
+    -fx-background-radius: 8;
+}
+.date-picker-popup > * > .day-cell.today {
+    -fx-border-color: #6c63ff;
+    -fx-border-radius: 8;
+    -fx-text-fill: #6c63ff;
+    -fx-font-weight: 700;
+}
+.date-picker-popup > * > .day-cell:selected {
+    -fx-background-color: #6c63ff;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+}
+.date-picker-popup > * > .week-number-cell {
+    -fx-text-fill: #2a2a4a;
+}
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #12122a;
+}
+/* Texte visible dans le champ DatePicker */
+.date-picker > .text-field {
+    -fx-text-fill: #e2e8f0;
+    -fx-background-color: #12122a;
+    -fx-prompt-text-fill: #6b7280;
+}
+/* ===== Labels visibles dans formulaire ===== */
+.card > Label, VBox > Label {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+}
+/* ===== ComboBox dark fix ===== */
+.combo-box-popup > .list-view {
+    -fx-background-color: #1a1a2e;
+    -fx-border-color: #2a2a4a;
+}
+.combo-box-popup > .list-view > .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e2e8f0;
+    -fx-padding: 8 12;
+}
+.combo-box-popup > .list-view > .list-cell:hover {
+    -fx-background-color: rgba(108,99,255,0.2);
+}
+.combo-box-popup > .list-view > .list-cell:selected {
+    -fx-background-color: #6c63ff;
+    -fx-text-fill: white;
+}
+/* ===== ContentPane dark background ===== */
+.content {
+    -fx-background-color: #0d0d1a;
+}

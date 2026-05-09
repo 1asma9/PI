@@ -1,9 +1,9 @@
 package edu.destination.controllers;
 
-import edu.destination.tools.MyConnection;
 import javafx.fxml.FXML;
 import javafx.scene.web.WebView;
 import javafx.scene.web.WebEngine;
+import edu.destination.tools.MyConnection;
 
 import java.sql.*;
 import java.util.*;

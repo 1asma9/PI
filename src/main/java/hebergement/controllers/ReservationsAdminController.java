@@ -63,6 +63,25 @@ public class ReservationsAdminController {
 
     @FXML private ComboBox<Hebergement> cbHebergementFilter;
     @FXML private Label lblInfo;
+    @FXML
+    private void openAdd() {
+        showInfo("Info", "Fonctionnalité à venir...");
+    }
+
+    @FXML
+    private void openEdit() {
+        showInfo("Info", "Fonctionnalité à venir...");
+    }
+
+    @FXML
+    private void deleteSelected() {
+        showInfo("Info", "Fonctionnalité à venir...");
+    }
+
+    @FXML
+    private void openStats() {
+        showInfo("Info", "Fonctionnalité à venir...");
+    }
 
     @FXML
     public void initialize() {

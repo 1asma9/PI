@@ -17,6 +17,8 @@ import java.util.List;
 public class MainClass {
 
     public static void main(String[] args) {
+        System.out.println("HASH: " + org.example.PI_Gestion_des_utilisateurs.tools.PasswordUtil.hashPassword("admin123"));
+
 
         try {
             if (!createTablesIfNotExists()) {
@@ -86,6 +88,7 @@ public class MainClass {
                 ds.update(lastDispoId, d2);
 
                 System.out.println("Après UPDATE DISPO = " + ds.getByHebergement(lastHebId));
+
 
                 // Delete dispo
                 Disponibilite toDelete = new Disponibilite();

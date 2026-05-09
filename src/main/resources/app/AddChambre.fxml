@@ -1,14 +1,175 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<ScrollPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+            fx:controller="hebergement.controllers.AddChambreController"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            style="-fx-background: #0d1117; -fx-background-color: #0d1117;">
 
-</AnchorPane>
+    <content>
+        <VBox spacing="20"
+              style="-fx-background-color: #0d1117; -fx-padding: 24;">
+
+            <!-- Titre -->
+            <Label text="Ajouter une Chambre"
+                   style="-fx-font-size: 26px;
+                          -fx-font-weight: 700;
+                          -fx-text-fill: white;
+                          -fx-font-family: 'Segoe UI';"/>
+
+            <!-- Card formulaire -->
+            <VBox spacing="16"
+                  style="-fx-background-color: #131a2a;
+                         -fx-background-radius: 16;
+                         -fx-padding: 24;">
+
+                <!-- Hébergement -->
+                <Label text="Hébergement *"
+                       style="-fx-text-fill: #cdd5e0; -fx-font-size: 13px; -fx-font-weight: 600;"/>
+                <ComboBox fx:id="cbHebergement"
+                          promptText="-- Choisir un hébergement --"
+                          maxWidth="Infinity"
+                          style="-fx-background-color: #1a2238;
+                                 -fx-border-color: #2a3558;
+                                 -fx-border-radius: 10;
+                                 -fx-background-radius: 10;
+                                 -fx-prompt-text-fill: #5a6a8a;
+                                 -fx-font-size: 13px;
+                                 -fx-padding: 4 0;"/>
+
+                <!-- Numéro + Type -->
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Numéro *"
+                               style="-fx-text-fill: #cdd5e0; -fx-font-size: 13px; -fx-font-weight: 600;"/>
+                        <TextField fx:id="tfNumero"
+                                   promptText="Ex: 101"
+                                   style="-fx-background-color: #1a2238;
+                                          -fx-border-color: #2a3558;
+                                          -fx-border-radius: 10;
+                                          -fx-background-radius: 10;
+                                          -fx-text-fill: #cdd5e0;
+                                          -fx-prompt-text-fill: #5a6a8a;
+                                          -fx-padding: 10 14;
+                                          -fx-font-size: 13px;"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Type de chambre *"
+                               style="-fx-text-fill: #cdd5e0; -fx-font-size: 13px; -fx-font-weight: 600;"/>
+                        <ComboBox fx:id="cbTypeChambre"
+                                  promptText="-- Type de chambre --"
+                                  maxWidth="Infinity"
+                                  style="-fx-background-color: #1a2238;
+                                         -fx-border-color: #2a3558;
+                                         -fx-border-radius: 10;
+                                         -fx-background-radius: 10;
+                                         -fx-prompt-text-fill: #5a6a8a;
+                                         -fx-font-size: 13px;
+                                         -fx-padding: 4 0;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Prix + Capacité -->
+                <HBox spacing="16">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Prix / nuit (TND) *"
+                               style="-fx-text-fill: #cdd5e0; -fx-font-size: 13px; -fx-font-weight: 600;"/>
+                        <TextField fx:id="tfPrix"
+                                   promptText="Ex: 80.00"
+                                   style="-fx-background-color: #1a2238;
+                                          -fx-border-color: #2a3558;
+                                          -fx-border-radius: 10;
+                                          -fx-background-radius: 10;
+                                          -fx-text-fill: #cdd5e0;
+                                          -fx-prompt-text-fill: #5a6a8a;
+                                          -fx-padding: 10 14;
+                                          -fx-font-size: 13px;"/>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label text="Capacité (personnes) *"
+                               style="-fx-text-fill: #cdd5e0; -fx-font-size: 13px; -fx-font-weight: 600;"/>
+                        <TextField fx:id="tfCapacite"
+                                   promptText="Ex: 2"
+                                   style="-fx-background-color: #1a2238;
+                                          -fx-border-color: #2a3558;
+                                          -fx-border-radius: 10;
+                                          -fx-background-radius: 10;
+                                          -fx-text-fill: #cdd5e0;
+                                          -fx-prompt-text-fill: #5a6a8a;
+                                          -fx-padding: 10 14;
+                                          -fx-font-size: 13px;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Équipements -->
+                <VBox spacing="6">
+                    <Label text="Équipements"
+                           style="-fx-text-fill: #cdd5e0; -fx-font-size: 13px; -fx-font-weight: 600;"/>
+                    <TextArea fx:id="taEquipements"
+                              promptText="Ex: TV, Climatisation, WiFi, Minibar..."
+                              prefHeight="100"
+                              style="-fx-background-color: #1a2238;
+                                     -fx-border-color: #2a3558;
+                                     -fx-border-radius: 10;
+                                     -fx-background-radius: 10;
+                                     -fx-text-fill: #cdd5e0;
+                                     -fx-prompt-text-fill: #5a6a8a;
+                                     -fx-padding: 10 14;
+                                     -fx-font-size: 13px;"/>
+                </VBox>
+
+                <!-- Disponibilités -->
+                <HBox alignment="CENTER_LEFT" spacing="10"
+                      style="-fx-padding: 10 0 6 0;">
+                    <Label text="📅 Disponibilités"
+                           style="-fx-text-fill: #cdd5e0;
+                                  -fx-font-size: 14px;
+                                  -fx-font-weight: 700;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="+ Ajouter une période"
+                            onAction="#ajouterPeriode"
+                            style="-fx-background-color: #6B48FF;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: 700;
+                                   -fx-font-size: 12px;
+                                   -fx-background-radius: 20;
+                                   -fx-padding: 8 18;
+                                   -fx-cursor: hand;"/>
+                </HBox>
+
+                <!-- Liste des périodes dynamique -->
+                <VBox fx:id="vboxPeriodes" spacing="10"/>
+
+                <!-- Message -->
+                <Label fx:id="lblMsg"
+                       style="-fx-font-size: 12px; -fx-text-fill: #5ccf8a;"/>
+
+                <!-- Boutons -->
+                <HBox spacing="14" style="-fx-padding: 10 0 0 0;">
+                    <Button text="Créer la chambre"
+                            onAction="#createChambre"
+                            style="-fx-background-color: #FF8C00;
+                                   -fx-text-fill: white;
+                                   -fx-font-weight: 700;
+                                   -fx-font-size: 14px;
+                                   -fx-background-radius: 12;
+                                   -fx-padding: 12 28;
+                                   -fx-cursor: hand;"/>
+                    <Button text="Annuler"
+                            onAction="#annuler"
+                            style="-fx-background-color: transparent;
+                                   -fx-border-color: transparent;
+                                   -fx-text-fill: #cdd5e0;
+                                   -fx-font-size: 14px;
+                                   -fx-underline: true;
+                                   -fx-cursor: hand;"/>
+                </HBox>
+
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

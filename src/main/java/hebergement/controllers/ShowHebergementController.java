@@ -612,4 +612,5 @@ public class ShowHebergementController {
         a.setContentText(msg);
         return a.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK;
     }
+
 }

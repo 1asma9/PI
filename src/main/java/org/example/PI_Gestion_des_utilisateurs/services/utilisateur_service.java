@@ -23,8 +23,6 @@ public class utilisateur_service {
         return MyConnection.getInstance().getCnx();
     }
 
-    // =============== SQL ===============
-
     private static final String SQL_INSERT_USER =
             "INSERT INTO users (nom, prenom, email, password_hash, telephone) VALUES (?, ?, ?, ?, ?)";
 
@@ -70,8 +68,6 @@ public class utilisateur_service {
     private static final String SQL_UPDATE_PASSWORD =
             "UPDATE users SET password_hash=? WHERE id=?";
 
-    // =============== MAPPING ===============
-
     private utilisateur mapUtilisateur(ResultSet rs, boolean avecRoles) throws SQLException {
         utilisateur u = new utilisateur();
         u.setId(rs.getInt("id"));
@@ -90,8 +86,6 @@ public class utilisateur_service {
         }
         return u;
     }
-
-    // =============== VALIDATION ===============
 
     public String validerDonneesutilisateurAvecMessage(utilisateur u) {
         if (u == null) return "L'utilisateur ne peut pas être null";
@@ -127,8 +121,6 @@ public class utilisateur_service {
         }
         return true;
     }
-
-    // =============== CRUD ===============
 
     public boolean ajouterutilisateur(utilisateur u) {
         String err = validerDonneesutilisateurAvecMessage(u);
@@ -222,8 +214,6 @@ public class utilisateur_service {
         }
     }
 
-    // =============== SEARCH ===============
-
     public Optional<utilisateur> rechercherutilisateurParEmail(String email) {
         if (email == null || email.trim().isEmpty()) return Optional.empty();
         try (PreparedStatement ps = getCnx().prepareStatement(SQL_SELECT_USER_BY_EMAIL)) {
@@ -249,8 +239,6 @@ public class utilisateur_service {
         return Optional.empty();
     }
 
-    // =============== ROLE ASSIGN ===============
-
     public boolean associerRoleAutilisateur(int userId, int roleId) {
         if (userId <= 0 || roleId <= 0) return false;
 
@@ -271,8 +259,6 @@ public class utilisateur_service {
             return false;
         }
     }
-
-    // =============== PASSWORD RESET ===============
 
     public boolean motDePasseOublie(String email) {
         Optional<utilisateur> opt = rechercherutilisateurParEmail(email);

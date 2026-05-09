@@ -1,49 +1,62 @@
 package hebergement.controllers;
 
 import hebergement.entities.Hebergement;
+import hebergement.services.ChambreService;
 import hebergement.services.HebergementService;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HebergementGalleryController {
 
     @FXML private FlowPane cardsPane;
     @FXML private Label lblCount;
     @FXML private Label lblStatus;
+    @FXML private TextField tfSearch, tfPrixMin, tfPrixMax;
+    @FXML private ComboBox<String> cbType, cbTri;
+    @FXML private DatePicker dpDebut, dpFin;
 
     private final HebergementService hs = new HebergementService();
+    private final ChambreService cs = new ChambreService();
+    private List<Hebergement> allData;
 
     @FXML
     public void initialize() {
+        cbType.setItems(FXCollections.observableArrayList(
+                "Tous les types", "hotel", "villa", "appartement"
+        ));
+        cbType.setValue("Tous les types");
+
+        cbTri.setItems(FXCollections.observableArrayList(
+                "Par défaut", "Prix croissant ↑", "Prix décroissant ↓"
+        ));
+        cbTri.setValue("Par défaut");
+
+        tfSearch.textProperty().addListener((o, ov, nv) -> filterData());
+        cbType.valueProperty().addListener((o, ov, nv) -> filterData());
+        tfPrixMin.textProperty().addListener((o, ov, nv) -> filterData());
+        tfPrixMax.textProperty().addListener((o, ov, nv) -> filterData());
+        cbTri.valueProperty().addListener((o, ov, nv) -> filterData());
+
         loadCards();
     }
 
     private void loadCards() {
         try {
-            List<Hebergement> list = hs.getData();
-
-            lblCount.setText(list.size() + " hébergements");
-            cardsPane.getChildren().clear();
-
-            for (Hebergement h : list) {
-                cardsPane.getChildren().add(createCard(h));
-            }
-
-            if (list.isEmpty()) {
-                lblStatus.setText("Aucun hébergement disponible.");
-            }
-
+            allData = hs.getData();
+            updateCount(allData.size());
+            renderCards(allData);
         } catch (Exception e) {
             if (lblStatus != null)
                 lblStatus.setText("Erreur de chargement : " + e.getMessage());
@@ -51,142 +64,210 @@ public class HebergementGalleryController {
         }
     }
 
+    @FXML
+    private void filterData() {
+        if (allData == null) return;
+
+        String q    = tfSearch.getText().toLowerCase();
+        String type = cbType.getValue();
+        double min  = parsePrix(tfPrixMin.getText(), 0);
+        double max  = parsePrix(tfPrixMax.getText(), 9999);
+        String tri  = cbTri.getValue();
+
+        List<Hebergement> filtered = allData.stream().filter(h ->
+                (q.isEmpty() || (h.getDescription() != null &&
+                        h.getDescription().toLowerCase().contains(q))) &&
+                        (type == null || type.equals("Tous les types") ||
+                                (h.getTypeLibelle() != null &&
+                                        h.getTypeLibelle().equalsIgnoreCase(type))) &&
+                        h.getPrix() >= min && h.getPrix() <= max
+        ).collect(Collectors.toList());
+
+        if ("Prix croissant ↑".equals(tri))
+            filtered.sort((a, b) -> Double.compare(a.getPrix(), b.getPrix()));
+        else if ("Prix décroissant ↓".equals(tri))
+            filtered.sort((a, b) -> Double.compare(b.getPrix(), a.getPrix()));
+
+        updateCount(filtered.size());
+        renderCards(filtered);
+    }
+
+    @FXML
+    private void resetFilters() {
+        tfSearch.clear();
+        tfPrixMin.clear();
+        tfPrixMax.clear();
+        cbType.setValue("Tous les types");
+        cbTri.setValue("Par défaut");
+        dpDebut.setValue(null);
+        dpFin.setValue(null);
+        renderCards(allData);
+        updateCount(allData.size());
+        lblStatus.setText("");
+    }
+
+    private void renderCards(List<Hebergement> list) {
+        cardsPane.getChildren().clear();
+        if (list.isEmpty()) {
+            lblStatus.setText("Aucun hébergement trouvé. Essayez de modifier vos critères.");
+        } else {
+            lblStatus.setText("");
+            for (Hebergement h : list) {
+                cardsPane.getChildren().add(createCard(h));
+            }
+        }
+    }
+
+    private void updateCount(int n) {
+        if (lblCount != null)
+            lblCount.setText(n + " hébergement(s) trouvé(s)");
+    }
+
     private VBox createCard(Hebergement h) {
-        VBox card = new VBox();
-        card.setPrefWidth(280);
-        card.setMaxWidth(280);
+        VBox card = new VBox(0);
+        card.setPrefWidth(300);
+        card.setMaxWidth(300);
         card.setStyle(
                 "-fx-background-color: white;" +
-                        "-fx-background-radius: 18;" +
-                        "-fx-border-radius: 18;" +
-                        "-fx-border-color: rgba(0,0,0,0.07);" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-border-color: rgba(0,0,0,0.08);" +
                         "-fx-border-width: 1;" +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 18, 0, 0, 5);"
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);"
         );
 
         // ===== IMAGE =====
         StackPane imageWrap = new StackPane();
-        imageWrap.setPrefHeight(180);
-        imageWrap.setMinHeight(180);
-        imageWrap.setStyle("-fx-background-radius: 18 18 0 0;");
+        imageWrap.setPrefHeight(220);
+        imageWrap.setMinHeight(220);
 
         ImageView imgView = new ImageView();
-        imgView.setFitWidth(280);
-        imgView.setFitHeight(180);
+        imgView.setFitWidth(300);
+        imgView.setFitHeight(220);
         imgView.setPreserveRatio(false);
         imgView.setSmooth(true);
 
-        // Clip arrondi en haut
-        Rectangle clip = new Rectangle(280, 180);
-        clip.setArcWidth(36);
-        clip.setArcHeight(36);
+        Rectangle clip = new Rectangle(300, 220);
+        clip.setArcWidth(20);
+        clip.setArcHeight(20);
         imgView.setClip(clip);
 
-        // Charger l'image
         imgView.setImage(loadImage(h.getImagePath()));
 
-        // Badge type
-        if (h.getTypeLibelle() != null && !h.getTypeLibelle().isBlank()) {
-            Label badge = new Label(h.getTypeLibelle());
-            badge.setStyle(
-                    "-fx-background-color: rgba(23,59,59,0.85);" +
-                            "-fx-text-fill: #c9a24a;" +
-                            "-fx-font-size: 10.5px;" +
-                            "-fx-font-weight: 700;" +
-                            "-fx-background-radius: 8;" +
-                            "-fx-padding: 4 10;"
-            );
-            StackPane.setAlignment(badge, Pos.TOP_LEFT);
-            StackPane.setMargin(badge, new Insets(10, 0, 0, 10));
-            imageWrap.getChildren().addAll(imgView, badge);
-        } else {
-            imageWrap.getChildren().add(imgView);
-        }
+        // Placeholder gris si pas d'image
+        imageWrap.setStyle("-fx-background-color: #eee;" +
+                "-fx-background-radius: 10 10 0 0;");
+        imageWrap.getChildren().add(imgView);
+
+        // ===== BADGE TYPE (sous l'image, fond orange clair) =====
+        String typeLib = h.getTypeLibelle() != null ? h.getTypeLibelle() : "Hébergement";
+        Label badge = new Label(typeLib);
+        badge.setMaxWidth(Double.MAX_VALUE);
+        badge.setStyle(
+                "-fx-background-color: #fde8e8;" +
+                        "-fx-text-fill: #c0392b;" +
+                        "-fx-font-size: 13px;" +
+                        "-fx-font-weight: 600;" +
+                        "-fx-padding: 8 16;"
+        );
 
         // ===== BODY =====
-        VBox body = new VBox(8);
-        body.setPadding(new Insets(14, 16, 16, 16));
+        VBox body = new VBox(6);
+        body.setPadding(new Insets(10, 16, 0, 16));
 
-        // Description
-        Label lblDesc = new Label(h.getDescription() != null ? h.getDescription() : "-");
-        lblDesc.setStyle(
+        // Prix
+        Label lblPrix = new Label(String.format("%.2f TND / nuit", h.getPrix()));
+        lblPrix.setStyle(
+                "-fx-font-size: 16px;" +
+                        "-fx-font-weight: 800;" +
+                        "-fx-text-fill: #f75959;"
+        );
+
+        // Nom
+        Label lblNom = new Label(h.getDescription() != null ? h.getDescription() : "-");
+        lblNom.setStyle(
                 "-fx-font-size: 14px;" +
                         "-fx-font-weight: 700;" +
-                        "-fx-text-fill: #173b3b;"
+                        "-fx-text-fill: #222;"
         );
-        lblDesc.setWrapText(true);
+        lblNom.setWrapText(true);
 
-        // Adresse
-        Label lblAddr = new Label("📍 " + (h.getAdresse() != null ? h.getAdresse() : "-"));
-        lblAddr.setStyle("-fx-font-size: 11.5px; -fx-text-fill: #777;");
-        lblAddr.setWrapText(true);
+        // Chambres
+        int nbChambres = 0;
+        try { nbChambres = cs.getByHebergement(h.getId()).size(); }
+        catch (Exception ignored) {}
 
-        // Separator
-        Region sep = new Region();
-        sep.setPrefHeight(1);
-        sep.setStyle("-fx-background-color: rgba(0,0,0,0.07);");
-
-        // Prix + Bouton
-        HBox bottomRow = new HBox();
-        bottomRow.setAlignment(Pos.CENTER_LEFT);
-
-        VBox priceBox = new VBox(2);
-        Label lblPrix = new Label(String.format("%.0f DT", h.getPrix()));
-        lblPrix.setStyle(
-                "-fx-font-size: 18px;" +
-                        "-fx-font-weight: 800;" +
-                        "-fx-text-fill: #c9a24a;"
+        Label lblChambres = new Label("Chambres: " + nbChambres);
+        lblChambres.setStyle(
+                "-fx-font-size: 12px;" +
+                        "-fx-text-fill: #888;"
         );
-        Label lblNuit = new Label("/ nuit");
-        lblNuit.setStyle("-fx-font-size: 10px; -fx-text-fill: #999;");
-        priceBox.getChildren().addAll(lblPrix, lblNuit);
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        body.getChildren().addAll(lblPrix, lblNom, lblChambres);
 
-        Button btnReserver = new Button("Réserver →");
-        btnReserver.setStyle(
+        // ===== BOUTON =====
+        VBox btnBox = new VBox();
+        btnBox.setPadding(new Insets(12, 16, 16, 16));
+
+        Button btnVoir = new Button("Voir & Réserver");
+        btnVoir.setMaxWidth(Double.MAX_VALUE);
+        btnVoir.setStyle(
                 "-fx-background-color: #173b3b;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: 700;" +
-                        "-fx-font-size: 12px;" +
-                        "-fx-background-radius: 12;" +
-                        "-fx-padding: 8 16;" +
+                        "-fx-font-size: 13px;" +
+                        "-fx-background-radius: 8;" +
+                        "-fx-padding: 10 0;" +
                         "-fx-cursor: hand;"
         );
 
-        // ✅ Au clic → ouvrir le formulaire de réservation avec cet hébergement pré-sélectionné
-        btnReserver.setOnAction(e -> ouvrirFormulaire(h));
+        btnVoir.setOnAction(e -> ouvrirFormulaire(h));
 
-        // Hover effect
-        btnReserver.setOnMouseEntered(e -> btnReserver.setStyle(
-                "-fx-background-color: #c9a24a;" +
+        btnVoir.setOnMouseEntered(e -> btnVoir.setStyle(
+                "-fx-background-color: #f75959;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: 700;" +
-                        "-fx-font-size: 12px;" +
-                        "-fx-background-radius: 12;" +
-                        "-fx-padding: 8 16;" +
+                        "-fx-font-size: 13px;" +
+                        "-fx-background-radius: 8;" +
+                        "-fx-padding: 10 0;" +
                         "-fx-cursor: hand;"
         ));
-        btnReserver.setOnMouseExited(e -> btnReserver.setStyle(
+        btnVoir.setOnMouseExited(e -> btnVoir.setStyle(
                 "-fx-background-color: #173b3b;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: 700;" +
-                        "-fx-font-size: 12px;" +
-                        "-fx-background-radius: 12;" +
-                        "-fx-padding: 8 16;" +
+                        "-fx-font-size: 13px;" +
+                        "-fx-background-radius: 8;" +
+                        "-fx-padding: 10 0;" +
                         "-fx-cursor: hand;"
         ));
 
-        bottomRow.getChildren().addAll(priceBox, spacer, btnReserver);
-        body.getChildren().addAll(lblDesc, lblAddr, sep, bottomRow);
-        card.getChildren().addAll(imageWrap, body);
+        btnBox.getChildren().add(btnVoir);
+        card.getChildren().addAll(imageWrap, badge, body, btnBox);
+
+        // Hover card
+        card.setOnMouseEntered(e -> card.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-border-color: rgba(0,0,0,0.08);" +
+                        "-fx-border-width: 1;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 20, 0, 0, 6);" +
+                        "-fx-translate-y: -4;"
+        ));
+        card.setOnMouseExited(e -> card.setStyle(
+                "-fx-background-color: white;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-border-color: rgba(0,0,0,0.08);" +
+                        "-fx-border-width: 1;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);"
+        ));
 
         return card;
     }
 
     private Image loadImage(String path) {
-        // Fallback image
         Image fallback = null;
         try {
             var res = getClass().getResource("/images/hebergement_default.jpg");
@@ -198,46 +279,43 @@ public class HebergementGalleryController {
 
         try {
             String url = path.trim();
-            // Si c'est un chemin local, le convertir en file://
             if (!url.startsWith("http") && !url.startsWith("file:")) {
                 url = "file:///" + url.replace("\\", "/");
             }
-            Image img = new Image(url, 280, 180, false, true, true);
-            return img;
+            return new Image(url, 300, 220, false, true, true);
         } catch (Exception e) {
-            System.out.println("❌ Image load error: " + path + " | " + e.getMessage());
             return fallback;
         }
     }
 
-    // ✅ Ouvre le formulaire reservation.fxml avec l'hébergement pré-sélectionné
     private void ouvrirFormulaire(Hebergement h) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/reservation.fxml"));
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/app/hebergement_detail.fxml")
+            );
             Parent root = loader.load();
 
-            // Pré-sélectionner l'hébergement dans le formulaire
-            ReservationController controller = loader.getController();
-            controller.setSelectedHebergement(h);
+            // ✅ Passer l'hébergement au nouveau controller
+            HebergementDetailController controller = loader.getController();
+            controller.setHebergement(h);
 
-            // Charger le CSS
             var css = getClass().getResource("/app/app.css");
             if (css != null && !root.getStylesheets().contains(css.toExternalForm())) {
                 root.getStylesheets().add(css.toExternalForm());
             }
 
-            // Naviguer via ClientLayoutController si disponible
             ClientLayoutController layout = ClientLayoutController.getInstance();
             if (layout != null) {
                 layout.loadPageWithRoot(root);
             } else {
-                // Fallback : setRoot direct
                 cardsPane.getScene().setRoot(root);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("❌ Erreur ouverture formulaire : " + e.getMessage());
         }
+    }
+    private double parsePrix(String s, double def) {
+        try { return Double.parseDouble(s); } catch (Exception e) { return def; }
     }
 }

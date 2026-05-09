@@ -2,11 +2,11 @@ package edu.destination.services;
 
 import edu.destination.entities.Voyage;
 import edu.destination.interfaces.IService;
-import edu.destination.tools.MyConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import edu.destination.tools.MyConnection;
 
 public class VoyageService implements IService<Voyage> {
 
