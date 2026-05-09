@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="hebergement.controllers.AddHebergementController"
+            fitToWidth="true"
+            fitToHeight="false"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED"
+            style="-fx-background: #0d1117; -fx-background-color: #0d1117;">
+
+    <content>
+        <VBox spacing="20"
+              style="-fx-background-color: #0d1117; -fx-padding: 24;">
+
+            <!-- Titre -->
+            <Label text="Ajouter un Hébergement"
+                   style="-fx-font-size: 26px;
+                          -fx-font-weight: 700;
+                          -fx-text-fill: white;
+                          -fx-font-family: 'Segoe UI';"/>
+
+            <!-- ===== CARTE : Informations ===== -->
+            <VBox spacing="12"
+                  style="-fx-background-color: #131a2a;
+                         -fx-background-radius: 16;
+                         -fx-padding: 22;">
+
+                <Label text="Informations"
+                       style="-fx-font-size: 15px;
+                              -fx-font-weight: 700;
+                              -fx-text-fill: #8a9bbf;
+                              -fx-font-family: 'Segoe UI';"/>
+
+                <TextField fx:id="tfDesc"
+                           promptText="Description"
+                           style="-fx-background-color: #1a2238;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-radius: 10;
+                                  -fx-background-radius: 10;
+                                  -fx-text-fill: #cdd5e0;
+                                  -fx-prompt-text-fill: #5a6a8a;
+                                  -fx-padding: 10 14;
+                                  -fx-font-size: 13px;"/>
+
+                <TextField fx:id="tfAdresse"
+                           promptText="Adresse"
+                           style="-fx-background-color: #1a2238;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-radius: 10;
+                                  -fx-background-radius: 10;
+                                  -fx-text-fill: #cdd5e0;
+                                  -fx-prompt-text-fill: #5a6a8a;
+                                  -fx-padding: 10 14;
+                                  -fx-font-size: 13px;"/>
+
+                <TextField fx:id="tfPrix"
+                           promptText="Prix (ex: 250.0)"
+                           style="-fx-background-color: #1a2238;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-radius: 10;
+                                  -fx-background-radius: 10;
+                                  -fx-text-fill: #cdd5e0;
+                                  -fx-prompt-text-fill: #5a6a8a;
+                                  -fx-padding: 10 14;
+                                  -fx-font-size: 13px;"/>
+
+                <ComboBox fx:id="cbType"
+                          promptText="Type"
+                          maxWidth="Infinity"
+                          style="-fx-background-color: #1a2238;
+                                 -fx-border-color: #2a3558;
+                                 -fx-border-radius: 10;
+                                 -fx-background-radius: 10;
+                                 -fx-prompt-text-fill: #5a6a8a;
+                                 -fx-font-size: 13px;"/>
+
+                <!-- Position -->
+                <Label text="Position (Carte)"
+                       style="-fx-font-size: 12px;
+                              -fx-text-fill: #5a6a8a;
+                              -fx-font-family: 'Segoe UI';"/>
+
+                <HBox spacing="10">
+                    <TextField fx:id="tfLat"
+                               promptText="Latitude (ex: 36.8065)"
+                               HBox.hgrow="ALWAYS"
+                               style="-fx-background-color: #1a2238;
+                                      -fx-border-color: #2a3558;
+                                      -fx-border-radius: 10;
+                                      -fx-background-radius: 10;
+                                      -fx-text-fill: #cdd5e0;
+                                      -fx-prompt-text-fill: #5a6a8a;
+                                      -fx-padding: 10 14;
+                                      -fx-font-size: 13px;"/>
+                    <TextField fx:id="tfLng"
+                               promptText="Longitude (ex: 10.1815)"
+                               HBox.hgrow="ALWAYS"
+                               style="-fx-background-color: #1a2238;
+                                      -fx-border-color: #2a3558;
+                                      -fx-border-radius: 10;
+                                      -fx-background-radius: 10;
+                                      -fx-text-fill: #cdd5e0;
+                                      -fx-prompt-text-fill: #5a6a8a;
+                                      -fx-padding: 10 14;
+                                      -fx-font-size: 13px;"/>
+                </HBox>
+
+                <!-- Boutons localisation -->
+                <HBox spacing="10">
+                    <Button text="📍 Localiser via adresse"
+                            onAction="#localiserAdresse"
+                            style="-fx-background-color: transparent;
+                                   -fx-border-color: #5a6a8a;
+                                   -fx-border-radius: 20;
+                                   -fx-background-radius: 20;
+                                   -fx-text-fill: #cdd5e0;
+                                   -fx-font-size: 12px;
+                                   -fx-padding: 7 16;
+                                   -fx-cursor: hand;"/>
+                    <Button text="🗺️ Voir sur carte"
+                            onAction="#showOnMap"
+                            style="-fx-background-color: transparent;
+                                   -fx-border-color: #5a6a8a;
+                                   -fx-border-radius: 20;
+                                   -fx-background-radius: 20;
+                                   -fx-text-fill: #cdd5e0;
+                                   -fx-font-size: 12px;
+                                   -fx-padding: 7 16;
+                                   -fx-cursor: hand;"/>
+                </HBox>
+
+                <!-- Image -->
+                <Button text="📷 Choisir Image"
+                        onAction="#chooseImage"
+                        style="-fx-background-color: transparent;
+                               -fx-border-color: #5a6a8a;
+                               -fx-border-radius: 20;
+                               -fx-background-radius: 20;
+                               -fx-text-fill: #cdd5e0;
+                               -fx-font-size: 12px;
+                               -fx-padding: 7 16;
+                               -fx-cursor: hand;"/>
+
+                <Label fx:id="lblImage"
+                       text="Aucune image choisie"
+                       style="-fx-font-size: 12px; -fx-text-fill: #5a6a8a;"/>
+
+                <!-- Bouton enregistrer -->
+                <Button text="Enregistrer Hébergement"
+                        onAction="#addHebergement"
+                        maxWidth="Infinity"
+                        style="-fx-background-color: #6c47ef;
+                               -fx-text-fill: white;
+                               -fx-font-weight: 700;
+                               -fx-font-size: 14px;
+                               -fx-background-radius: 20;
+                               -fx-padding: 11 28;
+                               -fx-cursor: hand;"/>
+
+                <Label fx:id="lblHebMsg"
+                       style="-fx-font-size: 12px; -fx-text-fill: #5ccf8a;"/>
+
+                <!-- Aperçu Carte -->
+                <Label text="Aperçu Carte"
+                       style="-fx-font-size: 12px; -fx-text-fill: #5a6a8a;"/>
+
+                <StackPane prefHeight="320" minHeight="320"
+                           style="-fx-background-radius: 12;
+                                  -fx-border-radius: 12;
+                                  -fx-border-color: #2a3558;
+                                  -fx-border-width: 1;">
+                    <WebView fx:id="mapView" prefHeight="320" minHeight="320"/>
+                </StackPane>
+
+            </VBox>
+
+        </VBox>
+    </content>
+
+</ScrollPane>

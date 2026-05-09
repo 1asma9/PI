@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+<?import java.lang.String?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="hebergement.controllers.ReservationController"
+            fitToWidth="true"
+            hbarPolicy="NEVER"
+            vbarPolicy="AS_NEEDED">
+
+    <stylesheets>
+        <String fx:value="/app/app.css"/>
+    </stylesheets>
+    <content>
+        <VBox spacing="14" style="-fx-padding: 20; -fx-background-color: #0d0d1a;">
+
+            <Label text="Réserver un Hébergement"
+                   style="-fx-font-size:26px; -fx-font-weight:900; -fx-text-fill:#ffffff;"/>
+
+            <HBox spacing="14">
+
+                <!-- ===== Formulaire Réservation ===== -->
+                <VBox spacing="12" prefWidth="520"
+                      style="-fx-background-color:#1a1a2e; -fx-background-radius:18; -fx-border-radius:18;
+                             -fx-border-color:#2a2a4a; -fx-padding:18;
+                             -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.4),18,0,0,6);">
+
+                    <Label text="Informations Réservation"
+                           style="-fx-font-size:15px; -fx-font-weight:800; -fx-text-fill:#e2e8f0;"/>
+
+                    <Label text="Hébergement *"
+                           style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                    <ComboBox fx:id="cbHebergement"
+                              promptText="Choisir Hébergement"
+                              maxWidth="Infinity"
+                              style="-fx-background-color:#12122a; -fx-border-color:#2a2a4a;
+                                     -fx-border-radius:10; -fx-background-radius:10;
+                                     -fx-pref-height:40px; -fx-font-size:14px; -fx-text-fill:#e2e8f0;"/>
+
+                    <Label text="Nom complet *"
+                           style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                    <TextField fx:id="tfNom"
+                               promptText="Mehdi Ferjani"
+                               style="-fx-background-color:#12122a; -fx-border-color:#2a2a4a;
+                                      -fx-border-radius:10; -fx-background-radius:10;
+                                      -fx-pref-height:40px; -fx-font-size:14px;
+                                      -fx-text-fill:#e2e8f0; -fx-prompt-text-fill:#6b7280;
+                                      -fx-padding:10 14;"/>
+
+                    <Label text="Téléphone * (8 chiffres)"
+                           style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                    <TextField fx:id="tfTel"
+                               promptText="12345678"
+                               style="-fx-background-color:#12122a; -fx-border-color:#2a2a4a;
+                                      -fx-border-radius:10; -fx-background-radius:10;
+                                      -fx-pref-height:40px; -fx-font-size:14px;
+                                      -fx-text-fill:#e2e8f0; -fx-prompt-text-fill:#6b7280;
+                                      -fx-padding:10 14;"/>
+
+                    <Label text="Email *"
+                           style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                    <TextField fx:id="tfEmail"
+                               promptText="exemple@email.com"
+                               style="-fx-background-color:#12122a; -fx-border-color:#2a2a4a;
+                                      -fx-border-radius:10; -fx-background-radius:10;
+                                      -fx-pref-height:40px; -fx-font-size:14px;
+                                      -fx-text-fill:#e2e8f0; -fx-prompt-text-fill:#6b7280;
+                                      -fx-padding:10 14;"/>
+
+                    <Label text="Date d'arrivée *"
+                           style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                    <DatePicker fx:id="dpDebut"
+                                promptText="jj/mm/aaaa"
+                                maxWidth="Infinity"
+                                style="-fx-background-color:#12122a; -fx-border-color:#2a2a4a;
+                                       -fx-border-radius:10; -fx-background-radius:10;
+                                       -fx-pref-height:40px; -fx-font-size:14px;"/>
+
+                    <Label text="Date de départ *"
+                           style="-fx-text-fill:#94a3b8; -fx-font-size:13px;"/>
+                    <DatePicker fx:id="dpFin"
+                                promptText="jj/mm/aaaa"
+                                maxWidth="Infinity"
+                                style="-fx-background-color:#12122a; -fx-border-color:#2a2a4a;
+                                       -fx-border-radius:10; -fx-background-radius:10;
+                                       -fx-pref-height:40px; -fx-font-size:14px;"/>
+
+                    <Label fx:id="lblTotal"
+                           text="Total: 0.0 DT"
+                           style="-fx-background-color:#0d2b1a; -fx-text-fill:#4ade80;
+                                  -fx-padding:6 14; -fx-background-radius:999;
+                                  -fx-font-weight:800; -fx-border-color:#1a3d28;
+                                  -fx-border-radius:999; -fx-font-size:13px;"/>
+
+                    <Button text="Confirmer la réservation"
+                            onAction="#addReservation"
+                            maxWidth="Infinity"
+                            style="-fx-background-color:#e05252; -fx-text-fill:white;
+                                   -fx-font-weight:900; -fx-background-radius:30;
+                                   -fx-font-size:15px; -fx-padding:14 0; -fx-cursor:hand;"/>
+
+                    <Label fx:id="lblMsg"
+                           style="-fx-font-size:13px; -fx-text-fill:#6b7280;"/>
+                </VBox>
+
+                <!-- ===== Infos + Carte ===== -->
+                <VBox spacing="14" prefWidth="520">
+
+                    <!-- Règles -->
+                    <VBox spacing="10"
+                          style="-fx-background-color:#1a1a2e; -fx-background-radius:18;
+                                 -fx-border-radius:18; -fx-border-color:#2a2a4a; -fx-padding:18;
+                                 -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.4),18,0,0,6);">
+                        <Label text="Règles"
+                               style="-fx-font-size:15px; -fx-font-weight:800; -fx-text-fill:#e2e8f0;"/>
+                        <Label text="• La réservation doit être dans une période disponible."
+                               style="-fx-font-size:13px; -fx-text-fill:#6b7280;"/>
+                        <Label text="• Impossible si conflit avec une autre réservation."
+                               style="-fx-font-size:13px; -fx-text-fill:#6b7280;"/>
+                        <Label text="• Total = nb nuits × prix par nuit."
+                               style="-fx-font-size:13px; -fx-text-fill:#6b7280;"/>
+                        <Separator/>
+                        <Label text="Astuce"
+                               style="-fx-font-size:15px; -fx-font-weight:800; -fx-text-fill:#e2e8f0;"/>
+                        <Label text="Choisis d'abord l'hébergement, puis les dates."
+                               style="-fx-font-size:13px; -fx-text-fill:#6b7280;"/>
+                    </VBox>
+
+                    <!-- Localisation -->
+                    <VBox spacing="10"
+                          style="-fx-background-color:#1a1a2e; -fx-background-radius:18;
+                                 -fx-border-radius:18; -fx-border-color:#2a2a4a; -fx-padding:18;
+                                 -fx-effect:dropshadow(gaussian,rgba(0,0,0,0.4),18,0,0,6);">
+                        <Label text="Localisation"
+                               style="-fx-font-size:15px; -fx-font-weight:800; -fx-text-fill:#e2e8f0;"/>
+                        <Label fx:id="lblMapInfoRes"
+                               text="Sélectionne un hébergement pour voir sa position."
+                               style="-fx-font-size:13px; -fx-text-fill:#6b7280;"/>
+                        <StackPane prefHeight="300" minHeight="300">
+                            <WebView fx:id="mapViewRes"
+                                     prefHeight="300"
+                                     minHeight="300"/>
+                        </StackPane>
+                    </VBox>
+
+                </VBox>
+
+            </HBox>
+
+        </VBox>
+    </content>
+
+</ScrollPane>

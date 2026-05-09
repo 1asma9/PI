@@ -1,0 +1,37 @@
+/* TableView dark style */
+.table-view .column-header-background {
+    -fx-background-color: #1a2238;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #8a9bbf;
+    -fx-font-size: 13px;
+    -fx-font-weight: 500;
+}
+.table-row-cell {
+    -fx-background-color: #131a2a;
+    -fx-border-color: #1e2a40;
+    -fx-text-fill: #cdd5e0;
+}
+.table-row-cell:odd {
+    -fx-background-color: #141c2e;
+}
+.table-row-cell:hover {
+    -fx-background-color: #1a2238;
+}
+.table-row-cell:selected {
+    -fx-background-color: #1e2d50;
+}
+.table-view .table-cell {
+    -fx-text-fill: #cdd5e0;
+    -fx-font-size: 13px;
+    -fx-border-color: #1e2a40;
+}
+
+/* SplitPane divider invisible */
+.split-pane > .split-pane-divider {
+    -fx-background-color: #2a3558;
+    -fx-padding: 0 1;
+}
+.split-pane {
+    -fx-background-color: transparent;
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="hebergement.controllers.ChatController"
+           style="-fx-background-color: #f4f6f9;"
+           prefWidth="900" prefHeight="600">
+
+    <VBox spacing="15"
+          maxWidth="600"
+          styleClass="chat-card"
+          alignment="TOP_CENTER">
+
+        <!-- HEADER -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="🤖 Assistant Réservation"
+                   styleClass="chat-title"/>
+        </HBox>
+
+        <!-- CHAT AREA -->
+        <ListView fx:id="lvChat"
+                  VBox.vgrow="ALWAYS"
+                  styleClass="chat-list"/>
+
+        <!-- INPUT AREA -->
+        <HBox spacing="10">
+            <TextField fx:id="tfMessage"
+                       promptText="Ex: je veux réserver à Tunis du 10 au 12 pour 2 personnes"
+                       HBox.hgrow="ALWAYS"
+                       styleClass="chat-input"/>
+
+            <Button text="Envoyer"
+                    onAction="#onSend"
+                    styleClass="chat-button"/>
+        </HBox>
+
+    </VBox>
+
+</StackPane>

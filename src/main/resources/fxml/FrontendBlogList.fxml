@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox prefHeight="750.0" prefWidth="1366.0"
+      styleClass="frontend-root"
+      stylesheets="@../css/FrontendBlogStyle.css"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.FrontendBlogController">
+
+    <HBox alignment="CENTER_LEFT" styleClass="blog-navbar">
+        <children>
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="VN" styleClass="brand-mark"/>
+                <Text text="ViaNova Journal" styleClass="brand-name"/>
+            </HBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <HBox spacing="28" alignment="CENTER">
+                <Label text="HOME" styleClass="nav-link"/>
+                <Label text="BLOG" styleClass="nav-link nav-link-active"/>
+                <Label text="GUIDES" styleClass="nav-link"/>
+                <Label text="ABOUT" styleClass="nav-link"/>
+                <Label text="CONTACT" styleClass="nav-link"/>
+            </HBox>
+        </children>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" prefHeight="680.0" prefWidth="1366.0"
+                style="-fx-background-color: transparent; -fx-border-color: transparent;">
+        <content>
+            <VBox prefWidth="1366.0">
+                <StackPane prefHeight="390.0" prefWidth="1366.0">
+                    <children>
+                        <ImageView fitHeight="390.0" fitWidth="1366.0" preserveRatio="false">
+                            <image>
+                                <Image url="@../img/hero-blog.jpg"/>
+                            </image>
+                        </ImageView>
+                        <Pane styleClass="hero-pane"/>
+                        <VBox alignment="CENTER" spacing="10">
+                            <Text text="WEEKLY EDITORIAL" styleClass="hero-eyebrow"/>
+                            <Text text="Stories Worth Reading" styleClass="hero-title"/>
+                            <Text text="Fresh writing, practical insights, and thoughtful travel stories."
+                                  styleClass="hero-subtitle"/>
+                        </VBox>
+                    </children>
+                </StackPane>
+
+                <VBox styleClass="content-wrap">
+                    <HBox alignment="CENTER_LEFT">
+                        <children>
+                            <VBox spacing="4">
+                                <Text text="Latest Blog Posts" styleClass="section-title"/>
+                                <Text text="Browse all published articles and open one to read the full story."
+                                      styleClass="section-subtitle"/>
+                            </VBox>
+
+                            <Region HBox.hgrow="ALWAYS"/>
+
+                            <ComboBox fx:id="destinationFilter"
+                                      prefWidth="330.0"
+                                      promptText="Filter by continent..."
+                                      styleClass="destination-filter"/>
+                        </children>
+                    </HBox>
+
+                    <GridPane fx:id="blogGridContainer"
+                              alignment="TOP_CENTER"
+                              styleClass="cards-grid">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="360.0" prefWidth="360.0"/>
+                            <ColumnConstraints minWidth="360.0" prefWidth="360.0"/>
+                            <ColumnConstraints minWidth="360.0" prefWidth="360.0"/>
+                        </columnConstraints>
+                    </GridPane>
+                </VBox>
+            </VBox>
+        </content>
+    </ScrollPane>
+</VBox>

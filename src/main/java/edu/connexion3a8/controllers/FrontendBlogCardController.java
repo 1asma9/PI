@@ -1,0 +1,185 @@
+package edu.connexion3a8.controllers;
+
+import edu.connexion3a8.entities.Blog;
+import edu.connexion3a8.entities.BlogRating;
+import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import javafx.scene.control.Label;
+
+
+import java.io.File;
+import java.time.format.DateTimeFormatter;
+
+public class FrontendBlogCardController {
+
+    @FXML private ImageView blogImage;
+    @FXML private Text blogTitle;
+    @FXML private Text blogExcerpt;
+    @FXML private Label blogDate;
+    @FXML private Pane imageOverlay;
+
+    @FXML private HBox starsContainer;
+    @FXML private Label ratingLabel;
+    @FXML private Label reviewCountLabel;
+
+    private Blog blog;
+    private FrontendBlogController parentController;
+
+    public void setData(Blog blog, FrontendBlogController parentController) {
+        this.blog = blog;
+        this.parentController = parentController;
+
+        // Set title
+        blogTitle.setText(blog.getTitre());
+
+        // Set excerpt (limité à 120 caractères)
+        String extrait = blog.getExtrait();
+        if (extrait != null && extrait.length() > 120) {
+            extrait = extrait.substring(0, 120) + "...";
+        }
+        blogExcerpt.setText(extrait != null ? extrait : "");
+
+        // Set date
+        if (blog.getDate_publication() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+            blogDate.setText(blog.getDate_publication().format(formatter));
+        } else if (blog.getDate_creation() != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+            blogDate.setText(blog.getDate_creation().format(formatter));
+        } else {
+            blogDate.setText("");
+        }
+
+        // Set image
+        if (blog.getImage_couverture() != null && !blog.getImage_couverture().isEmpty()) {
+            try {
+                File imageFile = new File(blog.getImage_couverture());
+                if (imageFile.exists()) {
+                    Image image = new Image(imageFile.toURI().toString());
+                    blogImage.setImage(image);
+                } else {
+                    // Try as URL
+                    Image image = new Image(blog.getImage_couverture());
+                    blogImage.setImage(image);
+                }
+            } catch (Exception e) {
+                System.out.println("Impossible de charger l'image: " + e.getMessage());
+            }
+        }
+        displayRating(blog.getRatingAverage(), blog.getRatingCount());
+
+    }
+
+    private void loadImage(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return;
+        }
+
+        try {
+            Image image;
+            if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+                image = new Image(imagePath, true);
+            } else if (imagePath.startsWith("/")) {
+                image = new Image("file:" + imagePath, true);
+            } else {
+                image = new Image(getClass().getResourceAsStream(imagePath).toString(), true);
+            }
+            blogImage.setImage(image);
+        } catch (Exception e) {
+            System.err.println("Erreur chargement image: " + e.getMessage());
+        }
+    }
+
+    private String formatDate(String dateStr) {
+        try {
+            // Format: "February 26, 2026"
+            String[] months = {"January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"};
+            String[] parts = dateStr.split("-");
+            if (parts.length >= 3) {
+                int month = Integer.parseInt(parts[1]);
+                int day = Integer.parseInt(parts[2].substring(0, 2));
+                int year = Integer.parseInt(parts[0]);
+                return months[month - 1] + " " + day + ", " + year;
+            }
+        } catch (Exception e) {
+            // Fallback
+        }
+        return dateStr;
+
+
+    }
+
+
+    @FXML
+    public void openBlogDetail(MouseEvent event) {
+        System.out.println("Card clicked! Opening blog: " + blog.getTitre()); // Debug
+
+        if (parentController != null) {
+            System.out.println("Parent controller found, opening detail view..."); // Debug
+            parentController.openBlogDetailView(blog);
+        } else {
+            System.err.println("ERROR: Parent controller is null!"); // Debug
+        }
+    }
+
+    @FXML
+    public void onMouseEntered(MouseEvent event) {
+        if (imageOverlay != null) {
+            imageOverlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.2);");
+        }
+    }
+
+    @FXML
+    public void onMouseExited(MouseEvent event) {
+        if (imageOverlay != null) {
+            imageOverlay.setStyle("-fx-background-color: transparent;");
+        }
+    }
+
+    private void displayRating(double rating, int count) {
+        if (ratingLabel != null) {
+            ratingLabel.setText(String.format("%.1f", rating));
+        }
+
+        if (reviewCountLabel != null) {
+            reviewCountLabel.setText("(" + count + ")");
+        }
+
+        // Afficher les étoiles
+        if (starsContainer != null) {
+            starsContainer.getChildren().clear();
+            HBox stars = createStarDisplay(rating);
+            starsContainer.getChildren().add(stars);
+        }
+    }
+
+    private HBox createStarDisplay(double rating) {
+        HBox starsBox = new HBox(2);
+        int fullStars = (int) rating;
+        boolean hasHalfStar = (rating - fullStars) >= 0.5;
+
+        for (int i = 0; i < 5; i++) {
+            Text star = new Text("★");
+            star.setStyle("-fx-font-size: 14px;");
+
+            if (i < fullStars) {
+                star.setFill(javafx.scene.paint.Color.web("#FFD700")); // Or
+            } else if (i == fullStars && hasHalfStar) {
+                star.setFill(javafx.scene.paint.Color.web("#FFD700"));
+                star.setOpacity(0.5);
+            } else {
+                star.setFill(javafx.scene.paint.Color.web("#ddd")); // Gris
+            }
+
+            starsBox.getChildren().add(star);
+        }
+
+        return starsBox;
+    }
+}

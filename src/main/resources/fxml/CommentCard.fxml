@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox alignment="TOP_LEFT"
+      prefWidth="990.0"
+      spacing="15.0"
+      style="-fx-background-color: #fffaf3;
+             -fx-background-radius: 18;
+             -fx-padding: 18;
+             -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 15, 0, 0, 4);"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.connexion3a8.controllers.CommentCardController">
+
+    <children>
+
+        <!-- ================= USER AVATAR ================= -->
+        <ImageView fx:id="userAvatar"
+                   fitHeight="50"
+                   fitWidth="50"
+                   preserveRatio="true"
+                   style="-fx-background-color: #e6d5c3;
+                          -fx-background-radius: 50;">
+
+            <image>
+                <Image url="@../img/default-avatar.png"/>
+            </image>
+        </ImageView>
+
+        <!-- ================= COMMENT CONTENT ================= -->
+        <VBox prefWidth="900"
+              spacing="10">
+
+            <children>
+
+                <!-- Name + Date -->
+                <HBox spacing="12">
+
+                    <Text fx:id="userName"
+                          text="Nom Utilisateur"
+                          fill="#4e3b2a"
+                          style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+                    <Text fx:id="commentDate"
+                          text="Il y a 2h"
+                          fill="#a1887f"
+                          style="-fx-font-size: 12px;" />
+                </HBox>
+
+                <!-- Comment Text -->
+                <Text fx:id="commentText"
+                      text="Contenu du commentaire..."
+                      wrappingWidth="880"
+                      fill="#5d4a3a"
+                      style="-fx-font-size: 13px;" />
+
+                <!-- Actions -->
+                <HBox spacing="25">
+
+                    <VBox.margin>
+                        <Insets top="5"/>
+                    </VBox.margin>
+
+                    <!-- Like -->
+                    <HBox alignment="CENTER_LEFT"
+                          spacing="6"
+                          onMouseClicked="#toggleLike"
+                          style="-fx-cursor: hand;">
+
+                        <Text fx:id="likeIcon"
+                              text="♥"
+                              fill="#c8a27c"
+                              style="-fx-font-size: 16px;" />
+
+                        <Label fx:id="likesLabel"
+                               text="0"
+                               textFill="#7a6a5a"
+                               style="-fx-font-size: 12px;" />
+                    </HBox>
+
+                    <!-- Delete -->
+                    <Button fx:id="deleteBtn"
+                            text="Supprimer"
+                            onAction="#deleteComment"
+                            style="-fx-background-color: transparent;
+                                   -fx-border-color: #a47148;
+                                   -fx-border-radius: 20;
+                                   -fx-text-fill: #a47148;
+                                   -fx-cursor: hand;" />
+                </HBox>
+
+            </children>
+        </VBox>
+
+    </children>
+</HBox>
