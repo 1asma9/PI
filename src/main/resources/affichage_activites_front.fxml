@@ -19,7 +19,7 @@
 <StackPane xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml"
            fx:controller="edu.pidev.controllers.AffichageActivitesFrontController"
-           styleClass="pageRoot">
+           style="-fx-background-color: white;">
 
     <!-- ================= MAIN PAGE ================= -->
     <VBox styleClass="page">
@@ -55,11 +55,6 @@
                         </VBox>
 
                     </StackPane>
-                    <HBox alignment="CENTER_RIGHT" styleClass="section" spacing="10">
-                        <Button text="Back Office (Admin)"
-                                onAction="#goBackOffice"
-                                styleClass="resetBtn"/>
-                    </HBox>
 
                     <!-- ================= SEARCH BAR ================= -->
                     <HBox alignment="CENTER" styleClass="searchBarWrapper">

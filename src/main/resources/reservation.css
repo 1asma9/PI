@@ -1,6 +1,6 @@
 /* Main page background */
 .page {
-    -fx-background-color: linear-gradient(to bottom right, #f6f1e7, #e9dfd2);
+    -fx-background-color: #ffffff;
     -fx-padding: 30;
 }
 
