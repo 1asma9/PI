@@ -158,3 +158,138 @@
 .content {
     -fx-background-color: #0d0d1a;
 }
+/* ===== DatePicker light fix ===== */
+.date-picker {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.date-picker > .text-field {
+    -fx-background-color: #f8fafc;
+    -fx-text-fill: #1e293b;
+    -fx-prompt-text-fill: #94a3b8;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent;
+    -fx-background-radius: 8;
+    -fx-padding: 0 8;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0 8 8 0;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: #64748b;
+}
+
+.date-picker:focused > .text-field,
+.date-picker:focused {
+    -fx-border-color: #0f172a;
+    -fx-border-width: 1.5;
+}
+
+/* Popup calendrier */
+.date-picker-popup {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 12, 0, 0, 4);
+}
+
+.date-picker-popup > * > .spinner {
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.date-picker-popup > * > .spinner > .label {
+    -fx-text-fill: #1e293b;
+    -fx-font-weight: 700;
+    -fx-font-size: 13px;
+}
+
+.date-picker-popup > * > .spinner > .button {
+    -fx-background-color: transparent;
+}
+
+.date-picker-popup > * > .spinner > .button .left-arrow,
+.date-picker-popup > * > .spinner > .button .right-arrow {
+    -fx-background-color: #64748b;
+}
+
+.date-picker-popup > * > .day-name-cell {
+    -fx-text-fill: #94a3b8;
+    -fx-font-weight: 700;
+    -fx-font-size: 11px;
+}
+
+.date-picker-popup > * > .day-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1e293b;
+    -fx-font-size: 13px;
+}
+
+.date-picker-popup > * > .day-cell:hover {
+    -fx-background-color: #f1f5f9;
+    -fx-background-radius: 6;
+}
+
+.date-picker-popup > * > .day-cell.today {
+    -fx-border-color: #0f172a;
+    -fx-border-radius: 6;
+    -fx-text-fill: #0f172a;
+    -fx-font-weight: 700;
+}
+
+.date-picker-popup > * > .day-cell:selected {
+    -fx-background-color: #0f172a;
+    -fx-background-radius: 6;
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+}
+
+.date-picker-popup > * > .day-cell.previous-month,
+.date-picker-popup > * > .day-cell.next-month {
+    -fx-text-fill: #cbd5e1;
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #f8fafc;
+}
+
+
+/* ===== Fix champs reservation (fond blanc, texte visible) ===== */
+
+/* Tous les TextField/DatePicker dans le formulaire reservation */
+#tfNom,
+#tfTel,
+#tfEmail {
+    -fx-text-fill: #1e293b !important;
+    -fx-background-color: white !important;
+    -fx-border-color: #e2e8f0 !important;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-prompt-text-fill: #94a3b8 !important;
+}
+
+#dpDebut > .text-field,
+#dpFin > .text-field {
+    -fx-text-fill: #1e293b !important;
+    -fx-background-color: white !important;
+    -fx-prompt-text-fill: #94a3b8 !important;
+}
+
+#dpDebut .arrow-button,
+#dpFin .arrow-button {
+    -fx-background-color: white !important;
+}
+
+#dpDebut .arrow-button .arrow,
+#dpFin .arrow-button .arrow {
+    -fx-background-color: #64748b !important;
+}

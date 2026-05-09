@@ -51,9 +51,9 @@ import java.util.List;
 
 public class ClientDetailsController {
 
-    private static final String WEATHER_API_KEY  = "60b4f367276104cdace06362a000085f";
-    private static final String GROQ_API_KEY     = "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";
-    private static final String EXCHANGERATE_KEY = "461a090f75d56bf3080aab48";
+    private static final String WEATHER_API_KEY  = "";
+    private static final String GROQ_API_KEY = "";
+    private static final String EXCHANGERATE_KEY = "";
 
     // ── HERO
     @FXML private ImageView imageView;

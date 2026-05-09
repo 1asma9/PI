@@ -15,21 +15,15 @@ public class MyConnection {
 
     private Connection cnx;
 
-<<<<<<< Updated upstream
     private MyConnection() {
         try {
-            String host = System.getenv().getOrDefault("DB_HOST", "localhost");
-            String port = System.getenv().getOrDefault("DB_PORT", "3306");
-            String dbName = System.getenv().getOrDefault("DB_NAME", "voyage-1");
-            String user = System.getenv().getOrDefault("DB_USER", "root");
-            String password = System.getenv().getOrDefault("DB_PASSWORD", "");
-
-            String jdbcUrl = "jdbc:mysql://" + host + ":" + port + "/" + dbName
-                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-            cnx = DriverManager.getConnection(jdbcUrl, user, password);
-            System.out.println("Connexion etablie: " + jdbcUrl);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            cnx = DriverManager.getConnection(URL, LOGIN, PWD);
+            System.out.println("Connexion etablie! (connexion3a8)");
+        } catch (ClassNotFoundException e) {
+            System.out.println("Driver MySQL introuvable.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur connexion: " + e.getMessage());
         }
     }
 
@@ -37,23 +31,7 @@ public class MyConnection {
         if (instance == null) {
             instance = new MyConnection();
         }
-=======
-    public static MyConnection getInstance() {
-        if (instance == null) instance = new MyConnection();
->>>>>>> Stashed changes
         return instance;
-    }
-
-    private MyConnection() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            cnx = DriverManager.getConnection(URL, LOGIN, PWD);
-            System.out.println("Connexion etablie! (destination)");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Driver MySQL introuvable.");
-        } catch (SQLException e) {
-            System.out.println("Erreur connexion: " + e.getMessage());
-        }
     }
 
     public Connection getCnx() {
@@ -67,9 +45,6 @@ public class MyConnection {
         }
         return cnx;
     }
-<<<<<<< Updated upstream
-}
-=======
 
     public void close() {
         try {
@@ -81,4 +56,3 @@ public class MyConnection {
         }
     }
 }
->>>>>>> Stashed changes

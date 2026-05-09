@@ -19,7 +19,7 @@ import java.sql.SQLException;
 
 public class AdminDestinationFormController {
 
-    private static final String GROQ_API_KEY = "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";
+    private static final String GROQ_API_KEY = "";
 
     @FXML private TextField txtNom, txtPays, txtDescription;
     @FXML private TextField txtLatitude, txtLongitude, txtNbVisites;

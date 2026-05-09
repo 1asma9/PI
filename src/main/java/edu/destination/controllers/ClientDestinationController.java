@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 public class ClientDestinationController {
 
-    private static final String GROQ_API_KEY = "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";
+
 
     @FXML private FlowPane flowDestinations;
     @FXML private TextField searchField;
@@ -67,7 +67,7 @@ public class ClientDestinationController {
     private boolean chatVisible = false;
 
     private final Map<Integer, Integer> popularityCache = new ConcurrentHashMap<>();
-
+    private static final String GROQ_API_KEY = "";
     // ==============================
     // INITIALISATION
     // ==============================

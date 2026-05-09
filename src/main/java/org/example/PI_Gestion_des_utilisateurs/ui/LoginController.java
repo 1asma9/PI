@@ -16,7 +16,7 @@ import java.util.Optional;
 public class LoginController {
 
     // DEV MODE ONLY: bypass authentication and open admin dashboard directly.
-    private static final boolean DEV_MODE_BYPASS_LOGIN = true;
+    private static final boolean DEV_MODE_BYPASS_LOGIN = false;
 
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;

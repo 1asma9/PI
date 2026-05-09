@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,10 +14,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class HebergementGalleryController {
+
+    // ✅ Ton vrai chemin vers les images web
+    private static final String WEB_UPLOADS =
+            "C:/Users/ferja/voyage/public/uploads/hebergements/";
+
+    // ✅ Racine du projet web (pour les chemins relatifs)
+    private static final String WEB_ROOT =
+            "C:/Users/ferja/voyage/";
 
     @FXML private FlowPane cardsPane;
     @FXML private Label lblCount;
@@ -55,15 +63,34 @@ public class HebergementGalleryController {
     private void loadCards() {
         try {
             allData = hs.getData();
+
+            // ✅ DEBUG — affiche les chemins en console
+            for (Hebergement h : allData) {
+                System.out.println("ID: " + h.getId() +
+                        " | image_path: [" + h.getImagePath() + "]");
+
+                // Vérifie si le fichier existe
+                if (h.getImagePath() != null) {
+                    String p = h.getImagePath().trim().replace("\\", "/");
+                    if (p.matches("^[A-Za-z]:/.*")) {
+                        java.io.File f = new java.io.File(p);
+                        System.out.println("  → Fichier existe? " + f.exists());
+                        System.out.println("  → Nom fichier: " + f.getName());
+                        java.io.File webF = new java.io.File(WEB_UPLOADS + f.getName());
+                        System.out.println("  → Dans WEB_UPLOADS? " + webF.exists());
+                        System.out.println("  → Chemin WEB: " + webF.getAbsolutePath());
+                    }
+                }
+            }
+
             updateCount(allData.size());
             renderCards(allData);
         } catch (Exception e) {
             if (lblStatus != null)
-                lblStatus.setText("Erreur de chargement : " + e.getMessage());
+                lblStatus.setText("Erreur : " + e.getMessage());
             e.printStackTrace();
         }
     }
-
     @FXML
     private void filterData() {
         if (allData == null) return;
@@ -91,6 +118,7 @@ public class HebergementGalleryController {
         updateCount(filtered.size());
         renderCards(filtered);
     }
+
 
     @FXML
     private void resetFilters() {
@@ -154,12 +182,10 @@ public class HebergementGalleryController {
 
         imgView.setImage(loadImage(h.getImagePath()));
 
-        // Placeholder gris si pas d'image
-        imageWrap.setStyle("-fx-background-color: #eee;" +
-                "-fx-background-radius: 10 10 0 0;");
+        imageWrap.setStyle("-fx-background-color: #eee; -fx-background-radius: 10 10 0 0;");
         imageWrap.getChildren().add(imgView);
 
-        // ===== BADGE TYPE (sous l'image, fond orange clair) =====
+        // ===== BADGE TYPE =====
         String typeLib = h.getTypeLibelle() != null ? h.getTypeLibelle() : "Hébergement";
         Label badge = new Label(typeLib);
         badge.setMaxWidth(Double.MAX_VALUE);
@@ -175,7 +201,6 @@ public class HebergementGalleryController {
         VBox body = new VBox(6);
         body.setPadding(new Insets(10, 16, 0, 16));
 
-        // Prix
         Label lblPrix = new Label(String.format("%.2f TND / nuit", h.getPrix()));
         lblPrix.setStyle(
                 "-fx-font-size: 16px;" +
@@ -183,7 +208,6 @@ public class HebergementGalleryController {
                         "-fx-text-fill: #f75959;"
         );
 
-        // Nom
         Label lblNom = new Label(h.getDescription() != null ? h.getDescription() : "-");
         lblNom.setStyle(
                 "-fx-font-size: 14px;" +
@@ -192,16 +216,12 @@ public class HebergementGalleryController {
         );
         lblNom.setWrapText(true);
 
-        // Chambres
         int nbChambres = 0;
         try { nbChambres = cs.getByHebergement(h.getId()).size(); }
         catch (Exception ignored) {}
 
         Label lblChambres = new Label("Chambres: " + nbChambres);
-        lblChambres.setStyle(
-                "-fx-font-size: 12px;" +
-                        "-fx-text-fill: #888;"
-        );
+        lblChambres.setStyle("-fx-font-size: 12px; -fx-text-fill: #888;");
 
         body.getChildren().addAll(lblPrix, lblNom, lblChambres);
 
@@ -211,63 +231,56 @@ public class HebergementGalleryController {
 
         Button btnVoir = new Button("Voir & Réserver");
         btnVoir.setMaxWidth(Double.MAX_VALUE);
-        btnVoir.setStyle(
+        String styleNormal =
                 "-fx-background-color: #173b3b;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: 700;" +
                         "-fx-font-size: 13px;" +
                         "-fx-background-radius: 8;" +
                         "-fx-padding: 10 0;" +
-                        "-fx-cursor: hand;"
-        );
-
-        btnVoir.setOnAction(e -> ouvrirFormulaire(h));
-
-        btnVoir.setOnMouseEntered(e -> btnVoir.setStyle(
+                        "-fx-cursor: hand;";
+        String styleHover =
                 "-fx-background-color: #f75959;" +
                         "-fx-text-fill: white;" +
                         "-fx-font-weight: 700;" +
                         "-fx-font-size: 13px;" +
                         "-fx-background-radius: 8;" +
                         "-fx-padding: 10 0;" +
-                        "-fx-cursor: hand;"
-        ));
-        btnVoir.setOnMouseExited(e -> btnVoir.setStyle(
-                "-fx-background-color: #173b3b;" +
-                        "-fx-text-fill: white;" +
-                        "-fx-font-weight: 700;" +
-                        "-fx-font-size: 13px;" +
-                        "-fx-background-radius: 8;" +
-                        "-fx-padding: 10 0;" +
-                        "-fx-cursor: hand;"
-        ));
+                        "-fx-cursor: hand;";
+
+        btnVoir.setStyle(styleNormal);
+        btnVoir.setOnAction(e -> ouvrirFormulaire(h));
+        btnVoir.setOnMouseEntered(e -> btnVoir.setStyle(styleHover));
+        btnVoir.setOnMouseExited(e -> btnVoir.setStyle(styleNormal));
 
         btnBox.getChildren().add(btnVoir);
         card.getChildren().addAll(imageWrap, badge, body, btnBox);
 
-        // Hover card
-        card.setOnMouseEntered(e -> card.setStyle(
+        // ===== HOVER CARTE =====
+        String cardNormal =
+                "-fx-background-color: white;" +
+                        "-fx-background-radius: 10;" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-border-color: rgba(0,0,0,0.08);" +
+                        "-fx-border-width: 1;" +
+                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);";
+        String cardHover =
                 "-fx-background-color: white;" +
                         "-fx-background-radius: 10;" +
                         "-fx-border-radius: 10;" +
                         "-fx-border-color: rgba(0,0,0,0.08);" +
                         "-fx-border-width: 1;" +
                         "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 20, 0, 0, 6);" +
-                        "-fx-translate-y: -4;"
-        ));
-        card.setOnMouseExited(e -> card.setStyle(
-                "-fx-background-color: white;" +
-                        "-fx-background-radius: 10;" +
-                        "-fx-border-radius: 10;" +
-                        "-fx-border-color: rgba(0,0,0,0.08);" +
-                        "-fx-border-width: 1;" +
-                        "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 12, 0, 0, 3);"
-        ));
+                        "-fx-translate-y: -4;";
+
+        card.setOnMouseEntered(e -> card.setStyle(cardHover));
+        card.setOnMouseExited(e -> card.setStyle(cardNormal));
 
         return card;
     }
 
     private Image loadImage(String path) {
+        // Image par défaut
         Image fallback = null;
         try {
             var res = getClass().getResource("/images/hebergement_default.jpg");
@@ -278,12 +291,40 @@ public class HebergementGalleryController {
         if (path == null || path.isBlank()) return fallback;
 
         try {
-            String url = path.trim();
-            if (!url.startsWith("http") && !url.startsWith("file:")) {
-                url = "file:///" + url.replace("\\", "/");
+            String p = path.trim().replace("\\", "/");
+
+            // ✅ URL complète http ou file:
+            if (p.startsWith("http") || p.startsWith("file:")) {
+                return new Image(p, 300, 220, false, true, true);
             }
-            return new Image(url, 300, 220, false, true, true);
+
+            // ✅ Chemin absolu Windows ex: C:/Users/ferja/...
+            if (p.matches("^[A-Za-z]:/.*")) {
+                File f = new File(p);
+                if (f.exists()) return new Image(f.toURI().toString(), 300, 220, false, true, true);
+                // Si le fichier n'existe plus à l'ancien emplacement,
+                // essaye de retrouver juste le nom du fichier dans WEB_UPLOADS
+                String fileName = f.getName();
+                File webFile = new File(WEB_UPLOADS + fileName);
+                if (webFile.exists()) return new Image(webFile.toURI().toString(), 300, 220, false, true, true);
+            }
+
+            // ✅ Nom de fichier seul ex: "villa-69d3.jpg"
+            if (!p.contains("/")) {
+                File f = new File(WEB_UPLOADS + p);
+                if (f.exists()) return new Image(f.toURI().toString(), 300, 220, false, true, true);
+            }
+
+            // ✅ Chemin relatif ex: "public/uploads/hebergements/villa.jpg"
+            File f = new File(p);
+            if (!f.exists()) f = new File(WEB_ROOT + p);
+            if (f.exists()) return new Image(f.toURI().toString(), 300, 220, false, true, true);
+
+            System.err.println("❌ Image non trouvée : " + path);
+            return fallback;
+
         } catch (Exception e) {
+            System.err.println("❌ Erreur image : " + path + " → " + e.getMessage());
             return fallback;
         }
     }
@@ -295,7 +336,6 @@ public class HebergementGalleryController {
             );
             Parent root = loader.load();
 
-            // ✅ Passer l'hébergement au nouveau controller
             HebergementDetailController controller = loader.getController();
             controller.setHebergement(h);
 
@@ -315,6 +355,7 @@ public class HebergementGalleryController {
             e.printStackTrace();
         }
     }
+
     private double parsePrix(String s, double def) {
         try { return Double.parseDouble(s); } catch (Exception e) { return def; }
     }

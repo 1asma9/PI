@@ -82,7 +82,30 @@ public class HebergementService implements Iservice<Hebergement> {
     // ===== DELETE =====
     @Override
     public void deleteEntity(Hebergement h) throws SQLException {
-        try (PreparedStatement pst = cnx.prepareStatement("DELETE FROM hebergement WHERE id=?")) {
+        // 1. Supprimer les réservations liées
+        try (PreparedStatement pst = cnx.prepareStatement(
+                "DELETE FROM reservation WHERE hebergement_id=?")) {
+            pst.setInt(1, h.getId());
+            pst.executeUpdate();
+        }
+
+        // 2. Supprimer les disponibilités liées
+        try (PreparedStatement pst = cnx.prepareStatement(
+                "DELETE FROM disponibilite WHERE hebergement_id=?")) {
+            pst.setInt(1, h.getId());
+            pst.executeUpdate();
+        }
+
+        // 3. Supprimer les chambres liées ✅ NOUVEAU
+        try (PreparedStatement pst = cnx.prepareStatement(
+                "DELETE FROM chambre WHERE hebergement_id=?")) {
+            pst.setInt(1, h.getId());
+            pst.executeUpdate();
+        }
+
+        // 4. Supprimer l'hébergement
+        try (PreparedStatement pst = cnx.prepareStatement(
+                "DELETE FROM hebergement WHERE id=?")) {
             pst.setInt(1, h.getId());
             pst.executeUpdate();
         }
