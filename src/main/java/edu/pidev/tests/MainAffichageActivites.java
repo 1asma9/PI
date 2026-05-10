@@ -12,19 +12,19 @@ public class MainAffichageActivites extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/affichage_activites_front.fxml"));
+        // Rediriger vers l'interface de connexion au démarrage
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/login.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
 
-        var css = getClass().getResource("/affichage.css");
+        var css = getClass().getResource("/app/app.css");
         if (css != null) scene.getStylesheets().add(css.toExternalForm());
 
+        stage.setTitle("Connexion - Voyage");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
-
-        // ✅ ALWAYS maximize AFTER show (same rule as before)
-        javafx.application.Platform.runLater(() -> stage.setMaximized(true));
     }
     public static void main(String[] args) {
         launch();
