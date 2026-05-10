@@ -24,10 +24,10 @@ public class utilisateur_service {
     }
 
     private static final String SQL_INSERT_USER =
-            "INSERT INTO users (nom, prenom, email, password_hash, telephone) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO users (nom, prenom, email, password_hash, telephone, verification_token, is_verified, is_active) VALUES (?, ?, ?, ?, ?, ?, 0, 0)";
 
     private static final String SQL_SELECT_USERS_WITH_ROLES =
-            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
+            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, u.is_active, " +
                     "r.name AS role_name, r.description AS role_description " +
                     "FROM users u " +
                     "LEFT JOIN users_role ur ON ur.users_id = u.id " +
@@ -35,7 +35,7 @@ public class utilisateur_service {
                     "ORDER BY u.id";
 
     private static final String SQL_SELECT_USER_BY_EMAIL =
-            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
+            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, u.is_active, " +
                     "r.name AS role_name, r.description AS role_description " +
                     "FROM users u " +
                     "LEFT JOIN users_role ur ON ur.users_id = u.id " +
@@ -43,7 +43,7 @@ public class utilisateur_service {
                     "WHERE u.email=? LIMIT 1";
 
     private static final String SQL_SELECT_USER_BY_ID =
-            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, " +
+            "SELECT u.id, u.nom, u.prenom, u.email, u.password_hash, u.telephone, u.created_at, u.is_active, " +
                     "r.name AS role_name, r.description AS role_description " +
                     "FROM users u " +
                     "LEFT JOIN users_role ur ON ur.users_id = u.id " +
@@ -55,6 +55,9 @@ public class utilisateur_service {
 
     private static final String SQL_UPDATE_USER =
             "UPDATE users SET nom=?, prenom=?, email=?, password_hash=?, telephone=? WHERE id=?";
+
+    private static final String SQL_UPDATE_USER_NO_PWD =
+            "UPDATE users SET nom=?, prenom=?, email=?, telephone=? WHERE id=?";
 
     private static final String SQL_DELETE_USER_ROLES =
             "DELETE FROM users_role WHERE users_id=?";
@@ -76,6 +79,7 @@ public class utilisateur_service {
         u.setEmail(rs.getString("email"));
         u.setPassword(rs.getString("password_hash"));
         u.setTelephone(rs.getString("telephone"));
+        u.setActive(rs.getBoolean("is_active"));
 
         Timestamp ts = rs.getTimestamp("created_at");
         if (ts != null) u.setDateCreation(ts.toLocalDateTime());
@@ -133,12 +137,15 @@ public class utilisateur_service {
             return false;
         }
 
+        String token = java.util.UUID.randomUUID().toString();
+
         try (PreparedStatement ps = getCnx().prepareStatement(SQL_INSERT_USER, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, u.getNom().trim());
             ps.setString(2, u.getPrenom().trim());
             ps.setString(3, u.getEmail().trim());
             ps.setString(4, PasswordUtil.hashPassword(u.getPassword()));
             ps.setString(5, u.getTelephone());
+            ps.setString(6, token);
 
             int rows = ps.executeUpdate();
             if (rows <= 0) {
@@ -150,7 +157,14 @@ public class utilisateur_service {
                 if (keys.next()) u.setId(keys.getInt(1));
             }
 
-            envoyerEmailBienvenue(u);
+            try {
+                if (emailService.isConfigured()) {
+                    emailService.sendVerificationEmail(u.getEmail(), u.getPrenom(), "http://localhost:8000/verify/email/" + token);
+                }
+            } catch (Exception e) {
+                System.err.println("Email vérification échoué: " + e.getMessage());
+            }
+            
             return true;
 
         } catch (SQLException e) {
@@ -188,6 +202,29 @@ public class utilisateur_service {
         }
     }
 
+    public boolean modifierutilisateurSansPwd(utilisateur u) {
+        // Validation without password check
+        if (u == null) return false;
+        if (u.getNom() == null || u.getNom().trim().isEmpty()) { lastError = "Le nom ne peut pas être vide"; return false; }
+        if (u.getPrenom() == null || u.getPrenom().trim().isEmpty()) { lastError = "Le prénom ne peut pas être vide"; return false; }
+        String email = u.getEmail();
+        if (email == null || !EMAIL_PATTERN.matcher(email.trim()).matches()) { lastError = "L'email n'est pas valide"; return false; }
+        String tel = u.getTelephone();
+        if (tel != null && !tel.trim().isEmpty() && !tel.matches("\\d{8,}")) { lastError = "Le numéro de téléphone doit contenir uniquement des chiffres (min 8)"; return false; }
+
+        try (PreparedStatement ps = getCnx().prepareStatement(SQL_UPDATE_USER_NO_PWD)) {
+            ps.setString(1, u.getNom().trim());
+            ps.setString(2, u.getPrenom().trim());
+            ps.setString(3, u.getEmail().trim());
+            ps.setString(4, u.getTelephone());
+            ps.setInt(5, u.getId());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean supprimerutilisateur(int id) {
         try {
             getCnx().setAutoCommit(false);
@@ -209,6 +246,18 @@ public class utilisateur_service {
 
         } catch (SQLException e) {
             try { getCnx().rollback(); } catch (SQLException ignored) {}
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean changerStatutUtilisateur(int id, boolean active) {
+        String sql = "UPDATE users SET is_active=? WHERE id=?";
+        try (PreparedStatement ps = getCnx().prepareStatement(sql)) {
+            ps.setBoolean(1, active);
+            ps.setInt(2, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -265,11 +314,13 @@ public class utilisateur_service {
         if (opt.isEmpty()) return false;
 
         utilisateur u = opt.get();
-        String temp = PasswordUtil.generateTemporaryPassword();
+        String token = java.util.UUID.randomUUID().toString();
 
-        try (PreparedStatement ps = getCnx().prepareStatement(SQL_UPDATE_PASSWORD)) {
-            ps.setString(1, PasswordUtil.hashPassword(temp));
-            ps.setInt(2, u.getId());
+        String sql = "UPDATE users SET reset_token=?, reset_token_expires_at=? WHERE id=?";
+        try (PreparedStatement ps = getCnx().prepareStatement(sql)) {
+            ps.setString(1, token);
+            ps.setTimestamp(2, new java.sql.Timestamp(System.currentTimeMillis() + 3600000)); // +1 hour
+            ps.setInt(3, u.getId());
             if (ps.executeUpdate() <= 0) return false;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -277,29 +328,13 @@ public class utilisateur_service {
         }
 
         try {
-            String subject = "Réinitialisation de votre mot de passe";
-            String body = "Bonjour " + u.getPrenom() + " " + u.getNom() + ",\n\n"
-                    + "Voici votre mot de passe temporaire : " + temp + "\n\n"
-                    + "Connectez-vous puis modifiez-le.\n\n"
-                    + "Message automatique.";
-            emailService.sendEmail(email, subject, body);
+            if (emailService.isConfigured()) {
+                emailService.sendResetPasswordEmail(email, u.getPrenom(), "http://localhost:8000/reset-password/reset/" + token);
+            }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    private void envoyerEmailBienvenue(utilisateur u) {
-        try {
-            if (!emailService.isConfigured()) return;
-            String sujet = "Bienvenue";
-            String corps = EmailVianovaTemplate.genererEmailBienvenueSimple(
-                    u.getNom(), u.getPrenom(), u.getEmail(), u.getPassword()
-            );
-            emailService.sendEmail(u.getEmail(), sujet, corps);
-        } catch (Exception e) {
-            System.err.println("Email bienvenue échoué: " + e.getMessage());
         }
     }
 }

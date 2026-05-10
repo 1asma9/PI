@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.PI_Gestion_des_utilisateurs.ui.ListUsersController"
+      style="-fx-background-color: #1f1f1f; -fx-padding: 30;">
+
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <Label fx:id="lblTitleCount" text="Utilisateurs (0)"
+               style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Segoe UI';"/>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <Button text="➕ Ajouter un utilisateur"
+                onAction="#onAddUser"
+                style="-fx-background-color: #d97706; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 16; -fx-cursor: hand;"/>
+    </HBox>
+
+    <!-- Ligne de séparation subtile -->
+    <Region style="-fx-background-color: #333333; -fx-min-height: 1px; -fx-max-height: 1px;">
+        <VBox.margin>
+            <Insets top="20" bottom="20"/>
+        </VBox.margin>
+    </Region>
+
+    <TableView fx:id="tableUsers" VBox.vgrow="ALWAYS"
+               style="-fx-background-color: #262626; -fx-border-color: #333; -fx-border-radius: 8; -fx-background-radius: 8;">
+        
+        <columns>
+            <TableColumn fx:id="colId" text="Identifiant" prefWidth="100"/>
+            <TableColumn fx:id="colNom" text="Nom" prefWidth="120"/>
+            <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="120"/>
+            <TableColumn fx:id="colEmail" text="Adresse email" prefWidth="200"/>
+            <TableColumn fx:id="colTelephone" text="Téléphone" prefWidth="120"/>
+            <TableColumn fx:id="colRole" text="Rôles" prefWidth="120"/>
+            <TableColumn fx:id="colStatut" text="Statut" prefWidth="100"/>
+            <TableColumn fx:id="colDate" text="Date de création" prefWidth="150"/>
+            <TableColumn fx:id="colActions" text="Actions" prefWidth="150"/>
+        </columns>
+        
+        <!-- Styles appliqués au TableView pour ressembler à la capture -->
+        <stylesheets>
+            <String fx:value="data:text/css,
+                .table-view {
+                    -fx-background-color: #262626;
+                    -fx-border-color: #333333;
+                }
+                .table-view .column-header-background {
+                    -fx-background-color: #1e1e1e;
+                    -fx-border-color: transparent;
+                }
+                .table-view .column-header {
+                    -fx-background-color: #1e1e1e;
+                    -fx-border-width: 0 0 1 0;
+                    -fx-border-color: #333;
+                }
+                .table-view .column-header .label {
+                    -fx-text-fill: white;
+                    -fx-font-weight: bold;
+                    -fx-padding: 10px;
+                }
+                .table-row-cell {
+                    -fx-background-color: #262626;
+                    -fx-border-width: 0 0 1 0;
+                    -fx-border-color: #333333;
+                    -fx-cell-size: 60px;
+                }
+                .table-row-cell:empty {
+                    -fx-background-color: transparent;
+                    -fx-border-color: transparent;
+                }
+                .table-row-cell:hover {
+                    -fx-background-color: #2a2a2a;
+                }
+                .table-view .scroll-bar:horizontal,
+                .table-view .scroll-bar:vertical {
+                    -fx-background-color: transparent;
+                }
+            "/>
+        </stylesheets>
+        <placeholder>
+            <Label text="Aucun utilisateur trouvé" style="-fx-text-fill: #999;"/>
+        </placeholder>
+    </TableView>
+
+</VBox>

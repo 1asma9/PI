@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public class MyConnection {
 
-    // ✅ Même base que Symfony : voyage sur port 3309
-    private static final String URL   = "jdbc:mysql://127.0.0.1:3309/voyage?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
+    // ✅ Même base que Symfony : voyage sur port 3306
+    private static final String URL   = "jdbc:mysql://127.0.0.1:3306/voyage?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&characterEncoding=UTF-8";
     private static final String LOGIN = "root";
     private static final String PWD   = "";
 
@@ -18,7 +18,7 @@ public class MyConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             cnx = DriverManager.getConnection(URL, LOGIN, PWD);
-            System.out.println("✅ Connecté à voyage (port 3309) !");
+            System.out.println("✅ Connecté à voyage (port 3306) !");
         } catch (Exception e) {
             System.out.println("❌ Connexion échouée : " + e.getMessage());
         }
@@ -43,5 +43,17 @@ public class MyConnection {
             instance = new MyConnection();
         }
         return cnx;
+    }
+
+    public void close() {
+        try {
+            if (cnx != null && !cnx.isClosed()) {
+                cnx.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la fermeture de la connexion : " + e.getMessage());
+        } finally {
+            instance = null;
+        }
     }
 }

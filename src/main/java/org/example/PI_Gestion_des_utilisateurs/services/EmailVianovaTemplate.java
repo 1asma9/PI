@@ -1,90 +1,56 @@
-
 package org.example.PI_Gestion_des_utilisateurs.services;
 
-/**
- * Template d'email professionnel pour l'application de voyage Vianova
- * Génère des emails de bienvenue personnalisés et adaptés au secteur du tourisme
- */
 public class EmailVianovaTemplate {
-    
-    /**
-     * Génère l'email de bienvenue professionnel pour Vianova
-     * @param nom Nom de l'utilisateur
-     * @param prenom Prénom de l'utilisateur  
-     * @param email Email de l'utilisateur
-     * @param motDePasse Mot de passe en clair
-     * @return Email complet formaté prêt à l'envoi
-     */
-    public static String genererEmailBienvenueVianova(String nom, String prenom, String email, String motDePasse) {
-        StringBuilder message = new StringBuilder();
-        
-        // En-tête personnalisé et professionnel
-        message.append("Cher/Chère ").append(prenom).append(" ").append(nom).append(",\n\n");
-        
-        // Message de bienvenue principal
-        message.append("Bienvenue dans la famille Vianova ! 🌍\n\n");
-        message.append("Nous sommes ravis de vous accueillir parmi nos voyageurs passionnés. ");
-        message.append("Votre compte a été créé avec succès et vous êtes maintenant prêt(e) à découvrir ");
-        message.append("des expériences de voyage inoubliables.\n\n");
-        
-        // Informations de connexion structurées
-        message.append("📋 VOS INFORMATIONS DE CONNEXION :\n");
-        message.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-        message.append("👤 Nom complet : ").append(prenom).append(" ").append(nom).append("\n");
-        message.append("📧 Adresse email : ").append(email).append("\n");
-        message.append("🔑 Mot de passe : ").append(motDePasse).append("\n");
-        message.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n");
-        
-        // Phrase de sécurité importante
-        message.append("🔒 SÉCURITÉ DE VOTRE COMPTE :\n");
-        message.append("Pour garantir la sécurité de vos données personnelles, nous vous recommandons vivement ");
-        message.append("de changer votre mot de passe lors de votre première connexion. ");
-        message.append("Rendez-vous dans les paramètres de votre profil pour le personnaliser.\n\n");
-        
-        // Découverte des fonctionnalités Vianova
-        message.append("🌟 DÉCOUVREZ VIANOVA :\n");
-        message.append("• Explorez des destinations exceptionnelles à travers le monde\n");
-        message.append("• Bénéficiez d'offres exclusives et de tarifs préférentiels\n");
-        message.append("• Partagez vos expériences avec notre communauté de voyageurs\n");
-        message.append("• Accédez à votre carnet de voyage numérique\n\n");
-        
-        // Support et assistance voyage
-        message.append("🤝 BESOIN D'AIDE ?\n");
-        message.append("Notre équipe d'assistance voyage est à votre disposition :\n");
-        message.append("• Email : support@vianova.com\n");
-        message.append("• Téléphone : +33 1 234 567 890\n");
-        message.append("• Chat disponible 7j/7 sur notre site\n\n");
-        
-        // Phrase finale adaptée au secteur du voyage
-        message.append("✈️ Que chaque voyage avec Vianova soit une nouvelle aventure !\n\n");
-        
-        // Signature professionnelle Vianova
-        message.append("Cordialement,\n");
-        message.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-        message.append("L'équipe Vianova\n");
-        message.append("🌍 Votre partenaire de confiance pour des voyages inoubliables\n");
-        message.append("📧 contact@vianova.com | 🌐 www.vianova.com\n");
-        message.append("📱 +33 1 234 567 890\n");
-        
-        return message.toString();
+
+    private static final String BASE_TEMPLATE = "<div style=\"background-color:#f4f4f4;padding:20px;font-family:Arial,sans-serif;\">" +
+            "<div style=\"max-width:600px;margin:0 auto;background-color:#ffffff;border-radius:10px;overflow:hidden;box-shadow:0 4px 10px rgba(0,0,0,0.1);\">" +
+            "<div style=\"background:linear-gradient(135deg, #e8a87c, #d4845a);padding:20px;text-align:center;color:#ffffff;\">" +
+            "<h1 style=\"margin:0;font-size:24px;\">ViaNoVa</h1>" +
+            "</div>" +
+            "<div style=\"padding:30px;color:#333333;line-height:1.6;\">" +
+            "%s" +
+            "</div>" +
+            "<div style=\"background-color:#f9f9f9;padding:15px;text-align:center;font-size:12px;color:#777777;\">" +
+            "&copy; " + java.time.Year.now().getValue() + " ViaNoVa. Tous droits réservés." +
+            "</div>" +
+            "</div></div>";
+
+    private static final String BUTTON_STYLE = "display:inline-block;padding:12px 25px;background:linear-gradient(135deg, #e8a87c, #d4845a);color:#ffffff;text-decoration:none;border-radius:5px;font-weight:bold;margin-top:20px;margin-bottom:20px;";
+
+    public static String getVerificationEmailHtml(String toName, String verificationLink) {
+        String content = "<h2 style=\"color:#d4845a;margin-top:0;\">Vérification de votre compte</h2>" +
+                "<p>Bonjour " + toName + ",</p>" +
+                "<p>Merci d'avoir rejoint ViaNoVa ! Veuillez vérifier votre adresse email en cliquant sur le bouton ci-dessous :</p>" +
+                "<div style=\"text-align:center;\"><a href=\"" + verificationLink + "\" style=\"" + BUTTON_STYLE + "\">Vérifier mon email</a></div>" +
+                "<p>Si le bouton ne fonctionne pas, copiez-collez ce lien dans votre navigateur :</p>" +
+                "<p><a href=\"" + verificationLink + "\" style=\"color:#d4845a;word-break:break-all;\">" + verificationLink + "</a></p>";
+        return String.format(BASE_TEMPLATE, content);
     }
-    
-    /**
-     * Version simplifiée pour intégration rapide
-     */
+
+    public static String getWelcomeEmailHtml(String toName) {
+        String content = "<h2 style=\"color:#d4845a;margin-top:0;\">Bienvenue chez ViaNoVa !</h2>" +
+                "<p>Bonjour " + toName + ",</p>" +
+                "<p>Votre compte a été créé avec succès ! Nous sommes ravis de vous compter parmi nos membres.</p>" +
+                "<div style=\"text-align:center;\"><a href=\"http://localhost:8000\" style=\"" + BUTTON_STYLE + "\">Découvrir ViaNoVa</a></div>" +
+                "<p>Préparez-vous pour de nouvelles aventures !</p>";
+        return String.format(BASE_TEMPLATE, content);
+    }
+
+    public static String getResetPasswordEmailHtml(String toName, String resetLink) {
+        String content = "<h2 style=\"color:#d4845a;margin-top:0;\">Réinitialisation de mot de passe</h2>" +
+                "<p>Bonjour " + toName + ",</p>" +
+                "<p>Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le bouton ci-dessous pour en créer un nouveau (le lien expire dans 1 heure) :</p>" +
+                "<div style=\"text-align:center;\"><a href=\"" + resetLink + "\" style=\"" + BUTTON_STYLE + "\">Réinitialiser mon mot de passe</a></div>" +
+                "<p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email en toute sécurité.</p>";
+        return String.format(BASE_TEMPLATE, content);
+    }
+
+    // Keep old methods if they are still used somewhere
+    public static String genererEmailBienvenueVianova(String nom, String prenom, String email, String motDePasse) {
+        return "OBSOLETE";
+    }
+
     public static String genererEmailBienvenueSimple(String nom, String prenom, String email, String motDePasse) {
-        return String.format(
-            "Bonjour %s %s,\n\n" +
-            "Bienvenue dans l'application Vianova !\n\n" +
-            "Voici vos informations de connexion :\n" +
-            "Email : %s\n" +
-            "Mot de passe : %s\n\n" +
-            "Nous vous recommandons de changer votre mot de passe lors de votre première connexion.\n\n" +
-            "✈️ Que chaque voyage avec Vianova soit une nouvelle aventure !\n\n" +
-            "Cordialement,\n" +
-            "L'équipe Vianova\n" +
-            "🌍 Votre partenaire de confiance pour des voyages inoubliables",
-            prenom, nom, email, motDePasse
-        );
+        return "OBSOLETE";
     }
 }

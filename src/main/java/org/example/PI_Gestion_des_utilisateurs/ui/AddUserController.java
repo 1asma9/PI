@@ -161,12 +161,12 @@ public class AddUserController {
 
     @FXML
     private void onBack() {
-        loadInMainLayout("/app/home.fxml");
+        loadInMainLayout("/app/list_users.fxml");
     }
 
     @FXML
     private void onCancel() {
-        loadInMainLayout("/app/home.fxml");
+        loadInMainLayout("/app/list_users.fxml");
     }
 
     private void loadInMainLayout(String fxmlPath) {

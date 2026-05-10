@@ -16,9 +16,12 @@ public class AdminLayoutController {
     @FXML private Label pageTitle;
     @FXML private Label connectedLabel;
     @FXML private VBox destinationSubMenu;
+    @FXML private VBox utilisateursSubMenu;
+    @FXML private javafx.scene.control.Button btnToggleUtilisateurs;
 
     private static AdminLayoutController instance;
     private boolean destinationMenuOpen = true;
+    private boolean utilisateursMenuOpen = true;
 
     public static AdminLayoutController getInstance() { return instance; }
 
@@ -139,6 +142,14 @@ public class AdminLayoutController {
         loadPage("/app/home.fxml", "Utilisateurs");
     }
 
+    @FXML public void goListeUtilisateurs() {
+        loadPage("/app/list_users.fxml", "Liste Utilisateurs");
+    }
+
+    @FXML public void goAjouterUtilisateur() {
+        loadPage("/app/add_user.fxml", "Ajouter Utilisateur");
+    }
+
     @FXML public void goDestination() {
         loadPage("/AdminDestinationView.fxml", "Destinations");
     }
@@ -164,6 +175,17 @@ public class AdminLayoutController {
             destinationMenuOpen = !destinationMenuOpen;
             destinationSubMenu.setVisible(destinationMenuOpen);
             destinationSubMenu.setManaged(destinationMenuOpen);
+        }
+    }
+
+    @FXML public void toggleUtilisateursMenu() {
+        if (utilisateursSubMenu != null) {
+            utilisateursMenuOpen = !utilisateursMenuOpen;
+            utilisateursSubMenu.setVisible(utilisateursMenuOpen);
+            utilisateursSubMenu.setManaged(utilisateursMenuOpen);
+            if (btnToggleUtilisateurs != null) {
+                btnToggleUtilisateurs.setText(utilisateursMenuOpen ? "👥 Gestion Utilisateurs ▼" : "👥 Gestion Utilisateurs ▶");
+            }
         }
     }
 

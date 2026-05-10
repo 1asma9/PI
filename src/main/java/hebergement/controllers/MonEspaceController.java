@@ -30,12 +30,26 @@ public class MonEspaceController {
     @FXML private HBox tabBarBox;
 
     // ── Panneaux ──────────────────────────────────────────
+    @FXML private VBox paneInfo;
+    @FXML private VBox paneModif;
+    @FXML private VBox paneMdp;
     @FXML private VBox paneHeb;
     @FXML private VBox paneBlogs;
     @FXML private VBox paneRec;
     @FXML private VBox paneRes;
     @FXML private VBox paneAct;
     @FXML private VBox paneVoy;
+
+    // ── Champs Info ───────────────────────────────────────
+    @FXML private Label lblInfoNom, lblInfoPrenom, lblInfoEmail, lblInfoTel, lblInfoMembreDepuis;
+
+    // ── Champs Modif ──────────────────────────────────────
+    @FXML private TextField txtModifNom, txtModifPrenom, txtModifEmail, txtModifTel;
+    @FXML private Label lblModifMsg;
+
+    // ── Champs Mdp ────────────────────────────────────────
+    @FXML private PasswordField txtMdpActuel, txtMdpNouveau, txtMdpConfirm;
+    @FXML private Label lblMdpMsg;
 
     // ── Tables (autres onglets) ───────────────────────────
     @FXML private TableView<Object>          tvHebergements;
@@ -129,11 +143,13 @@ public class MonEspaceController {
         buildTabBar();
 
         if (openVoyagesTab) {
-            selectTab(5);
+            selectTab(8);
             openVoyagesTab = false;
         } else if (openFeedbacksTab) {
-            selectTab(2);
+            selectTab(5);
             openFeedbacksTab = false;
+        } else {
+            selectTab(0);
         }
     }
 
@@ -158,8 +174,9 @@ public class MonEspaceController {
     private void buildTabBar() {
         if (tabBarBox == null) return;
         tabBarBox.getChildren().clear();
-        panes = new VBox[]{ paneHeb, paneBlogs, paneRec, paneRes, paneAct, paneVoy };
+        panes = new VBox[]{ paneInfo, paneModif, paneMdp, paneHeb, paneBlogs, paneRec, paneRes, paneAct, paneVoy };
         String[][] tabs = {
+                {"📄","Informations"}, {"✏️","Modifier"}, {"🔒","Mot de passe"},
                 {"🏠","Hébergements"}, {"📝","Mes Blogs"}, {"💬","Mes Feedbacks"},
                 {"📅","Réservations"}, {"🎯","Activités"}, {"✈️","Mes Voyages"}
         };
@@ -186,13 +203,177 @@ public class MonEspaceController {
                 panes[i].setManaged(i == idx);
             }
         }
-        if (idx == 3) loadReservationsCards(MainLayoutController.getCurrentUser());
-        if (idx == 2) {
+        
+        utilisateur user = MainLayoutController.getCurrentUser();
+        if (user != null) {
+            if (idx == 0) populateInfoTab(user);
+            if (idx == 1) populateModifTab(user);
+        }
+
+        if (idx == 6) loadReservationsCards(user);
+        if (idx == 5) {
             setupTableAvis();
             setupTableReclamations();
             chargerAvis();
             chargerReclamations();
             showTabAvis();
+        }
+    }
+
+    private void populateInfoTab(utilisateur user) {
+        if (lblInfoNom != null) lblInfoNom.setText(nvl(user.getNom(), "—"));
+        if (lblInfoPrenom != null) lblInfoPrenom.setText(nvl(user.getPrenom(), "—"));
+        if (lblInfoEmail != null) lblInfoEmail.setText(nvl(user.getEmail(), "—"));
+        if (lblInfoTel != null) lblInfoTel.setText(nvl(user.getTelephone(), "—"));
+        if (lblInfoMembreDepuis != null) {
+            if (user.getDateCreation() != null) {
+                lblInfoMembreDepuis.setText(user.getDateCreation().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            } else {
+                lblInfoMembreDepuis.setText(java.time.LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+            }
+        }
+    }
+
+    private void populateModifTab(utilisateur user) {
+        if (txtModifNom != null) {
+            txtModifNom.clear();
+            txtModifNom.setPromptText(nvl(user.getNom(), "Nom"));
+        }
+        if (txtModifPrenom != null) {
+            txtModifPrenom.clear();
+            txtModifPrenom.setPromptText(nvl(user.getPrenom(), "Prénom"));
+        }
+        if (txtModifEmail != null) {
+            txtModifEmail.clear();
+            txtModifEmail.setPromptText(nvl(user.getEmail(), "Email"));
+        }
+        if (txtModifTel != null) {
+            txtModifTel.clear();
+            txtModifTel.setPromptText(nvl(user.getTelephone(), "Téléphone"));
+        }
+        if (lblModifMsg != null) lblModifMsg.setVisible(false);
+    }
+
+    @FXML private void onLogout() {
+        if (tools.AlertHelper.showConfirmation("Déconnexion", "Êtes-vous sûr de vouloir vous déconnecter ?")) {
+            MainLayoutController.setCurrentUser(null);
+            tools.SessionManager.logout();
+            try {
+                javafx.scene.Parent root = javafx.fxml.FXMLLoader.load(getClass().getResource("/app/login.fxml"));
+                javafx.scene.Scene scene = new javafx.scene.Scene(root, 1200, 700);
+                javafx.stage.Stage stage = (javafx.stage.Stage) lblUser.getScene().getWindow();
+                stage.setScene(scene);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML private void onSaveFace() {
+        tools.AlertHelper.showInfo("Face ID", "La fonctionnalité d'enregistrement du visage sera bientôt disponible !");
+    }
+
+    @FXML private void onSaveModifications() {
+        utilisateur user = MainLayoutController.getCurrentUser();
+        if (user == null) return;
+        
+        String nom = txtModifNom.getText().trim();
+        String prenom = txtModifPrenom.getText().trim();
+        String email = txtModifEmail.getText().trim();
+        String tel = txtModifTel.getText().trim();
+        
+        // Fallback to original values if empty
+        if (nom.isEmpty()) nom = user.getNom();
+        if (prenom.isEmpty()) prenom = user.getPrenom();
+        if (email.isEmpty()) email = user.getEmail();
+        if (tel.isEmpty()) tel = user.getTelephone();
+        
+        org.example.PI_Gestion_des_utilisateurs.services.utilisateur_service us = new org.example.PI_Gestion_des_utilisateurs.services.utilisateur_service();
+        
+        // Use a temporary user to validate
+        utilisateur uModif = new utilisateur(nom, prenom, email, user.getPassword(), tel);
+        uModif.setId(user.getId());
+        
+        if (!email.equals(user.getEmail()) && !us.verifierEmailUnique(email)) {
+            lblModifMsg.setText("Cet email est déjà utilisé.");
+            lblModifMsg.setStyle("-fx-text-fill:red;");
+            lblModifMsg.setVisible(true);
+            return;
+        }
+
+        if (us.modifierutilisateurSansPwd(uModif)) {
+            // Update current session user
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            user.setEmail(email);
+            user.setTelephone(tel);
+            setupHeader(user);
+            populateInfoTab(user);
+            populateModifTab(user); // refresh prompts
+            lblModifMsg.setText("Modifications enregistrées avec succès !");
+            lblModifMsg.setStyle("-fx-text-fill:green;");
+            lblModifMsg.setVisible(true);
+        } else {
+            lblModifMsg.setText("Erreur lors de la mise à jour.");
+            lblModifMsg.setStyle("-fx-text-fill:red;");
+            lblModifMsg.setVisible(true);
+        }
+    }
+
+    @FXML private void onChangePassword() {
+        utilisateur user = MainLayoutController.getCurrentUser();
+        if (user == null) return;
+
+        String actuel = txtMdpActuel.getText();
+        String nouveau = txtMdpNouveau.getText();
+        String confirm = txtMdpConfirm.getText();
+
+        if (actuel.isEmpty() || nouveau.isEmpty() || confirm.isEmpty()) {
+            lblMdpMsg.setText("Veuillez remplir tous les champs.");
+            lblMdpMsg.setStyle("-fx-text-fill:red;");
+            lblMdpMsg.setVisible(true);
+            return;
+        }
+
+        if (!org.example.PI_Gestion_des_utilisateurs.tools.PasswordUtil.verifyPassword(actuel, user.getPassword())) {
+            lblMdpMsg.setText("Mot de passe actuel incorrect.");
+            lblMdpMsg.setStyle("-fx-text-fill:red;");
+            lblMdpMsg.setVisible(true);
+            return;
+        }
+
+        if (!nouveau.equals(confirm)) {
+            lblMdpMsg.setText("Les mots de passe ne correspondent pas.");
+            lblMdpMsg.setStyle("-fx-text-fill:red;");
+            lblMdpMsg.setVisible(true);
+            return;
+        }
+
+        // Basic password validation
+        if (nouveau.length() < 6 || !nouveau.matches(".*[A-Z].*") || !nouveau.matches(".*[a-z].*") || !nouveau.matches(".*\\d.*") || !nouveau.matches(".*[!@#$%^&*()-+].*")) {
+            lblMdpMsg.setText("Le mot de passe doit respecter les critères.");
+            lblMdpMsg.setStyle("-fx-text-fill:red;");
+            lblMdpMsg.setVisible(true);
+            return;
+        }
+
+        org.example.PI_Gestion_des_utilisateurs.services.utilisateur_service us = new org.example.PI_Gestion_des_utilisateurs.services.utilisateur_service();
+        
+        user.setPassword(nouveau); // Le service va le hasher
+        if (us.modifierutilisateur(user)) {
+            // Mettre à jour le mot de passe actuel en mémoire (haché) pour ne pas casser la session courante
+            user.setPassword(org.example.PI_Gestion_des_utilisateurs.tools.PasswordUtil.hashPassword(nouveau));
+            
+            txtMdpActuel.clear();
+            txtMdpNouveau.clear();
+            txtMdpConfirm.clear();
+            lblMdpMsg.setText("Mot de passe changé avec succès !");
+            lblMdpMsg.setStyle("-fx-text-fill:green;");
+            lblMdpMsg.setVisible(true);
+        } else {
+            lblMdpMsg.setText("Erreur lors du changement de mot de passe.");
+            lblMdpMsg.setStyle("-fx-text-fill:red;");
+            lblMdpMsg.setVisible(true);
         }
     }
 

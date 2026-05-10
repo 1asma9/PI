@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17.0.12"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.PI_Gestion_des_utilisateurs.ui.RegisterController"
+           stylesheets="@app.css">
+
+    <!-- Fond dégradé pleine page -->
+    <VBox style="-fx-background-color: linear-gradient(to bottom right, #2c1f0e, #8a7560);"/>
+
+    <!-- Carte centrale -->
+    <VBox alignment="CENTER" spacing="0"
+          maxWidth="460" maxHeight="720"
+          style="-fx-background-color: white;
+                 -fx-background-radius: 20;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 30, 0, 0, 10);">
+
+        <!-- Header carte -->
+        <VBox alignment="CENTER" spacing="6"
+              style="-fx-background-color: #2c1f0e;
+                     -fx-background-radius: 20 20 0 0;
+                     -fx-padding: 24 40 20 40;">
+            <Label text="✦"
+                   style="-fx-text-fill: #d4a855; -fx-font-size: 26px;"/>
+            <Label text="VOYAGE &amp; DÉCOUVERTE"
+                   style="-fx-text-fill: white;
+                          -fx-font-size: 18px;
+                          -fx-font-weight: 900;
+                          -fx-font-family: 'Georgia';"/>
+            <Label text="Créez votre compte"
+                   style="-fx-text-fill: rgba(255,255,255,0.55);
+                          -fx-font-size: 12px;"/>
+        </VBox>
+
+        <!-- Formulaire -->
+        <VBox spacing="15"
+              style="-fx-padding: 30 40 30 40;">
+
+            <HBox spacing="15">
+                <!-- Nom -->
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Nom *"
+                           style="-fx-font-size: 12px;
+                                  -fx-font-weight: 700;
+                                  -fx-text-fill: #5a4a3a;"/>
+                    <TextField fx:id="nomField"
+                               promptText="Votre nom"
+                               prefHeight="40"
+                               style="-fx-background-color: #faf7f2;
+                                      -fx-background-radius: 10;
+                                      -fx-border-color: #e8e0d0;
+                                      -fx-border-radius: 10;
+                                      -fx-border-width: 1;
+                                      -fx-padding: 10 16 10 16;
+                                      -fx-font-size: 13px;
+                                      -fx-text-fill: #2c1f0e;"/>
+                </VBox>
+                <!-- Prénom -->
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="Prénom *"
+                           style="-fx-font-size: 12px;
+                                  -fx-font-weight: 700;
+                                  -fx-text-fill: #5a4a3a;"/>
+                    <TextField fx:id="prenomField"
+                               promptText="Votre prénom"
+                               prefHeight="40"
+                               style="-fx-background-color: #faf7f2;
+                                      -fx-background-radius: 10;
+                                      -fx-border-color: #e8e0d0;
+                                      -fx-border-radius: 10;
+                                      -fx-border-width: 1;
+                                      -fx-padding: 10 16 10 16;
+                                      -fx-font-size: 13px;
+                                      -fx-text-fill: #2c1f0e;"/>
+                </VBox>
+            </HBox>
+
+            <!-- Email -->
+            <VBox spacing="6">
+                <Label text="Adresse email *"
+                       style="-fx-font-size: 12px;
+                              -fx-font-weight: 700;
+                              -fx-text-fill: #5a4a3a;"/>
+                <TextField fx:id="emailField"
+                           promptText="exemple@email.com"
+                           prefHeight="40"
+                           style="-fx-background-color: #faf7f2;
+                                  -fx-background-radius: 10;
+                                  -fx-border-color: #e8e0d0;
+                                  -fx-border-radius: 10;
+                                  -fx-border-width: 1;
+                                  -fx-padding: 10 16 10 16;
+                                  -fx-font-size: 13px;
+                                  -fx-text-fill: #2c1f0e;"/>
+            </VBox>
+
+            <!-- Téléphone -->
+            <VBox spacing="6">
+                <Label text="Numéro de téléphone"
+                       style="-fx-font-size: 12px;
+                              -fx-font-weight: 700;
+                              -fx-text-fill: #5a4a3a;"/>
+                <TextField fx:id="telephoneField"
+                           promptText="8 chiffres minimum"
+                           prefHeight="40"
+                           style="-fx-background-color: #faf7f2;
+                                  -fx-background-radius: 10;
+                                  -fx-border-color: #e8e0d0;
+                                  -fx-border-radius: 10;
+                                  -fx-border-width: 1;
+                                  -fx-padding: 10 16 10 16;
+                                  -fx-font-size: 13px;
+                                  -fx-text-fill: #2c1f0e;"/>
+            </VBox>
+
+            <!-- Mot de passe -->
+            <VBox spacing="6">
+                <Label text="Mot de passe *"
+                       style="-fx-font-size: 12px;
+                              -fx-font-weight: 700;
+                              -fx-text-fill: #5a4a3a;"/>
+                <PasswordField fx:id="passwordField"
+                               promptText="Min. 6 caractères"
+                               prefHeight="40"
+                               style="-fx-background-color: #faf7f2;
+                                      -fx-background-radius: 10;
+                                      -fx-border-color: #e8e0d0;
+                                      -fx-border-radius: 10;
+                                      -fx-border-width: 1;
+                                      -fx-padding: 10 16 10 16;
+                                      -fx-font-size: 13px;
+                                      -fx-text-fill: #2c1f0e;"/>
+            </VBox>
+
+            <!-- Confirmer Mot de passe -->
+            <VBox spacing="6">
+                <Label text="Confirmer le mot de passe *"
+                       style="-fx-font-size: 12px;
+                              -fx-font-weight: 700;
+                              -fx-text-fill: #5a4a3a;"/>
+                <PasswordField fx:id="confirmPasswordField"
+                               promptText="Confirmez votre mot de passe"
+                               prefHeight="40"
+                               style="-fx-background-color: #faf7f2;
+                                      -fx-background-radius: 10;
+                                      -fx-border-color: #e8e0d0;
+                                      -fx-border-radius: 10;
+                                      -fx-border-width: 1;
+                                      -fx-padding: 10 16 10 16;
+                                      -fx-font-size: 13px;
+                                      -fx-text-fill: #2c1f0e;"/>
+            </VBox>
+
+            <!-- Erreur -->
+            <Label fx:id="errorLabel"
+                   visible="false"
+                   wrapText="true"
+                   style="-fx-text-fill: #c0392b;
+                          -fx-font-size: 12px;
+                          -fx-background-color: #fdecea;
+                          -fx-background-radius: 8;
+                          -fx-padding: 8 12 8 12;"/>
+
+            <!-- Bouton Inscription -->
+            <Button text="Créer mon compte →"
+                    onAction="#onRegister"
+                    maxWidth="Infinity"
+                    prefHeight="46"
+                    style="-fx-background-color: #d4a855;
+                           -fx-text-fill: #1a150f;
+                           -fx-font-size: 14px;
+                           -fx-font-weight: 900;
+                           -fx-background-radius: 10;
+                           -fx-cursor: hand;
+                           -fx-effect: dropshadow(gaussian, rgba(212,168,85,0.4), 10, 0, 0, 4);"/>
+
+            <!-- Lien Connexion -->
+            <HBox alignment="CENTER" spacing="10">
+                <Label text="Déjà un compte ?"
+                       style="-fx-text-fill: #8a7560; -fx-font-size: 12px;"/>
+                <Button text="Se connecter"
+                        onAction="#onGoToLogin"
+                        style="-fx-background-color: transparent;
+                               -fx-text-fill: #d4a855;
+                               -fx-font-weight: bold;
+                               -fx-padding: 0;
+                               -fx-cursor: hand;
+                               -fx-underline: true;
+                               -fx-font-size: 12px;"/>
+            </HBox>
+
+        </VBox>
+
+    </VBox>
+
+</StackPane>

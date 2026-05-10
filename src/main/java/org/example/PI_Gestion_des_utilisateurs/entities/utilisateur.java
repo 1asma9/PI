@@ -15,6 +15,7 @@ public class utilisateur {
     private String telephone;
     private LocalDateTime dateCreation;
     private List<role> roles;
+    private boolean isActive = true;
 
     private String roleName;
     private String roleDescription;
@@ -111,6 +112,14 @@ public class utilisateur {
 
     public void setRoleDescription(String roleDescription) {
         this.roleDescription = roleDescription;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
     @Override

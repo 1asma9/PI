@@ -107,12 +107,28 @@ public class DeleteUserController {
 
     @FXML
     private void onBack() {
-        SceneNavigator.goTo("/app/home.fxml", "Accueil");
+        loadInMainLayout("/app/list_users.fxml");
     }
 
     @FXML
     private void onCancel() {
-        SceneNavigator.goTo("/app/home.fxml", "Accueil");
+        loadInMainLayout("/app/list_users.fxml");
+    }
+
+    private void loadInMainLayout(String fxmlPath) {
+        try {
+            hebergement.controllers.AdminLayoutController admin = hebergement.controllers.AdminLayoutController.getInstance();
+            if (admin != null) {
+                admin.loadPage(fxmlPath, "Utilisateurs");
+                return;
+            }
+            hebergement.controllers.ClientLayoutController client = hebergement.controllers.ClientLayoutController.getInstance();
+            if (client != null) {
+                client.loadPage(fxmlPath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showInfo(String title, String message) {

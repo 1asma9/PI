@@ -5,6 +5,10 @@ public class SessionManager {
     private static String username = "";
     private static String email = "";
     private static boolean isAdmin = false;
+    private static org.example.PI_Gestion_des_utilisateurs.entities.utilisateur tempUser;
+
+    public static void setTempUser(org.example.PI_Gestion_des_utilisateurs.entities.utilisateur u) { tempUser = u; }
+    public static org.example.PI_Gestion_des_utilisateurs.entities.utilisateur getTempUser() { return tempUser; }
 
     public static void login(int userId, String user, boolean admin) {
         currentUserId = userId;

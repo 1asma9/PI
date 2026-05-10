@@ -20,8 +20,15 @@ public class EmailService {
     private final String appPassword;
 
     public EmailService() {
-        this.username = System.getenv("VIANOVA_SMTP_USER");
-        this.appPassword = System.getenv("VIANOVA_SMTP_PASS");
+        this.username = "elarbiahmed0@gmail.com";
+        String envPass = System.getenv("VIANOVA_SMTP_PASS");
+        
+        if (envPass == null || envPass.isBlank()) {
+            // Mot de passe d'application fourni
+            this.appPassword = "cfiivonomtvbplmc";
+        } else {
+            this.appPassword = envPass;
+        }
     }
 
     /** Vérifie si la config SMTP existe */
@@ -66,12 +73,35 @@ public class EmailService {
         Session session = createSession();
         MimeMessage message = new MimeMessage(session);
 
-        message.setFrom(new InternetAddress(username));
+        try {
+            message.setFrom(new InternetAddress("elarbiahmed0@gmail.com", "ViaNoVa"));
+        } catch (Exception e) {
+            message.setFrom(new InternetAddress(username));
+        }
+        
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to.trim(), false));
         message.setSubject(subject.trim(), StandardCharsets.UTF_8.name());
         message.setContent(htmlContent, "text/html; charset=UTF-8");
 
         Transport.send(message);
+    }
+
+    public void sendVerificationEmail(String toEmail, String toName, String verificationLink) throws Exception {
+        String subject = "Vérifiez votre adresse email - ViaNoVa";
+        String html = EmailVianovaTemplate.getVerificationEmailHtml(toName, verificationLink);
+        sendEmailHtml(toEmail, subject, html);
+    }
+
+    public void sendWelcomeEmail(String toEmail, String toName) throws Exception {
+        String subject = "Bienvenue chez ViaNoVa !";
+        String html = EmailVianovaTemplate.getWelcomeEmailHtml(toName);
+        sendEmailHtml(toEmail, subject, html);
+    }
+
+    public void sendResetPasswordEmail(String toEmail, String toName, String resetLink) throws Exception {
+        String subject = "Réinitialisation de votre mot de passe - ViaNoVa";
+        String html = EmailVianovaTemplate.getResetPasswordEmailHtml(toName, resetLink);
+        sendEmailHtml(toEmail, subject, html);
     }
 
     // -------------------- Helpers --------------------

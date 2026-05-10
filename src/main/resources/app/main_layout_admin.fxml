@@ -43,10 +43,25 @@
                     styleClass="nav-btn"
                     maxWidth="Infinity"/>
 
-            <Button text="👥 Utilisateurs"
-                    onAction="#goUtilisateurs"
-                    styleClass="nav-btn"
-                    maxWidth="Infinity"/>
+            <VBox spacing="4">
+                <Button fx:id="btnToggleUtilisateurs"
+                        text="👥 Gestion Utilisateurs ▼"
+                        onAction="#toggleUtilisateursMenu"
+                        styleClass="nav-btn"
+                        maxWidth="Infinity"/>
+                <VBox fx:id="utilisateursSubMenu" spacing="4"
+                      style="-fx-padding: 0 0 0 15;"
+                      visible="true" managed="true">
+                    <Button text="👥 Liste des utilisateurs"
+                            onAction="#goListeUtilisateurs"
+                            styleClass="nav-btn"
+                            maxWidth="Infinity"/>
+                    <Button text="👤➕ Ajouter utilisateur"
+                            onAction="#goAjouterUtilisateur"
+                            styleClass="nav-btn"
+                            maxWidth="Infinity"/>
+                </VBox>
+            </VBox>
 
             <VBox spacing="4">
                 <Button fx:id="btnToggleDestination"

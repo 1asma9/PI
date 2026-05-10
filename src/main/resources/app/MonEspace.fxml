@@ -92,6 +92,117 @@
             <!-- ── Panneaux de contenu ── -->
             <StackPane VBox.vgrow="ALWAYS">
 
+                <!-- Informations -->
+                <VBox fx:id="paneInfo" spacing="20"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    <Label text="📄 Informations du compte"
+                           style="-fx-font-size:17px;-fx-font-weight:800;-fx-text-fill:#1e293b;"/>
+                    <GridPane hgap="20" vgap="20">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="50"/>
+                            <ColumnConstraints percentWidth="50"/>
+                        </columnConstraints>
+                        
+                        <!-- Nom -->
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                              style="-fx-background-color:white; -fx-padding:16; -fx-background-radius:12; -fx-border-color:#f1f5f9; -fx-border-radius:12;">
+                            <Label text="NOM" style="-fx-text-fill:#94a3b8; -fx-font-size:10px; -fx-font-weight:bold;"/>
+                            <Label fx:id="lblInfoNom" text="—" style="-fx-font-size:14px; -fx-font-weight:bold;"/>
+                        </VBox>
+                        <!-- Prénom -->
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                              style="-fx-background-color:white; -fx-padding:16; -fx-background-radius:12; -fx-border-color:#f1f5f9; -fx-border-radius:12;">
+                            <Label text="PRÉNOM" style="-fx-text-fill:#94a3b8; -fx-font-size:10px; -fx-font-weight:bold;"/>
+                            <Label fx:id="lblInfoPrenom" text="—" style="-fx-font-size:14px; -fx-font-weight:bold;"/>
+                        </VBox>
+                        <!-- Email -->
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                              style="-fx-background-color:white; -fx-padding:16; -fx-background-radius:12; -fx-border-color:#f1f5f9; -fx-border-radius:12;">
+                            <Label text="ADRESSE EMAIL" style="-fx-text-fill:#94a3b8; -fx-font-size:10px; -fx-font-weight:bold;"/>
+                            <Label fx:id="lblInfoEmail" text="—" style="-fx-font-size:14px; -fx-font-weight:bold;"/>
+                        </VBox>
+                        <!-- Téléphone -->
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                              style="-fx-background-color:white; -fx-padding:16; -fx-background-radius:12; -fx-border-color:#f1f5f9; -fx-border-radius:12;">
+                            <Label text="TÉLÉPHONE" style="-fx-text-fill:#94a3b8; -fx-font-size:10px; -fx-font-weight:bold;"/>
+                            <Label fx:id="lblInfoTel" text="—" style="-fx-font-size:14px; -fx-font-weight:bold;"/>
+                        </VBox>
+                        <!-- Membre depuis -->
+                        <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                              style="-fx-background-color:white; -fx-padding:16; -fx-background-radius:12; -fx-border-color:#f1f5f9; -fx-border-radius:12;">
+                            <Label text="MEMBRE DEPUIS" style="-fx-text-fill:#94a3b8; -fx-font-size:10px; -fx-font-weight:bold;"/>
+                            <Label fx:id="lblInfoMembreDepuis" text="—" style="-fx-font-size:14px; -fx-font-weight:bold;"/>
+                        </VBox>
+                        <!-- Statut -->
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                              style="-fx-background-color:white; -fx-padding:16; -fx-background-radius:12; -fx-border-color:#f1f5f9; -fx-border-radius:12;">
+                            <Label text="STATUT" style="-fx-text-fill:#94a3b8; -fx-font-size:10px; -fx-font-weight:bold;"/>
+                            <Label text="● Actif" style="-fx-font-size:14px; -fx-font-weight:bold; -fx-text-fill:#16a34a;"/>
+                        </VBox>
+                    </GridPane>
+                    <HBox spacing="15" style="-fx-padding: 10 0 0 0;">
+                        <Button text="Déconnexion" onAction="#onLogout"
+                                style="-fx-background-color:#ef4444; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8; -fx-padding:10 20; -fx-cursor:hand;"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Modifier -->
+                <VBox fx:id="paneModif" spacing="15" visible="false" managed="false"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    
+                    <HBox spacing="20">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Nom" style="-fx-font-weight:bold;"/>
+                            <TextField fx:id="txtModifNom" promptText="Laissez vide pour conserver" style="-fx-background-color:white; -fx-border-color:#e2e8f0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:10;"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Label text="Prénom" style="-fx-font-weight:bold;"/>
+                            <TextField fx:id="txtModifPrenom" promptText="Laissez vide pour conserver" style="-fx-background-color:white; -fx-border-color:#e2e8f0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:10;"/>
+                        </VBox>
+                    </HBox>
+                    
+                    <VBox spacing="5">
+                        <Label text="Adresse email" style="-fx-font-weight:bold;"/>
+                        <TextField fx:id="txtModifEmail" promptText="Laissez vide pour conserver" style="-fx-background-color:white; -fx-border-color:#e2e8f0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:10;"/>
+                    </VBox>
+                    
+                    <VBox spacing="5">
+                        <Label text="Numéro de téléphone" style="-fx-font-weight:bold;"/>
+                        <TextField fx:id="txtModifTel" promptText="Laissez vide pour conserver" style="-fx-background-color:white; -fx-border-color:#e2e8f0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:10;"/>
+                    </VBox>
+                    
+                    <Label fx:id="lblModifMsg" text="" visible="false" style="-fx-text-fill:red;"/>
+                    
+                    <Button text="Enregistrer les modifications" onAction="#onSaveModifications"
+                            style="-fx-background-color:#d4a855; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8; -fx-padding:12 24; -fx-cursor:hand;"/>
+                </VBox>
+
+                <!-- Mot de passe -->
+                <VBox fx:id="paneMdp" spacing="15" visible="false" managed="false"
+                      style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">
+                    
+                    <VBox spacing="5">
+                        <Label text="Mot de passe actuel *" style="-fx-font-weight:bold;"/>
+                        <PasswordField fx:id="txtMdpActuel" style="-fx-background-color:white; -fx-border-color:#e2e8f0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:10;"/>
+                    </VBox>
+                    
+                    <VBox spacing="5">
+                        <Label text="Nouveau mot de passe *" style="-fx-font-weight:bold;"/>
+                        <PasswordField fx:id="txtMdpNouveau" promptText="Min. 6 car. : Aa1@..." style="-fx-background-color:white; -fx-border-color:#e2e8f0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:10;"/>
+                        <Label text="Majuscule, minuscule, chiffre et caractère spécial requis" style="-fx-text-fill:#94a3b8; -fx-font-size:10px;"/>
+                    </VBox>
+                    
+                    <VBox spacing="5">
+                        <Label text="Confirmer le nouveau mot de passe *" style="-fx-font-weight:bold;"/>
+                        <PasswordField fx:id="txtMdpConfirm" style="-fx-background-color:white; -fx-border-color:#e2e8f0; -fx-border-radius:8; -fx-background-radius:8; -fx-padding:10;"/>
+                    </VBox>
+                    
+                    <Label fx:id="lblMdpMsg" text="" visible="false" style="-fx-text-fill:red;"/>
+                    
+                    <Button text="Changer le mot de passe" onAction="#onChangePassword"
+                            style="-fx-background-color:#d4a855; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:8; -fx-padding:12 24; -fx-cursor:hand;"/>
+                </VBox>
+
                 <!-- Hébergements -->
                 <VBox fx:id="paneHeb" spacing="14"
                       style="-fx-padding:28 36 28 36;-fx-background-color:#f1f5f9;">

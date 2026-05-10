@@ -68,6 +68,11 @@ public class LoginController {
             return;
         }
 
+        if (!user.isActive()) {
+            showInlineError("Ce compte est suspendu ou inactif.");
+            return;
+        }
+
         // ✅ Stocker utilisateur
         MainLayoutController.setCurrentUser(user);
 
@@ -113,6 +118,20 @@ public class LoginController {
     private void onCancel() {
         javafx.application.Platform.exit();
         System.exit(0);
+    }
+
+    @FXML
+    private void onGoToRegister() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/register.fxml"));
+            Scene scene = new Scene(loader.load(), 1200, 700);
+            
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showPopupError("Erreur", "Impossible d'ouvrir la page d'inscription: " + e.getMessage());
+        }
     }
 
     private boolean isValidEmail(String email) {

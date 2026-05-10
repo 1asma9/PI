@@ -49,6 +49,19 @@ public class EditUserController {
             if (newV != null) fillForm(newV);
         });
         refreshTable();
+
+        org.example.PI_Gestion_des_utilisateurs.entities.utilisateur temp = tools.SessionManager.getTempUser();
+        if (temp != null) {
+            // Find the user in the table to select it properly
+            for (utilisateur u : users) {
+                if (u.getId() == temp.getId()) {
+                    usersTable.getSelectionModel().select(u);
+                    break;
+                }
+            }
+            fillForm(temp);
+            tools.SessionManager.setTempUser(null);
+        }
     }
 
     private void refreshTable() {
@@ -118,28 +131,33 @@ public class EditUserController {
         }
 
         String password = trimmedOrNull(passwordField.getText());
-        if (password == null) {
-            showError("Validation", "Le mot de passe est requis.");
-            return;
-        }
 
         try {
             utilisateur u = new utilisateur(
                     nomField.getText(),
                     prenomField.getText(),
                     emailField.getText(),
-                    password,
+                    password, // may be null
                     telephoneField.getText()
             );
             u.setId(selected.getId());
 
-            String erreur = service.validerDonneesutilisateurAvecMessage(u);
-            if (erreur != null) {
-                showError("Erreur de validation", erreur);
-                return;
+            boolean ok;
+            if (password == null || password.isEmpty()) {
+                ok = service.modifierutilisateurSansPwd(u);
+                if (!ok) {
+                    showError("Erreur de validation", utilisateur_service.lastError != null ? utilisateur_service.lastError : "Erreur inconnue");
+                    return;
+                }
+            } else {
+                String erreur = service.validerDonneesutilisateurAvecMessage(u);
+                if (erreur != null) {
+                    showError("Erreur de validation", erreur);
+                    return;
+                }
+                ok = service.modifierutilisateur(u);
             }
 
-            boolean ok = service.modifierutilisateur(u);
             if (ok) {
                 showInfo("Succès", "Utilisateur modifié avec succès.");
                 refreshTable();
@@ -153,12 +171,12 @@ public class EditUserController {
 
     @FXML
     private void onBack() {
-        loadInMainLayout("/app/home.fxml");
+        loadInMainLayout("/app/list_users.fxml");
     }
 
     @FXML
     private void onCancel() {
-        loadInMainLayout("/app/home.fxml");
+        loadInMainLayout("/app/list_users.fxml");
     }
 
     private void loadInMainLayout(String fxmlPath) {

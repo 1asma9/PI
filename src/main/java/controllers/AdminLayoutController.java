@@ -36,6 +36,8 @@ public class AdminLayoutController implements Initializable {
     @FXML private Button btnToggleDestination;
     @FXML private VBox blogSubMenu;
     @FXML private Button btnToggleBlog;
+    @FXML private VBox utilisateursSubMenu;
+    @FXML private Button btnToggleUtilisateurs;
     @FXML private Label pageTitle;
     private Node blogContentNode;
 
@@ -180,6 +182,14 @@ public class AdminLayoutController implements Initializable {
     }
 
     @FXML
+    void toggleUtilisateursMenu() {
+        boolean visible = utilisateursSubMenu.isVisible();
+        utilisateursSubMenu.setVisible(!visible);
+        utilisateursSubMenu.setManaged(!visible);
+        btnToggleUtilisateurs.setText(visible ? "👥 Gestion Utilisateurs ▶" : "👥 Gestion Utilisateurs ▼");
+    }
+
+    @FXML
     void toggleBlogMenu() {
         boolean visible = blogSubMenu.isVisible();
         blogSubMenu.setVisible(!visible);
@@ -231,6 +241,16 @@ public class AdminLayoutController implements Initializable {
 
     @FXML
     void goUtilisateurs() {
+        chargerPage("/app/add_user.fxml");
+    }
+
+    @FXML
+    void goListeUtilisateurs() {
+        chargerPage("/app/home.fxml"); // Tableau de bord ou liste des utilisateurs
+    }
+
+    @FXML
+    void goAjouterUtilisateur() {
         chargerPage("/app/add_user.fxml");
     }
 
